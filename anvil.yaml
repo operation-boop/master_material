@@ -84,6 +84,32 @@ db_schema:
       type: string
     server: full
     title: Master Material
+  material_type:
+    client: none
+    columns: []
+    server: full
+    title: Material_Type
+  material_weight_uom:
+    client: none
+    columns: []
+    server: full
+    title: Material_weight_uom
+  qr_code:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: qr_id
+      type: string
+    server: full
+    title: Qr_code
+  supplier:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: ref_id
+      type: string
+    server: full
+    title: Supplier
   table_3:
     client: none
     columns: []
