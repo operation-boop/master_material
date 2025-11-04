@@ -53,7 +53,7 @@ components:
   properties: {align: center, text: ''}
   type: CheckBox
 container: {type: DataRowPanel}
-custom_component: true
+custom_component: false
 events: []
 is_package: true
 properties: []
