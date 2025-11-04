@@ -44,11 +44,6 @@ db_schema:
       type: string
     server: full
     title: Master Material
-  material_weight_uom:
-    client: none
-    columns: []
-    server: full
-    title: Material_weight_uom
   table_3:
     client: none
     columns: []
