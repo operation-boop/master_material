@@ -1,20 +1,6 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
-  files:
-    client: none
-    columns:
-    - admin_ui: {order: 0, width: 200}
-      name: path
-      type: string
-    - admin_ui: {order: 1, width: 200}
-      name: file
-      type: media
-    - admin_ui: {order: 2, width: 200}
-      name: file_version
-      type: string
-    server: full
-    title: Files
   master_material:
     client: none
     columns:
@@ -169,6 +155,27 @@ db_schema:
       type: number
     - admin_ui: {order: 37, width: 200}
       name: vietnam_vat_rate
+      type: number
+    - admin_ui: {width: 200}
+      name: refundable_import_duty
+      type: bool
+    - admin_ui: {width: 200}
+      name: refundable_vat
+      type: bool
+    - admin_ui: {width: 200}
+      name: shipping_term
+      type: string
+    - admin_ui: {width: 200}
+      name: import_duty
+      type: number
+    - admin_ui: {width: 200}
+      name: landed_cost_per_unit
+      type: number
+    - admin_ui: {width: 200}
+      name: logistics_fee_per_unit
+      type: number
+    - admin_ui: {width: 200}
+      name: logistics_rate
       type: number
     server: full
     title: Master Material Verison
