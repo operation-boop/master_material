@@ -44,11 +44,11 @@ db_schema:
       type: string
     server: full
     title: Master Material
-  table_3:
+  master_material_verison:
     client: none
     columns: []
     server: full
-    title: Table 3
+    title: Master Material Verison
   users:
     client: none
     columns:
