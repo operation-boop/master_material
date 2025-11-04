@@ -595,6 +595,8 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
   background-image: none;
   outline: none;
   color: %color:Primary 500%;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .btn:active, .btn:active:focus {
