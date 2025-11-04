@@ -89,13 +89,46 @@ components:
         type: TextBox
       - layout_properties: {grid_position: 'QOVPAG,QIHDTG WHFQON,MPISVU'}
         name: label_12
-        properties: {text: Cut Width (no shrink)}
+        properties: {bold: true, text: Cut Width (no shrink)}
         type: Label
+      - layout_properties: {grid_position: 'QOVPAG,QIHDTG ACOTSK,MSVSNC'}
+        name: cut_width_with_no_shrink
+        properties: {}
+        type: TextBox
       layout_properties: {grid_position: 'RFBEGT,YADLEP'}
       name: column_panel_2
       properties: {}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'RFBEGT,CIFAPG'}
+    - components:
+      - layout_properties: {grid_position: 'WHCFLW,VOIMWE'}
+        name: label_13
+        properties: {bold: true, text: Weft Shrinkage}
+        type: Label
+      - layout_properties: {grid_position: 'UBXPKS,QOLKJJ'}
+        name: weft_shrinkage
+        properties: {}
+        type: TextBox
+      - layout_properties: {grid_position: 'WZWIUY,EALIRB'}
+        name: label_14
+        properties: {bold: true, text: Warp Shrinkage}
+        type: Label
+      - layout_properties: {grid_position: 'MBVMAN,BQVPSR'}
+        name: warp_shrinkage
+        properties: {}
+        type: TextBox
+      - layout_properties: {grid_position: 'PQBPLL,NIKRGW'}
+        name: label_15
+        properties: {bold: true, text: Weight per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'OVMYYK,CJBUMO'}
+        name: weight_per_unit
+        properties: {}
+        type: TextBox
+      - layout_properties: {grid_position: 'FKAWRC,BJVNMR'}
+        name: label_16
+        properties: {bold: true, text: Weight UOM}
+        type: Label
+      layout_properties: {grid_position: 'RFBEGT,CIFAPG'}
       name: column_panel_3
       properties: {}
       type: ColumnPanel
