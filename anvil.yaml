@@ -44,11 +44,160 @@ db_schema:
       type: string
     server: full
     title: Master Material
-  table_3:
+  master_material_verison:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: ver_num
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: change_description
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 5, width: 200}
+      name: created_by
+      target: users
+      type: link_single
+    - admin_ui: {order: 6, width: 200}
+      name: submitted_at
+      type: datetime
+    - admin_ui: {order: 7, width: 200}
+      name: submitted_by
+      target: users
+      type: link_single
+    - admin_ui: {order: 8, width: 200}
+      name: ref_id
+      target: supplier
+      type: link_single
+    - admin_ui: {order: 9, width: 200}
+      name: master_material_id
+      type: string
+    - admin_ui: {order: 10, width: 200}
+      name: status
+      type: string
+    - admin_ui: {order: 11, width: 200}
+      name: supplier
+      type: string
+    - admin_ui: {order: 12, width: 200}
+      name: supplier_name
+      type: string
+    - admin_ui: {order: 13, width: 200}
+      name: country_of_origin
+      type: string
+    - admin_ui: {order: 14, width: 200}
+      name: name
+      type: string
+    - admin_ui: {order: 15, width: 200}
+      name: material_type
+      target: material_type
+      type: link_single
+    - admin_ui: {order: 16, width: 200}
+      name: last_verified_date
+      type: datetime
+    - admin_ui: {order: 17, width: 200}
+      name: last_verified_by
+      target: users
+      type: link_single
+    - admin_ui: {order: 18, width: 200}
+      name: qr_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {order: 19, width: 200}
+      name: hanger_pdf_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {order: 20, width: 200}
+      name: picture_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {order: 21, width: 200}
+      name: unit_of_measurement
+      type: string
+    - admin_ui: {order: 22, width: 200}
+      name: fabric_composition
+      type: string
+    - admin_ui: {order: 23, width: 200}
+      name: generic_material_composition
+      type: string
+    - admin_ui: {order: 24, width: 200}
+      name: fabric_roll_width
+      type: number
+    - admin_ui: {order: 25, width: 200}
+      name: fabric_cut_width
+      type: number
+    - admin_ui: {order: 26, width: 200}
+      name: fabric_cut_width_no_shrinkage
+      type: number
+    - admin_ui: {order: 27, width: 200}
+      name: weight_per_unit
+      type: number
+    - admin_ui: {order: 28, width: 200}
+      name: weight_uom
+      target: material_weight_uom
+      type: link_single
+    - admin_ui: {order: 29, width: 200}
+      name: generic_material_size
+      type: string
+    - admin_ui: {order: 30, width: 200}
+      name: weft_shrinkage
+      type: number
+    - admin_ui: {order: 31, width: 200}
+      name: werp_shrinkage
+      type: number
+    - admin_ui: {order: 32, width: 200}
+      name: original_cost_per_unit
+      type: number
+    - admin_ui: {order: 33, width: 200}
+      name: native_cost_currency
+      type: string
+    - admin_ui: {order: 34, width: 200}
+      name: supplier_selling_tolerance
+      type: number
+    - admin_ui: {order: 35, width: 200}
+      name: 'refundable_tolerance:'
+      type: bool
+    - admin_ui: {order: 36, width: 200}
+      name: effective_cost_per_unit
+      type: number
+    - admin_ui: {order: 37, width: 200}
+      name: vietnam_vat_rate
+      type: number
+    server: full
+    title: Master Material Verison
+  material_type:
     client: none
     columns: []
     server: full
-    title: Table 3
+    title: Material_Type
+  material_weight_uom:
+    client: none
+    columns: []
+    server: full
+    title: Material_weight_uom
+  qr_code:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: qr_id
+      type: string
+    server: full
+    title: Qr_code
+  supplier:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: ref_id
+      type: string
+    server: full
+    title: Supplier
   users:
     client: none
     columns:
