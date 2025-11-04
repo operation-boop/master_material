@@ -1,6 +1,44 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
+  dict_overhead_cost:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: cost_currency
+      type: unresolved
+    - admin_ui: {width: 200}
+      name: total_overhead_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: import_logistics_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: export_logistics_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: vat_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: import_duty_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: material_testing_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: garmet_testing_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: sampling_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: moq_surcharge_cost
+      type: number
+    - admin_ui: {width: 200}
+      name: overhead_cost_items
+      type: unresolved
+    server: full
+    title: dict_overhead_cost
   master_material:
     client: none
     columns:
@@ -61,8 +99,7 @@ db_schema:
       type: link_single
     - admin_ui: {width: 200}
       name: ref_id
-      target: supplier
-      type: link_single
+      type: unresolved
     - admin_ui: {width: 200}
       name: master_material_id
       type: string
@@ -82,10 +119,6 @@ db_schema:
       name: name
       type: string
     - admin_ui: {width: 200}
-      name: material_type
-      target: material_type
-      type: link_single
-    - admin_ui: {width: 200}
       name: last_verified_date
       type: datetime
     - admin_ui: {width: 200}
@@ -94,16 +127,13 @@ db_schema:
       type: link_single
     - admin_ui: {width: 200}
       name: qr_id
-      target: qr_code
-      type: link_single
+      type: unresolved
     - admin_ui: {width: 200}
       name: hanger_pdf_id
-      target: qr_code
-      type: link_single
+      type: unresolved
     - admin_ui: {width: 200}
       name: picture_id
-      target: qr_code
-      type: link_single
+      type: unresolved
     - admin_ui: {width: 200}
       name: unit_of_measurement
       type: string
@@ -125,10 +155,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: weight_per_unit
       type: number
-    - admin_ui: {width: 200}
-      name: weight_uom
-      target: material_weight_uom
-      type: link_single
     - admin_ui: {width: 200}
       name: generic_material_size
       type: string
@@ -177,6 +203,14 @@ db_schema:
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
+    - admin_ui: {width: 200}
+      name: material_type
+      target: material_type
+      type: link_single
+    - admin_ui: {width: 200}
+      name: weight_uom
+      target: material_weight_uom
+      type: link_single
     server: full
     title: Master Material Verison
   material_type:
@@ -205,6 +239,11 @@ db_schema:
       type: string
     server: full
     title: Supplier
+  table_3:
+    client: none
+    columns: []
+    server: full
+    title: Table 3
   users:
     client: none
     columns:
