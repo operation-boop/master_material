@@ -16,6 +16,7 @@ from ..SMO import SMO
 from ..Client_list import Client_list
 from ..Style_list import Style_list
 from ..Staff_list import Staff_list
+from ..Material_list import Material_list
 
 class Home(HomeTemplate):
   def __init__(self, **properties):
@@ -42,7 +43,7 @@ class Home(HomeTemplate):
       "smo": SMO(),
       "client": Client_list(),
       "style": Style_list(),
-      "staff": Staff_list()
+      "material": Material_list(),
     }
     page = page_registry.get(source)
 
@@ -62,7 +63,8 @@ class Home(HomeTemplate):
     self.link_smo.role = "<default>"
     self.link_client.role = "<default>"
     self.link_style.role = "<default>"
-    self.link_staff.role = "<default>"
+    self.link_material.role = "<default>"
+
 
   def format_link_role_to_selected(self, clicked_link):
     group_default_link_registry = {

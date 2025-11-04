@@ -1,0 +1,25 @@
+components:
+- layout_properties: {grid_position: 'QMUIBQ,AQRIFR'}
+  name: headline_1
+  properties: {role: headline, text: Material List}
+  type: Label
+- components:
+  - name: repeating_panel_1
+    properties: {item_template: Material_list.material_list_rowtemplate}
+    type: RepeatingPanel
+  layout_properties: {grid_position: 'SIUHFN,MGFPDL'}
+  name: data_grid_1
+  properties:
+    columns:
+    - {data_key: column_1, id: JKSDUP, title: ''}
+    - {data_key: column_2, id: VJQQOR, title: ID}
+    - {data_key: column_3, id: OJLQEN, title: Document ID}
+    - {data_key: column_4, id: KMEYVT, title: Current Version}
+    - {data_key: column_5, id: MAOHBU, title: Version History}
+    - {data_key: column_6, id: PJOXYT, title: Created At}
+    - {data_key: column_7, id: LAECHY, title: Created By}
+    - {data_key: column_8, id: DYZQWE, title: Submitted At}
+    - {data_key: column_9, id: GAVEWF, title: Submitted By}
+  type: DataGrid
+container: {type: ColumnPanel}
+is_package: true
