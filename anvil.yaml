@@ -1,85 +1,31 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
-  dict_overhead_cost:
-    client: none
-    columns:
-    - admin_ui: {width: 200}
-      name: cost_currency
-      target: null
-      type: link_single
-    - admin_ui: {width: 200}
-      name: total_overhead_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: import_logistics_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: export_logistics_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: vat_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: import_duty_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: material_testing_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: garmet_testing_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: sampling_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: moq_surcharge_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: overhead_cost_items
-      target: null
-      type: link_multiple
-    server: full
-    title: dict_overhead_cost
-  files:
-    client: none
-    columns:
-    - admin_ui: {order: 0, width: 200}
-      name: path
-      type: string
-    - admin_ui: {order: 1, width: 200}
-      name: file
-      type: media
-    - admin_ui: {order: 2, width: 200}
-      name: file_version
-      type: string
-    server: full
-    title: Files
   master_material:
     client: none
     columns:
-    - admin_ui: {order: 1, width: 200}
-      name: document_id
-      type: string
-    - admin_ui: {order: 2, width: 200}
-      name: current_version
-      type: number
-    - admin_ui: {order: 0, width: 200}
+    - admin_ui: {width: 200}
       name: id
       type: string
-    - admin_ui: {order: 3, width: 200}
+    - admin_ui: {width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {width: 200}
+      name: current_version
+      type: number
+    - admin_ui: {width: 200}
       name: version_history
       type: string
-    - admin_ui: {order: 4, width: 200}
+    - admin_ui: {width: 200}
       name: created_at
       type: datetime
-    - admin_ui: {order: 5, width: 200}
+    - admin_ui: {width: 200}
       name: created_by
       type: string
-    - admin_ui: {order: 6, width: 200}
+    - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
-    - admin_ui: {order: 7, width: 200}
+    - admin_ui: {width: 200}
       name: submitted_by
       type: string
     server: full
@@ -259,36 +205,31 @@ db_schema:
       type: string
     server: full
     title: Supplier
-  table_3:
-    client: none
-    columns: []
-    server: full
-    title: Table 3
   users:
     client: none
     columns:
-    - admin_ui: {order: 0, width: 200}
+    - admin_ui: {width: 200}
       name: email
       type: string
-    - admin_ui: {order: 1, width: 200}
+    - admin_ui: {width: 200}
       name: enabled
       type: bool
-    - admin_ui: {order: 2, width: 200}
+    - admin_ui: {width: 200}
       name: last_login
       type: datetime
-    - admin_ui: {order: 3, width: 200}
+    - admin_ui: {width: 200}
       name: password_hash
       type: string
-    - admin_ui: {order: 4, width: 200}
+    - admin_ui: {width: 200}
       name: n_password_failures
       type: number
-    - admin_ui: {order: 5, width: 200}
+    - admin_ui: {width: 200}
       name: confirmed_email
       type: bool
-    - admin_ui: {order: 6, width: 200}
+    - admin_ui: {width: 200}
       name: remembered_logins
       type: simpleObject
-    - admin_ui: {order: 7, width: 200}
+    - admin_ui: {width: 200}
       name: signed_up
       type: datetime
     server: full
