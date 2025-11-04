@@ -219,6 +219,7 @@ db_schema:
       type: string
     server: full
     title: Supplier
+  table_3: {title: Table 3}
   users:
     client: none
     columns:
