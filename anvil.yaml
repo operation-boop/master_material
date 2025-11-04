@@ -1,46 +1,6 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
-  dict_overhead_cost:
-    client: none
-    columns:
-    - admin_ui: {width: 200}
-      name: cost_currency
-      target: null
-      type: link_single
-    - admin_ui: {width: 200}
-      name: total_overhead_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: import_logistics_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: export_logistics_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: vat_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: import_duty_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: material_testing_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: garmet_testing_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: sampling_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: moq_surcharge_cost
-      type: number
-    - admin_ui: {width: 200}
-      name: overhead_cost_items
-      target: null
-      type: link_multiple
-    server: full
-    title: dict_overhead_cost
   files:
     client: none
     columns:
@@ -84,6 +44,11 @@ db_schema:
       type: string
     server: full
     title: Master Material
+  material_weight_uom:
+    client: none
+    columns: []
+    server: full
+    title: Material_weight_uom
   table_3:
     client: none
     columns: []
