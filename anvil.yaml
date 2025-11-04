@@ -74,10 +74,6 @@ db_schema:
       target: users
       type: link_single
     - admin_ui: {width: 200}
-      name: ref_id
-      target: supplier
-      type: link_single
-    - admin_ui: {width: 200}
       name: master_material_id
       type: string
     - admin_ui: {width: 200}
@@ -105,18 +101,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: last_verified_by
       target: users
-      type: link_single
-    - admin_ui: {width: 200}
-      name: qr_id
-      target: qr_code
-      type: link_single
-    - admin_ui: {width: 200}
-      name: hanger_pdf_id
-      target: qr_code
-      type: link_single
-    - admin_ui: {width: 200}
-      name: picture_id
-      target: qr_code
       type: link_single
     - admin_ui: {width: 200}
       name: unit_of_measurement
@@ -191,6 +175,9 @@ db_schema:
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
+    - admin_ui: {width: 200}
+      name: hanger_pdf_id
+      type: unresolved
     server: full
     title: Master Material Verison
   material_type:
