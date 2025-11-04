@@ -1,0 +1,43 @@
+components:
+- layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+- components:
+  - event_bindings: {click: button_create_new_click}
+    layout_properties: {grid_position: 'SUYSQA,LFCEYE'}
+    name: button_create_new
+    properties: {text: create}
+    type: Button
+  - event_bindings: {click: button_create_version_click}
+    layout_properties: {grid_position: 'ZKIGOB,WKULTX'}
+    name: button_create_version
+    properties: {text: create new ver}
+    type: Button
+  - event_bindings: {click: button_get_versions_click}
+    layout_properties: {grid_position: 'JODGGG,CPCNCF'}
+    name: button_get_versions
+    properties: {text: get ver}
+    type: Button
+  - event_bindings: {click: button_get_latest_click}
+    layout_properties: {grid_position: 'BMXAVL,PQTUSH'}
+    name: button_get_latest
+    properties: {text: get latest}
+    type: Button
+  - event_bindings: {click: button_clear_click}
+    layout_properties: {grid_position: 'LVZKEG,AWUBPE'}
+    name: button_clear
+    properties: {text: clear}
+    type: Button
+  - layout_properties: {grid_position: 'YWBMIB,NJECJK'}
+    name: label_result
+    properties: {}
+    type: Label
+  layout_properties: {slot: default}
+  name: column_panel_1
+  properties: {}
+  type: ColumnPanel
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true

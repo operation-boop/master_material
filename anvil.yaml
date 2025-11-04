@@ -29,7 +29,7 @@ db_schema:
       name: submitted_by
       type: string
     server: full
-    title: Master Material
+    title: master_material
   master_material_verison:
     client: none
     columns:
@@ -37,7 +37,7 @@ db_schema:
       name: id
       type: string
     - admin_ui: {width: 200}
-      name: document_id
+      name: doc_id
       type: string
     - admin_ui: {width: 200}
       name: ver_num
@@ -178,7 +178,7 @@ db_schema:
       name: landed_cost_per_unit
       type: number
     server: full
-    title: Master Material Verison
+    title: master_material_verison
   material_type:
     client: none
     columns: []
@@ -264,5 +264,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: Master_Mat, type: form}
 startup_form: null
