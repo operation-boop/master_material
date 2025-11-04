@@ -1,7 +1,7 @@
 components:
-- layout_properties: {grid_position: 'CSIPVI,TRMYCV'}
+- layout_properties: {grid_position: 'RJORFX,VMUMIU'}
   name: headline_1
-  properties: {bold: true, role: headline, text: List of Styles}
+  properties: {bold: true, role: headline, text: List of Staff List}
   type: Label
 container: {type: ColumnPanel}
 is_package: true

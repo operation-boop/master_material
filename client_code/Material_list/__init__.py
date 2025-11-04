@@ -35,3 +35,7 @@ class Material_list(Material_listTemplate):
       open_form('Material_detail', item=selected)
     else:
       alert("Please select a material first.")
+
+  def add_btn_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    

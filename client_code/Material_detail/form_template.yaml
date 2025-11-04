@@ -5,10 +5,14 @@ components:
     name: back_btn
     properties: {align: left, bold: false, font_size: null, icon: 'fa:arrow-left', text: ''}
     type: Button
+  - layout_properties: {grid_position: 'EGNEUF,ABGBMK'}
+    name: edit_btn
+    properties: {align: right, icon: 'fa:edit', role: primary-color, text: Edit}
+    type: Button
   - components:
     - layout_properties: {grid_position: 'TFGGZS,DQNWAS'}
       name: headline_1
-      properties: {bold: true, role: headline, text: test randome stuff}
+      properties: {bold: true, role: headline, text: General Information}
       type: Label
     - components:
       - layout_properties: {grid_position: 'GPPCKP,SYDNLA'}
