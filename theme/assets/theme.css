@@ -1,17 +1,21 @@
 /**
- This CSS implements the Material Design look and feel for Anvil apps.
- 
-  thai 25/10:
-  - follow shadcn blue color theme https://ui.jln.dev/
-  - remove all shadows
-  - change card outline, border radius
-  - change button border radius
-  - change button raised
-  - change text, text area, date picker border radius, background color, outline, bottom line and focus same as hover; delete padding on hover; adjust drop down arrow icon
-  - app bar hamburger menu resting color and hover background
-  - app bar input text color
-  - app bar add roles top search box & add !important for placeholder text to override
- **/
+This CSS implements the Material Design look and feel for Anvil apps.
+
+thai 25/10:
+- follow shadcn blue color theme https://ui.jln.dev/
+- remove all shadows
+- change card outline, border radius
+- change button border radius
+- change button raised
+- change text, text area, date picker border radius, background color, outline, bottom line and focus same as hover; delete padding on hover; adjust drop down arrow icon
+- app bar hamburger menu resting color and hover background
+- app bar input text color
+- app bar add roles top search box & add !important for placeholder text to overridew
+
+thai 04/11:
+- change buttons styling
+- add card hover
+**/
 
 /* Stop panel-cols cutting off drop shadows */
 .anvil-panel-col {
@@ -44,10 +48,10 @@ a>.anvil-component-icon.right_edge-icon,
   padding-bottom: 8px;
 }
 .file-loader>label {
-    padding: 8px;
+  padding: 8px;
 }
 .checkbox label, .radio label {
-    padding-top: 8px; padding-right: 8px; padding-bottom: 8px;
+  padding-top: 8px; padding-right: 8px; padding-bottom: 8px;
 }
 .anvil-spacing-above-none { margin-top: 0px; }
 .anvil-spacing-above-small { margin-top: 4px; }
@@ -107,8 +111,9 @@ a>.anvil-component-icon.right_edge-icon,
 
 /* Typography */
 body {
-  font-family: Geist, Open-sans, Work-sans, Lexend, Manrope, Roboto, Noto, Arial, sans-serif;
-  font-size: 14px;
+  /* font-family: Geist, Open-sans, Work-sans, Lexend, Manrope, Roboto, Noto, Arial, sans-serif; */
+  font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif 
+    font-size: 14px;
   line-height: 1.4286;
   background-color: #fafafa;
 }
@@ -129,7 +134,7 @@ a:hover, a:active {
 }
 
 .anvil-label {
-/*  font-size: 16px;*/
+  /*  font-size: 16px;*/
 }
 
 .anvil-role-subheading {
@@ -208,7 +213,7 @@ a:hover, a:active {
 }
 
 /* Allow overflows to show drop shadows in ColumnPanels
-   This can create unwanted scrollbars; we compensate for this at the top level with .nav-holder .content {overflow-x: hidden;}
+This can create unwanted scrollbars; we compensate for this at the top level with .nav-holder .content {overflow-x: hidden;}
 */
 .anvil-container-overflow {
   overflow-x: visible;
@@ -248,12 +253,12 @@ a:hover, a:active {
     max-width: 360px;
     z-index: 3;
     border-right: none;
-  /* 16dp  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);*/
+    /* 16dp  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);*/
 
     display: none;
     transition: right 0.5s;
   }
-  
+
   html:not(.designer) .nav-holder .left-nav.shown {
     display: block;
   }
@@ -267,7 +272,7 @@ a:hover, a:active {
     z-index: 2;
     background-color: rgba(0,0,0,0.2);
   }
- }
+}
 
 .nav-holder .left-nav, .left-nav-placeholder {
   display: flex;
@@ -343,7 +348,7 @@ a:hover, a:active {
 }
 
 /* Sidebar links (and labels with edge icons) go +16px wider
-   (Top-level columns in ColumnPanels get overflow-x visible [see above]to enable this)
+(Top-level columns in ColumnPanels get overflow-x visible [see above]to enable this)
 */
 
 .left-nav a, .left-nav .anvil-label.left_edge-icon, .left-nav .anvil-label.right_edge-icon {
@@ -389,7 +394,7 @@ a:hover, a:active {
   font-weight: 500;
   color: black;
   background-color: %color:Primary 500%;
-  
+
   z-index: 1;
   /* 4dp box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);  */ 
 
@@ -488,7 +493,7 @@ a:hover, a:active {
 .modal-content, body>div[data-notify="container"] {
   border-radius: 2px;
   /* 24dp  box-shadow: 0 9px 46px 8px rgba(0, 0, 0, 0.14), 0 11px 15px -7px rgba(0, 0, 0, 0.12), 0 24px 38px 3px rgba(0, 0, 0, 0.2)*/
-    !important;
+  !important;
 }
 
 .modal-header {
@@ -581,7 +586,7 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
   text-shadow: none;
   box-shadow: none;
   -webkit-box-shadow: none;
-  
+
   position: relative;
 }
 
@@ -610,13 +615,21 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
   background-color: rgba(0,0,0,0.12) !important;
   color: rgba(0,0,0,0.25) !important;
   box-shadow: none !important;
+  font-weight: bold;
 }
 
-.anvil-role-raised > .btn, .anvil-role-primary-color > .btn, .anvil-role-secondary-color > .btn, .anvil-role-raised.file-loader>label, .anvil-role-primary-color.file-loader>label, .anvil-role-secondary-color.file-loader>label,
+.anvil-role-primary-color > .btn, .anvil-role-secondary-color > .btn, .anvil-role-primary-color.file-loader>label, .anvil-role-secondary-color.file-loader>label,
 .btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger
 {
   /* 2dp   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);*/
   outline: 1px solid #E2E8F0;
+}
+
+.anvil-role-raised > .btn, .anvil-role-raised.file-loader>label
+{
+  /* 2dp   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);*/
+  outline: 1px solid %color:Primary 500%;
+font-weight: bold;
 }
 
 .anvil-role-raised > .btn:active, .anvil-role-primary-color > .btn:active, .anvil-role-secondary-color > .btn:active, .btn-primary:active,
@@ -626,12 +639,15 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
 }
 
 .anvil-role-primary-color > .btn, .btn-primary, .anvil-role-primary-color.file-loader>label {
-  color: white;
-  background-color: %color:Primary 500%;
+  color: %color:Primary 500%;
+  font-weight: bold;
+  background-color: transparent;
+  outline: 0;
 }
 
 .anvil-role-secondary-color > .btn, .anvil-role-secondary-color.file-loader>label {
-  color: white;
+  color: black;
+  font-weight: bold;
   background-color: %color:Secondary 500%;
 }
 
@@ -641,24 +657,43 @@ body>div[data-notify="container"].alert-warning>span[data-notify="title"]{
 
 .anvil-role-primary-color > .btn:hover, .anvil-role-primary-color > .btn:active, .anvil-role-primary-color > .btn:focus,
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus {
-  color: white;
-  background-color: %color:Primary 700%;
+  color: %color:Primary 500%;
+  background-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .anvil-role-secondary-color > .btn:hover, .anvil-role-secondary-color > .btn:active, .anvil-role-secondary-color > .btn:focus {
-  color: white;
+  color: black;
   background-color: %color:Secondary 700%;
+}
+
+.anvil-role-raised > .btn:hover, .anvil-role-raised > .btn:active, .anvil-role-raised > .btn:focus {
+  color: white;
+  background-color: %color:Primary 500%;
+  font-weight: bold;
 }
 
 /* Component: Card */
 
-.anvil-role-card {
+.anvil-role-card, .anvil-role-card-link {
   overflow: hidden;
   border-radius: 6px;
   background-color: white;
   padding: 8px 12px;
   outline: 1px solid #E2E8F0;
   /* 2dp   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);*/
+}
+
+.anvil-role-card-link:hover {
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: white;
+  padding: 8px 12px;
+  outline: 1px solid %color:Primary 500%;;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+/* 2dp   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);*/
 }
 
 /* full_width_row sections go full bleed */
@@ -716,13 +751,13 @@ textarea.anvil-component {
 }
 
 .anvil-dropdown select.form-control {
-  
+
   -webkit-appearance: none;
   -moz-appearance: none;
   padding: 8px 8px 8px 8px;
 
   /* ew ew ew - select elements are weird and don't obey line-height, so we just
-     set the height explicitly. Ugh. */
+  set the height explicitly. Ugh. */
   height: calc(1.5em + 13px); /* 8px + 4px padding + 1px border = 13px */
 }
 
@@ -731,14 +766,14 @@ textarea.anvil-component {
 }
 /* Select arrow styling */
 .anvil-dropdown form:before {
-    content: "\25BC";
-    position: absolute;
-    right: 2px;
-    font-size: 80%;
-    line-height: calc(1.8em + 8px);
-    color: #555;
-    pointer-events:none;
-    padding: 4px 4px;
+  content: "\25BC";
+  position: absolute;
+  right: 2px;
+  font-size: 80%;
+  line-height: calc(1.8em + 8px);
+  color: #555;
+  pointer-events:none;
+  padding: 4px 4px;
 }
 
 .anvil-component select, .anvil-datepicker input { margin-bottom: 4px; }
@@ -787,8 +822,8 @@ textarea.anvil-component:hover {
 
 textarea.anvil-component:focus {
   border: 2px solid %color:Primary 700%;
-  padding: 3px 7px;
-  box-shadow: none;
+padding: 3px 7px;
+box-shadow: none;
 }
 
 textarea.anvil-component[disabled] {
