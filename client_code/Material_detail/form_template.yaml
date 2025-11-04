@@ -1,6 +1,7 @@
 components:
 - components:
-  - layout_properties: {grid_position: 'EGNEUF,GGIKMF'}
+  - event_bindings: {click: back_btn_click}
+    layout_properties: {grid_position: 'EGNEUF,GGIKMF'}
     name: back_btn
     properties: {align: left, bold: false, font_size: null, icon: 'fa:arrow-left', text: ''}
     type: Button
@@ -34,8 +35,7 @@ components:
         name: label_3
         properties: {bold: true, text: Version Number}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''version_number'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'SWOAIP,JGMVQL'}
         name: version_number
         properties: {}
@@ -44,8 +44,7 @@ components:
         name: label_4
         properties: {bold: true, text: Change Description}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''change_description'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'JMZWRY,EIKBUX'}
         name: change_description
         properties: {}
@@ -99,8 +98,7 @@ components:
         name: label_10
         properties: {bold: true, text: Ref ID}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'VKITNG,SGLNFQ'}
         name: ref_id
         properties: {}
@@ -109,18 +107,16 @@ components:
         name: label_7
         properties: {bold: true, text: Master Material ID}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''master_material_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'PHEVCH,QMCOAL'}
         name: master_material_id
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'CRWMSW,IGOMDW'}
         name: label_12
-        properties: {text: Status}
+        properties: {bold: true, text: Status}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''status'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'SJHOPW,NBAOJF'}
         name: status
         properties: {}
@@ -129,8 +125,7 @@ components:
         name: label_11
         properties: {bold: true, text: Supplier}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''supplier'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'JQFODP,JYMABX'}
         name: supplier
         properties: {}
@@ -147,8 +142,7 @@ components:
         name: label_13
         properties: {bold: true, text: Country Of Origin}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''country_of_origin'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'KWZCUK,SCEABF'}
         name: country_of_origin
         properties: {}
@@ -157,8 +151,7 @@ components:
         name: label_16
         properties: {bold: true, text: Name}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''name'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'VATHPD,ZWAOMN'}
         name: name
         properties: {}
@@ -167,8 +160,7 @@ components:
         name: label_15
         properties: {bold: true, text: Material Type}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''material_type'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'MMYHEC,HTGWZQ'}
         name: material_type
         properties: {}
@@ -182,8 +174,7 @@ components:
         name: label_17
         properties: {bold: true, text: Last Verified Date}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''last_verified_date'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'ZQPYMJ,ENTPXW'}
         name: last_verified_date
         properties: {}
@@ -192,8 +183,7 @@ components:
         name: label_19
         properties: {bold: true, text: Last Verified By}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''last_verified_by'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'AVEMEM,MCMQFP'}
         name: last_verified_by
         properties: {}
@@ -202,8 +192,7 @@ components:
         name: label_18
         properties: {bold: true, text: QR ID}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''qr_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'ZIJDVV,CYESFH'}
         name: qr_id
         properties: {}
@@ -212,8 +201,7 @@ components:
         name: label_21
         properties: {bold: true, text: Hanger PDF ID}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''hanger_pdf_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'GBBMSD,SWVPJN'}
         name: hanger_pdf_id
         properties: {}
@@ -222,8 +210,7 @@ components:
         name: label_20
         properties: {bold: true, text: Picture ID}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''picture_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'UHMSYO,FVQIRO'}
         name: picture_id
         properties: {}
@@ -300,8 +287,8 @@ components:
         properties: {bold: true, text: Weight Per Unit}
         type: Label
       - layout_properties: {grid_position: 'NRPEUV,PWCHCO'}
-        name: label_27
-        properties: {text: weight_per_unit}
+        name: weight_per_unit
+        properties: {text: ''}
         type: Label
       - layout_properties: {grid_position: 'BXORQR,WPJXUB'}
         name: label_28
@@ -373,27 +360,28 @@ components:
         name: supplier_selling_tolerance
         properties: {}
         type: Label
-      - layout_properties: {grid_position: 'NISCFC,HNLJPW'}
-        name: label_37
-        properties: {bold: true, text: Refundable Tolerance}
-        type: Label
-      - layout_properties: {grid_position: 'PMEQFX,HIRSOB'}
-        name: refundable_tolerance
-        properties: {}
-        type: Label
-      - layout_properties: {grid_position: 'EDTQXP,DNCZSL'}
-        name: label_41
-        properties: {bold: true, text: Effective Cost Per Unit}
-        type: Label
-      - layout_properties: {grid_position: 'HXPPWX,JRNSFZ'}
-        name: effective_cost_per_unit
-        properties: {}
-        type: Label
       layout_properties: {grid_position: 'FTSYNL,BENSUR'}
       name: column_panel_7
       properties: {}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'FTSYNL,ZTOFCB'}
+    - components:
+      - layout_properties: {grid_position: 'NNDUHC,QXAWAF'}
+        name: label_37
+        properties: {bold: true, text: Refundable Tolerance}
+        type: Label
+      - layout_properties: {grid_position: 'SMAMGC,PMGAKS'}
+        name: refundable_tolerance
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'ZAGLGN,TOOBIA'}
+        name: label_41
+        properties: {bold: true, text: Effective Cost Per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'MDBDIJ,JXVPML'}
+        name: effective_cost_per_unit
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'FTSYNL,ZTOFCB'}
       name: column_panel_8
       properties: {}
       type: ColumnPanel

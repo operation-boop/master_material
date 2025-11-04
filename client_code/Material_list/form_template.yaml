@@ -11,8 +11,8 @@ components:
   name: data_grid_1
   properties:
     columns:
-    - {data_key: column_1, id: JKSDUP, title: ''}
-    - {data_key: column_2, id: VJQQOR, title: ID}
+    - {data_key: column_1, id: PKEEJH, title: ''}
+    - {data_key: column_2, expand: false, id: VJQQOR, title: ID, width: 87.5}
     - {data_key: column_3, id: OJLQEN, title: Document ID}
     - {data_key: column_4, id: KMEYVT, title: Current Version}
     - {data_key: column_5, id: MAOHBU, title: Version History}
@@ -21,5 +21,10 @@ components:
     - {data_key: column_8, id: DYZQWE, title: Submitted At}
     - {data_key: column_9, id: GAVEWF, title: Submitted By}
   type: DataGrid
+- event_bindings: {click: view_details_btn_click}
+  layout_properties: {grid_position: 'NCQGXT,BTJAUO'}
+  name: view_details_btn
+  properties: {align: right, role: primary-color, text: view details}
+  type: Button
 container: {type: ColumnPanel}
 is_package: true

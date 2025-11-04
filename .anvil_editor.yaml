@@ -25,4 +25,5 @@ unique_ids:
     utilities: '1761397671008465745965337.2923'
     utilities.auth: '1761473663834242815943270.11523'
   scripts: {}
-  server_modules: {}
+  server_modules:
+    material: '1762240770923235863181415.2722'
