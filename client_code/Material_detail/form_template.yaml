@@ -216,7 +216,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'SIKUMO,KFFWCA'}
       name: headline_2
-      properties: {bold: true, role: headline, text: test}
+      properties: {bold: true, role: headline, text: Technical Specifications}
       type: Label
     - components:
       - layout_properties: {grid_position: 'LKMEDE,WYCEOT'}
