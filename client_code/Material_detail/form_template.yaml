@@ -9,35 +9,336 @@ components:
       name: headline_1
       properties: {bold: true, role: headline, text: General Information}
       type: Label
-    - layout_properties: {grid_position: 'HSUQUE,OAWZBM'}
-      name: label_1
-      properties: {bold: true, text: ID}
-      type: Label
-    - layout_properties: {grid_position: 'ATKVSD,GQCMSD'}
-      name: id
+    - components:
+      - layout_properties: {grid_position: 'GPPCKP,SYDNLA'}
+        name: label_1
+        properties: {bold: true, text: ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UMNTYA,BLBYWM'}
+        name: id
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'IDOJNN,HWTEZZ'}
+        name: label_2
+        properties: {bold: true, text: Document ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''document_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'LEKGFC,OBXKFL'}
+        name: document_id
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'HWMWNE,EQYDZJ'}
+        name: label_3
+        properties: {bold: true, text: Version Number}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''version_number'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'SWOAIP,JGMVQL'}
+        name: version_number
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'HXUBAO,NUCLIM'}
+        name: label_4
+        properties: {bold: true, text: Change Description}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''change_description'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'JMZWRY,EIKBUX'}
+        name: change_description
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'UPZQHR,RXHFZG'}
+        name: label_6
+        properties: {bold: true, text: Created At}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''created_at'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'KPUHER,HNSMGP'}
+        name: created_at
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'FZPFGH,CFUJBV'}
+        name: label_8
+        properties: {bold: true, text: Created By}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''created_by'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'PGOMGP,KCWMDK'}
+        name: created_by
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'WTSUEU,WHRAMX'}
+        name: label_9
+        properties: {bold: true, text: Submitted At}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''submitted_at'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'THOTRB,XRNHMY'}
+        name: submitted_at
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'LAXUYD,TDUZNG'}
+        name: label_5
+        properties: {bold: true, text: Submitted By}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''submitted_by'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MUSZNR,ZSPUNC'}
+        name: submitted_by
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'HSUQUE,OAWZBM'}
+      name: column_panel_2
       properties: {}
-      type: Label
-    - layout_properties: {grid_position: 'YINIWZ,PNZVTZ'}
-      name: label_2
-      properties: {bold: true, text: Document ID}
-      type: Label
-    - layout_properties: {grid_position: 'PUMJGG,TNTEMF ONEBAZ,RCVOGE'}
-      name: document_id
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'ARLMWA,BWADGG'}
+        name: label_10
+        properties: {bold: true, text: Ref ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'VKITNG,SGLNFQ'}
+        name: ref_id
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'KZSOOV,NPSWAV'}
+        name: label_7
+        properties: {bold: true, text: Master Material ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''master_material_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'PHEVCH,QMCOAL'}
+        name: master_material_id
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'CRWMSW,IGOMDW'}
+        name: label_12
+        properties: {text: Status}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''status'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'SJHOPW,NBAOJF'}
+        name: status
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'JCKSWF,NYFPQY'}
+        name: label_11
+        properties: {bold: true, text: Supplier}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''supplier'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'JQFODP,JYMABX'}
+        name: supplier
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'IFSDXA,RCXFKU'}
+        name: label_14
+        properties: {bold: true, text: Supplier Name}
+        type: Label
+      - layout_properties: {grid_position: 'UBXDLU,DMRVXZ'}
+        name: supplier_name
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'SPQQMP,USGNYR'}
+        name: label_13
+        properties: {bold: true, text: Country Of Origin}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''country_of_origin'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'KWZCUK,SCEABF'}
+        name: country_of_origin
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'APRTYG,TCCUHB'}
+        name: label_16
+        properties: {bold: true, text: Name}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''name'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'VATHPD,ZWAOMN'}
+        name: name
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'SFHVNC,HZVEAT'}
+        name: label_15
+        properties: {bold: true, text: Material Type}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''material_type'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MMYHEC,HTGWZQ'}
+        name: material_type
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'HSUQUE,BASCSO'}
+      name: column_panel_3
       properties: {}
-      type: Label
-    - layout_properties: {grid_position: 'PUMJGG,TNTEMF DAMZSU,INLPGY'}
-      name: label_3
-      properties: {bold: true, text: Version Number}
-      type: Label
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'NSUVMV,KBNHIL'}
+        name: label_17
+        properties: {bold: true, text: Last Verified Date}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''last_verified_date'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'ZQPYMJ,ENTPXW'}
+        name: last_verified_date
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'SDJTUV,WMQWCO'}
+        name: label_19
+        properties: {bold: true, text: Last Verified By}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''last_verified_by'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'AVEMEM,MCMQFP'}
+        name: last_verified_by
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'PZITOI,QUZKVU'}
+        name: label_18
+        properties: {bold: true, text: QR ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''qr_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'ZIJDVV,CYESFH'}
+        name: qr_id
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'ZFUZTU,ZFUDFG'}
+        name: label_21
+        properties: {bold: true, text: Hanger PDF ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''hanger_pdf_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'GBBMSD,SWVPJN'}
+        name: hanger_pdf_id
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'RDSSWU,QOHDHP'}
+        name: label_20
+        properties: {bold: true, text: Picture ID}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''picture_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UHMSYO,FVQIRO'}
+        name: picture_id
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'HSUQUE,GAZZBH'}
+      name: column_panel_4
+      properties: {}
+      type: ColumnPanel
     layout_properties: {grid_position: 'SCTLPW,ZZLCGX'}
     name: material_overview_section
-    properties: {col_widths: '{"TNTEMF":10}', role: card}
+    properties: {col_widths: '{}', role: card}
     type: ColumnPanel
   - components:
     - layout_properties: {grid_position: 'SIKUMO,KFFWCA'}
       name: headline_2
       properties: {bold: true, role: headline, text: Technical Specifications}
       type: Label
+    - components:
+      - layout_properties: {grid_position: 'LKMEDE,WYCEOT'}
+        name: label_22
+        properties: {bold: true, text: Unit of Measurement}
+        type: Label
+      - layout_properties: {grid_position: 'OTREWE,SJACRE'}
+        name: unit_of_measurement
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'JJHATD,YALYLK'}
+        name: label_24
+        properties: {bold: true, text: Fabric Composition}
+        type: Label
+      - layout_properties: {grid_position: 'QJUKCN,QYWGRX'}
+        name: fabric_composition
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'PNOFZF,BXJSFA'}
+        name: label_30
+        properties: {bold: true, text: Generic Material Composition}
+        type: Label
+      - layout_properties: {grid_position: 'SONUJB,XEEWSV'}
+        name: generic_material_composition
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'VYUDYW,LHPCVR'}
+        name: label_32
+        properties: {bold: true, text: Fabric Roll Width}
+        type: Label
+      - layout_properties: {grid_position: 'UVLKHW,NWUJFC'}
+        name: fabric_roll_width
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'GKIUIF,WOHLRW'}
+        name: label_34
+        properties: {bold: true, text: Fabric Cut Width}
+        type: Label
+      - layout_properties: {grid_position: 'LXJXFT,YNLXLS'}
+        name: fabric_cut_width
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'BPCGUM,XKUVMN'}
+        name: label_36
+        properties: {bold: true, text: Fabric Cut Width With No Shrinkage}
+        type: Label
+      - layout_properties: {grid_position: 'UWSLBB,ZCYTNA'}
+        name: fabric_cut_width_with_no_shrinkage
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'RLFNMO,SAEVOK'}
+      name: column_panel_5
+      properties: {}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'EZGXDW,NOKBBH'}
+        name: label_26
+        properties: {bold: true, text: Weight Per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'NRPEUV,PWCHCO'}
+        name: label_27
+        properties: {text: weight_per_unit}
+        type: Label
+      - layout_properties: {grid_position: 'BXORQR,WPJXUB'}
+        name: label_28
+        properties: {bold: true, text: Weight UOM}
+        type: Label
+      - layout_properties: {grid_position: 'GYFXND,DJZGHC'}
+        name: weight_uom
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'VTEZVW,GYKVZT'}
+        name: label_38
+        properties: {bold: true, text: Generic Material Size}
+        type: Label
+      - layout_properties: {grid_position: 'FZKPNS,DZBNSZ'}
+        name: generic_material_size
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'ZCUFIS,FGSIEV'}
+        name: label_40
+        properties: {bold: true, text: Weft Shrinkage}
+        type: Label
+      - layout_properties: {grid_position: 'HVTBPH,RKMUEB'}
+        name: weft_shrinkage
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'YNWQZI,BRLUYO'}
+        name: label_42
+        properties: {bold: true, text: Werp Shrinkage}
+        type: Label
+      - layout_properties: {grid_position: 'FDVGXR,YARKNR'}
+        name: werp_shrinkage
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'RLFNMO,OLOEBJ'}
+      name: column_panel_6
+      properties: {}
+      type: ColumnPanel
     layout_properties: {grid_position: 'INKDKD,XUUTGV'}
     name: tech_specs_section
     properties: {role: card}
@@ -47,6 +348,55 @@ components:
       name: headline_3
       properties: {bold: true, role: headline, text: Standard Cost Breakdown}
       type: Label
+    - components:
+      - layout_properties: {grid_position: 'ORWJWO,SVEATR'}
+        name: label_23
+        properties: {bold: true, text: Original Cost Per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'WXYSGM,GSPLTQ'}
+        name: original_cost_per_unit
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'LBZROH,ZMAVOF'}
+        name: label_29
+        properties: {bold: true, text: Native Cost Currency}
+        type: Label
+      - layout_properties: {grid_position: 'XIVVOL,EUTRFD'}
+        name: native_cost_currency
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'RRDBTR,QRPSJD'}
+        name: label_33
+        properties: {bold: true, text: Supplier Selling Tolerance}
+        type: Label
+      - layout_properties: {grid_position: 'LKJBXQ,VZOLEH'}
+        name: supplier_selling_tolerance
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'NISCFC,HNLJPW'}
+        name: label_37
+        properties: {bold: true, text: Refundable Tolerance}
+        type: Label
+      - layout_properties: {grid_position: 'PMEQFX,HIRSOB'}
+        name: refundable_tolerance
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'EDTQXP,DNCZSL'}
+        name: label_41
+        properties: {bold: true, text: Effective Cost Per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'HXPPWX,JRNSFZ'}
+        name: effective_cost_per_unit
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'FTSYNL,BENSUR'}
+      name: column_panel_7
+      properties: {}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'FTSYNL,ZTOFCB'}
+      name: column_panel_8
+      properties: {}
+      type: ColumnPanel
     layout_properties: {grid_position: 'OBJLQL,KJWVEL'}
     name: standard_cost_section
     properties: {role: card}
@@ -56,6 +406,80 @@ components:
       name: headline_4
       properties: {bold: true, role: headline, text: Advanced Cost Breakdown}
       type: Label
+    - components:
+      - layout_properties: {grid_position: 'JEVFNV,YFTRGL'}
+        name: label_25
+        properties: {bold: true, text: Vietnam Vat Rate}
+        type: Label
+      - layout_properties: {grid_position: 'UVPXQM,GAPBXQ'}
+        name: vietnam_vat_rate
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'EKTRRV,OIRDUX'}
+        name: label_35
+        properties: {bold: true, text: Refundable Vat}
+        type: Label
+      - layout_properties: {grid_position: 'UCWLZR,UANOOP'}
+        name: refundable_vat
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'SQPFFZ,TRRKMZ'}
+        name: label_43
+        properties: {bold: true, text: Import Duty}
+        type: Label
+      - layout_properties: {grid_position: 'JXVFMU,LGJJEH'}
+        name: import_duty
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'HWKPPQ,NMMQZQ'}
+        name: label_45
+        properties: {bold: true, text: Refundable Import Duty}
+        type: Label
+      - layout_properties: {grid_position: 'ZAGIUY,FDOFDM'}
+        name: refundable_import_duty
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'OLEFAE,UWUEPT'}
+      name: column_panel_9
+      properties: {}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'QYJYJV,LTOOUP'}
+        name: label_47
+        properties: {bold: true, text: Shipping Term}
+        type: Label
+      - layout_properties: {grid_position: 'TWWGFY,NHXTEZ'}
+        name: shipping_term
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'DGJVDB,FRRMSI'}
+        name: label_49
+        properties: {bold: true, text: Logistics Rate}
+        type: Label
+      - layout_properties: {grid_position: 'PKRNAJ,GBKFBM'}
+        name: logistics_rate
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'NXRCHF,GJSNAJ'}
+        name: label_51
+        properties: {bold: true, text: Logistics Fee Per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'QDDLNY,BERHGX'}
+        name: logistics_fee_per_unit
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'XQJLAB,EIERDJ'}
+        name: label_53
+        properties: {bold: true, text: Landed Cost Per Unit}
+        type: Label
+      - layout_properties: {grid_position: 'DVBOWI,VRGMOJ'}
+        name: landed_cost_per_unit
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'OLEFAE,ENVBPJ'}
+      name: column_panel_10
+      properties: {}
+      type: ColumnPanel
     layout_properties: {grid_position: 'HLRVYO,DVKTLT'}
     name: advanced_cost_section
     properties: {role: card}
