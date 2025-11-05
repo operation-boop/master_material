@@ -1,4 +1,4 @@
-from ._anvil_designer import Bom_pageTemplate
+from ._anvil_designer import b_Bom_pageTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -9,7 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class Bom_page(Bom_pageTemplate):
+class b_Bom_page(b_Bom_pageTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)

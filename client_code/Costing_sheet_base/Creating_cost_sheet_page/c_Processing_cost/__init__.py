@@ -1,4 +1,4 @@
-from ._anvil_designer import Basic_information_pageTemplate
+from ._anvil_designer import c_Processing_costTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -9,7 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class Basic_information_page(Basic_information_pageTemplate):
+class c_Processing_cost(c_Processing_costTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)

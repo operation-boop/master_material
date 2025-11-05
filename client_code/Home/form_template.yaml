@@ -1,6 +1,6 @@
 components:
 - components:
-  - layout_properties: {grid_position: 'CHVSOL,MXTKQK'}
+  - layout_properties: {grid_position: 'CHVSOL,MXTKQK JSLTVE,MVQRIE'}
     name: link_1
     properties: {}
     type: Link
@@ -172,11 +172,11 @@ components:
     properties: {bold: true, text: Costing Sheet}
     type: Label
   - data_bindings:
-    - {code: '"opportunity"', property: tag, writeback: false}
+    - {code: '"costing_sheet"', property: tag, writeback: false}
     event_bindings: {click: link_nav_click}
     layout_properties: {grid_position: 'BVFZPG,FGVYEZ'}
     name: link_costing_sheet
-    properties: {icon: '', text: '|      Costing Sheet'}
+    properties: {icon: '', role: null, text: '|      Costing Sheet'}
     type: Link
   - data_bindings:
     - {code: '"opportunity_group"', property: tag, writeback: false}
@@ -191,7 +191,7 @@ components:
       event_bindings: {click: link_nav_click}
       layout_properties: {grid_position: 'DHMZJU,ZNYVHX'}
       name: link_opportunity
-      properties: {icon: '', text: '|      Opportunity'}
+      properties: {icon: '', text: '|      Opportunity', visible: true}
       type: Link
     - data_bindings:
       - {code: '"deal"', property: tag, writeback: false}

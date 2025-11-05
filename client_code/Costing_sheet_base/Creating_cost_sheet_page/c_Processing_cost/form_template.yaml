@@ -168,19 +168,19 @@ components:
     type: Label
   - layout_properties: {grid_position: 'QRTGMZ,QNMXOP'}
     name: label_14
-    properties: {}
+    properties: {text: More Information}
     type: Label
   - layout_properties: {grid_position: 'QRTGMZ,KCCQIX'}
     name: label_15
-    properties: {}
+    properties: {text: No.}
     type: Label
   - layout_properties: {grid_position: 'ZTYLVB,XIDJJD'}
     name: label_16
-    properties: {}
+    properties: {text: More information}
     type: Label
   - layout_properties: {grid_position: 'ZTYLVB,HBRTEV'}
     name: label_17
-    properties: {}
+    properties: {text: No.}
     type: Label
   layout_properties: {grid_position: ''}
   name: column_panel_6

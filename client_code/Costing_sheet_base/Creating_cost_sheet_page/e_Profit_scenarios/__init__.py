@@ -1,4 +1,4 @@
-from ._anvil_designer import Overhead_costTemplate
+from ._anvil_designer import e_Profit_scenariosTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -9,7 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class Overhead_cost(Overhead_costTemplate):
+class e_Profit_scenarios(e_Profit_scenariosTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
