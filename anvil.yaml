@@ -8,6 +8,23 @@ db_schema:
       name: document_id
       type: string
     - admin_ui: {width: 200}
+      name: current_version_number
+      type: number
+    - admin_ui: {width: 200}
+      name: current_version
+      target: master_material_version
+      type: link_single
+    - admin_ui: {width: 200}
+      name: current_version_uid
+      type: string
+    - admin_ui: {width: 200}
+      name: version_history
+      target: master_material_version
+      type: link_multiple
+    - admin_ui: {width: 200}
+      name: version_history_uid
+      type: string
+    - admin_ui: {width: 200}
       name: created_at
       type: datetime
     - admin_ui: {width: 200}
@@ -19,35 +36,25 @@ db_schema:
     - admin_ui: {width: 200}
       name: submitted_by
       type: string
-    - admin_ui: {order: 0.4375, width: 200}
-      name: current_version_number
-      type: number
-    - admin_ui: {order: 1.1875, width: 200}
-      name: current_version_uid
-      type: string
-    - admin_ui: {order: 1.328125, width: 200}
-      name: version_history
-      target: master_material_version
-      type: link_multiple
-    - admin_ui: {order: 1.46875, width: 200}
-      name: version_history_uid
-      type: string
-    - admin_ui: {order: 0.8125, width: 200}
-      name: current_version
-      target: master_material_version
-      type: link_single
     server: full
     title: master_material
   master_material_version:
     client: none
     columns:
-    - admin_ui: {order: -5, width: 200}
+    - admin_ui: {width: 200}
       name: document_id
       type: string
-    - admin_ui: {order: -4, width: 200}
+    - admin_ui: {width: 200}
       name: ver_num
       type: number
-    - admin_ui: {order: -3, width: 200}
+    - admin_ui: {width: 200}
+      name: document_uid
+      type: string
+    - admin_ui: {width: 200}
+      name: document
+      target: master_material
+      type: link_single
+    - admin_ui: {width: 200}
       name: change_description
       type: string
     - admin_ui: {width: 200}
@@ -55,24 +62,24 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
-      type: link_single
+      type: string
+    - admin_ui: {width: 200}
+      name: ref_id
+      type: string
+    - admin_ui: {width: 200}
+      name: submitted_by
+      type: string
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
-      name: submitted_by
-      target: users
-      type: link_single
+      name: status
+      type: string
     - admin_ui: {width: 200}
-      name: ref_id
-      target: supplier
-      type: link_single
+      name: material_type
+      type: string
     - admin_ui: {width: 200}
       name: master_material_id
-      type: string
-    - admin_ui: {order: 4.5, width: 200}
-      name: status
       type: string
     - admin_ui: {width: 200}
       name: supplier
@@ -86,10 +93,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: name
       type: string
-    - admin_ui: {order: 12, width: 200}
-      name: material_type
-      target: material_type
-      type: link_single
     - admin_ui: {width: 200}
       name: last_verified_date
       type: datetime
@@ -102,13 +105,11 @@ db_schema:
       target: qr_code
       type: link_single
     - admin_ui: {width: 200}
-      name: hanger_pdf_id
-      target: qr_code
-      type: link_single
-    - admin_ui: {width: 200}
       name: picture_id
-      target: qr_code
-      type: link_single
+      type: string
+    - admin_ui: {width: 200}
+      name: hanger_pdf_id
+      type: string
     - admin_ui: {width: 200}
       name: unit_of_measurement
       type: string
@@ -132,8 +133,7 @@ db_schema:
       type: number
     - admin_ui: {width: 200}
       name: weight_uom
-      target: material_weight_uom
-      type: link_single
+      type: string
     - admin_ui: {width: 200}
       name: generic_material_size
       type: string
@@ -153,7 +153,7 @@ db_schema:
       name: supplier_selling_tolerance
       type: number
     - admin_ui: {width: 200}
-      name: 'refundable_tolerance:'
+      name: refundable_tolerance
       type: bool
     - admin_ui: {width: 200}
       name: effective_cost_per_unit
@@ -176,19 +176,12 @@ db_schema:
     - admin_ui: {width: 200}
       name: logistics_rate
       type: number
-    - admin_ui: {order: 40, width: 200}
+    - admin_ui: {width: 200}
       name: logistics_fee_per_unit
       type: number
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
-    - admin_ui: {order: -3.25, width: 200}
-      name: document
-      target: master_material
-      type: link_single
-    - admin_ui: {order: -3.5, width: 200}
-      name: document_uid
-      type: string
     server: full
     title: master_material_version
   material_type:

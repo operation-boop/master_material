@@ -69,13 +69,13 @@ class Material_input_form(Material_input_formTemplate):
       Notification(f"You can only add up to {remaining}% more.").show()
       self.percentage.text = str(remaining) if remaining > 0 else ""
       return
-
+    
     self.composition_list.append({
       "material": selected_material,
       "percentage": percentage,
       "form": self
     })
-
+    
     self.fabric_composition_repeating_panel.items = self.composition_list
     self.material_dropdown.selected_value = None
     self.percentage.text = ""
@@ -124,35 +124,35 @@ class Material_input_form(Material_input_formTemplate):
       self.landed_cost.text = str(landed_cost)
     except (ValueError, TypeError):
       Notification("Please enter valid numbers").show()
-
+  
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
-
+  
     form_data = self.collect_form_data()
-
+  
     try:
       anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Draft saved!", style="success", timeout=3).show()
     except Exception as e:
       Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
-
+  
   def submit_btn_click(self, **event_args):
     """Collect all form data and submit"""
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
-
+  
     form_data = self.collect_form_data()
-
+  
     try:
       anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
     except Exception as e:
-      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
-
+      Notification(f"Error: {str(e)}", style="danger", timeout=5).show()
+  
   def collect_form_data(self):
     """Collect all form fields into a dictionary"""
     # Handle supplier data properly
@@ -169,37 +169,34 @@ class Material_input_form(Material_input_formTemplate):
           vat_value = None
     
     return {
-      
-      "name": self.name_textbox.text if hasattr(self, 'name_textbox') else None,
+      # Basic Info
+      "name": self.material_name.text if hasattr(self, 'material_name') else None,
       "material_type": self.material_type_dropdown.selected_value,
       "country_of_origin": self.country_of_origin_dropdown.selected_value,
       "supplier": supplier_value,  # FIXED: Now sets 'supplier' field
       "supplier_name": supplier_value,  # Keep this too for compatibility
-  
-      # Measurements - FIXED: Match database column names
+
       "unit_of_measurement": self.UOM_dropdown.selected_value,
-      "fabric roll width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
+      "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
       "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
       "fabric_cut_width_no_shrinkage": self.parse_float(self.fabric_cut_width_no_shrinkage.text) if hasattr(self, 'fabric_cut_width_no_shrinkage') else None,
-  
-      # Weight
       "weight_per_unit": self.parse_float(self.weight_per_unit.text) if hasattr(self, 'weight_per_unit') else None,
       "weight_uom": self.weight_uom_dropdown.selected_value,
-  
-      # Shrinkage
       "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
       "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
-  
-      
+      "generic_material_size": self.parse_float(self.material_size.text) if hasattr(self,'generic_material_size') else None,
       "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
   
       # Costs
       "original_cost_per_unit": self.parse_float(self.original_cost_per_unit.text) if hasattr(self, 'original_cost_per_unit') else None,
       "native_cost_currency": self.currency_dropdown.selected_value,
       "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
+      "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
       "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
       "vietnam_vat_rate": vat_value,  # FIXED: Safe VAT parsing
+      "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
       "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
+      "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,
       "shipping_term": self.shipping_term_dropdown.selected_value,
       "logistics_rate": self.parse_float(self.logistics_rate.text) if hasattr(self, 'logistics_rate') else None,
       "logistics_fee_per_unit": self.parse_float(self.logistics_fee_per_unit.text) if hasattr(self, 'logistics_fee_per_unit') else None,
@@ -212,6 +209,7 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
+
 
 
 

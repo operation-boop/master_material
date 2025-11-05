@@ -20,7 +20,8 @@ components:
         name: rich_text_1
         properties: {content: 'Material Name <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'UYHKGF,LMUWOY'}
+      - event_bindings: {}
+        layout_properties: {grid_position: 'UYHKGF,LMUWOY'}
         name: material_name
         properties: {}
         type: TextBox
@@ -146,7 +147,7 @@ components:
         name: label_17
         properties: {bold: false, text: Material Size/Spec}
         type: Label
-      - layout_properties: {grid_position: 'YMRRUJ,CDTUWJ'}
+      - layout_properties: {grid_position: 'JZOTKD,WOFEFL'}
         name: material_size
         properties: {placeholder: e.g. 20L for buttons}
         type: TextBox
@@ -243,9 +244,10 @@ components:
         name: supplier_tolerance
         properties: {type: number}
         type: TextBox
-      - layout_properties: {grid_position: 'IIOGXX,LYDSEP'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'IIOGXX,LYDSEP'}
         name: refundable_tolerance
-        properties: {align: center, text: ''}
+        properties: {align: center, checked: false, text: ''}
         type: CheckBox
       - layout_properties: {grid_position: 'IIOGXX,EXTOND'}
         name: label_23

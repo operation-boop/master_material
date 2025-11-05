@@ -9,7 +9,7 @@ import anvil.tables.query as q
 # ============================================
 DOC_PREFIX = "vin_mmat_"
 VALID_STATUSES = {
-  "Creating": ["Draft"],
+  "Creating": ["Draft", "Submitted"],
   "Draft": ["Creating", "Draft", "Submitted"],
   "Submitted": ["Creating"]
 }
