@@ -1,0 +1,120 @@
+components:
+- components:
+  - layout_properties: {grid_position: 'HPUMGZ,TOVQGP'}
+    name: headline_1
+    properties: {role: headline, text: Costing Sheet Overview}
+    type: Label
+  - layout_properties: {grid_position: 'JQKUDD,UCYIEG'}
+    name: label_1
+    properties: {text: cost sheets}
+    type: Label
+  - layout_properties: {grid_position: 'JQKUDD,BOZSXJ'}
+    name: button_1
+    properties: {text: Create new sheet}
+    type: Button
+  - layout_properties: {grid_position: 'LUNKUE,TZSPCL'}
+    name: spacer_2
+    properties: {height: 32}
+    type: Spacer
+  - layout_properties: {grid_position: 'NHXSMW,FCAHDB'}
+    name: label_4
+    properties: {align: center, text: 'Total Sheets: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NHXSMW,LQUVKI'}
+    name: label_4_copy
+    properties: {align: center, text: 'Under Review: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NHXSMW,CACOPC'}
+    name: label_4_copy_2
+    properties: {align: center, text: 'Approved: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NHXSMW,KAFVBF'}
+    name: label_4_copy_3
+    properties: {align: center, text: 'Draft/ Rejected: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NIFLXW,OOZLZL'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {}
+      name: text_box_1
+      properties: {text: Search Feature}
+      type: TextBox
+    - layout_properties: {width: 266}
+      name: spacer_3
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {}
+      name: drop_down_1
+      properties: {}
+      type: DropDown
+    - layout_properties: {}
+      name: drop_down_2
+      properties: {}
+      type: DropDown
+    - layout_properties: {}
+      name: drop_down_3
+      properties: {}
+      type: DropDown
+    - layout_properties: {}
+      name: button_2
+      properties: {text: Filter}
+      type: Button
+    layout_properties: {grid_position: 'NRJHFG,ASABXT'}
+    name: flow_panel_1
+    properties: {}
+    type: FlowPanel
+  - components: []
+    layout_properties: {grid_position: 'IIYUMR,RPZFHH'}
+    name: data_grid_1
+    properties:
+      columns:
+      - {data_key: column_1, expand: false, id: JKSDUP, title: Doc. ID, width: 66}
+      - {data_key: column_2, expand: false, id: VJQQOR, title: Style Name, width: 78}
+      - {data_key: column_3, expand: false, id: OJLQEN, title: Client, width: 77}
+      - {data_key: column_4, id: MNRRVY, title: Version}
+      - {data_key: column_1, expand: false, id: TPGBSU, title: Status, width: 78}
+      - {data_key: column_1, expand: false, id: KKOHDE, title: Native currency, width: 83}
+      - {data_key: column_2, id: XVQTWA, title: 'Total cost:'}
+      - {data_key: column_3, id: NJEQOY, title: Created Date}
+      - {data_key: column_4, id: DHEVXO, title: Created By}
+    type: DataGrid
+  - components:
+    - name: repeating_panel_1
+      properties: {item_template: Costing_sheet_base.RowTemplate1}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'CHXLSO,EHPNYU'}
+    name: data_grid_2
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: Doc. ID}
+      - {data_key: column_2, id: VJQQOR, title: Style Name}
+      - {data_key: column_3, id: OJLQEN, title: Client}
+      - {data_key: column_4, id: FMSBBK, title: Version}
+      - {data_key: column_5, id: WELSFV, title: Status}
+      - {data_key: column_6, id: QPCLTQ, title: Native Currency}
+      - {data_key: column_7, id: BOBMZH, title: 'Total cost:'}
+      - {data_key: column_8, id: OTGCHP, title: Created date}
+      - {data_key: column_9, id: GTYVLP, title: Created By}
+    type: DataGrid
+  - layout_properties: {grid_position: 'FGTLRA,YMMLGR'}
+    name: button_3
+    properties: {text: View}
+    type: Button
+  - layout_properties: {grid_position: 'FGTLRA,NHWEBD'}
+    name: button_4
+    properties: {text: Edit}
+    type: Button
+  - layout_properties: {grid_position: 'FGTLRA,XEFMVX'}
+    name: button_5
+    properties: {text: Delete}
+    type: Button
+  layout_properties: {grid_position: 'TECQQW,XPGQFK'}
+  name: card_1
+  properties: {col_widths: '{"RPZFHH":55,"FZZXLF":5}', role: card}
+  type: ColumnPanel
+container:
+  properties: {col_widths: '{"XPGQFK":60}'}
+  type: ColumnPanel
+is_package: true

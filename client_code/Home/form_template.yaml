@@ -172,6 +172,13 @@ components:
     properties: {bold: true, text: Costing Sheet}
     type: Label
   - data_bindings:
+    - {code: '"opportunity"', property: tag, writeback: false}
+    event_bindings: {click: link_nav_click}
+    layout_properties: {grid_position: 'BVFZPG,FGVYEZ'}
+    name: link_costing_sheet
+    properties: {icon: '', text: '|      Costing Sheet'}
+    type: Link
+  - data_bindings:
     - {code: '"opportunity_group"', property: tag, writeback: false}
     event_bindings: {click: link_nav_click}
     layout_properties: {grid_position: 'ZNJNVH,IWMOPH'}
