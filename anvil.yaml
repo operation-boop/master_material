@@ -29,7 +29,7 @@ db_schema:
       name: submitted_by
       type: string
     server: full
-    title: Master Material
+    title: master_material
   master_material_verison:
     client: none
     columns:
@@ -84,15 +84,6 @@ db_schema:
       name: last_verified_by
       target: users
       type: link_single
-    - admin_ui: {width: 200}
-      name: qr_id
-      type: unresolved
-    - admin_ui: {width: 200}
-      name: hanger_pdf_id
-      type: unresolved
-    - admin_ui: {width: 200}
-      name: picture_id
-      type: unresolved
     - admin_ui: {width: 200}
       name: unit_of_measurement
       type: string
@@ -170,11 +161,24 @@ db_schema:
       name: weight_uom
       target: material_weight_uom
       type: link_single
-    - admin_ui: {order: 8, width: 200}
+    - admin_ui: {width: 200}
+      name: hanger_pdf_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {width: 200}
+      name: picture_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {width: 200}
+      name: qr_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {width: 200}
       name: ref_id
-      type: string
+      target: supplier
+      type: link_single
     server: full
-    title: Master Material Verison
+    title: master_material_verison
   material_type:
     client: none
     columns: []
@@ -201,11 +205,6 @@ db_schema:
       type: string
     server: full
     title: Supplier
-  table_3:
-    client: none
-    columns: []
-    server: full
-    title: Table 3
   users:
     client: none
     columns:
