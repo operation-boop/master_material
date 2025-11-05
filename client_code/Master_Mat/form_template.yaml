@@ -4,35 +4,35 @@ components:
   properties: {}
   type: FlowPanel
 - components:
-  - event_bindings: {click: button_create_new_click}
+  - layout_properties: {grid_position: 'VRLUIY,ZDYPAQ'}
+    name: lbl_status
+    properties: {text: No material created yet}
+    type: Label
+  - event_bindings: {click: btn_create_material_click}
     layout_properties: {grid_position: 'SUYSQA,LFCEYE'}
-    name: button_create_new
+    name: btn_create_material
     properties: {text: create}
     type: Button
-  - event_bindings: {click: button_create_version_click}
+  - event_bindings: {click: btn_create_version_click}
     layout_properties: {grid_position: 'ZKIGOB,WKULTX'}
-    name: button_create_version
+    name: btn_create_version
     properties: {text: create new ver}
     type: Button
-  - event_bindings: {click: button_get_versions_click}
+  - event_bindings: {}
     layout_properties: {grid_position: 'JODGGG,CPCNCF'}
-    name: button_get_versions
-    properties: {text: get ver}
+    name: btn_get_status
+    properties: {text: status}
     type: Button
-  - event_bindings: {click: button_get_latest_click}
+  - event_bindings: {}
     layout_properties: {grid_position: 'BMXAVL,PQTUSH'}
-    name: button_get_latest
-    properties: {text: get latest}
+    name: btn_submit_version
+    properties: {text: submit}
     type: Button
-  - event_bindings: {click: button_clear_click}
+  - event_bindings: {click: btn_complete_test_click}
     layout_properties: {grid_position: 'LVZKEG,AWUBPE'}
-    name: button_clear
-    properties: {text: clear}
+    name: btn_complete_test
+    properties: {text: run complete}
     type: Button
-  - layout_properties: {grid_position: 'YWBMIB,NJECJK'}
-    name: label_result
-    properties: {}
-    type: Label
   layout_properties: {slot: default}
   name: column_panel_1
   properties: {}

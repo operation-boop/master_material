@@ -52,31 +52,62 @@ def create_new_version(existing_document_id, created_by_user):
   master_material['current_version'] = new_version
   master_material['current_version_uid'] = new_uuid
   master_material['current_version_number'] = new_version_num
-  
+
+  return new_version
+
 @anvil.server.callable
 def get_next_document_number():
   all_documents = app_tables.master_material_verison.search()
-if not all_documents:
-  return 1
+  if not all_documents:
+    return 1
   max_number = 0
-for doc in all_documents:
-  document_id = doc['document_id']
-  if document_id and document_id.startswith('vin_mmat_'):
-    try:
-      number_part = document_id.replace('vin_mmat_', '')
-      doc_number = int(number_part)
-      max_number = max(max_number, doc_number)
-    except ValueError:
-      continue
-  return max_number + 1
+  for doc in all_documents:
+    document_id = doc['document_id']
+    if document_id and document_id.startswith('vin_mmat_'):
+      try:
+        number_part = document_id.replace('vin_mmat_', '')
+        doc_number = int(number_part)
+        max_number = max(max_number, doc_number)
+      except ValueError:
+        continue
+    return max_number + 1
 
 @anvil.server.callable
 def get_material_versions(document_id):
   versions = app_tables.master_material_verison.search(document_id=document_id)
-return sorted(versions, key=lambda x: x['ver_num'])
-
+  return sorted(versions, key=lambda x: x['ver_num'])
 @anvil.server.callable
 def get_latest_version(document_id):
   versions = get_material_versions(document_id)
-return versions[-1] if versions else None
+  return versions[-1] if versions else None
 
+@anvil.server.callable
+def get_master_material_with_latest_version(document_id):
+  master_materials = app_tables.master_material.search(document_id=document_id)
+  if not master_materials:
+    return None
+    
+  master_material = master_materials[0]
+  return master_material
+
+@anvil.server.callable
+def submit_master_material_version(document_id, submitted_by_user):
+  master_materials = app_tables.master_material.search(document_id=document_id)
+  if not master_materials:
+    raise Exception("Master material not found")
+
+    master_material = master_materials[0]
+    current_version = master_material['current_version']
+    if current_version:
+      # Update the version status
+      current_version['status'] = "Submitted"
+
+      # Update the master material submission info
+      master_material['submitted_at'] = datetime.now()
+      master_material['submitted_by'] = submitted_by_user
+
+      return current_version
+
+    raise Exception("No current version found")
+    
+    
