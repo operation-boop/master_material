@@ -1,12 +1,11 @@
 from ._anvil_designer import Material_input_formTemplate
 from anvil import *
 import anvil.server
-import anvil.google.auth, anvil.google.drive
-from anvil.google.drive import app_files
 import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+
 
 
 class Material_input_form(Material_input_formTemplate):
@@ -16,13 +15,15 @@ class Material_input_form(Material_input_formTemplate):
 
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
     suppliers = anvil.server.call("get_suppliers")
-    self.supplier_dropdown.items = [(s['supplier_name'], s) for s in suppliers]
+    self.dropdown_supplier.items = [(s['supplier_name'], s) for s in suppliers]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
     self.UOM_dropdown.items = ["Meter", "Piece"]
     self.weight_uom_dropdown.items = ["GSM (gram/sq meter)", "GPP (gram/piece)"]
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
+    self.current_document_id = None
+
 
     # all_materials = anvil.server.call('get_all_materials') 
     #self.material_dropdown.items = [(m['material_name'], m) for m in all_materials]
@@ -137,33 +138,22 @@ class Material_input_form(Material_input_formTemplate):
     self.landed_cost.text = str(landed_cost)
 
   def save_as_draft_btn_click(self, **event_args):
-    def btn_save_draft_click(self, **event_args):
-      """Changes status to 'Draft' (same version)"""
-    if not self.current_document_id:
-      alert("Please create a material first!")
-      return
-
-    supplier_value = self.dropdown_supplier.selected_value
-    if supplier_value:
-      anvil.server.call('update_supplier_field', self.current_document_id, supplier_value['supplier_name'])
-
+    supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
+    anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', supplier)
+    Notification.show_inline("Draft saved!", 3)
+    
   def submit_btn_click(self, **event_args):
-    """Submits current version - VALIDATES supplier is required"""
-    if not self.current_document_id:
-      alert("Please create a material first!")
-      return
+    supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
+    anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', supplier)
+    Notification.show_inline("Submitted successfully!", 3)
 
-      # Save supplier field before submitting
-    supplier_value = self.txt_supplier.text or ""
-    anvil.server.call('update_supplier_field', self.current_document_id, supplier_value)
 
   def cancel_btn_click(self, **event_args):
     """This method is called when the button is clicked"""
     pass
 
-  def supplier_dropdown_change(self, **event_args):
-    """This method is called when an item is selected"""
-    pass
+
+
 
 
 

@@ -42,9 +42,9 @@ components:
           spacing_above: small
           spacing_below: small
         type: RichText
-      - event_bindings: {change: supplier_dropdown_change}
+      - event_bindings: {}
         layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
-        name: supplier_dropdown
+        name: dropdown_supplier
         properties: {include_placeholder: true, placeholder: Select Supplier}
         type: DropDown
       - layout_properties: {grid_position: 'OCMARJ,YPSQAW'}
