@@ -18,7 +18,7 @@ def create_new_master_material(created_by_user):
     ver_num=1,
     status="Creating"
   )
-  
+
   master_material = app_tables.master_material.add_row(
     version_history_uid=new_uuid,
     created_at=datetime.now(),
@@ -30,7 +30,7 @@ def create_new_master_material(created_by_user):
     current_version_number=1,
     document_id=document_id
   )
-  
+
   return master_material
 
 # ============================================
@@ -100,19 +100,19 @@ def submit_version(document_id, submitted_by_user):
   master_material = app_tables.master_material.get(document_id=document_id)
   if not master_material:
     raise Exception("Document not found")
-    
+
   current_version = master_material['current_version']
 
   # Can only submit from "Draft" or "Creating" status
   if current_version['status'] not in ["Creating", "Draft"]:
     raise Exception(f"Cannot submit. Current status is: {current_version['status']}")
-    
+
   # VALIDATION: Check required fields
   validation = validate_required_fields(document_id)
   if not validation['is_valid']:
     missing = ", ".join(validation['missing_fields'])
     raise Exception(f"Cannot submit. Missing required fields: {missing}")
-    
+
   # Change status to Submitted (same version)
   current_version['status'] = "Submitted"
 
@@ -250,4 +250,4 @@ def get_supplier_field(document_id):
 
   current_version = master_material['current_version']
   return current_version['supplier']
-  
+
