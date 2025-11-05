@@ -5,8 +5,13 @@ from anvil.tables import app_tables
 import anvil.server
 
 @anvil.server.callable
-def draft_version(status):
-  return app_tables.master_material_version.get(status=status)
+
 
 
   
+def get_materials():
+  return app_tables.master_material.search() 
+
+@anvil.server.callable
+def get_suppliers():
+  return app_tables.supplier.search() 
