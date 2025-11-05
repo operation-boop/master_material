@@ -4,24 +4,21 @@ import uuid
 from datetime import datetime
 
 # ============================================
-# CORE FUNCTIONS - Document Creation
+#  Create new doc and status "Creating" , add uuid for current version uid and create version 1. 
 # ============================================
 @anvil.server.callable
 def create_new_master_material(created_by_user):
-  """Creates a new master material with version 1 in Draft status"""
   new_uuid = str(uuid.uuid4())
   next_doc_number = get_next_document_number()
   document_id = f"vin_mmat_{next_doc_number:04d}"
 
-  # Create first version
   master_material_version = app_tables.master_material_version.add_row(
     document_uid=new_uuid,
     document_id=document_id,
     ver_num=1,
-    status="Draft"
+    status="Creating"
   )
-
-  # Create master material record
+  
   master_material = app_tables.master_material.add_row(
     version_history_uid=new_uuid,
     created_at=datetime.now(),
@@ -34,9 +31,13 @@ def create_new_master_material(created_by_user):
     document_id=document_id
   )
   return master_material
+
+# ============================================
+# check for the next document number
+# ============================================
 @anvil.server.callable
 def get_next_document_number():
-  """Gets the next available document number"""
+
   all_documents = app_tables.master_material_version.search()
   if not all_documents:
     return 1
@@ -58,12 +59,9 @@ def get_next_document_number():
 # ============================================
 
 @anvil.server.callable
-def save_draft(document_id, updated_by_user, draft_data=None):
-  """
-  Saves changes to the current draft version.
-  - If current version is Draft: updates it (no new version created)
-  - If current version is Submitted: creates a new Draft version
-  """
+def save_as_draft(document_id, updated_by_user):
+  """Changes status from 'Creating' to 'Draft' (same version)
+  Or updates an existing draft (same version) """
   master_material = app_tables.master_material.get(document_id=document_id)
 
   if not master_material:
@@ -71,51 +69,50 @@ def save_draft(document_id, updated_by_user, draft_data=None):
 
   current_version = master_material['current_version']
 
-  # If current version is submitted, create new draft version
-  if current_version['status'] == "Submitted":
-    existing_versions = app_tables.master_material_version.search(document_id=document_id)
-    latest_version = max(existing_versions, key=lambda x: x['ver_num'])
-    new_version_num = latest_version['ver_num'] + 1
-    new_uuid = str(uuid.uuid4())
+  # Only allow if status is "Creating" or "Draft"
+  if current_version['status'] not in ["Creating", "Draft"]:
+    raise Exception(f"Cannot save as draft. Current status is: {current_version['status']}")
 
-    new_draft = app_tables.master_material_version.add_row(
-      document_uid=new_uuid,
-      document_id=document_id,
-      ver_num=new_version_num,
-      status="Draft"
-    )
+  current_version['status'] = "Draft"
+  return {"action": "saved_as_draft", "version": current_version}
 
-    # Update master material to point to new draft
-    master_material['current_version'] = new_draft
-    master_material['current_version_uid'] = new_uuid
-    master_material['current_version_number'] = new_version_num
+@anvil.server.callable
+def edit_draft(document_id, updated_by_user):
 
-    return {"action": "new_version_created", "version": new_draft}
+  ##Edits current draft version (same version, no increment) Only works if status is "Draft" or "Creating" 
 
-  # If current version is Draft, just update it (no new version)
-  else:
-    # Optionally update timestamp or other fields
-    # current_version['last_modified'] = datetime.now()
-    # current_version['modified_by'] = updated_by_user
+  master_material = app_tables.master_material.get(document_id=document_id)
 
-    return {"action": "draft_updated", "version": current_version}
+  if not master_material:
+    raise Exception("Document not found")
+
+  current_version = master_material['current_version']
+
+  if current_version['status'] not in ["Creating", "Draft"]:
+    raise Exception("Can only edit drafts or documents being created")
+
+  # Just update the version (no version increment)
+  return {"action": "draft_edited", "version": current_version}
+
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user):
-  """
-  Submits the current draft version.
-  Changes status from Draft to Submitted and locks the version.
-  """
   master_material = app_tables.master_material.get(document_id=document_id)
-
   if not master_material:
     raise Exception("Document not found")
-
+    
   current_version = master_material['current_version']
 
-  if current_version['status'] == "Submitted":
-    raise Exception("Current version is already submitted")
-
-  # Change status to Submitted
+  # Can only submit from "Draft" or "Creating" status
+  if current_version['status'] not in ["Creating", "Draft"]:
+    raise Exception(f"Cannot submit. Current status is: {current_version['status']}")
+    
+  # VALIDATION: Check required fields
+  validation = validate_required_fields(document_id)
+  if not validation['is_valid']:
+    missing = ", ".join(validation['missing_fields'])
+    raise Exception(f"Cannot submit. Missing required fields: {missing}")
+    
+  # Change status to Submitted (same version)
   current_version['status'] = "Submitted"
 
   # Update master material submission info
@@ -123,33 +120,111 @@ def submit_version(document_id, submitted_by_user):
   master_material['submitted_by'] = submitted_by_user
 
   return current_version
+
 @anvil.server.callable
-def get_current_status(document_id):
-  """Returns the current version status to help UI decide which buttons to show"""
+def edit_submitted(document_id, updated_by_user):
+  """
+  Edits a submitted version - creates NEW version with "Creating" status
+  This is the ONLY time version number increments!
+  """
   master_material = app_tables.master_material.get(document_id=document_id)
 
   if not master_material:
+    raise Exception("Document not found")
+
+  current_version = master_material['current_version']
+
+  # Can only edit if current status is "Submitted"
+  if current_version['status'] != "Submitted":
+    raise Exception("Can only edit submitted versions")
+
+  validation = validate_required_fields(document_id)
+  if not validation['is_valid']:
+    missing = ", ".join(validation['missing_fields'])
+    raise Exception(f"Cannot edit. Current version missing: {missing}")
+
+  # Create NEW version
+  existing_versions = app_tables.master_material_version.search(document_id=document_id)
+  latest_version = max(existing_versions, key=lambda x: x['ver_num'])
+  new_version_num = latest_version['ver_num'] + 1
+  new_uuid = str(uuid.uuid4())
+
+  new_version = app_tables.master_material_version.add_row(
+    document_uid=new_uuid,
+    document_id=document_id,
+    ver_num=new_version_num,
+    status="Creating"  # ← New version starts as "Creating"
+  )
+
+  # Update master material to point to new version
+  master_material['current_version'] = new_version
+  master_material['current_version_uid'] = new_uuid
+  master_material['current_version_number'] = new_version_num
+
+  return {"action": "new_version_created", "version": new_version}
+
+# ============================================
+# QUERY FUNCTIONS
+# ============================================
+
+@anvil.server.callable
+def get_current_status(document_id):
+  """Returns the current version status"""
+  master_material = app_tables.master_material.get(document_id=document_id)
+  if not master_material:
     return None
 
+  status = master_material['current_version']['status']
   return {
     "document_id": document_id,
     "current_version_number": master_material['current_version_number'],
-    "status": master_material['current_version']['status'],
-    "can_edit": master_material['current_version']['status'] == "Draft",
-    "can_submit": master_material['current_version']['status'] == "Draft"
+    "status": status,
+    "can_save_draft": status in ["Creating", "Draft"],
+    "can_edit_draft": status in ["Creating", "Draft"],
+    "can_submit": status in ["Creating", "Draft"],
+    "can_edit_submitted": status == "Submitted"
   }
+
 @anvil.server.callable
 def get_material_versions(document_id):
   """Returns all versions of a document, sorted by version number"""
   versions = app_tables.master_material_version.search(document_id=document_id)
   return sorted(versions, key=lambda x: x['ver_num'])
+
 @anvil.server.callable
 def get_latest_version(document_id):
-  """Returns the latest version of a document"""
   versions = get_material_versions(document_id)
   return versions[-1] if versions else None
+
 @anvil.server.callable
 def get_master_material_with_latest_version(document_id):
   """Returns the master material record with its current version"""
   master_material = app_tables.master_material.get(document_id=document_id)
   return master_material
+
+@anvil.server.callable
+def validate_required_fields(document_id):
+  """
+    Validates that required fields are filled for submission.
+    Returns a dict with validation status and missing fields.
+    """
+  master_material = app_tables.master_material.get(document_id=document_id)
+  if not master_material:
+    raise Exception("Document not found")
+
+  current_version = master_material['current_version']
+  missing_fields = []
+
+  # Check if supplier field is empty or None
+  if not current_version['supplier'] or current_version['supplier'].strip() == "":
+    missing_fields.append("supplier")
+
+    # Add other required fields here as needed
+    # Example: if not current_version['country_of_origin']:
+    #     missing_fields.append("country_of_origin")
+
+  return {
+    "is_valid": len(missing_fields) == 0,
+    "missing_fields": missing_fields
+  }
+  

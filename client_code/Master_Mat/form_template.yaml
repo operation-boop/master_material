@@ -19,6 +19,16 @@ components:
     name: btn_submit
     properties: {text: Submit}
     type: Button
+  - event_bindings: {click: btn_edit_draft_click}
+    layout_properties: {grid_position: 'ZKIGOB,WETDZS'}
+    name: btn_edit_draft
+    properties: {text: edit}
+    type: Button
+  - event_bindings: {click: btn_edit_submitted_click}
+    layout_properties: {grid_position: 'NMMDTV,LWQRJX'}
+    name: btn_edit_submitted
+    properties: {text: edit (For Submitted)}
+    type: Button
   - layout_properties: {grid_position: 'HQULCP,OFKZJV'}
     name: lbl_result
     properties: {text: Click 'Create New Material' to start}
@@ -27,6 +37,10 @@ components:
     name: lbl_ver
     properties: {text: '""'}
     type: Label
+  - layout_properties: {grid_position: 'KCLRDA,PKYIDB'}
+    name: text_box_1
+    properties: {}
+    type: TextBox
   layout_properties: {slot: default}
   name: column_panel_1
   properties: {}
