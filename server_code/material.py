@@ -14,4 +14,4 @@ def get_materials():
 
 @anvil.server.callable
 def get_suppliers():
-  return app_tables.supplier.search() 
+  return app_tables.s.search() 

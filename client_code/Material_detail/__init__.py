@@ -11,17 +11,17 @@ from ..Material_list import Material_list
 
 
 class Material_detail(Material_detailTemplate):
-  def __init__(self, item=None, **properties):
+  def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.item = item
 
     # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
-    home = get_open_form()   # This is your Home form
-    home.content_panel.clear()
-    home.content_panel.add_component(Material_list(), full_width_row=True)
+    #home = get_open_form()   # This is your Home form
+    #home.content_panel.clear()
+    #home.content_panel.add_component(Material_list(), full_width_row=True)
+    open_form('Material_list')
 
 
   def technical_specs_tab_btn_click(self, **event_args):

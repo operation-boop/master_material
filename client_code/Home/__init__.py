@@ -21,7 +21,7 @@ from ..Deal import Deal
 #from ..Style_list import Style_list
 
 from ..Material_list import Material_list
-from ..Costing_sheet_base import Costing_sheet_base
+#from ..Costing_sheet_base import Costing_sheet_base
 
 
 
@@ -29,7 +29,7 @@ class Home(HomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.content_panel.add_component(Costing_sheet_base())
+    #self.content_panel.add_component(Costing_sheet_base())
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
 
@@ -39,7 +39,7 @@ class Home(HomeTemplate):
     clicked_link = event_args['sender']
     source = clicked_link.tag
     page_registry = {
-      "opportunity_group": Opportunity(),
+      #"opportunity_group": Opportunity(),
       # "request_group": RFQ(),
       # "order_group": QMO(),
       # "master_data_group": Client_list(),
@@ -68,11 +68,11 @@ class Home(HomeTemplate):
     #self.link_opportunity.role = "<default>"
     #self.link_deal.role = "<default>"
     #self.link_rfq.role = "<default>"
-    self.link_rfs.role = "<default>"
-    self.link_qmo.role = "<default>"
-    self.link_smo.role = "<default>"
-    self.link_client.role = "<default>"
-    self.link_style.role = "<default>"
+    #self.link_rfs.role = "<default>"
+    #self.link_qmo.role = "<default>"
+    #self.link_smo.role = "<default>"
+    #self.link_client.role = "<default>"
+    #self.link_style.role = "<default>"
     self.link_material.role = "<default>"
     #added my own Costing Sheet
     # self.link_costing_sheet.role = "<default>"
@@ -84,7 +84,7 @@ class Home(HomeTemplate):
       #"opportunity_group": self.link_opportunity,
       #"request_group": self.link_rfq,
       #"order_group": self.link_qmo,
-      "master_data_group": self.link_material,
+      "master_data_group": Material_list(),
       #Costing Sheet
       # "Costing_sheet_group": self.link_costing_sheet
     }

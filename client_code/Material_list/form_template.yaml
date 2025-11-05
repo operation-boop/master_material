@@ -17,19 +17,29 @@ components:
   properties:
     columns:
     - {data_key: column_1, id: PKEEJH, title: ''}
-    - {data_key: column_2, expand: false, id: VJQQOR, title: ID, width: 87.5}
-    - {data_key: column_3, id: OJLQEN, title: Document ID}
-    - {data_key: column_4, id: KMEYVT, title: Current Version}
-    - {data_key: column_5, id: MAOHBU, title: Version History}
-    - {data_key: column_6, id: PJOXYT, title: Created At}
-    - {data_key: column_7, id: LAECHY, title: Created By}
-    - {data_key: column_8, id: DYZQWE, title: Submitted At}
-    - {data_key: column_9, id: GAVEWF, title: Submitted By}
+    - {data_key: column_2, expand: false, id: VJQQOR, title: Material ID, width: 87.5}
+    - {data_key: column_3, id: OJLQEN, title: Ref ID}
+    - {data_key: column_4, id: KMEYVT, title: Material Name}
+    - {data_key: column_5, expand: false, id: MAOHBU, title: Material_Type, width: 110.5}
+    - {data_key: column_6, id: PJOXYT, title: Composition}
+    - {data_key: column_7, id: LAECHY, title: Weight}
+    - {data_key: column_8, id: DYZQWE, title: Supplier}
+    - {data_key: column_9, id: GAVEWF, title: Cost per Unit}
+    - {data_key: column_1, id: WZMZOW, title: Status}
   type: DataGrid
 - event_bindings: {click: view_details_btn_click}
   layout_properties: {grid_position: 'NCQGXT,BTJAUO'}
   name: view_details_btn
   properties: {align: right, role: primary-color, text: view details}
   type: Button
+- components:
+  - layout_properties: {width: 748}
+    name: repeating_panel_materials
+    properties: {item_template: Material_list.MaterialCard}
+    type: RepeatingPanel
+  layout_properties: {grid_position: 'AWSUFX,RRXCZX'}
+  name: flow_panel_materials
+  properties: {}
+  type: FlowPanel
 container: {type: ColumnPanel}
 is_package: true
