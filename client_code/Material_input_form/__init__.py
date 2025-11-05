@@ -157,19 +157,11 @@ class Material_input_form(Material_input_formTemplate):
     supplier_value = self.txt_supplier.text or ""
     anvil.server.call('update_supplier_field', self.current_document_id, supplier_value)
 
-    try:
-      result = anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com')
-      self.lbl_ver.text = f"Version: {result['ver_num']} | Status: Submitted ✓"
-      alert("Submitted successfully!")
-  
-    except Exception as e:
-      alert(f"❌ Submission failed:\n{str(e)}")
-
   def cancel_btn_click(self, **event_args):
     """This method is called when the button is clicked"""
     pass
 
-  def dropdown_supplier_change(self, **event_args):
+  def supplier_dropdown_change(self, **event_args):
     """This method is called when an item is selected"""
     pass
 

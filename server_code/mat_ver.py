@@ -77,8 +77,6 @@ def save_as_draft(document_id, updated_by_user):
 @anvil.server.callable
 def edit_draft(document_id, updated_by_user):
 
-  ##Edits current draft version (same version, no increment) Only works if status is "Draft" or "Creating" 
-
   master_material = app_tables.master_material.get(document_id=document_id)
 
   if not master_material:
