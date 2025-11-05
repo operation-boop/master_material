@@ -1,9 +1,9 @@
 color_scheme:
   colors:
   - {color: '#2463EB', name: Primary 500}
-  - {color: '#3D72ED', name: Primary 700}
-  - {color: '#EF4444', name: Secondary 500}
-  - {color: '#F25858', name: Secondary 700}
+  - {color: '#2463EB', name: Primary 700}
+  - {color: '#F0F0F0', name: Secondary 500}
+  - {color: '#E8E8E8', name: Secondary 700}
   - {color: '#FFFFFF', name: White}
   - {color: '#FAFAFA', name: Gray 50}
   - {color: '#F5F5F5', name: Gray 100}
@@ -179,3 +179,5 @@ roles:
   name: selected
 - components: [TextBox]
   name: top-search-text-input
+- components: [ColumnPanel]
+  name: card-link
