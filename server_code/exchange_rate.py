@@ -8,10 +8,10 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime
-
+from date import d
 
 @anvil.server.callable
-def add_exchange_data(date, from_currency, to_currency, rate, created_at, created_by):
+def add_exchange_data(date, from_currency, to_currency, rate, created_by):
   # Step 1: Find the current highest server_id
   existing_rows = app_tables.tabl_exchange_rate.search()
 
@@ -25,7 +25,7 @@ def add_exchange_data(date, from_currency, to_currency, rate, created_at, create
   # Step 2: Add the new record
   new_row = app_tables.tabl_exchange_rate.add_row(
     server_id=next_id,
-    date=date.now(),
+    date=date,
     from_currency=from_currency,
     to_currency=to_currency,
     rate=rate,
@@ -35,3 +35,13 @@ def add_exchange_data(date, from_currency, to_currency, rate, created_at, create
 
   return new_row
 
+
+
+#import anvil.server
+#from anvil.tables import app_tables
+
+#@anvil.server.callable
+#def get_dropdown_lists():
+#  currency_items = [(r['types'], r) for r in app_tables.list_currency_types.search()]
+#  staff_items = [(r['staff'], r) for r in app_tables.tabl_staff_users.search()]
+#  return {"currency": currency_items, "staff": staff_items}

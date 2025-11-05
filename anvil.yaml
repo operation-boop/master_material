@@ -2,7 +2,7 @@ allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
   list_currency_types:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: types
@@ -225,7 +225,7 @@ db_schema:
     server: full
     title: Supplier
   tabl_exchange_rate:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: server_id
@@ -252,7 +252,7 @@ db_schema:
     server: full
     title: tabl_exchange_rate
   tabl_staff_users:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: staff

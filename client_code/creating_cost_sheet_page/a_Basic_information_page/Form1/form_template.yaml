@@ -4,18 +4,22 @@ components:
     name: label_currency_line
     properties: {}
     type: Label
-  - layout_properties: {width: 226.141296}
+  - layout_properties: {width: 140.141312}
     name: drop_down_from_currency_type
     properties: {include_placeholder: true, placeholder: From currency Type}
     type: DropDown
-  - layout_properties: {width: 258.149475}
+  - layout_properties: {width: 142.13858}
     name: drop_down_to_currency_type
     properties: {include_placeholder: true, placeholder: To currency type}
     type: DropDown
-  - layout_properties: {width: 109.48913599999997}
+  - layout_properties: {width: 126.46739199999999}
     name: text_box_rate
     properties: {}
     type: TextBox
+  - layout_properties: {width: 101.491852}
+    name: date_picker_currency
+    properties: {}
+    type: DatePicker
   - layout_properties: {width: 160.152174}
     name: drop_down_created_by
     properties: {}
