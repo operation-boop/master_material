@@ -47,7 +47,7 @@ class Form1(Form1Template):
     self.drop_down_from_currency_type.items = ""
     self.drop_down_to_currency_type.items = ""
     self.text_box_rate.text = ""
-    self.date_picker_currency
+    self.date_picker_currency.date = ""
     self.drop_down_created_by.items = ""
 
 
