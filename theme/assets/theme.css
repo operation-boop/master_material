@@ -15,6 +15,8 @@ thai 25/10:
 thai 04/11:
 - change buttons styling
 - add card hover
+- file loader
+- body background
 **/
 
 /* Stop panel-cols cutting off drop shadows */
@@ -115,7 +117,7 @@ body {
   font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif 
     font-size: 14px;
   line-height: 1.4286;
-  background-color: #fafafa;
+  background-color: white;
 }
 
 @media print {
@@ -257,6 +259,7 @@ This can create unwanted scrollbars; we compensate for this at the top level wit
 
     display: none;
     transition: right 0.5s;
+    background-color: #fafafa;
   }
 
   html:not(.designer) .nav-holder .left-nav.shown {
@@ -277,7 +280,7 @@ This can create unwanted scrollbars; we compensate for this at the top level wit
 .nav-holder .left-nav, .left-nav-placeholder {
   display: flex;
   flex-direction: column;
-  background: white;
+  background-color: #fafafa;
   border-right: 1px solid #e0e0e0;
   font-size: 14px;
   font-weight: 500;
@@ -393,7 +396,7 @@ This can create unwanted scrollbars; we compensate for this at the top level wit
   font-size: 20px;
   font-weight: 500;
   color: black;
-  background-color: %color:Primary 500%;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
 
   z-index: 1;
   /* 4dp box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);  */ 
@@ -485,7 +488,6 @@ This can create unwanted scrollbars; we compensate for this at the top level wit
 
 .app-bar a:hover, .app-bar a:active {
   color: %color:Primary 700%;; text-decoration: none;
-  background-color: %color:Gray 300%;
 }
 
 
@@ -678,7 +680,16 @@ font-weight: bold;
 
 /* Component: Card */
 
-.anvil-role-card, .anvil-role-card-link {
+.anvil-role-card {
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: #fafafa;
+  padding: 8px 12px;
+  outline: 1px solid #E2E8F0;
+  /* 2dp   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);*/
+}
+
+.anvil-role-card-link {
   overflow: hidden;
   border-radius: 6px;
   background-color: white;
