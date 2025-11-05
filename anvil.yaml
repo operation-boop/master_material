@@ -8,9 +8,6 @@ db_schema:
       name: document_id
       type: string
     - admin_ui: {width: 200}
-      name: current_version
-      type: number
-    - admin_ui: {width: 200}
       name: created_at
       type: datetime
     - admin_ui: {width: 200}
@@ -22,31 +19,35 @@ db_schema:
     - admin_ui: {width: 200}
       name: submitted_by
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0.4375, width: 200}
       name: current_version_number
       type: number
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 1.1875, width: 200}
       name: current_version_uid
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 1.328125, width: 200}
       name: version_history
       target: master_material_version
       type: link_multiple
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 1.46875, width: 200}
       name: version_history_uid
       type: string
+    - admin_ui: {order: 0.8125, width: 200}
+      name: current_version
+      target: master_material_version
+      type: link_single
     server: full
     title: master_material
   master_material_version:
     client: none
     columns:
-    - admin_ui: {order: 1, width: 200}
+    - admin_ui: {order: -5, width: 200}
       name: document_id
       type: string
-    - admin_ui: {order: 1.625, width: 200}
+    - admin_ui: {order: -4, width: 200}
       name: ver_num
       type: number
-    - admin_ui: {width: 200}
+    - admin_ui: {order: -3, width: 200}
       name: change_description
       type: string
     - admin_ui: {width: 200}
@@ -70,7 +71,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: master_material_id
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 4.5, width: 200}
       name: status
       type: string
     - admin_ui: {width: 200}
@@ -85,7 +86,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: name
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 12, width: 200}
       name: material_type
       target: material_type
       type: link_single
@@ -175,17 +176,17 @@ db_schema:
     - admin_ui: {width: 200}
       name: logistics_rate
       type: number
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 40, width: 200}
       name: logistics_fee_per_unit
       type: number
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
-    - admin_ui: {order: 1.75, width: 200}
+    - admin_ui: {order: -3.25, width: 200}
       name: document
       target: master_material
       type: link_single
-    - admin_ui: {order: 1.5, width: 200}
+    - admin_ui: {order: -3.5, width: 200}
       name: document_uid
       type: string
     server: full
@@ -275,5 +276,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: Material_detail, type: form}
 startup_form: null

@@ -135,3 +135,32 @@ class Material_input_form(Material_input_formTemplate):
     effective_cost = int(self.effective_cost_per_unit.text)
     landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
     self.landed_cost.text = str(landed_cost)
+
+  def save_as_draft_btn_click(self, **event_args):
+    """Changes status to 'Draft' (same version)"""
+    if not self.current_document_id:
+      alert("Please create a material first!")
+      return
+    supplier_value = self.supplier_dropdown or ""
+    anvil.server.call('update_supplier_field', self.current_document_id, supplier_value)
+    
+  def submit_btn_click(self, **event_args):
+    """Submits current version - VALIDATES supplier is required"""
+    if not self.current_document_id:
+      alert("Please create a material first!")
+      return
+
+      # Save supplier field before submitting
+    supplier_value = self.txt_supplier.text or ""
+    anvil.server.call('update_supplier_field', self.current_document_id, supplier_value)
+
+    try:
+      result = anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com')
+      self.lbl_ver.text = f"Version: {result['ver_num']} | Status: Submitted ✓"
+      alert("Submitted successfully!")
+  
+    except Exception as e:
+      alert(f"❌ Submission failed:\n{str(e)}")
+
+
+

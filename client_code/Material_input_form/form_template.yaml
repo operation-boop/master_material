@@ -42,7 +42,8 @@ components:
           spacing_above: small
           spacing_below: small
         type: RichText
-      - layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
+      - event_bindings: {change: supplier_dropdown_change}
+        layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
         name: supplier_dropdown
         properties: {include_placeholder: true, placeholder: Select Supplier}
         type: DropDown
@@ -404,11 +405,13 @@ components:
       name: column_panel_9
       properties: {}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'FRMLPJ,VCSADV'}
+    - event_bindings: {click: save_as_draft_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,VCSADV'}
       name: save_as_draft_btn
       properties: {align: right, background: orange, foreground: 'theme:White', role: null, text: SAve as draft}
       type: Button
-    - layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
+    - event_bindings: {click: submit_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
       name: submit_btn
       properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: submit}
       type: Button
