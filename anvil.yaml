@@ -19,14 +19,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: submitted_by
       type: string
-    - admin_ui: {order: -3, width: 200}
-      name: id
-      target: master_material_verison
-      type: link_single
-    - admin_ui: {order: -2, width: 200}
-      name: document_id
-      target: master_material_verison
-      type: link_single
     - admin_ui: {order: -1.875, width: 200}
       name: current_version
       target: master_material_verison
@@ -41,16 +33,16 @@ db_schema:
       name: version_history
       target: master_material_verison
       type: link_multiple
+    - admin_ui: {width: 200}
+      name: document_id
+      type: string
     server: full
     title: master_material
   master_material_verison:
     client: none
     columns:
-    - admin_ui: {width: 200}
-      name: id
-      type: string
-    - admin_ui: {width: 200}
-      name: doc_id
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
       type: string
     - admin_ui: {width: 200}
       name: ver_num
