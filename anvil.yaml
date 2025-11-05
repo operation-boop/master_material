@@ -2,7 +2,7 @@ allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
   list_currency_types:
-    client: search
+    client: none
     columns:
     - admin_ui: {order: 0, width: 200}
       name: types
@@ -254,8 +254,8 @@ db_schema:
   tabl_staff_users:
     client: none
     columns:
-    - admin_ui: {width: 200}
-      name: Staff
+    - admin_ui: {order: 0, width: 200}
+      name: staff
       type: string
     server: full
     title: tabl_staff_users
