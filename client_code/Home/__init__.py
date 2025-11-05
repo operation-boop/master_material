@@ -8,6 +8,9 @@ import anvil.tables.query as q
 from anvil.tables import app_tables, Row
 import anvil.users
 
+
+
+
 from ..Opportunity import Opportunity
 from ..Deal import Deal
 from ..RFQ import RFQ
@@ -16,18 +19,25 @@ from ..QMO import QMO
 from ..SMO import SMO
 from ..Client_list import Client_list
 from ..Style_list import Style_list
-from ..Staff_list import Staff_list
+#from ..Staff_list import Staff_list
 from ..Material_list import Material_list
 from ..Costing_sheet_base import Costing_sheet_base
+
+
 
 class Home(HomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
+    self.content_panel.add_component(Costing_sheet_base())
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
 
+
+
+
+
+  
   def link_nav_click(self, **event_args):
     """This method is called when the link is clicked"""
     clicked_link = event_args['sender']
