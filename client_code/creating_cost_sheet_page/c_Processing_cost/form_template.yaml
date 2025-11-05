@@ -92,6 +92,10 @@ components:
     name: column_panel_2_copy
     properties: {}
     type: ColumnPanel
+  - layout_properties: {grid_position: 'BYITZC,HZKBLP'}
+    name: card_1
+    properties: {role: card}
+    type: ColumnPanel
   - layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
     name: button_4
     properties: {text: Add More}

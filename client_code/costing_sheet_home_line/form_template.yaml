@@ -6,7 +6,7 @@ components:
     type: Label
   - layout_properties: {}
     name: label_style_name
-    properties: {}
+    properties: {text: ''}
     type: Label
   - layout_properties: {}
     name: label_client
@@ -32,79 +32,21 @@ components:
     name: label_create_date
     properties: {}
     type: Label
+  - layout_properties: {}
+    name: button_3_copy
+    properties: {text: View}
+    type: Button
+  - layout_properties: {}
+    name: button_4_copy
+    properties: {text: Edit}
+    type: Button
+  - layout_properties: {}
+    name: button_5_copy
+    properties: {text: Delete}
+    type: Button
   layout_properties: {grid_position: 'MCBDQV,WEQVWG'}
   name: flow_panel_1
   properties: {}
   type: FlowPanel
-- components:
-  - components:
-    - layout_properties: {column: JKSDUP}
-      name: label_2
-      properties: {text: '1'}
-      type: Label
-    - layout_properties: {column: VJQQOR}
-      name: label_3
-      properties: {text: Blazer}
-      type: Label
-    - layout_properties: {column: OJLQEN}
-      name: label_5
-      properties: {text: Petal & Pup}
-      type: Label
-    - layout_properties: {column: FMSBBK}
-      name: label_6
-      properties: {role: null, text: V1}
-      type: Label
-    - layout_properties: {column: WELSFV}
-      name: label_7
-      properties: {text: Draft}
-      type: Label
-    - layout_properties: {column: OTGCHP}
-      name: label_10
-      properties: {text: 25/10}
-      type: Label
-    - layout_properties: {column: GTYVLP}
-      name: label_11
-      properties: {text: Jon}
-      type: Label
-    - layout_properties: {column: QPCLTQ}
-      name: label_9
-      properties: {text: USD}
-      type: Label
-    - layout_properties: {column: BOBMZH}
-      name: label_8
-      properties: {text: '25'}
-      type: Label
-    - layout_properties: {column: QECZPX}
-      name: button_3
-      properties: {text: View}
-      type: Button
-    - layout_properties: {column: KNEWTO}
-      name: button_4
-      properties: {text: Edit}
-      type: Button
-    - layout_properties: {column: EMHIHV}
-      name: button_5
-      properties: {text: Delete}
-      type: Button
-    name: data_row_panel_1
-    properties: {}
-    type: DataRowPanel
-  layout_properties: {grid_position: 'HQPEUS,WIADJN'}
-  name: data_grid_2
-  properties:
-    columns:
-    - {data_key: column_1, id: JKSDUP, title: Doc. ID}
-    - {data_key: column_2, id: VJQQOR, title: Style Name}
-    - {data_key: column_3, id: OJLQEN, title: Client}
-    - {data_key: column_4, id: FMSBBK, title: Version}
-    - {data_key: column_5, id: WELSFV, title: Status}
-    - {data_key: column_7, id: BOBMZH, title: 'Total cost:'}
-    - {data_key: column_6, expand: false, id: QPCLTQ, title: Native Currency, width: 101}
-    - {data_key: column_8, id: OTGCHP, title: Created date}
-    - {data_key: column_9, id: GTYVLP, title: Created By}
-    - {data_key: column_1, id: QECZPX, title: ''}
-    - {data_key: column_2, id: KNEWTO, title: ''}
-    - {data_key: column_3, id: EMHIHV, title: ''}
-  type: DataGrid
 container: {type: ColumnPanel}
 is_package: true
