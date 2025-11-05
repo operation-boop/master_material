@@ -179,6 +179,159 @@ db_schema:
       type: number
     server: full
     title: master_material_verison
+  master_material_version:
+    client: none
+    columns:
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 1.625, width: 200}
+      name: ver_num
+      type: number
+    - admin_ui: {width: 200}
+      name: change_description
+      type: string
+    - admin_ui: {width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {width: 200}
+      name: created_by
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: submitted_at
+      type: datetime
+    - admin_ui: {width: 200}
+      name: submitted_by
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: ref_id
+      target: supplier
+      type: link_single
+    - admin_ui: {width: 200}
+      name: master_material_id
+      type: string
+    - admin_ui: {width: 200}
+      name: status
+      type: string
+    - admin_ui: {width: 200}
+      name: supplier
+      type: string
+    - admin_ui: {width: 200}
+      name: supplier_name
+      type: string
+    - admin_ui: {width: 200}
+      name: country_of_origin
+      type: string
+    - admin_ui: {width: 200}
+      name: name
+      type: string
+    - admin_ui: {width: 200}
+      name: material_type
+      target: material_type
+      type: link_single
+    - admin_ui: {width: 200}
+      name: last_verified_date
+      type: datetime
+    - admin_ui: {width: 200}
+      name: last_verified_by
+      target: users
+      type: link_single
+    - admin_ui: {width: 200}
+      name: qr_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {width: 200}
+      name: hanger_pdf_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {width: 200}
+      name: picture_id
+      target: qr_code
+      type: link_single
+    - admin_ui: {width: 200}
+      name: unit_of_measurement
+      type: string
+    - admin_ui: {width: 200}
+      name: fabric_composition
+      type: string
+    - admin_ui: {width: 200}
+      name: generic_material_composition
+      type: string
+    - admin_ui: {width: 200}
+      name: fabric_roll_width
+      type: number
+    - admin_ui: {width: 200}
+      name: fabric_cut_width
+      type: number
+    - admin_ui: {width: 200}
+      name: fabric_cut_width_no_shrinkage
+      type: number
+    - admin_ui: {width: 200}
+      name: weight_per_unit
+      type: number
+    - admin_ui: {width: 200}
+      name: weight_uom
+      target: material_weight_uom
+      type: link_single
+    - admin_ui: {width: 200}
+      name: generic_material_size
+      type: string
+    - admin_ui: {width: 200}
+      name: weft_shrinkage
+      type: number
+    - admin_ui: {width: 200}
+      name: werp_shrinkage
+      type: number
+    - admin_ui: {width: 200}
+      name: original_cost_per_unit
+      type: number
+    - admin_ui: {width: 200}
+      name: native_cost_currency
+      type: string
+    - admin_ui: {width: 200}
+      name: supplier_selling_tolerance
+      type: number
+    - admin_ui: {width: 200}
+      name: 'refundable_tolerance:'
+      type: bool
+    - admin_ui: {width: 200}
+      name: effective_cost_per_unit
+      type: number
+    - admin_ui: {width: 200}
+      name: vietnam_vat_rate
+      type: number
+    - admin_ui: {width: 200}
+      name: refundable_vat
+      type: bool
+    - admin_ui: {width: 200}
+      name: import_duty
+      type: number
+    - admin_ui: {width: 200}
+      name: refundable_import_duty
+      type: bool
+    - admin_ui: {width: 200}
+      name: shipping_term
+      type: string
+    - admin_ui: {width: 200}
+      name: logistics_rate
+      type: number
+    - admin_ui: {width: 200}
+      name: logistics_fee_per_unit
+      type: number
+    - admin_ui: {width: 200}
+      name: landed_cost_per_unit
+      type: number
+    - admin_ui: {order: 1.75, width: 200}
+      name: document
+      target: master_material
+      type: link_single
+    - admin_ui: {order: 1.5, width: 200}
+      name: document_uid
+      type: string
+    server: full
+    title: master_material_version
   material_type:
     client: none
     columns: []
@@ -264,5 +417,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: Master_Mat, type: form}
 startup_form: null
