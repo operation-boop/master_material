@@ -62,35 +62,63 @@ components:
     name: flow_panel_1
     properties: {}
     type: FlowPanel
-  - layout_properties: {grid_position: 'IIYUMR,RPZFHH'}
-    name: data_grid_1
-    properties:
-      columns:
-      - {data_key: column_1, expand: false, id: JKSDUP, title: Doc. ID, width: 66}
-      - {data_key: column_2, expand: false, id: VJQQOR, title: Style Name, width: 78}
-      - {data_key: column_3, expand: false, id: OJLQEN, title: Client, width: 77}
-      - {data_key: column_4, id: MNRRVY, title: Version}
-      - {data_key: column_1, expand: false, id: TPGBSU, title: Status, width: 78}
-      - {data_key: column_1, expand: false, id: KKOHDE, title: Native currency, width: 83}
-      - {data_key: column_2, id: XVQTWA, title: 'Total cost:'}
-      - {data_key: column_3, id: NJEQOY, title: Created Date}
-      - {data_key: column_4, id: DHEVXO, title: Created By}
-    type: DataGrid
   - components:
-    - name: repeating_panel_1
-      properties: {item_template: Costing_sheet_home.RowTemplate1}
-      type: RepeatingPanel
-    layout_properties: {grid_position: 'CHXLSO,EHPNYU'}
+    - components:
+      - layout_properties: {column: JKSDUP}
+        name: label_2
+        properties: {text: '1'}
+        type: Label
+      - layout_properties: {column: VJQQOR}
+        name: label_3
+        properties: {text: Blazer}
+        type: Label
+      - layout_properties: {column: OJLQEN}
+        name: label_5
+        properties: {text: Petal & Pup}
+        type: Label
+      - layout_properties: {column: FMSBBK}
+        name: label_6
+        properties: {role: null, text: V1}
+        type: Label
+      - layout_properties: {column: WELSFV}
+        name: label_7
+        properties: {text: Draft}
+        type: Label
+      - layout_properties: {column: OTGCHP}
+        name: label_10
+        properties: {text: 25/10}
+        type: Label
+      - layout_properties: {column: GTYVLP}
+        name: label_11
+        properties: {text: Jon}
+        type: Label
+      - layout_properties: {column: QPCLTQ}
+        name: label_9
+        properties: {text: USD}
+        type: Label
+      - layout_properties: {column: BOBMZH}
+        name: label_8
+        properties: {text: '25'}
+        type: Label
+      name: data_row_panel_1
+      properties: {}
+      type: DataRowPanel
+    - components: []
+      name: data_row_panel_2
+      properties: {}
+      type: DataRowPanel
+    layout_properties: {grid_position: 'LSXVFH,ZVFHGB'}
     name: data_grid_2
     properties:
       columns:
+      - {data_key: column_1, id: LYKNFB, title: Select}
       - {data_key: column_1, id: JKSDUP, title: Doc. ID}
       - {data_key: column_2, id: VJQQOR, title: Style Name}
       - {data_key: column_3, id: OJLQEN, title: Client}
       - {data_key: column_4, id: FMSBBK, title: Version}
       - {data_key: column_5, id: WELSFV, title: Status}
-      - {data_key: column_6, id: QPCLTQ, title: Native Currency}
       - {data_key: column_7, id: BOBMZH, title: 'Total cost:'}
+      - {data_key: column_6, expand: false, id: QPCLTQ, title: Native Currency, width: 101}
       - {data_key: column_8, id: OTGCHP, title: Created date}
       - {data_key: column_9, id: GTYVLP, title: Created By}
     type: DataGrid
@@ -108,7 +136,7 @@ components:
     type: Button
   layout_properties: {grid_position: 'TECQQW,XPGQFK'}
   name: card_costing_sheet_home
-  properties: {col_widths: '{"RPZFHH":55}', role: card}
+  properties: {col_widths: '{}', role: card}
   type: ColumnPanel
 container:
   properties: {col_widths: '{"XPGQFK":60}'}
