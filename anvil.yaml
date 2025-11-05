@@ -328,5 +328,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: creating_cost_sheet_page.a_Basic_information_page.add_currency_rates_item, type: form}
+startup: {module: Home, type: form}
 startup_form: null

@@ -9,6 +9,10 @@ components:
     name: button_create_new_sheet
     properties: {text: Create new sheet}
     type: Button
+  - layout_properties: {grid_position: 'JQKUDD,JLYCDO'}
+    name: button_1
+    properties: {text: Dummy Button}
+    type: Button
   - layout_properties: {grid_position: 'LUNKUE,TZSPCL'}
     name: spacer_2
     properties: {height: 32}
