@@ -5,17 +5,11 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: id
-      type: string
-    - admin_ui: {width: 200}
       name: document_id
       type: string
     - admin_ui: {width: 200}
       name: current_version
       type: number
-    - admin_ui: {width: 200}
-      name: version_history
-      type: string
     - admin_ui: {width: 200}
       name: created_at
       type: datetime
@@ -27,6 +21,12 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
+      type: string
+    - admin_ui: {width: 200}
+      name: current_version_number
+      type: number
+    - admin_ui: {width: 200}
+      name: current_version_uid
       type: string
     server: full
     title: master_material
