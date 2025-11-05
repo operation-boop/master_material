@@ -22,7 +22,7 @@ unique_ids:
     Material_detail.material_sku_rowtemplate: XQPRO2LKNQ2NX6ZM2QATA7LPORVUTDMB
     Material_detail.version_history_itemtemplate: 32KWER7EHLPCCKMWGMCPZFB2R452AKBK
     Material_input_form: '1762246514081760660811976.6614'
-    Material_input_form.ItemTemplate2: CABDMQSLAU5FJZ4W52SWTFVIEWGI7Z7V
+    Material_input_form.Input_forms: CABDMQSLAU5FJZ4W52SWTFVIEWGI7Z7V
     Material_list: '176223201599762412789806.216'
     Material_list.material_list_rowtemplate: '1762232059967980388916894.177'
     Opportunity: '1761391942918616178806726.4047'

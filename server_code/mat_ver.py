@@ -69,17 +69,17 @@ def validate_required_fields(document_id):
   master = get_master_material(document_id)
   current_version = master['current_version']
 
-  missing = [
-    field for field in REQUIRED_FIELDS
-    if not current_version.get(field) or 
-    (isinstance(current_version.get(field), str) and 
-     current_version.get(field).strip() == "")
-  ]
+  missing = []
+  for field in REQUIRED_FIELDS:
+    value = current_version.get(field)
+    # Check if field is None, empty string, or whitespace-only string
+    if value is None or (isinstance(value, str) and value.strip() == ""):
+      missing.append(field)
 
   return {"is_valid": len(missing) == 0, "missing_fields": missing}
 
 # ============================================
-# UTILITY FUNCTIONS (Reduce repetition)
+# UTILITY FUNCTIONS
 # ============================================
 @anvil.server.callable
 def get_master_material(document_id):
@@ -93,51 +93,80 @@ def check_status_transition(current_status, target_status):
   """Validate status transition is allowed"""
   if target_status not in VALID_STATUSES.get(current_status, []):
     raise Exception(
-      f"Cannot transition from {current_status} to {target_status}"
+      f"Cannot transition from {current_status} to {target_status}. " +
+      f"Allowed transitions: {', '.join(VALID_STATUSES.get(current_status, []))}"
     )
 
 # ============================================
 # DRAFT WORKFLOW
 # ============================================
 @anvil.server.callable
-def save_or_edit_draft(document_id, updated_by_user, supplier_value=None):
-  """Combined save/edit draft function - reduces code duplication"""
+def save_or_edit_draft(document_id, updated_by_user, form_data=None):
+  """Combined save/edit draft function - updates all fields from form"""
   master = get_master_material(document_id)
   version = master['current_version']
 
   if version['status'] not in ["Creating", "Draft"]:
     raise Exception(f"Cannot edit. Current status: {version['status']}")
 
-  if supplier_value is not None:
-    version['supplier'] = supplier_value
+  # Update all fields from form data
+  if form_data:
+    updated_fields = []
+    for key, value in form_data.items():
+      if value is not None:  # Only update non-empty fields
+        try:
+          version[key] = value
+          updated_fields.append(key)
+        except Exception as e:
+          print(f"Warning: Could not update field '{key}': {str(e)}")
+
+    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
 
   version['status'] = "Draft"
-  return {"action": "draft_saved", "version": version}
+  version['created_at'] = datetime.now()
+  version['created_by'] = updated_by_user
+
+  return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 # ============================================
 # SUBMISSION WORKFLOW
 # ============================================
 @anvil.server.callable
-def submit_version(document_id, submitted_by_user, supplier_value=None):
-  """Submit document with validation"""
+def submit_version(document_id, submitted_by_user, form_data=None):
+  """Submit document with validation - updates all fields from form"""
   master = get_master_material(document_id)
   version = master['current_version']
 
   check_status_transition(version['status'], "Submitted")
 
-  if supplier_value is not None:
-    version['supplier'] = supplier_value
+  # Update all fields from form data FIRST
+  if form_data:
+    updated_fields = []
+    for key, value in form_data.items():
+      if value is not None:
+        try:
+          version[key] = value
+          updated_fields.append(key)
+        except Exception as e:
+          print(f"Warning: Could not update field '{key}': {str(e)}")
 
-    # Validate BEFORE changing status
+    print(f"Updated {len(updated_fields)} fields before validation")
+
+  # Validate AFTER updating
   validation = validate_required_fields(document_id)
   if not validation['is_valid']:
-    raise Exception(f"Missing: {', '.join(validation['missing_fields'])}")
+    missing_str = ', '.join(validation['missing_fields'])
+    raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
 
+  # Update status and submission info
   version['status'] = "Submitted"
+  version['submitted_at'] = datetime.now()
+  version['submitted_by'] = submitted_by_user
+
   master['submitted_at'] = datetime.now()
   master['submitted_by'] = submitted_by_user
 
-  return version
+  return {"action": "submitted", "version": version, "document_id": document_id}
 
 @anvil.server.callable
 def edit_submitted(document_id, updated_by_user):
@@ -150,19 +179,33 @@ def edit_submitted(document_id, updated_by_user):
   # Validate current version before editing
   validation = validate_required_fields(document_id)
   if not validation['is_valid']:
-    raise Exception(f"Cannot edit. Current version missing: {', '.join(validation['missing_fields'])}")
+    raise Exception(
+      f"Cannot edit. Current version missing: {', '.join(validation['missing_fields'])}"
+    )
 
-    # Get latest version number efficiently
+  # Get latest version number efficiently
   versions = app_tables.master_material_version.search(document_id=document_id)
   latest_num = max((v['ver_num'] for v in versions), default=0)
 
   new_uuid = str(uuid.uuid4())
+
+  # Copy all data from current version to new version
   new_version = app_tables.master_material_version.add_row(
     document_uid=new_uuid,
     document_id=document_id,
     ver_num=latest_num + 1,
-    status="Creating"
+    status="Creating",
+    created_at=datetime.now(),
+    created_by=updated_by_user
   )
+
+  # Copy all fields from previous version
+  for col in version.get_column_names():
+    if col not in ['document_uid', 'document_id', 'ver_num', 'status', 'created_at', 'created_by']:
+      try:
+        new_version[col] = version[col]
+      except:
+        pass
 
   master['current_version'] = new_version
   master['current_version_uid'] = new_uuid
@@ -218,5 +261,4 @@ def get_all_suppliers():
       'ref_id': s['ref_id']
     } for s in suppliers
   ]
-
 
