@@ -1,4 +1,4 @@
-from ._anvil_designer import Form1Template
+from ._anvil_designer import add_currency_rates_itemTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -8,9 +8,11 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-class Form1(Form1Template):
+class add_currency_rates_item(add_currency_rates_itemTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
+
+
     
     item_list_currency_types = []
     for row in app_tables.list_currency_types.search():
@@ -25,18 +27,22 @@ class Form1(Form1Template):
     self.drop_down_created_by.items = item_list_stuff_user
     # Any code you write here will run before the form opens.
 
+
+
+
+  
   def button_add_click(self, **event_args):
     """This method is called when the button is clicked"""
+    date = self.date_picker_currency.date
     from_currency = self.drop_down_from_currency_type.selected_value
     to_currency = self.drop_down_to_currency_type.selected_value
     rate = self.text_box_rate.text
-    date = self.date_picker_currency.date
     created_by = self.drop_down_created_by.selected_value
-    anvil.server.call('add_exchange_data',
+    anvil.server.call('add_exchange_rate_data',
+                      date,
                       from_currency,
                       to_currency,
                       rate,
-                      date,
                       created_by
                       
                       )

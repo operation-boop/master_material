@@ -233,14 +233,8 @@ db_schema:
     - admin_ui: {order: 1, width: 200}
       name: date
       type: date
-    - admin_ui: {order: 2, width: 200}
-      name: from_currency
-      type: string
-    - admin_ui: {order: 3, width: 200}
-      name: to_currency
-      type: string
     - admin_ui: {order: 4, width: 200}
-      name: create_at
+      name: created_at
       type: datetime
     - admin_ui: {order: 6, width: 200}
       name: created_by
@@ -249,6 +243,17 @@ db_schema:
     - admin_ui: {order: 7, width: 200}
       name: manager_defined
       type: simpleObject
+    - admin_ui: {order: 2, width: 200}
+      name: from_currency
+      target: list_currency_types
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: to_currency
+      target: list_currency_types
+      type: link_single
+    - admin_ui: {order: 3.5, width: 200}
+      name: rate
+      type: string
     server: full
     title: tabl_exchange_rate
   tabl_staff_users:
@@ -323,5 +328,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: creating_cost_sheet_page.a_Basic_information_page.Form1, type: form}
+startup: {module: creating_cost_sheet_page.a_Basic_information_page.add_currency_rates_item, type: form}
 startup_form: null

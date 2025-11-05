@@ -36,10 +36,10 @@ components:
   name: column_panel_2
   properties: {}
   type: ColumnPanel
-- layout_properties: {grid_position: 'LAKLLR,RUYLVQ'}
-  name: repeating_panel_1
-  properties: {item_template: creating_cost_sheet_page.a_Basic_information_page.ItemTemplate3}
-  type: RepeatingPanel
+- layout_properties: {grid_position: 'TWWJUB,FVFSJH'}
+  name: column_panel_currency_rate_line
+  properties: {}
+  type: ColumnPanel
 - components:
   - layout_properties: {}
     name: label_18
