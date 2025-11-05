@@ -8,6 +8,9 @@ import anvil.tables.query as q
 from anvil.tables import app_tables, Row
 import anvil.users
 
+
+
+
 from ..Opportunity import Opportunity
 from ..Deal import Deal
 from ..RFQ import RFQ
@@ -16,16 +19,25 @@ from ..QMO import QMO
 from ..SMO import SMO
 from ..Client_list import Client_list
 from ..Style_list import Style_list
+
 from ..Material_list import Material_list
+from ..Costing_sheet_base import Costing_sheet_base
+
+
 
 class Home(HomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
+    self.content_panel.add_component(Costing_sheet_base())
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
 
+
+
+
+
+  
   def link_nav_click(self, **event_args):
     """This method is called when the link is clicked"""
     clicked_link = event_args['sender']
@@ -44,6 +56,8 @@ class Home(HomeTemplate):
       "client": Client_list(),
       "style": Style_list(),
       "material": Material_list(),
+      #Added in my costing sheet
+      "Costing_sheet_group": Costing_sheet_base()
     }
     page = page_registry.get(source)
 
@@ -64,6 +78,9 @@ class Home(HomeTemplate):
     self.link_client.role = "<default>"
     self.link_style.role = "<default>"
     self.link_material.role = "<default>"
+    #added my own Costing Sheet
+    self.link_costing_sheet.role = "<default>"
+    
 
 
   def format_link_role_to_selected(self, clicked_link):
@@ -71,7 +88,9 @@ class Home(HomeTemplate):
       "opportunity_group": self.link_opportunity,
       "request_group": self.link_rfq,
       "order_group": self.link_qmo,
-      "master_data_group": self.link_client
+      "master_data_group": self.link_client,
+      #Costing Sheet
+      "Costing_sheet_group": self.link_costing_sheet
     }
     default_group_link = group_default_link_registry.get(clicked_link.tag)
     if default_group_link:
@@ -86,7 +105,9 @@ class Home(HomeTemplate):
     print(isinstance(anvil.users.get_user(), app_tables.users.Row))
     """
     group_container_registry = {
-      "opportunity_group": self.column_panel_group_opporunity,
+      # added in my costing sheet group
+      "costing_sheet_group": self.column_panel_group_costing_sheet,
+      "opportunity_group": self.column_panel_group_opportunity,
       "request_group": self.column_panel_group_request,
       "order_group": self.column_panel_group_order,
       "master_data_group": self.column_panel_group_master_data
