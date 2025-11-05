@@ -4,6 +4,11 @@ components:
     name: headline_1
     properties: {bold: true, role: headline, text: Create New Material}
     type: Label
+  - event_bindings: {click: close_btn_click}
+    layout_properties: {grid_position: 'VNRYPC,ZITWFF'}
+    name: close_btn
+    properties: {align: right, icon: 'fa:close', text: ''}
+    type: Button
   - components:
     - data_bindings: []
       layout_properties: {grid_position: 'PWGNXB,QYVPUT'}
@@ -311,14 +316,14 @@ components:
         name: landed_cost
         properties: {}
         type: Label
-      - layout_properties: {grid_position: 'WVPAWD,BJYCHD'}
-        name: spacer_4
-        properties: {height: 32}
-        type: Spacer
       layout_properties: {grid_position: 'YJNOHF,BNWBQK'}
       name: card_2
       properties: {col_widths: '{}', role: card}
       type: ColumnPanel
+    - layout_properties: {grid_position: 'AWARGL,HHFTCH'}
+      name: spacer_4
+      properties: {height: 32}
+      type: Spacer
     - layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
       name: cancel_btn
       properties: {align: left, background: 'theme:Gray 600', foreground: 'theme:White', role: null, text: Cancel}
@@ -341,7 +346,7 @@ components:
     type: ColumnPanel
   layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
   name: column_panel_1
-  properties: {}
+  properties: {col_widths: '{"XXGYGL":55,"ZITWFF":5}'}
   type: ColumnPanel
 container: {type: ColumnPanel}
 is_package: true

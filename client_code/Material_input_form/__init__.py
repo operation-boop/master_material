@@ -14,3 +14,8 @@ class Material_input_form(Material_input_formTemplate):
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+
+  def close_btn_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    self.raise_event("x-close-alert")
+
