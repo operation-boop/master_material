@@ -22,7 +22,6 @@ class Material_input_form(Material_input_formTemplate):
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
-    self.current_document_id = None
 
 
     # all_materials = anvil.server.call('get_all_materials') 
@@ -138,10 +137,12 @@ class Material_input_form(Material_input_formTemplate):
     self.landed_cost.text = str(landed_cost)
 
   def save_as_draft_btn_click(self, **event_args):
+    if not self.current_document_id:
+      Notification("Please create a material first!", style="warning", timeout=3).show()
+      return
+
     supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
-    anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', supplier)
-    Notification.show_inline("Draft saved!", 3)
-    
+
   def submit_btn_click(self, **event_args):
     supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
     anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', supplier)
