@@ -100,18 +100,25 @@ components:
         name: label_8
         properties: {text: '25'}
         type: Label
+      - layout_properties: {column: QECZPX}
+        name: button_3
+        properties: {text: View}
+        type: Button
+      - layout_properties: {column: KNEWTO}
+        name: button_4
+        properties: {text: Edit}
+        type: Button
+      - layout_properties: {column: EMHIHV}
+        name: button_5
+        properties: {text: Delete}
+        type: Button
       name: data_row_panel_1
-      properties: {}
-      type: DataRowPanel
-    - components: []
-      name: data_row_panel_2
       properties: {}
       type: DataRowPanel
     layout_properties: {grid_position: 'LSXVFH,ZVFHGB'}
     name: data_grid_2
     properties:
       columns:
-      - {data_key: column_1, id: LYKNFB, title: Select}
       - {data_key: column_1, id: JKSDUP, title: Doc. ID}
       - {data_key: column_2, id: VJQQOR, title: Style Name}
       - {data_key: column_3, id: OJLQEN, title: Client}
@@ -121,19 +128,10 @@ components:
       - {data_key: column_6, expand: false, id: QPCLTQ, title: Native Currency, width: 101}
       - {data_key: column_8, id: OTGCHP, title: Created date}
       - {data_key: column_9, id: GTYVLP, title: Created By}
+      - {data_key: column_1, id: QECZPX, title: ''}
+      - {data_key: column_2, id: KNEWTO, title: ''}
+      - {data_key: column_3, id: EMHIHV, title: ''}
     type: DataGrid
-  - layout_properties: {grid_position: 'FGTLRA,YMMLGR'}
-    name: button_3
-    properties: {text: View}
-    type: Button
-  - layout_properties: {grid_position: 'FGTLRA,NHWEBD'}
-    name: button_4
-    properties: {text: Edit}
-    type: Button
-  - layout_properties: {grid_position: 'FGTLRA,XEFMVX'}
-    name: button_5
-    properties: {text: Delete}
-    type: Button
   layout_properties: {grid_position: 'TECQQW,XPGQFK'}
   name: card_costing_sheet_home
   properties: {col_widths: '{}', role: card}

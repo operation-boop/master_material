@@ -9,15 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 from .Creating_cost_sheet_page import Creating_cost_sheet_page
 from anvil_extras import augment
-from RowTemplateTemplate import RowTemplateTemplate
 
-class RowTemplate(RowTemplateTemplate):
-  def __init__(self, **properties):
-    ...
-    augment.set_event_handler(self, 'click', self.row_click)
-
-  def row_click(self, **event_args):
-    print("row clicked")
     
 class Costing_sheet_home(Costing_sheet_homeTemplate):
   def __init__(self, **properties):
