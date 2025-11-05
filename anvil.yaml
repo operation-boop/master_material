@@ -19,10 +19,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: submitted_by
       type: string
-    - admin_ui: {order: -1.875, width: 200}
-      name: current_version
-      target: master_material_version
-      type: link_single
     - admin_ui: {order: -1.75, width: 200}
       name: current_version_uid
       type: string
@@ -36,6 +32,9 @@ db_schema:
     - admin_ui: {width: 200}
       name: document_id
       type: string
+    - admin_ui: {width: 200}
+      name: current_version
+      type: number
     server: full
     title: master_material
   master_material_version:
