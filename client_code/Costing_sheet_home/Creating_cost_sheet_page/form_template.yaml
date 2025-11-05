@@ -12,8 +12,9 @@ components:
     name: spacer_1
     properties: {height: 32}
     type: Spacer
-  - layout_properties: {grid_position: 'THRFJH,OKXVKN'}
-    name: button_1
+  - event_bindings: {click: button_cancel_create_cost_sheet_click}
+    layout_properties: {grid_position: 'THRFJH,OKXVKN'}
+    name: button_cancel_create_cost_sheet
     properties: {text: Cancel}
     type: Button
   - layout_properties: {grid_position: 'THRFJH,DCQPTV'}
@@ -30,7 +31,7 @@ components:
     type: Spacer
   - layout_properties: {grid_position: 'ZXNWJF,CHWXMQ'}
     name: radio_button_1
-    properties: {align: center, bold: false, selected: true, text: Basic Information, visible: true}
+    properties: {align: center, bold: false, text: Basic Information, visible: true}
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,EZKMST'}
     name: radio_button_2
@@ -46,10 +47,14 @@ components:
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,OHOOPG'}
     name: radio_button_5
-    properties: {selected: true, text: Profit Scenario}
+    properties: {text: Profit Scenario}
     type: RadioButton
-  layout_properties: {grid_position: 'FDQEPU,UKNALZ'}
+  layout_properties: {grid_position: 'TZRMCP,SOGCHE'}
   name: column_panel_1
+  properties: {}
+  type: ColumnPanel
+- layout_properties: {grid_position: 'GUQPSB,FYRTHD'}
+  name: column_panel_2
   properties: {}
   type: ColumnPanel
 container: {type: ColumnPanel}

@@ -1,0 +1,134 @@
+components:
+- components:
+  - layout_properties: {grid_position: 'YFYZTX,OGOCZM'}
+    name: label_1
+    properties: {text: Tier 2}
+    type: Label
+  - layout_properties: {grid_position: 'FUSBJF,RMNVAL TSQARA,DSKHTD'}
+    name: label_2
+    properties: {text: Import duty}
+    type: Label
+  - layout_properties: {grid_position: 'FUSBJF,RMNVAL KIXQPD,MTDYOK'}
+    name: label_5
+    properties: {text: No.}
+    type: Label
+  - layout_properties: {grid_position: 'FUSBJF,MXBUXA YVBNEO,QMUBWF'}
+    name: label_3
+    properties: {text: VAT.}
+    type: Label
+  - layout_properties: {grid_position: 'FUSBJF,MXBUXA QHKNGO,JFQPUG'}
+    name: label_5_copy
+    properties: {text: No.}
+    type: Label
+  - layout_properties: {grid_position: 'FUSBJF,VGQKRX EJNEGT,LHRZDD'}
+    name: label_4
+    properties: {text: Delivery}
+    type: Label
+  - layout_properties: {grid_position: 'FUSBJF,VGQKRX DXEZFW,UBDZXA'}
+    name: label_5_copy_2
+    properties: {text: No.}
+    type: Label
+  layout_properties: {grid_position: 'SZGYEI,LAYZID'}
+  name: card_1
+  properties: {role: card}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'YTFJHY,CNBJKK'}
+    name: label_6
+    properties: {text: Tier 3}
+    type: Label
+  - components:
+    - components:
+      - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
+        name: label_3_copy
+        properties: {text: Name}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
+        name: label_4_copy
+        properties: {text: Cost type}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
+        name: label_5_copy_3
+        properties: {text: Cost amount}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
+        name: label_6_copy
+        properties: {text: Cost Currency}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
+        name: label_9
+        properties: {text: Description}
+        type: Label
+      layout_properties: {grid_position: 'PGMGAZ,CFHDUV'}
+      name: column_panel_Template
+      properties: {col_widths: '{"VRAFVF":9,"KCBPNX":9,"EHUQAU":4,"IVDYNX":8,"FWSDPQ":10}'}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
+        name: label_3_copy_copy
+        properties: {text: Name}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
+        name: label_4_copy_copy
+        properties: {text: Cost type}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
+        name: label_5_copy_3_copy
+        properties: {text: Cost amount}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
+        name: label_6_copy_copy
+        properties: {text: Cost Currency}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
+        name: label_9_copy
+        properties: {text: Description}
+        type: Label
+      layout_properties: {grid_position: 'UOBEWD,UVYUSF'}
+      name: column_panel_Template_copy
+      properties: {col_widths: '{"VRAFVF":9,"KCBPNX":9,"EHUQAU":4,"IVDYNX":8,"FWSDPQ":10,"FBACLD":5}'}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'FPPYNR,TRAPUF'}
+        name: button_add_more_tier_3_column
+        properties: {text: Add More}
+        type: Button
+      layout_properties: {grid_position: 'BUGKHU,XLQMPS'}
+      name: column_panel_2_copy_copy
+      properties: {}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'RRGKGT,AXDRTQ'}
+    name: column_panel_2_copy
+    properties: {}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'WUUSQD,GADEIS'}
+  name: card_2
+  properties: {role: card}
+  type: ColumnPanel
+- components:
+  - layout_properties: {}
+    name: label_18
+    properties: {text: 'Last Saved: Never (New Doc.)'}
+    type: Label
+  - layout_properties: {width: 372}
+    name: spacer_3
+    properties: {height: 32}
+    type: Spacer
+  - layout_properties: {}
+    name: button_5
+    properties: {text: Cancel}
+    type: Button
+  - layout_properties: {}
+    name: button_5_copy
+    properties: {text: Draft}
+    type: Button
+  - layout_properties: {}
+    name: button_5_copy_2
+    properties: {text: Submit for Review}
+    type: Button
+  layout_properties: {grid_position: 'HWVPGM,YDSJHH'}
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
+container: {type: ColumnPanel}
+is_package: true
