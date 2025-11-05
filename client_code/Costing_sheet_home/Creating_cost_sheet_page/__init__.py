@@ -22,4 +22,4 @@ class Creating_cost_sheet_page(Creating_cost_sheet_pageTemplate):
     """This method is called when the button is clicked"""
     self.card_costing_sheet_base.clear()
     self.card_costing_sheet_base.add_component(Costing_sheet_base())
-    self.card_costing_sheet_base.add_component(Costing_sheet_home())
+
