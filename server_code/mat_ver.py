@@ -8,14 +8,14 @@ def create_new_master_material(created_by_user):
   new_uuid = str(uuid.uuid4())
   next_doc_number = get_next_document_number()
   document_id = f"vin_mmat_{next_doc_number:04d}"
-  
+
   master_material_version = app_tables.master_material_verison.add_row(
     document_uid=new_uuid,
     document_id=document_id,
     ver_num=1,
     status="Draft"
   )
-  
+
   master_material = app_tables.master_material.add_row(
     version_history_uid=new_uuid,
     created_at=datetime.now(),
@@ -31,50 +31,52 @@ def create_new_master_material(created_by_user):
   return master_material
 
 @anvil.server.callable
-def create_new_version(existing_document_id): 
- master_materials  = app_tables.master_material_verison.search(document_id=existing_document_id) ## check for the existing document id for existing version
+def create_new_version(existing_document_id, created_by_user): 
+  master_materials  = app_tables.master_material_verison.search(document_id=existing_document_id) ## check for the existing document id for existing version
   if not master_materials:
     raise Exception("Document not found")
 
   master_material = master_materials[0]
 
-  
-  latest_version = max(existing_versions, key=lambda x: x['ver_num']) 
+  existing_versions = app_tables.master_material_verison.search(document_id=existing_document_id)
+  latest_version = max(existing_versions, key=lambda x: x['ver_num'])
   new_version_num = latest_version['ver_num'] + 1
   new_uuid = str(uuid.uuid4())
+
   new_version = app_tables.master_material_verison.add_row(
     document_uid=new_uuid,
     document_id=existing_document_id,
     ver_num=new_version_num,
     status="Draft"
   )
-
-  return new_version
-
+  master_material['current_version'] = new_version
+  master_material['current_version_uid'] = new_uuid
+  master_material['current_version_number'] = new_version_num
+  
 @anvil.server.callable
 def get_next_document_number():
   all_documents = app_tables.master_material_verison.search()
-  if not all_documents:
-    return 1
+if not all_documents:
+  return 1
   max_number = 0
-  for doc in all_documents:
-    document_id = doc['document_id']
-    if document_id and document_id.startswith('vin_mmat_'):
-      try:
-        number_part = document_id.replace('vin_mmat_', '')
-        doc_number = int(number_part)
-        max_number = max(max_number, doc_number)
-      except ValueError:
-        continue
+for doc in all_documents:
+  document_id = doc['document_id']
+  if document_id and document_id.startswith('vin_mmat_'):
+    try:
+      number_part = document_id.replace('vin_mmat_', '')
+      doc_number = int(number_part)
+      max_number = max(max_number, doc_number)
+    except ValueError:
+      continue
   return max_number + 1
 
 @anvil.server.callable
 def get_material_versions(document_id):
   versions = app_tables.master_material_verison.search(document_id=document_id)
-  return sorted(versions, key=lambda x: x['ver_num'])
+return sorted(versions, key=lambda x: x['ver_num'])
 
 @anvil.server.callable
 def get_latest_version(document_id):
   versions = get_material_versions(document_id)
-  return versions[-1] if versions else None
+return versions[-1] if versions else None
 
