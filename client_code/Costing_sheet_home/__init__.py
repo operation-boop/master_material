@@ -19,5 +19,5 @@ class Costing_sheet_home(Costing_sheet_homeTemplate):
 
   def button_create_new_sheet_click(self, **event_args):
     """This method is called when the button is clicked"""
-    self.card_costing_sheet_base.clear()
+    self.card_costing_sheet_home.clear()
     self.card_costing_sheet_base.add_component(Creating_cost_sheet_page())
