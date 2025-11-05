@@ -34,20 +34,22 @@ components:
     name: radio_button_basic_information
     properties: {align: center, bold: false, text: Basic Information, visible: true}
     type: RadioButton
-  - layout_properties: {grid_position: 'ZXNWJF,EZKMST'}
+  - event_bindings: {change: radio_button_bill_of_material_clicked}
+    layout_properties: {grid_position: 'ZXNWJF,EZKMST'}
     name: radio_button_bill_of_material
     properties: {selected: false, text: Bill of Material}
     type: RadioButton
-  - layout_properties: {grid_position: 'ZXNWJF,LKUUFP'}
+  - event_bindings: {clicked: radio_button_processing_cost_clicked}
+    layout_properties: {grid_position: 'ZXNWJF,LKUUFP'}
     name: radio_button_processing_cost
     properties: {text: Processing Cost}
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,KHYLFQ'}
-    name: radio_button_4
+    name: radio_button_overhead_cost
     properties: {text: Overhead cost}
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,OHOOPG'}
-    name: radio_button_5
+    name: radio_button_profit_scenario
     properties: {text: Profit Scenario}
     type: RadioButton
   layout_properties: {grid_position: 'TZRMCP,SOGCHE'}
