@@ -17,7 +17,3 @@ class Costing_sheet_base(Costing_sheet_baseTemplate):
     self.card_costing_sheet_base.add_component(Costing_sheet_home())
     # Any code you write here will run before the form opens.
 
-  def button_create_new_sheet_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    self.card_costing_sheet_base.clear()
-    self.card_costing_sheet_base.add_component()
