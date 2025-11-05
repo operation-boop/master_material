@@ -33,9 +33,6 @@ def create_new_master_material(created_by_user):
 
   return master_material
 
-# ============================================
-# check for the next document number
-# ============================================
 @anvil.server.callable
 def get_next_document_number():
 

@@ -137,13 +137,16 @@ class Material_input_form(Material_input_formTemplate):
     self.landed_cost.text = str(landed_cost)
 
   def save_as_draft_btn_click(self, **event_args):
-    """Changes status to 'Draft' (same version)"""
+    def btn_save_draft_click(self, **event_args):
+      """Changes status to 'Draft' (same version)"""
     if not self.current_document_id:
       alert("Please create a material first!")
       return
-    supplier_value = self.supplier_dropdown or ""
-    anvil.server.call('update_supplier_field', self.current_document_id, supplier_value)
-    
+
+    supplier_value = self.dropdown_supplier.selected_value
+    if supplier_value:
+      anvil.server.call('update_supplier_field', self.current_document_id, supplier_value['supplier_name'])
+
   def submit_btn_click(self, **event_args):
     """Submits current version - VALIDATES supplier is required"""
     if not self.current_document_id:
@@ -161,6 +164,14 @@ class Material_input_form(Material_input_formTemplate):
   
     except Exception as e:
       alert(f"❌ Submission failed:\n{str(e)}")
+
+  def cancel_btn_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    pass
+
+  def dropdown_supplier_change(self, **event_args):
+    """This method is called when an item is selected"""
+    pass
 
 
 

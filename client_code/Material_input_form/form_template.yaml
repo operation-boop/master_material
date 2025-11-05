@@ -42,9 +42,9 @@ components:
           spacing_above: small
           spacing_below: small
         type: RichText
-      - event_bindings: {change: supplier_dropdown_change}
+      - event_bindings: {change: dropdown_supplier_change}
         layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
-        name: supplier_dropdown
+        name: dropdown_supplier
         properties: {include_placeholder: true, placeholder: Select Supplier}
         type: DropDown
       - layout_properties: {grid_position: 'OCMARJ,YPSQAW'}
@@ -397,7 +397,8 @@ components:
       name: spacer_4
       properties: {height: 32}
       type: Spacer
-    - layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
+    - event_bindings: {click: cancel_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
       name: cancel_btn
       properties: {align: left, background: 'theme:Gray 600', foreground: 'theme:White', role: null, text: Cancel}
       type: Button
@@ -406,7 +407,7 @@ components:
       properties: {}
       type: ColumnPanel
     - event_bindings: {click: save_as_draft_btn_click}
-      layout_properties: {grid_position: 'FRMLPJ,VCSADV'}
+      layout_properties: {grid_position: 'FRMLPJ,JXABZO'}
       name: save_as_draft_btn
       properties: {align: right, background: orange, foreground: 'theme:White', role: null, text: SAve as draft}
       type: Button
@@ -417,7 +418,7 @@ components:
       type: Button
     layout_properties: {grid_position: 'UCHAOH,WTQRTI'}
     name: card_1
-    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
+    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
     type: ColumnPanel
   layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
   name: column_panel_1

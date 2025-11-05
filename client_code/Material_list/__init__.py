@@ -37,14 +37,17 @@ class Material_list(Material_listTemplate):
       alert("Please select a material first.")
 
   def add_btn_click(self, **event_args):
-    """This method is called when the button is clicked"""
+    """Creates new material with 'Creating' status"""
+    result = anvil.server.call('create_new_master_material', 'test_user@example.com')
+    self.current_document_id = result['document_id']
+   
     from ..Material_input_form import Material_input_form
-
     popup = Material_input_form()
-  
+
     alert(
       content=popup,
       title=None,
       large=True,
       buttons=None 
+
     )
