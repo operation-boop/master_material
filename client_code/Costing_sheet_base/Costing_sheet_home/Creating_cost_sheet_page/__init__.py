@@ -12,7 +12,7 @@ from .b_Bom_page import b_Bom_page
 from .c_Processing_cost import c_Processing_cost
 from .d_Overhead_cost import d_Overhead_cost
 from .e_Profit_scenarios import e_Profit_scenarios
-
+from Costing_sheet_home
 
 #from costing import Costing_sheet_home
 
@@ -24,8 +24,8 @@ class Creating_cost_sheet_page(Creating_cost_sheet_pageTemplate):
 
   def button_cancel_create_cost_sheet_click(self, **event_args):
     """This method is called when the button is clicked"""
-    self.card_costing_sheet_base.clear()
-    self.card_costing_sheet_base.add_component(Costing_sheet_base())
+    #self.card_costing_sheet_base.clear()
+    #self.card_costing_sheet_base.add_component(Costing_sheet_base())
 
     self.parent.card_costing_sheet_base.clear() 
     self.parent.card_costing_sheet_base.add_component(Costing_sheet_home())
