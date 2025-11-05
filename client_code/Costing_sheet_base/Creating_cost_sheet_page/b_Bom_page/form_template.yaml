@@ -34,11 +34,11 @@ components:
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,EZKMST'}
     name: radio_button_2
-    properties: {selected: false, text: Bill of Material}
+    properties: {selected: true, text: Bill of Material}
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,LKUUFP'}
     name: radio_button_3
-    properties: {selected: true, text: Processing Cost}
+    properties: {text: Processing Cost}
     type: RadioButton
   - layout_properties: {grid_position: 'ZXNWJF,KHYLFQ'}
     name: radio_button_4
@@ -48,48 +48,48 @@ components:
     name: radio_button_5
     properties: {text: Profit Scenario}
     type: RadioButton
-  layout_properties: {grid_position: 'SJOFRS,ROLLYQ'}
+  layout_properties: {grid_position: 'CLWWOE,TVHCAK'}
   name: column_panel_1
   properties: {}
   type: ColumnPanel
+- layout_properties: {grid_position: 'XRDRNP,GKOVUJ'}
+  name: label_1
+  properties: {text: Bill of materials}
+  type: Label
+- layout_properties: {grid_position: 'XRDRNP,GKOVUJ'}
+  name: label_2
+  properties: {role: text, text: 'Warning Label: Ensure all required fields are filled, or flagged'}
+  type: Label
 - components:
   - components:
-    - layout_properties: {grid_position: 'BPUXUY,GFIRYL'}
-      name: label_1
-      properties: {text: Processing Cost}
-      type: Label
-    - layout_properties: {grid_position: 'JJJYYP,KHOAQM'}
-      name: label_2
-      properties: {role: text, text: 'Warning Label: Ensure all required fields are filled, or will be flagged'}
-      type: Label
     - components:
       - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
         name: label_3
-        properties: {text: Cost type}
+        properties: {text: Master Material name}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
         name: label_4
-        properties: {text: Cost amount}
+        properties: {text: Material SKU (Optional)}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
         name: label_5
-        properties: {text: Cost Currency}
+        properties: {text: Material Type}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
         name: label_6
-        properties: {text: Status}
+        properties: {text: Gross Consumption}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,WAIHTG'}
         name: label_7
-        properties: {text: Vendor}
+        properties: {text: 'Selling Tolerance '}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
         name: label_8
-        properties: {text: Vendor Name}
+        properties: {text: Display (net_selling_consumption)}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
         name: label_9
-        properties: {text: Description}
+        properties: {text: Material Cost in native}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
         name: label_10
@@ -97,74 +97,61 @@ components:
         type: Label
       layout_properties: {grid_position: 'PGMGAZ,CFHDUV'}
       name: column_panel_3
-      properties: {col_widths: '{"VRAFVF":9,"KCBPNX":9,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":7,"FWSDPQ":10,"FBACLD":5}'}
+      properties: {col_widths: '{"VRAFVF":8,"KCBPNX":8,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":12,"FWSDPQ":5,"FBACLD":5,"UHZAHA":2}'}
       type: ColumnPanel
-    layout_properties: {grid_position: 'OTLKWR,PBOPSQ'}
-    name: column_panel_2_copy
-    properties: {}
-    type: ColumnPanel
-  - layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
-    name: button_4
-    properties: {text: Add More}
-    type: Button
-  - components:
-    - layout_properties: {grid_position: 'BPUXUY,GFIRYL'}
-      name: label_1_copy
-      properties: {text: Processing Cost}
-      type: Label
-    - layout_properties: {grid_position: 'JJJYYP,KHOAQM'}
-      name: label_2_copy
-      properties: {role: text, text: 'Warning Label: Ensure all required fields are filled, or will be flagged'}
-      type: Label
     - components:
       - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
         name: label_3_copy
-        properties: {text: Cost type}
+        properties: {text: Master Material name}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
         name: label_4_copy
-        properties: {text: Cost amount}
+        properties: {text: Material SKU (Optional)}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
         name: label_5_copy
-        properties: {text: Cost Currency}
+        properties: {text: Material Type}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
         name: label_6_copy
-        properties: {text: Status}
+        properties: {text: Gross Consumption}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,WAIHTG'}
         name: label_7_copy
-        properties: {text: Vendor}
+        properties: {text: 'Selling Tolerance '}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
         name: label_8_copy
-        properties: {text: Vendor Name}
+        properties: {text: Display (net_selling_consumption)}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
         name: label_9_copy
-        properties: {text: Description}
+        properties: {text: Material Cost in native}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
         name: label_10_copy
         properties: {text: Cost In USD}
         type: Label
-      layout_properties: {grid_position: 'PGMGAZ,CFHDUV'}
+      layout_properties: {grid_position: 'AUJLZU,PYHSWW'}
       name: column_panel_3_copy
-      properties: {col_widths: '{"VRAFVF":9,"KCBPNX":9,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":7,"FWSDPQ":10,"FBACLD":5}'}
+      properties: {col_widths: '{"VRAFVF":8,"KCBPNX":8,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":12,"FWSDPQ":5,"FBACLD":5,"UHZAHA":2}'}
       type: ColumnPanel
-    layout_properties: {grid_position: 'XNQWAU,RDLJHK'}
-    name: column_panel_2_copy_copy
+    layout_properties: {grid_position: 'OTLKWR,PBOPSQ'}
+    name: column_panel_2
     properties: {}
     type: ColumnPanel
-  layout_properties: {grid_position: 'QNTBKZ,TGMSJS'}
+  layout_properties: {grid_position: 'YYYSZE,TXIAJG'}
   name: column_panel_4
   properties: {}
   type: ColumnPanel
+- layout_properties: {grid_position: 'YJMFJZ,KEQOIO'}
+  name: button_4
+  properties: {text: Add More}
+  type: Button
 - components:
   - layout_properties: {grid_position: 'OSJFIL,RDHRSK'}
     name: label_11
-    properties: {text: Processing Cost Summary}
+    properties: {text: Bill of material Summary}
     type: Label
   - layout_properties: {grid_position: 'MVKBIM,JUQFZL'}
     name: label_12
@@ -176,21 +163,13 @@ components:
     type: Label
   - layout_properties: {grid_position: 'QRTGMZ,QNMXOP'}
     name: label_14
-    properties: {}
+    properties: {text: More Information}
     type: Label
   - layout_properties: {grid_position: 'QRTGMZ,KCCQIX'}
     name: label_15
-    properties: {}
+    properties: {text: No.}
     type: Label
-  - layout_properties: {grid_position: 'ZTYLVB,XIDJJD'}
-    name: label_16
-    properties: {}
-    type: Label
-  - layout_properties: {grid_position: 'ZTYLVB,HBRTEV'}
-    name: label_17
-    properties: {}
-    type: Label
-  layout_properties: {grid_position: ''}
+  layout_properties: {grid_position: 'GDDPJK,HANSXR'}
   name: column_panel_6
   properties: {}
   type: ColumnPanel
@@ -215,9 +194,11 @@ components:
     name: button_5_copy_2
     properties: {text: Submit for Review}
     type: Button
-  layout_properties: {grid_position: 'PTRTUL,PJVNEO'}
+  layout_properties: {grid_position: 'INOZYP,FMWOCF'}
   name: flow_panel_1
   properties: {}
   type: FlowPanel
-container: {type: ColumnPanel}
+container:
+  properties: {col_widths: '{"TXIAJG":60}'}
+  type: ColumnPanel
 is_package: true

@@ -1,4 +1,4 @@
-from ._anvil_designer import Bom_pageTemplate
+from ._anvil_designer import Tier_2_breakdownTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -8,8 +8,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-
-class Bom_page(Bom_pageTemplate):
+class Tier_2_breakdown(Tier_2_breakdownTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
