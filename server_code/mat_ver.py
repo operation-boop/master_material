@@ -4,26 +4,26 @@ import uuid
 
 @anvil.server.callable
 def create_new_master_material():
-  """Create a brand new master material with version 1"""
   new_uuid = str(uuid.uuid4())
   next_doc_number = get_next_document_number()
   doc_id = f"vin_mmat_{next_doc_number:04d}"
-  new_document = app_tables.master_material_verison.add_row(
+  
+  master_material = app_tables.master_material_verison.add_row(
     id=new_uuid,
     doc_id=doc_id,
     ver_num=1,
     status="Draft"
   )
-  return new_document
+  return master_material
+  
 
 @anvil.server.callable
-def create_new_version(existing_doc_id):
-  """Create a new version of an existing master material"""
-  existing_versions = app_tables.master_material_verison.search(doc_id=existing_doc_id)
+def create_new_version(existing_doc_id): 
+  existing_versions = app_tables.master_material_verison.search(doc_id=existing_doc_id) ## check for the existing document id for existing version
   if not existing_versions:
     raise Exception("Document not found")
 
-  latest_version = max(existing_versions, key=lambda x: x['ver_num'])
+  latest_version = max(existing_versions, key=lambda x: x['ver_num']) 
   new_version_num = latest_version['ver_num'] + 1
   new_uuid = str(uuid.uuid4())
   new_version = app_tables.master_material_verison.add_row(

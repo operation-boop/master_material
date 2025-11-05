@@ -28,6 +28,10 @@ db_schema:
     - admin_ui: {width: 200}
       name: submitted_by
       type: string
+    - admin_ui: {order: -1, width: 200}
+      name: Column9
+      target: master_material_verison
+      type: link_single
     server: full
     title: master_material
   master_material_verison:
