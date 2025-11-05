@@ -8,6 +8,30 @@ components:
     name: label_style_name
     properties: {}
     type: Label
+  - layout_properties: {}
+    name: label_client
+    properties: {}
+    type: Label
+  - layout_properties: {}
+    name: label_version
+    properties: {}
+    type: Label
+  - layout_properties: {}
+    name: label_status
+    properties: {}
+    type: Label
+  - layout_properties: {}
+    name: label_total_cost
+    properties: {}
+    type: Label
+  - layout_properties: {}
+    name: label_native_currency
+    properties: {}
+    type: Label
+  - layout_properties: {}
+    name: label_create_date
+    properties: {}
+    type: Label
   layout_properties: {grid_position: 'MCBDQV,WEQVWG'}
   name: flow_panel_1
   properties: {}
