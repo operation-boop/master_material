@@ -245,10 +245,7 @@ db_schema:
       type: datetime
     server: full
     title: Users
-dependencies:
-- dep_id: dep_cwzvztqfr9rdy
-  resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
-  version: {version_tag: v3.5.0}
+dependencies: []
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material
 native_deps:

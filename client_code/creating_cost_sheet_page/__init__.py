@@ -1,4 +1,4 @@
-from ._anvil_designer import Creating_cost_sheet_pageTemplate
+from ._anvil_designer import creating_cost_sheet_pageTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -14,27 +14,19 @@ from .d_Overhead_cost import d_Overhead_cost
 from .e_Profit_scenarios import e_Profit_scenarios
 
 
-class Creating_cost_sheet_page(Creating_cost_sheet_pageTemplate):
-  def __init__(self, clear_fn=None, **properties):
+
+class creating_cost_sheet_page(creating_cost_sheet_pageTemplate):
+  def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.clear_fn = clear_fn
-
-#  def button_cancel_create_cost_sheet_click(self, **event_args):
-#    """This method is called when the button is clicked"""
-#    self.card_costing_sheet_base.clear()
-#   self.card_costing_sheet_base.add_component(Costing_sheet_base())
 
   def button_cancel_create_cost_sheet_click(self, **event_args):
-    """Called when button is clicked"""
-    if self.clear_fn:
-      self.clear_fn()  # Call the parent's function
-    else:
-      alert("No clear function provided")  # For debugging
-
-
-
-
+    """This method is called when the button is clicked"""
+    from ..costing_sheet_home import costing_sheet_home
+    from ..costing_sheet_base import costing_sheet_base
+    base = get_open_form().content_panel.get_components()[0]
+    base.card_costing_sheet_base.clear()
+    base.card_costing_sheet_base.add_component(costing_sheet_home())
 
 
 
@@ -48,6 +40,7 @@ class Creating_cost_sheet_page(Creating_cost_sheet_pageTemplate):
 
 
   
+
   def radio_button_basic_information_change(self, **event_args):
     """This method is called when this radio button is selected (but not deselected)"""
     self.column_panel_information.clear()
@@ -72,7 +65,4 @@ class Creating_cost_sheet_page(Creating_cost_sheet_pageTemplate):
     """This method is called when this radio button is selected (but not deselected)"""
     self.column_panel_information.clear()
     self.column_panel_information.add_component(e_Profit_scenarios())
-  
-
-    
 
