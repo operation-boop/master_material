@@ -1,6 +1,14 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
+  list_currency_types:
+    client: search
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: types
+      type: string
+    server: full
+    title: list_currency_types
   master_material:
     client: none
     columns:
@@ -216,6 +224,46 @@ db_schema:
       type: string
     server: full
     title: Supplier
+  tabl_exchange_rate:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: date
+      type: date
+    - admin_ui: {order: 2, width: 200}
+      name: from_currency
+      type: string
+    - admin_ui: {order: 3, width: 200}
+      name: to_currency
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: create_at
+      type: datetime
+    - admin_ui: {order: 6, width: 200}
+      name: created_by
+      target: tabl_staff_users
+      type: link_single
+    - admin_ui: {order: 7, width: 200}
+      name: manager_defined
+      type: simpleObject
+    server: full
+    title: tabl_exchange_rate
+  tabl_staff_users:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: Staff
+      type: string
+    server: full
+    title: tabl_staff_users
+  table_9:
+    client: none
+    columns: []
+    server: full
+    title: Table 9
   users:
     client: none
     columns:
@@ -275,5 +323,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: creating_cost_sheet_page.a_Basic_information_page.Form1, type: form}
 startup_form: null

@@ -20,10 +20,26 @@ components:
     name: spacer_4
     properties: {height: 32}
     type: Spacer
+  - layout_properties: {grid_position: 'HXRAYB,VAWVDX'}
+    name: label_3
+    properties: {text: Exchange Rate}
+    type: Label
+  - layout_properties: {grid_position: 'HXRAYB,METMTN'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - layout_properties: {grid_position: 'HXRAYB,NOANPI'}
+    name: button_1
+    properties: {text: Add Exchange rate}
+    type: Button
   layout_properties: {grid_position: 'ZPJPSN,HNVRXB'}
   name: column_panel_2
   properties: {}
   type: ColumnPanel
+- layout_properties: {grid_position: 'LAKLLR,RUYLVQ'}
+  name: repeating_panel_1
+  properties: {item_template: creating_cost_sheet_page.a_Basic_information_page.ItemTemplate3}
+  type: RepeatingPanel
 - components:
   - layout_properties: {}
     name: label_18
@@ -45,7 +61,7 @@ components:
     name: button_5_copy_2
     properties: {text: Submit for Review}
     type: Button
-  layout_properties: {grid_position: 'BCASYD,SKRFYU'}
+  layout_properties: {grid_position: 'BANZGO,ADSLVH'}
   name: flow_panel_1
   properties: {}
   type: FlowPanel
