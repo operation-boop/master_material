@@ -9,14 +9,15 @@ components:
     name: btn_create_material
     properties: {text: create}
     type: Button
-  - event_bindings: {click: btn_create_version_click}
-    layout_properties: {grid_position: 'ZKIGOB,WKULTX'}
-    name: btn_create_version
-    properties: {text: create new ver}
+  - event_bindings: {click: btn_save_draft_click}
+    layout_properties: {grid_position: 'SUYSQA,GDAYCA'}
+    name: btn_save_draft
+    properties: {text: Save draft}
     type: Button
-  - layout_properties: {grid_position: 'TOOJDX,BVWAVP'}
-    name: btn_check_data
-    properties: {text: check data}
+  - event_bindings: {click: btn_submit_click}
+    layout_properties: {grid_position: 'ZKIGOB,WKULTX'}
+    name: btn_submit
+    properties: {text: Submit}
     type: Button
   - layout_properties: {grid_position: 'HQULCP,OFKZJV'}
     name: lbl_result
