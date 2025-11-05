@@ -238,6 +238,7 @@ def get_material_versions(document_id):
   versions = app_tables.master_material_version.search(document_id=document_id)
   return sorted(versions, key=lambda x: x['ver_num'])
 
+
 @anvil.server.callable
 def get_supplier_field(document_id):
   """Get current supplier value"""
@@ -261,4 +262,6 @@ def get_all_suppliers():
       'ref_id': s['ref_id']
     } for s in suppliers
   ]
+
+
 

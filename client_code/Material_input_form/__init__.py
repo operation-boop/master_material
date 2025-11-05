@@ -169,7 +169,7 @@ class Material_input_form(Material_input_formTemplate):
           vat_value = None
     
     return {
-      # Basic Info
+      
       "name": self.name_textbox.text if hasattr(self, 'name_textbox') else None,
       "material_type": self.material_type_dropdown.selected_value,
       "country_of_origin": self.country_of_origin_dropdown.selected_value,
@@ -190,7 +190,7 @@ class Material_input_form(Material_input_formTemplate):
       "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
       "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
   
-      # Composition
+      
       "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
   
       # Costs

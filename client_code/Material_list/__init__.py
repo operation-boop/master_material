@@ -37,16 +37,28 @@ class Material_list(Material_listTemplate):
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status"""
-    result = anvil.server.call('create_new_master_material', 'test_user@example.com')
-    self.current_document_id = result['document_id']
-   
-    from ..Material_input_form import Material_input_form
-    popup = Material_input_form()
+    try:
+      # Create new material document on server
+      result = anvil.server.call('create_new_master_material', 'test_user@example.com')
+      document_id = result['document_id']
 
-    alert(
-      content=popup,
-      title=None,
-      large=True,
-      buttons=None 
+      # Show notification
+      Notification(f"Created new material: {document_id}", style="success", timeout=2).show()
 
-    )
+      # Import and create popup WITH document_id
+      from ..Material_input_form import Material_input_form
+      popup = Material_input_form(current_document_id=document_id)  # ← PASS IT HERE!
+
+      # Show popup
+      alert(
+        content=popup,
+        title=f"New Material - {document_id}",
+        large=True,
+        buttons=None 
+      )
+
+      # Reload materials list after popup closes
+      self.load_materials()
+
+    except Exception as e:
+      alert(f"Error creating material: {str(e)}")
