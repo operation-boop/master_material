@@ -24,8 +24,7 @@ components:
     name: card_2
     properties: {role: card}
     type: ColumnPanel
-  - components: []
-    layout_properties: {grid_position: 'CHVSOL,LPVUOD GBCBKD,MVDEIP'}
+  - layout_properties: {grid_position: 'CHVSOL,LPVUOD GBCBKD,MVDEIP'}
     name: card_1
     properties: {role: card-link}
     type: ColumnPanel
@@ -267,8 +266,7 @@ components:
       name: link_style
       properties: {italic: false, text: '|       Style List'}
       type: Link
-    - components: []
-      data_bindings:
+    - data_bindings:
       - {code: '"material"', property: tag, writeback: false}
       event_bindings: {click: link_nav_click}
       layout_properties: {grid_position: 'FYLCCJ,UNXWCI'}

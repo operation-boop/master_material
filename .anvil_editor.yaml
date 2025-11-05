@@ -7,7 +7,10 @@ unique_ids:
     Deal: '1761391960671703756629457.2389'
     Home: DNP22X3TNU36IXO4FW2GWYDLINVJ3BQN
     Material_detail: '1762232363749242069688936.04575'
+    Material_detail.material_sku_rowtemplate: '1762329018730187687965397.80597'
+    Material_detail.version_history_itemtemplate: '1762328184448768693061537.4694'
     Material_input_form: '1762246514081760660811976.6614'
+    Material_input_form.ItemTemplate2: '1762312239620292866938679.39764'
     Material_list: '176223201599762412789806.216'
     Material_list.material_list_rowtemplate: '1762232059967980388916894.177'
     Opportunity: '1761391942918616178806726.4047'
