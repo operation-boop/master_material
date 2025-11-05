@@ -21,7 +21,7 @@ db_schema:
       type: string
     - admin_ui: {order: -1.875, width: 200}
       name: current_version
-      target: master_material_verison
+      target: master_material_version
       type: link_single
     - admin_ui: {order: -1.75, width: 200}
       name: current_version_uid
@@ -31,20 +31,20 @@ db_schema:
       type: number
     - admin_ui: {order: 1.875, width: 200}
       name: version_history
-      target: master_material_verison
+      target: master_material_version
       type: link_multiple
     - admin_ui: {width: 200}
       name: document_id
       type: string
     server: full
     title: master_material
-  master_material_verison:
+  master_material_version:
     client: none
     columns:
     - admin_ui: {order: 1, width: 200}
       name: document_id
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 1.625, width: 200}
       name: ver_num
       type: number
     - admin_ui: {width: 200}
@@ -182,15 +182,15 @@ db_schema:
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
-    - admin_ui: {order: 45, width: 200}
+    - admin_ui: {order: 1.75, width: 200}
       name: document
       target: master_material
       type: link_single
-    - admin_ui: {order: 46, width: 200}
+    - admin_ui: {order: 1.5, width: 200}
       name: document_uid
       type: string
     server: full
-    title: master_material_verison
+    title: master_material_version
   material_type:
     client: none
     columns: []
