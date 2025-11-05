@@ -237,7 +237,8 @@ components:
         name: label_22
         properties: {bold: false, text: Supplier Tolerance (%)}
         type: Label
-      - layout_properties: {grid_position: 'MLBHNI,NZNRUH'}
+      - event_bindings: {pressed_enter: supplier_tolerance_pressed_enter}
+        layout_properties: {grid_position: 'MLBHNI,NZNRUH'}
         name: supplier_tolerance
         properties: {type: number}
         type: TextBox
@@ -321,7 +322,8 @@ components:
         name: label_30
         properties: {bold: false, text: Logistics Rate (%)}
         type: Label
-      - layout_properties: {grid_position: 'QDKMAH,TALLOF'}
+      - event_bindings: {change: logistics_rate_change}
+        layout_properties: {grid_position: 'QDKMAH,TALLOF'}
         name: logistics_rate
         properties: {type: number}
         type: TextBox

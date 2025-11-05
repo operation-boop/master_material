@@ -118,3 +118,20 @@ class Material_input_form(Material_input_formTemplate):
   def original_cost_per_unit_change(self, **event_args):
     """This method is called when the text in this text box is edited"""
     self.original_cost_unit.text = self.original_cost_per_unit.text
+
+  def supplier_tolerance_pressed_enter(self, **event_args):
+    """This method is called when the user presses Enter in this text box"""
+    original_cost = int(self.original_cost_per_unit.text)
+    supplier_tolerance_percentage = int(self.supplier_tolerance.text)
+    supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
+    self.supplier_tolerance_cost_unit.text = str(supplier_tolerance_cost)
+
+    effective_cost = original_cost + supplier_tolerance_cost
+    self.effective_cost_per_unit.text = str(effective_cost)
+
+  def logistics_rate_change(self, **event_args):
+    """This method is called when the text in this text box is edited"""
+    logistics_rate = int(self.logistics_rate.text)
+    effective_cost = int(self.effective_cost_per_unit.text)
+    landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
+    self.landed_cost.text = str(landed_cost)
