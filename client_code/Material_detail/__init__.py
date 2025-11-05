@@ -7,6 +7,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ..Material_list import Material_list
 
 
 class Material_detail(Material_detailTemplate):
@@ -18,8 +19,10 @@ class Material_detail(Material_detailTemplate):
     # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    open_form('Material_list')
+    home = get_open_form()   # This is your Home form
+    home.content_panel.clear()
+    home.content_panel.add_component(Material_list(), full_width_row=True)
+
 
   def technical_specs_tab_btn_click(self, **event_args):
     self.technical_specs_panel.visible = True
