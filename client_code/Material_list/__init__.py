@@ -14,7 +14,6 @@ class Material_list(Material_listTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.load_materials()
-    # Any code you write here will run before the form opens.
 
   def load_materials(self):
     try:

@@ -10,9 +10,9 @@ from anvil.tables import app_tables
 
 class Material_input_form(Material_input_formTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
+    current_document_id = None
     self.init_components(**properties)
-
+    self.current_document_id = current_document_id
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
     suppliers = anvil.server.call("get_suppliers")
     self.dropdown_supplier.items = [(s['supplier_name'], s) for s in suppliers]
@@ -143,11 +143,23 @@ class Material_input_form(Material_input_formTemplate):
 
     supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
 
-  def submit_btn_click(self, **event_args):
-    supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
-    anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', supplier)
-    Notification.show_inline("Submitted successfully!", 3)
+    try:
+      anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', supplier)
+      Notification("Draft saved!", style="success", timeout=3).show()
+    except Exception as e:
+      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
 
+  def submit_btn_click(self, **event_args):
+    anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', self.dropdown_supplier)
+    Notification.show_inline("Submitted successfully!", 3)
+    
+    supplier = self.dropdown_supplier.selected_value['supplier_name'] if self.dropdown_supplier.selected_value else None
+    
+    try:
+      anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', supplier)
+      Notification("Submitted successfully!", style="success", timeout=3).show()
+    except Exception as e:
+      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
 
   def cancel_btn_click(self, **event_args):
     """This method is called when the button is clicked"""
