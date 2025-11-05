@@ -30,6 +30,7 @@ def create_new_master_material(created_by_user):
     current_version_number=1,
     document_id=document_id
   )
+  
   return master_material
 
 # ============================================
@@ -227,4 +228,26 @@ def validate_required_fields(document_id):
     "is_valid": len(missing_fields) == 0,
     "missing_fields": missing_fields
   }
+
+@anvil.server.callable
+def update_supplier_field(document_id, supplier_value):
+  """Updates the supplier field in the current version"""
+  master_material = app_tables.master_material.get(document_id=document_id)
+  if not master_material:
+    raise Exception("Document not found")
+
+  current_version = master_material['current_version']
+  current_version['supplier'] = supplier_value
+
+  return {"status": "updated"}
+
+@anvil.server.callable
+def get_supplier_field(document_id):
+  """Gets the current supplier field value"""
+  master_material = app_tables.master_material.get(document_id=document_id)
+  if not master_material:
+    return None
+
+  current_version = master_material['current_version']
+  return current_version['supplier']
   
