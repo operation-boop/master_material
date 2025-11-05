@@ -1,7 +1,7 @@
 components:
 - layout_properties: {grid_position: 'QMUIBQ,AQRIFR'}
   name: headline_1
-  properties: {bold: true, role: headline, text: Material List}
+  properties: {bold: true, role: headline, text: Master Material}
   type: Label
 - event_bindings: {click: add_btn_click}
   layout_properties: {grid_position: 'QMUIBQ,NNELXZ'}
