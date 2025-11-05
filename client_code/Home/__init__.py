@@ -8,16 +8,8 @@ import anvil.tables.query as q
 from anvil.tables import app_tables, Row
 import anvil.users
 
-from ..Opportunity import Opportunity
-from ..Deal import Deal
-from ..RFQ import RFQ
-from ..RFS import RFS
-from ..QMO import QMO
-from ..SMO import SMO
-from ..Client_list import Client_list
-from ..Style_list import Style_list
-from ..Staff_list import Staff_list
-from ..Material_list import Material_list
+
+
 
 class Home(HomeTemplate):
   def __init__(self, **properties):
