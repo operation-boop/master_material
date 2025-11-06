@@ -10,7 +10,7 @@ VALID_STATUSES = {
   "Draft": ["Creating", "Draft", "Submitted"],
   "Submitted": ["Creating"]
 }
-REQUIRED_FIELDS = ["supplier"]  
+REQUIRED_FIELDS = ["supplier_name"]  
 
 @anvil.server.callable
 def create_new_master_material(created_by_user):
@@ -60,24 +60,23 @@ def get_next_document_number():
   # ============================================
 @anvil.server.callable
 def validate_required_fields(document_id):
-  """Validate all required fields on the current version row."""
+  """Validate all required fields are filled on the current version"""
   master = get_master_material(document_id)
-  current_version = master.get('current_version')
+  current_version = master["current_version"]
 
-  # If there's no version row yet
   if current_version is None:
     return {"is_valid": False, "missing_fields": ["(no current_version row)"]}
 
   missing = []
   for field in REQUIRED_FIELDS:
     try:
-      val = current_version[field]   # bracket access on Row
+      value = current_version[field]   # Row uses bracket access
     except KeyError:
-      # Column doesn't exist on the table
+      # Column not present on the table
       missing.append(field)
       continue
 
-    if val is None or (isinstance(val, str) and val.strip() == ""):
+    if value is None or (isinstance(value, str) and value.strip() == ""):
       missing.append(field)
 
   return {"is_valid": len(missing) == 0, "missing_fields": missing}
