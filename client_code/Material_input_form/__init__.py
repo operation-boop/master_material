@@ -53,6 +53,7 @@ class Material_input_form(Material_input_formTemplate):
     self.supplier_tolerance_cost_unit.text = self.currency_dropdown.selected_value
     self.effective_cost_unit.text = self.currency_dropdown.selected_value
     self.landed_cost_unit.text = self.currency_dropdown.selected_value
+    self.logistics_unit_cost.text = self.currency_dropdown.selected_value
 
   def add_btn_click(self, **event_args):
     selected_material = self.material_dropdown.selected_value
@@ -134,6 +135,9 @@ class Material_input_form(Material_input_formTemplate):
       effective_cost = int(float(self.effective_cost_per_unit.text))
       landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
       self.landed_cost.text = str(landed_cost)
+      weight_per_unit = int(self.weight_per_unit.text)
+      logistics_fee_per_unit = weight_per_unit * logistics_rate
+      self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
 
   def cancel_btn_click(self, **event_args):
     self.raise_event("x-close-alert")

@@ -8,6 +8,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from ..Material_list import Material_list
+from ..Material_edit_form import Material_edit_form
 
 
 class Material_detail(Material_detailTemplate):
@@ -18,10 +19,10 @@ class Material_detail(Material_detailTemplate):
     # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
-    #home = get_open_form()   # This is your Home form
-    #home.content_panel.clear()
-    #home.content_panel.add_component(Material_list(), full_width_row=True)
-    open_form('Material_list')
+    home = get_open_form()   # This is your Home form
+    home.content_panel.clear()
+    home.content_panel.add_component(Material_list(), full_width_row=True)
+    #open_form('Material_list')
 
 
   def technical_specs_tab_btn_click(self, **event_args):
@@ -46,3 +47,14 @@ class Material_detail(Material_detailTemplate):
     self.version_history_panel.visible = False
     self.technical_specs_panel.visible = False
     self.cost_details_panel.visible = False
+
+  def edit_btn_click(self, **event_args):
+    # Get the Home form
+    home_form = get_open_form()
+
+    # Clear the content panel and add Material_details
+    home_form.content_panel.clear()
+    home_form.content_panel.add_component(
+      Material_edit_form(material_data=self.item),
+      full_width_row=True
+    )

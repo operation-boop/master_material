@@ -17,9 +17,7 @@ from ..Deal import Deal
 #from ..RFS import RFS
 #from ..QMO import QMO
 #from ..SMO import SMO
-#from ..Client_list import Client_list
-#from ..Style_list import Style_list
-
+from ..Client_list import Client_list
 from ..Material_list import Material_list
 #from ..Costing_sheet_base import Costing_sheet_base
 
@@ -49,8 +47,7 @@ class Home(HomeTemplate):
       #"rfs": RFS(),
       #"qmo": QMO(),
       #"smo": SMO(),
-      #"client": Client_list(),
-      #"style": Style_list(),
+      "client": Client_list(),
       "material": Material_list(),
       #Added in my costing sheet
       #"Costing_sheet_group": Costing_sheet_base()
@@ -62,7 +59,8 @@ class Home(HomeTemplate):
     self.toggle_group(clicked_link)
 
     self.content_panel.clear()
-    self.content_panel.add_component(page, full_width_row=True)
+    if page is not None:
+      self.content_panel.add_component(page, full_width_row=True)
 
   def format_link_role_to_default(self):
     #self.link_opportunity.role = "<default>"
@@ -71,8 +69,7 @@ class Home(HomeTemplate):
     #self.link_rfs.role = "<default>"
     #self.link_qmo.role = "<default>"
     #self.link_smo.role = "<default>"
-    #self.link_client.role = "<default>"
-    #self.link_style.role = "<default>"
+    self.link_client.role = "<default>"
     self.link_material.role = "<default>"
     #added my own Costing Sheet
     # self.link_costing_sheet.role = "<default>"
@@ -84,7 +81,7 @@ class Home(HomeTemplate):
       #"opportunity_group": self.link_opportunity,
       #"request_group": self.link_rfq,
       #"order_group": self.link_qmo,
-      "master_data_group": Material_list(),
+      "master_data_group": self.link_client,
       #Costing Sheet
       # "Costing_sheet_group": self.link_costing_sheet
     }
