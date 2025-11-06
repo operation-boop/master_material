@@ -19,7 +19,7 @@ class c_Processing_cost(c_Processing_costTemplate):
                vendor_name,
                description,
                **properties
-                ):
+              ):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.load_view_processing_cost_line()  #activates funct "load_view_processing_cost_line()" when initalizing
@@ -41,12 +41,12 @@ class c_Processing_cost(c_Processing_costTemplate):
     for row in app_tables.list_currency_types.search():
       item_list_currency_types.append((row["currency_types"], row))
 
-    #   self.drop_down_processing_type = item_list_processing_cost_type
-    #   self.drop_down_vendor_list = item_list_vendor
-    #  self.drop_down_processing_type = item_list_processing_cost_type
-    #  self.drop_down_currency_type = item_list_currency_types
+      self.drop_down_processing_type.items = item_list_processing_cost_type
+      self.drop_down_vendor_list.items = item_list_vendor
+      self.drop_down_status.items = item_list_processing_cost_status
+      self.drop_down_currency_type.items = item_list_currency_types
 
-    
+
   # Create a function that will allow the client side to interact
   # 'In this case, view the table' from the server side
   def load_view_processing_cost_line(self):
@@ -54,32 +54,32 @@ class c_Processing_cost(c_Processing_costTemplate):
 
     for view_processing_cost_line in row:
       z = processing_cost_line(cost_type=view_processing_cost_line["cost_type"],
-                              cost_amount=view_processing_cost_line["cost_amount"],
-                              cost_currency=view_processing_cost_line["cost_currency"],
-                              status=view_processing_cost_line["status"],
-                              vendor=view_processing_cost_line["vendor"],
-                              vendor_name=view_processing_cost_line["vendor_name"],
-                              description=view_processing_cost_line["description"],
-                              cost_in_usd=view_processing_cost_line["cost_in_usd"],
-                              button_callback=None
+                               cost_amount=view_processing_cost_line["cost_amount"],
+                               cost_currency=view_processing_cost_line["cost_currency"],
+                               status=view_processing_cost_line["status"],
+                               vendor=view_processing_cost_line["vendor"],
+                               vendor_name=view_processing_cost_line["vendor_name"],
+                               description=view_processing_cost_line["description"],
+                               cost_in_usd=view_processing_cost_line["cost_in_usd"],
+                               button_callback=None
                               )
       self.processing_cost_info_line.add_component(z)
 
 
 
-      
 
-##  def load_currency_rate_information(self):
-#    currency_information = anvil.server.call("view_exchange_rate_line").search()
-#
-#    for currency_information in currency_information:
-#      print(currency_information["date"])
-#
-#  def button_add_exchange_rate_click(self, **event_args):
-#    """This method is called when the button is clicked"""
-#    v = add_currency_rates_item(from_currency="USD", to_currency="VND", created_by="Jonathan")
-#    self.load_currency_rate_information()
-#    self.column_panel_currency_rate_line.add_component(v)
+
+  ##  def load_currency_rate_information(self):
+  #    currency_information = anvil.server.call("view_exchange_rate_line").search()
+  #
+  #    for currency_information in currency_information:
+  #      print(currency_information["date"])
+  #
+  #  def button_add_exchange_rate_click(self, **event_args):
+  #    """This method is called when the button is clicked"""
+  #    v = add_currency_rates_item(from_currency="USD", to_currency="VND", created_by="Jonathan")
+  #    self.load_currency_rate_information()
+  #    self.column_panel_currency_rate_line.add_component(v)
 
   def button_add_click(self, **event_args):
     """This method is called when the button is clicked"""
