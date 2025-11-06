@@ -17,7 +17,7 @@ components:
   properties:
     columns:
     - {data_key: column_1, id: PKEEJH, title: ''}
-    - {data_key: column_2, expand: false, id: VJQQOR, title: ID, width: 87.5}
+    - {data_key: column_2, expand: false, id: VJQQOR, title: Material ID, width: 87.5}
     - {data_key: column_3, id: OJLQEN, title: Document ID}
     - {data_key: column_4, id: KMEYVT, title: Current Version}
     - {data_key: column_5, id: MAOHBU, title: Version History}
