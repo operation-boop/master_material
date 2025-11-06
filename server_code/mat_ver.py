@@ -121,22 +121,20 @@ def save_or_edit_draft(document_id, updated_by_user, form_data=None):
 
   # Update all fields from form data
   if form_data:
-    updated_fields = []
     for key, value in form_data.items():
-      if value is not None:  # Only update non-empty fields
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
+      try:
+        version[key] = value
+      except Exception as e:
+        print(f"Warning: Could not update field '{key}': {e}")
 
-    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
+  if version['status'] == "Creating":
+    from datetime import datetime
+    version['created_at'] = datetime.now()
+    version['created_by'] = updated_by_user
 
   version['status'] = "Draft"
-  version['created_at'] = datetime.now()
-  version['created_by'] = updated_by_user
-
-  return {"action": "draft_saved", "version": version, "document_id": document_id}
+  
+  return {"ok": True, "document_id": document_id}
 
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data=None):

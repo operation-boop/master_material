@@ -32,3 +32,7 @@ class MaterialCard(MaterialCardTemplate):
       self.supplier.visible = True
     else:
       self.supplier.visible = False
+
+  def view_details_btn_click(self, **event_args):
+    open_form('Material_detail')
+    pass

@@ -141,7 +141,7 @@ class Material_input_form(Material_input_formTemplate):
       self.save_as_draft_btn.enabled = False
       self.save_as_draft_btn.text = "Saving..."
   
-      result = anvil.server.call("save_or_edit_draft", self.current_document_id, "test_user@example.com", data)
+      result = anvil.server.call("save_or_edit_draft", self.current_document_id, "user", data)
       if result and result.get("ok"):
         Notification("Draft saved!", style="success", timeout=3).show()
       else:
@@ -151,7 +151,6 @@ class Material_input_form(Material_input_formTemplate):
     finally:
       self.save_as_draft_btn.enabled = True
       self.save_as_draft_btn.text = "Save as Draft"
-    
 
   def submit_btn_click(self, **event_args):
     if not self.current_document_id:

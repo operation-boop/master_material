@@ -27,24 +27,21 @@ class Material_list(Material_listTemplate):
       popup = Material_input_form(current_document_id=document_id)  
       alert(
         content=popup,
-        title=f"New Material - {document_id}",
+        title=None,
         large=True,
         buttons=None 
       )
-      self.load_materials()
 
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
 
   def form_show(self, **event_args):
-    # 1) Pull items from the server
     try:
       materials = anvil.server.call('get_material_cards_for_list')
     except Exception as e:
       Notification(f"Failed to load materials: {e}", style="danger").show()
       materials = []
   
-    # 2) Clear and render cards
     self.flow_panel_materials.clear()
     for m in materials:
       from .MaterialCard import MaterialCard

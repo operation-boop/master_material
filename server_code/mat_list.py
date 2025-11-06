@@ -2,12 +2,14 @@ import anvil.server
 from anvil.tables import app_tables
 import json
 
+@anvil.server.callable
 def _safe_get(row, key, default=None):
   try:
     return row[key]
   except Exception:
     return default
-
+    
+@anvil.server.callable
 def _format_composition(raw_value):
   """
   Accepts either:
@@ -41,6 +43,7 @@ def _format_composition(raw_value):
   # Fallback: return whatever it is as a string
   return str(raw_value)
 
+@anvil.server.callable
 def _format_weight(version_row):
   # Prefer structured weight fields
   w = _safe_get(version_row, "weight_per_unit")
@@ -110,7 +113,7 @@ def get_material_card_by_document_id(document_id):
 
   status = _safe_get(version, "status", "Creating")
   item = {
-    "master_material_id": _safe_get(master, "document_id"),
+    "master_material_id": _safe_get(master, "master_material_id",""),
     "name": _safe_get(version, "name", ""),
     "ref_id": _safe_get(version, "ref_id", ""),
     "material_type": _safe_get(version, "material_type", ""),
