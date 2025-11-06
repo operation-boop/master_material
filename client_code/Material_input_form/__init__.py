@@ -11,14 +11,14 @@ class Material_input_form(Material_input_formTemplate):
     self.init_components(**properties)
     self.current_document_id = current_document_id
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
-    suppliers = anvil.server.call("get_all_suppliers")  # Fixed function name
-    self.dropdown_supplier.items = [(s['supplier_name'], s) for s in suppliers]
+    self.dropdown_supplier.items = ["ABC","CBA","HELLO","BYE"]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
     self.UOM_dropdown.items = ["Meter", "Piece"]
     self.weight_uom_dropdown.items = ["GSM (gram/sq meter)", "GPP (gram/piece)"]
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
+  
 
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
@@ -144,21 +144,60 @@ class Material_input_form(Material_input_formTemplate):
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
-  
+
     form_data = self.collect_form_data()
-  
+
+    # Add validation before submitting
+    if not self.validate_form_data(form_data):
+      Notification("Please fill in all required fields!", style="warning", timeout=3).show()
+      return
+
     try:
-      anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
+      # Show loading state
+      self.submit_btn.enabled = False
+      self.submit_btn.text = "Submitting..."
+      
+      result = anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
+
+      # Close the form or reset after successful submission
+      self.raise_event("x-close-alert", value=True)
+
     except Exception as e:
-      Notification(f"Error: {str(e)}", style="danger", timeout=5).show()
+      # Get the full error details
+      error_msg = f"Submission failed: {str(e)}"
+      print(f"Full error: {repr(e)}")  # Check console for full error
+      Notification(error_msg, style="danger", timeout=5).show()
+    finally:
+      # Reset button state
+      self.submit_btn.enabled = True
+      self.submit_btn.text = "Submit"
+
+  def validate_form_data(self, form_data):
+    """Basic client-side validation"""
+    required_fields = [
+      'name', 'material_type', 'country_of_origin', 'supplier_name',
+      'unit_of_measurement', 'weight_per_unit', 'weight_uom',
+      'original_cost_per_unit', 'native_cost_currency'
+    ]
   
+    for field in required_fields:
+      if not form_data.get(field):
+        print(f"Missing required field: {field}")
+        return False
+  
+      # Validate composition total is 100%
+    if hasattr(self, 'composition_list') and self.composition_list:
+      total = sum([float(item['percentage']) for item in self.composition_list])
+      if total != 100:
+        Notification(f"Composition total must be 100% (currently {total}%)", style="warning").show()
+        return False
+  
+    return True
+    
   def collect_form_data(self):
     """Collect all form fields into a dictionary"""
-    # Handle supplier data properly
-    supplier_data = self.dropdown_supplier.selected_value
-    supplier_value = supplier_data['supplier_name'] if supplier_data else None
-    
+  
     # Parse VAT rate safely
     vat_value = None
     if self.vietnam_vat_rate_dropdown.selected_value:
@@ -173,9 +212,7 @@ class Material_input_form(Material_input_formTemplate):
       "name": self.material_name.text if hasattr(self, 'material_name') else None,
       "material_type": self.material_type_dropdown.selected_value,
       "country_of_origin": self.country_of_origin_dropdown.selected_value,
-      "supplier": supplier_value,  # FIXED: Now sets 'supplier' field
-      "supplier_name": supplier_value,  # Keep this too for compatibility
-
+      "supplier_name" : self.dropdown_supplier.selected_value,
       "unit_of_measurement": self.UOM_dropdown.selected_value,
       "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
       "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
@@ -202,7 +239,7 @@ class Material_input_form(Material_input_formTemplate):
       "logistics_fee_per_unit": self.parse_float(self.logistics_fee_per_unit.text) if hasattr(self, 'logistics_fee_per_unit') else None,
       "landed_cost_per_unit": self.parse_float(self.landed_cost.text) if hasattr(self, 'landed_cost') else None,
     }
-  
+    
   def parse_float(self, value):
     """Helper to safely parse float values"""
     try:

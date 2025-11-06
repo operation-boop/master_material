@@ -4,9 +4,6 @@ import uuid
 from datetime import datetime
 import anvil.tables.query as q
 
-# ============================================
-# CONSTANTS & CONFIG
-# ============================================
 DOC_PREFIX = "vin_mmat_"
 VALID_STATUSES = {
   "Creating": ["Draft", "Submitted"],
@@ -15,9 +12,6 @@ VALID_STATUSES = {
 }
 REQUIRED_FIELDS = ["supplier"]  
 
-# ============================================
-# DOCUMENT CREATION
-# ============================================
 @anvil.server.callable
 def create_new_master_material(created_by_user):
   """Create new master material document"""
@@ -61,9 +55,10 @@ def get_next_document_number():
 
   return max(numbers) + 1 if numbers else 1
 
-# ============================================
-# FIELD VALIDATION
-# ============================================
+  # ============================================
+  # FIELD VALIDATION
+  # ============================================
+@anvil.server.callable
 def validate_required_fields(document_id):
   """Validate all required fields are filled"""
   master = get_master_material(document_id)
@@ -78,9 +73,6 @@ def validate_required_fields(document_id):
 
   return {"is_valid": len(missing) == 0, "missing_fields": missing}
 
-# ============================================
-# UTILITY FUNCTIONS
-# ============================================
 @anvil.server.callable
 def get_master_material(document_id):
   """Get master material, raise if not found"""
@@ -97,40 +89,37 @@ def check_status_transition(current_status, target_status):
       f"Allowed transitions: {', '.join(VALID_STATUSES.get(current_status, []))}"
     )
 
-# ============================================
-# DRAFT WORKFLOW
-# ============================================
-@anvil.server.callable
-def save_or_edit_draft(document_id, updated_by_user, form_data=None):
-  """Combined save/edit draft function - updates all fields from form"""
-  master = get_master_material(document_id)
-  version = master['current_version']
+  # ============================================
+  # DRAFT WORKFLOW
+  # ============================================
+  @anvil.server.callable
+  def save_or_edit_draft(document_id, updated_by_user, form_data=None):
+    """Combined save/edit draft function - updates all fields from form"""
+    master = get_master_material(document_id)
+    version = master['current_version']
 
-  if version['status'] not in ["Creating", "Draft"]:
-    raise Exception(f"Cannot edit. Current status: {version['status']}")
+    if version['status'] not in ["Creating", "Draft"]:
+      raise Exception(f"Cannot edit. Current status: {version['status']}")
 
-  # Update all fields from form data
-  if form_data:
-    updated_fields = []
-    for key, value in form_data.items():
-      if value is not None:  # Only update non-empty fields
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
+    # Update all fields from form data
+    if form_data:
+      updated_fields = []
+      for key, value in form_data.items():
+        if value is not None:  # Only update non-empty fields
+          try:
+            version[key] = value
+            updated_fields.append(key)
+          except Exception as e:
+            print(f"Warning: Could not update field '{key}': {str(e)}")
 
-    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
+      print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
 
-  version['status'] = "Draft"
-  version['created_at'] = datetime.now()
-  version['created_by'] = updated_by_user
+    version['status'] = "Draft"
+    version['created_at'] = datetime.now()
+    version['created_by'] = updated_by_user
 
-  return {"action": "draft_saved", "version": version, "document_id": document_id}
+    return {"action": "draft_saved", "version": version, "document_id": document_id}
 
-# ============================================
-# SUBMISSION WORKFLOW
-# ============================================
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data=None):
   """Submit document with validation - updates all fields from form"""
@@ -171,51 +160,60 @@ def submit_version(document_id, submitted_by_user, form_data=None):
 @anvil.server.callable
 def edit_submitted(document_id, updated_by_user):
   """Create new version from submitted document"""
-  master = get_master_material(document_id)
-  version = master['current_version']
+  try:
+    master = get_master_material(document_id)
+    if not master:
+      raise Exception(f"Master document {document_id} not found")
 
-  check_status_transition(version['status'], "Creating")
+    version = master['current_version']
+    if not version:
+      raise Exception("No current version found")
 
-  # Validate current version before editing
-  validation = validate_required_fields(document_id)
-  if not validation['is_valid']:
-    raise Exception(
-      f"Cannot edit. Current version missing: {', '.join(validation['missing_fields'])}"
+    check_status_transition(version['status'], "Creating")
+
+    # Validate current version before editing
+    validation = validate_required_fields(document_id)
+    if not validation['is_valid']:
+      raise Exception(
+        f"Cannot edit. Current version missing: {', '.join(validation['missing_fields'])}"
+      )
+
+      # Get latest version number efficiently
+    versions = app_tables.master_material_version.search(document_id=document_id)
+    latest_num = max((v['ver_num'] for v in versions), default=0)
+
+    new_uuid = str(uuid.uuid4())
+
+    # Copy all data from current version to new version
+    new_version = app_tables.master_material_version.add_row(
+      document_uid=new_uuid,
+      document_id=document_id,
+      ver_num=latest_num + 1,
+      status="Creating",
+      created_at=datetime.now(),
+      created_by=updated_by_user
     )
 
-  # Get latest version number efficiently
-  versions = app_tables.master_material_version.search(document_id=document_id)
-  latest_num = max((v['ver_num'] for v in versions), default=0)
+    # Copy all fields from previous version
+    for col in version.get_column_names():
+      if col not in ['document_uid', 'document_id', 'ver_num', 'status', 'created_at', 'created_by', 'row_id']:
+        try:
+          new_version[col] = version[col]
+        except Exception as e:
+          print(f"Warning: Could not copy column {col}: {e}")
+         
 
-  new_uuid = str(uuid.uuid4())
+        
+    master['current_version'] = new_version
+    master['current_version_uid'] = new_uuid
+    master['current_version_number'] = latest_num + 1
 
-  # Copy all data from current version to new version
-  new_version = app_tables.master_material_version.add_row(
-    document_uid=new_uuid,
-    document_id=document_id,
-    ver_num=latest_num + 1,
-    status="Creating",
-    created_at=datetime.now(),
-    created_by=updated_by_user
-  )
+    return {"action": "new_version_created", "version": new_version}
 
-  # Copy all fields from previous version
-  for col in version.get_column_names():
-    if col not in ['document_uid', 'document_id', 'ver_num', 'status', 'created_at', 'created_by']:
-      try:
-        new_version[col] = version[col]
-      except:
-        pass
+  except Exception as e:
+    print(f"Error in edit_submitted: {e}")
+    raise
 
-  master['current_version'] = new_version
-  master['current_version_uid'] = new_uuid
-  master['current_version_number'] = latest_num + 1
-
-  return {"action": "new_version_created", "version": new_version}
-
-# ============================================
-# QUERY FUNCTIONS
-# ============================================
 @anvil.server.callable
 def get_current_status(document_id):
   """Get status and allowed actions"""
@@ -239,29 +237,6 @@ def get_material_versions(document_id):
   return sorted(versions, key=lambda x: x['ver_num'])
 
 
-@anvil.server.callable
-def get_supplier_field(document_id):
-  """Get current supplier value"""
-  master = get_master_material(document_id)
-  return master['current_version'].get('supplier')
-
-@anvil.server.callable
-def update_supplier_field(document_id, supplier_value):
-  """Update supplier field"""
-  master = get_master_material(document_id)
-  master['current_version']['supplier'] = supplier_value
-  return {"status": "updated"}
-
-@anvil.server.callable
-def get_all_suppliers():
-  """Fetch all suppliers for dropdown"""
-  suppliers = app_tables.supplier.search()
-  return [
-    {
-      'supplier_name': s['supplier_name'],
-      'ref_id': s['ref_id']
-    } for s in suppliers
-  ]
 
 
 
