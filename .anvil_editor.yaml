@@ -35,6 +35,7 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
+    ServerModule1: '176242012312620123366704.047684'
     ServerPackage1: 5BP6BG7RRPGB4I2XQTMDQJZSS54IHI3G
     add_exchange_rate: '1762368989852247631180293.74374'
     mat_ver: DEORGFCBEOX6PXFPU2RSBH25IEZGRN2A
