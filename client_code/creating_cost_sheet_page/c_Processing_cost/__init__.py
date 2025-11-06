@@ -14,7 +14,6 @@ class c_Processing_cost(c_Processing_costTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.load_view_processing_cost_line()  #activates funct "load_view_processing_cost_line()" when initalizing
-    self.content_panel.add_component(processing_cost_line(cost_amount_usd="$100"))
 
     
   # Create a function that will allow the client side to interact
@@ -23,7 +22,16 @@ class c_Processing_cost(c_Processing_costTemplate):
     view_processing_cost_line = anvil.server.call("view_processing_cost_line").search() #'.search()' allows for this function interate or "scan the table for values"
 
     for view_processing_cost_line in view_processing_cost_line:
-      print(view_processing_cost_line["cost_type"])
+      z = processing_cost_line(cost_type=view_processing_cost_line["cost_type"],
+                               cost_amount=view_processing_cost_line["cost_amount"],
+                               cost_currency=view_processing_cost_line["cost_currency"],
+                               status=view_processing_cost_line["status"],
+                               vendor=view_processing_cost_line["vendor"],
+                               vendor_name=view_processing_cost_line["vendor_name"],
+                               description=view_processing_cost_line["description"],
+                               cost_in_usd=view_processing_cost_line["cost_in_usd"],
+                               button_callback=None
+                              )
       
 
 

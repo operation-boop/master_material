@@ -9,7 +9,44 @@ components:
       name: label_2
       properties: {role: text, text: 'Warning Label: Ensure all required fields are filled, or will be flagged'}
       type: Label
-    layout_properties: {grid_position: 'OTLKWR,PBOPSQ'}
+    - components:
+      - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
+        name: label_cost_type
+        properties: {text: Cost type}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
+        name: label_cost_amount
+        properties: {text: Cost amount}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
+        name: label_Cost_currency
+        properties: {text: Cost Currency}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
+        name: label_status
+        properties: {text: Status}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,WAIHTG'}
+        name: label_Vendor
+        properties: {text: Vendor}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
+        name: label_vendor_name
+        properties: {text: Vendor Name}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
+        name: label_description
+        properties: {text: Description}
+        type: Label
+      - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
+        name: label_cost_in_usd
+        properties: {text: Cost In USD}
+        type: Label
+      layout_properties: {grid_position: 'KZLRVY,ROGLZA'}
+      name: column_panel_3
+      properties: {col_widths: '{"VRAFVF":5,"KCBPNX":10,"EHUQAU":7,"IVDYNX":8,"WAIHTG":5,"FAKVCJ":10,"FWSDPQ":10,"FBACLD":5}'}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'OHWMQB,ZLTMTV'}
     name: column_panel_2_copy
     properties: {}
     type: ColumnPanel

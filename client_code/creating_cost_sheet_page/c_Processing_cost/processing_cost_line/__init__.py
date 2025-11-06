@@ -10,9 +10,15 @@ from anvil.tables import app_tables
 
 
 class processing_cost_line(processing_cost_lineTemplate):
-  def __init__(self, cost_amount_usd, **properties):
+  def __init__(self, cost_type, cost_amount, cost_currency, status, vendor, cost_in_usd **properties):
      # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.label_cost_amount_usd.text = cost_amount_usd
+    self.label_cost_type.text = cost_type
+    self.label_cost_amount.text = cost_amount
+    self.label_cost_currency.text = cost_currency
+    self.label_status.text = status
+    self.label_Vendor.text = vendor
+    self.label_cost_in_usd.text = cost_in_usd
+
 
 
