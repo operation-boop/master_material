@@ -93,51 +93,33 @@ def check_status_transition(current_status, target_status):
   # ============================================
   # DRAFT WORKFLOW
   # ============================================
-  @anvil.server.callable
-  def save_or_edit_draft(document_id, updated_by_user, form_data=None):
-    """Combined save/edit draft function - updates all fields from form"""
-    master = get_master_material(document_id)
-    version = master['current_version']
-
-    if version['status'] not in ["Creating", "Draft"]:
-      raise Exception(f"Cannot edit. Current status: {version['status']}")
-
-    # Update all fields from form data
-    if form_data:
-      updated_fields = []
-      for key, value in form_data.items():
-        if value is not None:  # Only update non-empty fields
-          try:
-            version[key] = value
-            updated_fields.append(key)
-          except Exception as e:
-            print(f"Warning: Could not update field '{key}': {str(e)}")
-
-      print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
-
-    version['status'] = "Draft"
-    version['created_at'] = datetime.now()
-    version['created_by'] = updated_by_user
-
-    return {"action": "draft_saved", "version": version, "document_id": document_id}
-
 @anvil.server.callable
-def save_draft(document_id, submitted_by_user, form_data):
-  """Save form data as draft (no validation)."""
+def save_or_edit_draft(document_id, updated_by_user, form_data=None):
+  """Combined save/edit draft function - updates all fields from form"""
   master = get_master_material(document_id)
   version = master['current_version']
 
-  # update all fields directly
-  for k, v in (form_data or {}).items():
-    try:
-      version[k] = v
-    except Exception as e:
-      print(f"Warning: Could not update {k}: {e}")
+  if version['status'] not in ["Creating", "Draft"]:
+    raise Exception(f"Cannot edit. Current status: {version['status']}")
 
-  # mark as draft
-  version["status"] = "Draft"
+  # Update all fields from form data
+  if form_data:
+    updated_fields = []
+    for key, value in form_data.items():
+      if value is not None:  # Only update non-empty fields
+        try:
+          version[key] = value
+          updated_fields.append(key)
+        except Exception as e:
+          print(f"Warning: Could not update field '{key}': {str(e)}")
 
-  return {"ok": True, "action": "draft_saved", "document_id": document_id}
+    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
+
+  version['status'] = "Draft"
+  version['created_at'] = datetime.now()
+  version['created_by'] = updated_by_user
+
+  return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data):

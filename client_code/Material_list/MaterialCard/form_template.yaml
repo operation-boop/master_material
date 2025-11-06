@@ -50,10 +50,10 @@ components:
     - components:
       - data_bindings:
         - {code: 'self.item[''verification_status'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'NLTWEL,MFVIOT'}
+        layout_properties: {grid_position: 'GMUVFW,YXBQMY'}
         name: verification_status
-        properties: {align: right, background: lightgreen, foreground: green, role: null, text: ''}
-        type: Button
+        properties: {align: right, bold: false}
+        type: Label
       layout_properties: {grid_position: 'FHTZRX,NXAKNP'}
       name: column_panel_2
       properties: {}

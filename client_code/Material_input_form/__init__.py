@@ -165,6 +165,10 @@ class Material_input_form(Material_input_formTemplate):
     try:
       self.submit_btn.enabled = False
       self.submit_btn.text = "Submitting..."
+      new_item = anvil.server.call('submit_material', self.current_document_id, data)
+      open_form('MaterialList', new_item=new_item)
+      
+      
   
       result = anvil.server.call("submit_version", self.current_document_id, "test_user@example.com", data)
       if result and result.get("ok"):
@@ -177,7 +181,6 @@ class Material_input_form(Material_input_formTemplate):
     finally:
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
-
   # ------------------------ VALIDATION & COLLECTION ------------------------
   def validate_form(self, data):
     required = ["name", "material_type", "supplier_name",
@@ -261,7 +264,6 @@ class Material_input_form(Material_input_formTemplate):
       "landed_cost_per_unit": self._p(self.landed_cost),
     }
 
-  # small helper to parse floats from TextBoxes safely
   def _p(self, ctrl):
     try:
       return float(ctrl.text) if (ctrl and ctrl.text not in ("", None)) else None
