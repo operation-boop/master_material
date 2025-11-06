@@ -12,7 +12,7 @@ from anvil.tables import app_tables
 class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    self._items = self.form_show()
+    self.form_show()
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status"""
