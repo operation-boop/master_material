@@ -12,7 +12,8 @@ components:
       name: verification_status
       properties: {align: center, background: green, bold: true, border: '', foreground: 'theme:White', icon: '', role: input-prompt, text: ''}
       type: Label
-    - layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
+    - event_bindings: {click: edit_btn_click}
+      layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
       name: edit_btn
       properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: Edit}
       type: Button

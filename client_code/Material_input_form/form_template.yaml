@@ -110,7 +110,7 @@ components:
         type: Button
       - layout_properties: {grid_position: 'RQEWPY,FDOMQP NOBPQQ,OUKDSZ'}
         name: fabric_composition_repeating_panel
-        properties: {item_template: Material_input_form.ItemTemplate2}
+        properties: {item_template: Material_input_form.material_input_itemtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'TJKGYG,EMNOCW'}
       name: card_3
