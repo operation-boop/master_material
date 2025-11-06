@@ -46,6 +46,7 @@ class Material_input_form(Material_input_formTemplate):
     self.supplier_tolerance_cost_unit.text = code
     self.effective_cost_unit.text = code
     self.landed_cost_unit.text = code
+    self.logistic_unit_cost.text = code
 
   # ------------------------ COMPOSITION ------------------------
   def add_btn_click(self, **event_args):
@@ -118,6 +119,9 @@ class Material_input_form(Material_input_formTemplate):
       effective_cost = int(float(self.effective_cost_per_unit.text))
       landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
       self.landed_cost.text = str(landed_cost)
+      weight_per_unit = int(self.weight_per_unit.text)
+      logistic_fee_per_unit = weight_per_unit * logistics_rate
+      self.logisitc_fee_per_unit = str(logistic_fee_per_unit)
 
   # ------------------------ DRAFT / SUBMIT ------------------------
   def save_as_draft_btn_click(self, **event_args):
@@ -249,9 +253,9 @@ class Material_input_form(Material_input_formTemplate):
       "fabric_composition": comp_json,
 
       # Costs
-      "original_cost_per_unit": self._p(self.original_cost_per_unit),
+      "original_cost_per_unit": self._p(self.original_cost),
       "native_cost_currency": self.currency_dropdown.selected_value,
-      "supplier_selling_tolerance": self._p(self.supplier_tolerance),
+      "supplier_selling_tolerance": self._p(self.supplier_tolerance_cost),
       "refundable_tolerance": hasattr(self, 'refundable_tolerance') and self.refundable_tolerance.checked or False,
       "effective_cost_per_unit": self._p(self.effective_cost_per_unit),
       "vietnam_vat_rate": vat_value,
