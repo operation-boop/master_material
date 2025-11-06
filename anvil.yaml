@@ -204,6 +204,9 @@ db_schema:
     - admin_ui: {order: 10, width: 200}
       name: material_cost_in_usd
       type: number
+    - admin_ui: {order: 11, width: 200}
+      name: native_currency_2
+      type: string
     server: full
     title: tabl_bill_of_material_line_item
   tabl_bill_of_material_version:
@@ -501,5 +504,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: draft_to_be_delete, type: form}
 startup_form: null

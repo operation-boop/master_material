@@ -101,15 +101,15 @@ class c_Processing_cost(c_Processing_costTemplate):
                       description,
                      )
 
-    def clear_inputs(self):
+  def clear_inputs(self):
 
-      self.drop_down_processing_type.selected_value = ""
-      self.drop_down_cost_amount.text = ""
-      self.drop_down_currency_type.selected_value = ""
-      self.drop_down_status.selected_value = ""
-      self.drop_down_vendor_list.selected_value = ""
-      self.text_box_vendor_name.text = ""
-      self.text_area_processing_description = ""
+    self.drop_down_processing_type.selected_value = ""
+    self.drop_down_cost_amount.text = ""
+    self.drop_down_currency_type.selected_value = ""
+    self.drop_down_status.selected_value = ""
+    self.drop_down_vendor_list.selected_value = ""
+    self.text_box_vendor_name.text = ""
+    self.text_area_processing_description = ""
 
 
 
