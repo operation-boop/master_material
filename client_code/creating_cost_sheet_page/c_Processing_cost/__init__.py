@@ -24,11 +24,11 @@ class c_Processing_cost(c_Processing_costTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.load_view_processing_cost_line()  #activates funct "load_view_processing_cost_line()" when initalizing
-    self.drop_down_processing_type = cost_type
-    self.text_box_cost_amount = cost_amount
-    self.drop_down_vendor_list = vendor
-    self.text_box_vendor_name = vendor_name
-    self.drop_down_status = status
+    self.drop_down_processing_type.selected_value = cost_type
+    self.text_box_cost_amount.text = cost_amount
+    self.drop_down_vendor_list.selected_value = vendor
+    self.text_box_vendor_name.text = vendor_name
+    self.drop_down_status.selected_value = status
 #    self.text_area_processing_description = 
     
     
@@ -37,9 +37,9 @@ class c_Processing_cost(c_Processing_costTemplate):
   # Create a function that will allow the client side to interact
   # 'In this case, view the table' from the server side
   def load_view_processing_cost_line(self):
-    view_processing_cost_line = anvil.server.call("view_processing_cost_line").search() #'.search()' allows for this function interate or "scan the table for values"
+    row = anvil.server.call("view_processing_cost_line").search() #'.search()' allows for this function interate or "scan the table for values"
 
-    for view_processing_cost_line in view_processing_cost_line:
+    for view_processing_cost_line in row:
       z = processing_cost_line(cost_type=view_processing_cost_line["cost_type"],
                               cost_amount=view_processing_cost_line["cost_amount"],
                               cost_currency=view_processing_cost_line["cost_currency"],
@@ -49,8 +49,8 @@ class c_Processing_cost(c_Processing_costTemplate):
                               description=view_processing_cost_line["description"],
                               cost_in_usd=view_processing_cost_line["cost_in_usd"],
                               button_callback=None
-                             )
-      self.processing_cost_info_line(z)
+                              )
+      self.processing_cost_info_line.add_component(z)
       
 
 
