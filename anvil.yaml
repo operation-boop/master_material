@@ -116,7 +116,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: fabric_composition
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 20, width: 223}
       name: generic_material_composition
       type: string
     - admin_ui: {width: 200}
