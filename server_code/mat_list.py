@@ -61,7 +61,7 @@ def _format_weight(version_row):
   # Fallback to a generic "weight" column if you have one
   w2 = _safe_get(version_row, "weight")
   return w2 or ""
-
+  
 @anvil.server.callable
 def get_material_cards_for_list():
   """
@@ -97,13 +97,9 @@ def get_material_cards_for_list():
   # items.sort(key=lambda x: (x["status"] != "Submitted", x["master_material_id"]), reverse=False)
 
   return items
-
+  
 @anvil.server.callable
 def get_material_card_by_document_id(document_id):
-  """
-  Return a single card dict (same schema) for one document_id.
-  Useful right after submit if you want to highlight just that one.
-  """
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
     return None
@@ -113,13 +109,14 @@ def get_material_card_by_document_id(document_id):
 
   status = _safe_get(version, "status", "Creating")
   item = {
-    "master_material_id": _safe_get(master, "master_material_id",""),
+    "master_material_id": _safe_get(master, "document_id", ""),
     "name": _safe_get(version, "name", ""),
     "ref_id": _safe_get(version, "ref_id", ""),
     "material_type": _safe_get(version, "material_type", ""),
-    "fabric_composition": _format_composition(version, "fabric_composition"),
+    "fabric_composition": _format_composition(_safe_get(version, "fabric_composition")),
     "weight": _format_weight(version),
-    "status": status
+    "status": status,
+    "original_cost_per_unit": _safe_get(version, "original_cost_per_unit", "")
   }
   if status == "Submitted":
     item["supplier_name"] = _safe_get(version, "supplier_name", "")

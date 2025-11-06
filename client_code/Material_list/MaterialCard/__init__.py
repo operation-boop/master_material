@@ -27,11 +27,10 @@ class MaterialCard(MaterialCardTemplate):
     
     # supplier_name is optional; show only if present
     supplier = self.item.get("supplier_name")
-    if supplier:
-      self.supplier.text = supplier
-      self.supplier.visible = True
-    else:
-      self.supplier.visible = False
+    if hasattr(self, "supplier") and self.supplier:
+      self.supplier.visible = bool(supplier)
+      if supplier:
+        self.supplier.text = supplier
 
   def view_details_btn_click(self, **event_args):
     open_form('Material_detail')
