@@ -304,11 +304,6 @@ class Material_input_form(Material_input_formTemplate):
       "landed_cost_per_unit": self._p(self.landed_cost),
     }
 
-  def _p(self, ctrl):
-    try:
-      return float(ctrl.text) if (ctrl and ctrl.text not in ("", None)) else None
-    except Exception:
-      return None
 
 
 

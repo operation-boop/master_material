@@ -1,126 +1,86 @@
 import anvil.server
 from anvil.tables import app_tables
 import json
+from datetime import datetime
 
-@anvil.server.callable
-def _safe_get(row, key, default=None):
+SHORT_UOM = {
+  "GSM (gram/sq meter)": "GSM",
+  "GPP (gram/piece)": "GPP",
+  "Meter": "m",
+  "Piece": "pc",
+}
+
+def _fmt_composition(json_str):
+  """Turn JSON string into '60% Cotton / 40% Polyester'."""
+  if not json_str:
+    return ""
+  try:
+    arr = json.loads(json_str) if isinstance(json_str, str) else json_str
+  except Exception:
+    return ""
+  parts = []
+  for it in arr or []:
+    try:
+      pct = float(it.get("percentage", 0))
+      name = (it.get("material") or it.get("fiber") or "").strip()
+      if name:
+        parts.append(f"{pct:.0f}% {name}")
+    except Exception:
+      continue
+  return " / ".join(parts)
+
+def _row_val(row, key, default=None):
   try:
     return row[key]
   except Exception:
     return default
-    
-@anvil.server.callable
-def _format_composition(raw_value):
-  """
-  Accepts either:
-    - JSON string: '[{"fiber":"Cotton","percentage":100}]'
-    - Python list: [{"fiber":"Cotton","percentage":100}]
-    - Anything else -> returns as-is or empty string
-  Returns: '100% Cotton' / '60% Cotton / 40% Polyester'
-  """
-  if raw_value is None:
+
+def _fmt_weight(version):
+  v = _row_val(version, "weight_per_unit")
+  u = _row_val(version, "weight_uom", "")
+  if v is None:
     return ""
+  short = SHORT_UOM.get(u, u or "")
+  return f"{v:g} {short}".strip()
 
-  data = raw_value
-  if isinstance(raw_value, str):
-    try:
-      data = json.loads(raw_value)
-    except Exception:
-      # Not JSON; return the string as-is
-      return raw_value
-
-  if isinstance(data, list):
-    parts = []
-    for item in data:
-      try:
-        pct = float(item.get("percentage", 0))
-        fiber = str(item.get("fiber", "")).strip()
-        if fiber:
-          parts.append(f"{pct:.0f}% {fiber}")
-      except Exception:
-        continue
-    return " / ".join(parts)
-  # Fallback: return whatever it is as a string
-  return str(raw_value)
+def _version_summary(version):
+  """Build a dict the MaterialCard can bind to."""
+  return {
+    "document_id":     _row_val(version, "document_id", ""),
+    "ver_num":         _row_val(version, "ver_num", 0),
+    "master_material_id": _row_val(version, "master_material_id", ""),
+    "name":            _row_val(version, "name", ""),
+    "ref_id":          _row_val(version, "ref_id", ""),
+    "material_type":   _row_val(version, "material_type", ""),
+    "fabric_composition": _fmt_composition(_row_val(version, "fabric_composition", "")),
+    "weight":          _fmt_weight(version),
+    "supplier_name":   _row_val(version, "supplier_name", ""),
+    "status":          _row_val(version, "status", ""),
+    "original_cost_per_unit": _row_val(version, "original_cost_per_unit", None),
+  }
 
 @anvil.server.callable
-def _format_weight(version_row):
-  # Prefer structured weight fields
-  w = _safe_get(version_row, "weight_per_unit")
-  uom = _safe_get(version_row, "weight_uom")
-  if w is not None and uom:
-    try:
-      # If numeric, avoid too many decimals
-      w = float(w)
-      if abs(w - round(w)) < 1e-9:
-        w = int(w)
-      return f"{w}{uom}"
-    except Exception:
-      pass
-
-  # Fallback to a generic "weight" column if you have one
-  w2 = _safe_get(version_row, "weight")
-  return w2 or ""
-  
-@anvil.server.callable
-def get_material_cards_for_list():
-  """
-  Returns a list of dicts for Material_list to render.
-  - Always includes: master_material_id, name, ref_id, material_type, fabric_composition, weight, status
-  - Includes supplier_name ONLY when status == 'Submitted'
-  """
-  items = []
-  for master in app_tables.master_material.search():
-    version = _safe_get(master, "current_version")
-    if not version:
-      continue
-
-    status = _safe_get(version, "status", "Creating")
-
-    item = {
-      "master_material_id": _safe_get(master, "document_id"),
-      "name": _safe_get(version, "name", ""),
-      "ref_id": _safe_get(version, "ref_id", ""),
-      "material_type": _safe_get(version, "material_type", ""),
-      "fabric_composition": _format_composition(_safe_get(version, "fabric_composition")),
-      "weight": _format_weight(version),
-      "status": status,
-      "original_cost_per_unit": _safe_get(version,"original_cost_per_unit", "")
-    }
-
-    if status == "Submitted":
-      item["supplier_name"] = _safe_get(version, "supplier_name", "")
-
-    items.append(item)
-
-  # (Optional) sort: submitted first, then drafts, newest master first if you have timestamps
-  # items.sort(key=lambda x: (x["status"] != "Submitted", x["master_material_id"]), reverse=False)
-
-  return items
-  
-@anvil.server.callable
-def get_material_card_by_document_id(document_id):
+def get_material_summary(document_id):
+  """Summary for a single material (current version)."""
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
-    return None
+    raise Exception(f"Material {document_id} not found")
   version = master['current_version']
   if not version:
-    return None
+    raise Exception("No current version found")
+  return _version_summary(version)
 
-  status = _safe_get(version, "status", "Creating")
-  item = {
-    "master_material_id": _safe_get(master, "document_id", ""),
-    "name": _safe_get(version, "name", ""),
-    "ref_id": _safe_get(version, "ref_id", ""),
-    "material_type": _safe_get(version, "material_type", ""),
-    "fabric_composition": _format_composition(_safe_get(version, "fabric_composition")),
-    "weight": _format_weight(version),
-    "status": status,
-    "original_cost_per_unit": _safe_get(version, "original_cost_per_unit", "")
-  }
-  if status == "Submitted":
-    item["supplier_name"] = _safe_get(version, "supplier_name", "")
-  return item
+@anvil.server.callable
+def list_material_summaries():
+  """All cards (one per master, current version)."""
+  items = []
+  for m in app_tables.master_material.search():
+    v = _row_val(m, "current_version")
+    if v:
+      items.append(_version_summary(v))
+  # newest first (optional)
+  items.sort(key=lambda d: (d.get("document_id") or ""), reverse=True)
+  return items
 
 
 

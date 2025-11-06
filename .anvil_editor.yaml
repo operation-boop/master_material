@@ -30,6 +30,7 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
+    api: '1762445975353525935254280.6755'
     mat_list: '1762415028890455059908817.8722'
     mat_ver: DEORGFCBEOX6PXFPU2RSBH25IEZGRN2A
     material: '1762240770923235863181415.2722'

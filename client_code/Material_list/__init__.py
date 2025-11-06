@@ -10,9 +10,9 @@ from anvil.tables import app_tables
 
 
 class Material_list(Material_listTemplate):
-  def __init__(self, **properties):
+  def __init__(self, focus_document_id=None, **properties):
     self.init_components(**properties)
-    self.form_show()
+    self.refresh_cards(focus_document_id)
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status"""
@@ -35,18 +35,18 @@ class Material_list(Material_listTemplate):
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
 
-  def form_show(self, **event_args):
+  def refresh_cards(self, focus_document_id=None):
     try:
-      materials = anvil.server.call('get_material_cards_for_list')
-    except Exception as e:
-      Notification(f"Failed to load materials: {e}", style="danger").show()
-      materials = []
+      items = anvil.server.call('list_material_summaries')
+      self.repeating_panel_materials.items = items
   
-    self.flow_panel_materials.clear()
-    for m in materials:
-      from .MaterialCard import MaterialCard
-      card = MaterialCard(item=m)   # your card gets the dict
-      card.width = "100%"
-      self.flow_panel_materials.add_component(card)
+      # Optional: focus/scroll to a specific card after save/submit
+      if focus_document_id:
+        for it in items:
+          if it.get("document_id") == focus_document_id:
+            # you can set a label to bold, or flash the card—depends on your template
+            break
+    except Exception as e:
+      Notification(f"Load failed: {e}", style="danger").show()
 
 
