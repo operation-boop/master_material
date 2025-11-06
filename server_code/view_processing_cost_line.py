@@ -17,4 +17,4 @@ import anvil.server
 #
 @anvil.server.callable
 def view_processing_cost_line():
-  return app_tables.tabl_exchange_rate.client_readable()
+  return app_tables..client_readable()
