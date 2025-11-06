@@ -131,18 +131,27 @@ class Material_input_form(Material_input_formTemplate):
 
   # ------------------------ DRAFT / SUBMIT ------------------------
   def save_as_draft_btn_click(self, **event_args):
-    """Collect all form data and save as draft"""
+    """Collect all form data and save as draft (no validation)."""
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
-
-    form_data = self.collect_form_data()
+  
+    data = self.collect_form_data()
     try:
-      # If your server expects (document_id, 'user', form_data) keep your old call.
-      anvil.server.call('save_or_edit_draft', self.current_document_id, form_data)
-      Notification("Draft saved!", style="success", timeout=3).show()
+      self.save_as_draft_btn.enabled = False
+      self.save_as_draft_btn.text = "Saving..."
+  
+      result = anvil.server.call("save_draft", self.current_document_id, "test_user@example.com", data)
+      if result and result.get("ok"):
+        Notification("Draft saved!", style="success", timeout=3).show()
+      else:
+        Notification("Could not save draft!", style="danger", timeout=3).show()
     except Exception as e:
-      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
+      Notification(f"Error: {e}", style="danger", timeout=3).show()
+    finally:
+      self.save_as_draft_btn.enabled = True
+      self.save_as_draft_btn.text = "Save as Draft"
+    
 
   def submit_btn_click(self, **event_args):
     if not self.current_document_id:

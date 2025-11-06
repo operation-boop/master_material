@@ -122,6 +122,24 @@ def check_status_transition(current_status, target_status):
     return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 @anvil.server.callable
+def save_draft(document_id, submitted_by_user, form_data):
+  """Save form data as draft (no validation)."""
+  master = get_master_material(document_id)
+  version = master['current_version']
+
+  # update all fields directly
+  for k, v in (form_data or {}).items():
+    try:
+      version[k] = v
+    except Exception as e:
+      print(f"Warning: Could not update {k}: {e}")
+
+  # mark as draft
+  version["status"] = "Draft"
+
+  return {"ok": True, "action": "draft_saved", "document_id": document_id}
+
+@anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data):
   """Simple: update fields, validate required ones, mark submitted."""
   master = get_master_material(document_id)
@@ -234,6 +252,7 @@ def get_material_versions(document_id):
   """Get all versions sorted by version number"""
   versions = app_tables.master_material_version.search(document_id=document_id)
   return sorted(versions, key=lambda x: x['ver_num'])
+
 
 
 
