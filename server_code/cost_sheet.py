@@ -8,6 +8,8 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 
+from datetime import datetime
+
 @anvil.server.callable
 def list_all_cost_sheets():
   return app_tables.tabl_cost_sheet.search()
@@ -16,5 +18,73 @@ def list_all_cost_sheets():
 def list_all_cost_sheet_versions():
   return app_tables.tabl_cost_sheet_version.search()
 
+@anvil.server.callable
 def list_all_cost_sheets_simple():
-  return app_tables.tabl_cost_sheet
+  return list(map(lambda cost_sheet_row: {
+    "id": cost_sheet_row.get_id(),
+    "document_id": cost_sheet_row['document_id']
+  }, list_all_cost_sheets()))
+
+@anvil.server.callable
+def list_all_cost_sheet_versions_simple():
+  return list(map(lambda cost_sheet_version_row: {
+    "id": cost_sheet_version_row.get_id(),
+    "document_id": cost_sheet_version_row['document_id']
+  }, list_all_cost_sheet_versions()))
+
+@anvil.server.callable
+def get_cost_sheet_with_id(id):
+  return app_tables.tabl_cost_sheet.get_by_id(id)
+
+@anvil.server.callable
+def get_cost_sheet_version_with_id(id):
+  return app_tables.tabl_cost_sheet_version.get_by_id(id)
+
+# start with low level thinking
+def create_cost_sheet_low_level():
+  return app_tables.tabl_cost_sheet.add_row(
+    created_at = datetime.now()
+  )
+
+def create_cost_sheet_version_low_level_ai(document_id, version_number, created_by=None, **kwargs):
+  data = {
+    'document_id': document_id,
+    'version_number': version_number,
+    'created_at': datetime.now(),
+    'created_by': created_by,
+    'status': kwargs.get('status', 'draft'),
+    'exchange_rate_used': [],  # Empty list for linked rows
+    'processing_cost_items': [],  # Empty list for linked rows
+  }
+
+  # Add any additional fields
+  data.update(kwargs)
+
+  return app_tables.tabl_cost_sheet_version.add_row(**data)
+
+# case 1: create new cost sheet -> version 1
+def create_cost_sheet_version_low_level(user_row):
+
+  app_tables.tabl_cost_sheet_version.add_row(
+    document_id = 0,
+    created_at = datetime.now(),
+    created_by = user_row,
+    approved_at = datetime.now(),
+    approved_by = None,
+    submitted_at = datetime.now(),
+    submitted_by=0,
+    change_description=0,
+    version_number=0,
+    status=0,
+    bom_version=0,
+    exchange_rates_used=0,
+    processing_cost_items=0,
+    total_overhead_cost=0,
+    total_material_cost=0,
+    expected_profit_scenarios=0
+  )
+
+# case 2: update cost sheet -> create new verion X
+
+def generate_document_id():
+  pass
