@@ -131,84 +131,117 @@ class Material_input_form(Material_input_formTemplate):
 
   # ------------------------ DRAFT / SUBMIT ------------------------
   def save_as_draft_btn_click(self, **event_args):
-    """Collect all form data and save as draft (no validation)."""
+    """
+    Draft: collect only FILLED fields and save. No validation.
+    """
     if not self.current_document_id:
-      Notification("Please create a material first!", style="warning", timeout=3).show()
+      Notification("Please create/select a material first.", style="warning", timeout=3).show()
       return
   
-    data = self.collect_form_data()
-    try:
-      self.save_as_draft_btn.enabled = False
-      self.save_as_draft_btn.text = "Saving..."
+    # collect and prune unfilled fields
+    data_full = self.collect_form_data() or {}
+    data = self._prune_unfilled(data_full)
   
-      result = anvil.server.call("save_or_edit_draft", self.current_document_id, "user", data)
-      if result and result.get("ok"):
-        Notification("Draft saved!", style="success", timeout=3).show()
+    # lock UI
+    self.save_as_draft_btn.enabled = False
+    self.submit_btn.enabled = False
+    old_txt = getattr(self.save_as_draft_btn, "text", "Save as Draft")
+    self.save_as_draft_btn.text = "Saving…"
+  
+    try:
+      user = self._current_user_label() if hasattr(self, "_current_user_label") else "user"
+      res = anvil.server.call("save_or_edit_draft", self.current_document_id, user, data)
+      if res and res.get("ok"):
+        Notification("Draft saved.", style="success", timeout=2).show()
+        self.raise_event("x-draft-saved", document_id=self.current_document_id, data=data)
       else:
-        Notification("Could not save draft!", style="danger", timeout=3).show()
+        Notification("Could not save draft.", style="danger", timeout=4).show()
     except Exception as e:
-      Notification(f"Error: {e}", style="danger", timeout=3).show()
+      Notification(f"Save failed: {e}", style="danger", timeout=5).show()
     finally:
       self.save_as_draft_btn.enabled = True
-      self.save_as_draft_btn.text = "Save as Draft"
+      self.submit_btn.enabled = True
+      self.save_as_draft_btn.text = old_txt
 
   def submit_btn_click(self, **event_args):
+    """
+    Submit: FIRST validate UI for missing data; if OK, THEN collect and submit.
+    """
     if not self.current_document_id:
-      Notification("Please create a material first!", style="warning").show()
+      Notification("Please create/select a material first.", style="warning").show()
       return
   
-    data = self.collect_form_data() or {}
-    if not self.validate_form(data):
+    ok, missing, msg = self._validate_required_controls()
+    if not ok:
+      Notification(msg, style="warning", timeout=6).show()
       return
+  
+    # only now collect form data (as per your logic)
+    data = self.collect_form_data() or {}
+  
+    # lock UI
+    self.submit_btn.enabled = False
+    self.save_as_draft_btn.enabled = False
+    old_txt = getattr(self.submit_btn, "text", "Submit")
+    self.submit_btn.text = "Submitting…"
   
     try:
-      self.submit_btn.enabled = False
-      self.submit_btn.text = "Submitting..."
-  
-      result = anvil.server.call(
-        'submit_version',
-        self.current_document_id,
-        "test_user@example.com",   # replace with your user/email variable if you have one
-        data
-      )
-  
-      if result and result.get("ok"):
+      user = self._current_user_label() if hasattr(self, "_current_user_label") else "user"
+      res = anvil.server.call("submit_version", self.current_document_id, user, data)
+      if res and res.get("ok"):
         Notification("Submitted successfully!", style="success").show()
-        # Navigate (pick one):
-        open_form('Material_list', document_id=self.current_document_id)
-        # or: self.raise_event("x-close-alert", value=True)
+        self.raise_event("x-submitted", document_id=self.current_document_id, data=data)
       else:
-        Notification("Submit failed!", style="danger").show()
-  
+        Notification("Submit failed.", style="danger").show()
     except Exception as e:
-      Notification(f"Error: {e}", style="danger").show()
-  
+      Notification(f"Submit failed: {e}", style="danger", timeout=6).show()
     finally:
       self.submit_btn.enabled = True
-      self.submit_btn.text = "Submit"
+      self.save_as_draft_btn.enabled = True
+      self.submit_btn.text = old_txt
 
   # ------------------------ VALIDATION & COLLECTION ------------------------
-  def validate_form(self, data):
-    required = ["name", "material_type", "supplier_name",
-                "country_of_origin", "unit_of_measurement",
-                "weight_per_unit", "weight_uom",
-                "original_cost_per_unit", "native_cost_currency"]
-    missing = [f for f in required if not data.get(f)]
-    if missing:
-      Notification("Please fill in: " + ", ".join(missing), style="warning").show()
+  def _is_filled(self, v):
+    if v is None:
       return False
+    if isinstance(v, str) and v.strip() == "":
+      return False
+    return True  # keep 0, 0.0, False, non-empty strings, lists, dicts
+
+  def _prune_unfilled(self, data: dict):
+    """Keep only keys with filled values (for Save as Draft)."""
+    cleaned = {}
+    for k, v in (data or {}).items():
+      if self._is_filled(v):
+        cleaned[k] = v
+    return cleaned
+    
+  def _validate_required_controls(self):
+    required = {
+      "name": getattr(self.material_name, "text", None),
+      "material_type": getattr(self.material_type_dropdown, "selected_value", None),
+      "supplier_name": getattr(self.dropdown_supplier, "selected_value", None),
+      "country_of_origin": getattr(self.country_of_origin_dropdown, "selected_value", None),
+      "unit_of_measurement": getattr(self.UOM_dropdown, "selected_value", None),
+      "weight_per_unit": getattr(self.weight_per_unit, "text", None),
+      "weight_uom": getattr(self.weight_uom_dropdown, "selected_value", None),
+      "original_cost_per_unit": getattr(self.original_cost_per_unit, "text", None),
+      "native_cost_currency": getattr(self.currency_dropdown, "selected_value", None),
+    }
   
-      # composition 100%
-    try:
-      comp = json.loads(data.get("fabric_composition") or "[]")
-      total = sum(float(i["percentage"]) for i in comp)
-      if abs(total - 100) > 0.01:
-        Notification(f"Composition must be 100% (now {total:.1f}%)", style="warning").show()
-        return False
-    except Exception:
-      Notification("Invalid composition.", style="warning").show()
-      return False
-    return True
+    missing = [k for k, v in required.items() if not self._is_filled(v)]
+    if missing:
+      return (False, missing, "Please fill in: " + ", ".join(missing))
+  
+    # Composition must total 100% if any composition is entered
+    if self.composition_list:
+      try:
+        total = sum(float(item["percentage"]) for item in self.composition_list if self._is_filled(item.get("percentage")))
+        if abs(total - 100.0) > 0.01:
+          return (False, [], f"Composition must be 100% (now {total:.1f}%).")
+      except Exception:
+        return (False, [], "Invalid composition percentages.")
+    return (True, [], "")
 
   def collect_form_data(self):
     """Collect all form fields into a dictionary (DB-aligned)."""
