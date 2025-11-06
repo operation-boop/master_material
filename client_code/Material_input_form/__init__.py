@@ -98,40 +98,26 @@ class Material_input_form(Material_input_formTemplate):
     self.percentage.placeholder = "Total reached" if block else f"Max {remaining:.2f}% allowed"
 
   # ------------------------ COST LOGIC ------------------------
-  def supplier_tolerance_pressed_enter(self, **event_args):
-    """
-    Supplier tolerance updates effective cost.
-    Also refresh landed cost if a logistics rate is present.
-    """
-    try:
-      original_cost = float(self.original_cost_per_unit.text or 0)
-      tol_pct = float(self.supplier_tolerance.text or 0)
-      tol_cost = (tol_pct / 100.0) * original_cost
+  def original_cost_per_unit_change(self, **event_args):
+      if(self.original_cost_per_unit.text is not None):
+        self.original_cost.text = self.original_cost_per_unit.text
 
-      # Show tolerance cost as a number somewhere? If you have a label for the VALUE, bind it there.
-      # Do NOT overwrite currency labels.
-      if hasattr(self, "supplier_tolerance_cost_value"):
-        self.supplier_tolerance_cost_value.text = f"{tol_cost:.4f}"
+  def supplier_tolerance_change(self, **event_args):
+    if(self.supplier_tolerance.text is not None):
+      original_cost = int(self.original_cost_per_unit.text)
+      supplier_tolerance_percentage = int(self.supplier_tolerance.text)
+      supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
+      self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
 
-      effective_cost = original_cost + tol_cost
-      self.effective_cost_per_unit.text = f"{effective_cost:.4f}"
-
-      # recalc landed if logistics rate is set
-      self._recalc_landed_cost()
-    except (ValueError, TypeError):
-      Notification("Please enter valid numbers.", style="warning").show()
+      effective_cost = original_cost + supplier_tolerance_cost
+      self.effective_cost_per_unit.text = str(effective_cost)
 
   def logistics_rate_change(self, **event_args):
-    self._recalc_landed_cost()
-
-  def _recalc_landed_cost(self):
-    try:
-      logistics_rate = float(self.logistics_rate.text or 0)      # percent
-      effective_cost = float(self.effective_cost_per_unit.text or 0)
-      landed_cost = ((logistics_rate / 100.0) * effective_cost) + effective_cost
-      self.landed_cost.text = f"{landed_cost:.4f}"
-    except (ValueError, TypeError):
-      Notification("Please enter valid numbers.", style="warning").show()
+    if(self.logistics_rate.text is not None):
+      logistics_rate = int(self.logistics_rate.text)
+      effective_cost = int(float(self.effective_cost_per_unit.text))
+      landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
+      self.landed_cost.text = str(landed_cost)
 
   # ------------------------ DRAFT / SUBMIT ------------------------
   def save_as_draft_btn_click(self, **event_args):
