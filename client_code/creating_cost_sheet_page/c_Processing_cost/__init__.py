@@ -24,6 +24,28 @@ class c_Processing_cost(c_Processing_costTemplate):
     self.init_components(**properties)
     self.load_view_processing_cost_line()  #activates funct "load_view_processing_cost_line()" when initalizing
 
+
+    item_list_processing_cost_type = []
+    for row in app_tables.list_processing_cost_type.search():
+      item_list_processing_cost_type.append((row["type_name"], row))
+
+    item_list_vendor = []
+    for row in app_tables.list_vendor.search():
+      item_list_vendor.append((row["vendor"], row))
+
+    item_list_processing_cost_status = []
+    for row in app_tables.list_processing_cost_status.search():
+      item_list_processing_cost_status.append((row["status"], row))
+
+    item_list_currency_types = []
+    for row in app_tables.list_currency_types.search():
+      item_list_currency_types.append((row["currency_types"], row))
+
+    #   self.drop_down_processing_type = item_list_processing_cost_type
+    #   self.drop_down_vendor_list = item_list_vendor
+    #  self.drop_down_processing_type = item_list_processing_cost_type
+    #  self.drop_down_currency_type = item_list_currency_types
+
     
   # Create a function that will allow the client side to interact
   # 'In this case, view the table' from the server side
