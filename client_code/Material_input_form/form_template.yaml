@@ -237,7 +237,7 @@ components:
         name: label_22
         properties: {bold: false, text: Supplier Tolerance (%)}
         type: Label
-      - event_bindings: {pressed_enter: supplier_tolerance_pressed_enter}
+      - event_bindings: {change: supplier_tolerance_change}
         layout_properties: {grid_position: 'MLBHNI,NZNRUH'}
         name: supplier_tolerance
         properties: {type: number}
@@ -396,7 +396,8 @@ components:
       name: spacer_4
       properties: {height: 32}
       type: Spacer
-    - layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
+    - event_bindings: {click: cancel_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
       name: cancel_btn
       properties: {align: left, background: 'theme:Gray 600', foreground: 'theme:White', role: null, text: Cancel}
       type: Button

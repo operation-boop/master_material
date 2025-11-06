@@ -7,7 +7,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-
+from ...Material_detail import Material_detail
 
 class MaterialCard(MaterialCardTemplate):
   def __init__(self, **properties):
@@ -15,6 +15,9 @@ class MaterialCard(MaterialCardTemplate):
     self.init_components(**properties)
 
     # Make the card about half the width -> 2 per row
-    self.card_1.width = "48%"     # use your Card component name
-    self.card_1.margin = "0 1% 8px 0"   # right + bottom spacing
     # Any code you write here will run before the form opens.
+
+  def view_details_btn_click(self, **event_args):
+    open_form(Material_detail(material_data=self.item))
+
+  

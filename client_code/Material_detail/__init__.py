@@ -11,10 +11,10 @@ from ..Material_list import Material_list
 
 
 class Material_detail(Material_detailTemplate):
-  def __init__(self, **properties):
+  def __init__(self, material_data=None, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
+    self.item = material_data
     # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
