@@ -123,8 +123,9 @@ components:
         name: label_10
         properties: {bold: false, text: Roll Width (m)}
         type: Label
-      - layout_properties: {grid_position: 'OGMBXT,RBEGKL'}
-        name: roll_width
+      - event_bindings: {}
+        layout_properties: {grid_position: 'OGMBXT,RBEGKL'}
+        name: fabric_roll_width
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'AXXSOA,GCEEES'}
@@ -132,7 +133,7 @@ components:
         properties: {bold: false, text: Cut Width (m)}
         type: Label
       - layout_properties: {grid_position: 'RVOPJP,QOSPGW'}
-        name: cut_width
+        name: fabric_cut_width
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'WHFQON,MPISVU'}
@@ -140,7 +141,7 @@ components:
         properties: {bold: false, text: Cut Width (no shrink)}
         type: Label
       - layout_properties: {grid_position: 'ACOTSK,MSVSNC'}
-        name: cut_width_with_no_shrink
+        name: fabric_cut_width_no_shrinkage
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'YUXMJL,THRAJY'}
@@ -148,7 +149,7 @@ components:
         properties: {bold: false, text: Material Size/Spec}
         type: Label
       - layout_properties: {grid_position: 'JZOTKD,WOFEFL'}
-        name: material_size
+        name: generic_material_size
         properties: {placeholder: e.g. 20L for buttons}
         type: TextBox
       - layout_properties: {grid_position: 'TGNPID,ERAVCM'}
@@ -178,10 +179,10 @@ components:
         type: TextBox
       - layout_properties: {grid_position: 'WZWIUY,EALIRB'}
         name: label_14
-        properties: {bold: false, text: Warp Shrinkage, visible: true}
+        properties: {bold: false, text: Werp Shrinkage, visible: true}
         type: Label
       - layout_properties: {grid_position: 'MBVMAN,BQVPSR'}
-        name: warp_shrinkage
+        name: werp_shrinkage
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'UMVIDV,OWOOLJ'}
@@ -221,7 +222,7 @@ components:
         name: rich_text_7
         properties: {content: 'Original Cost per Unit <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - event_bindings: {change: original_cost_per_unit_change}
+      - event_bindings: {}
         layout_properties: {grid_position: 'NRESRT,MJAZHJ'}
         name: original_cost_per_unit
         properties: {type: number}
@@ -240,7 +241,7 @@ components:
         properties: {bold: false, text: Supplier Tolerance (%)}
         type: Label
       - event_bindings: {pressed_enter: supplier_tolerance_pressed_enter}
-        layout_properties: {grid_position: 'MLBHNI,NZNRUH'}
+        layout_properties: {grid_position: 'UFXJHR,XXWLYK'}
         name: supplier_tolerance
         properties: {type: number}
         type: TextBox
@@ -413,9 +414,9 @@ components:
       name: save_as_draft_btn
       properties: {align: right, background: orange, foreground: 'theme:White', role: null, text: SAve as draft}
       type: Button
-    - event_bindings: {click: submit_btn_click}
+    - event_bindings: {click: submit_button_click}
       layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
-      name: submit_btn
+      name: submit_button
       properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: submit}
       type: Button
     layout_properties: {grid_position: 'UCHAOH,WTQRTI'}

@@ -5,7 +5,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-from ..Material_detail import Material_detail
+from ...Material_detail import Material_detail
 
 
 class MaterialCard(MaterialCardTemplate):

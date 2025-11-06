@@ -82,9 +82,6 @@ db_schema:
       name: master_material_id
       type: string
     - admin_ui: {width: 200}
-      name: supplier
-      type: string
-    - admin_ui: {width: 200}
       name: supplier_name
       type: string
     - admin_ui: {width: 200}
