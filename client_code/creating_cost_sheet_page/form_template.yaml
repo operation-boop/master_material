@@ -54,11 +54,12 @@ components:
     name: radio_button_profit_scenario
     properties: {text: Profit Scenario}
     type: RadioButton
-  layout_properties: {grid_position: 'TZRMCP,SOGCHE'}
+  layout_properties: {grid_position: 'YJVMRZ,JOSZYD'}
   name: column_panel_1
   properties: {}
   type: ColumnPanel
-- layout_properties: {grid_position: 'GUQPSB,FYRTHD'}
+- components: []
+  layout_properties: {grid_position: 'GUQPSB,FYRTHD'}
   name: column_panel_information
   properties: {}
   type: ColumnPanel

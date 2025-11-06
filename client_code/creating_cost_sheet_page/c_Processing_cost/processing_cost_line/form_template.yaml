@@ -57,3 +57,4 @@ properties:
 - {default_value: '', important: true, name: vendor_name, type: string}
 - {default_value: '', important: true, name: description, type: string}
 - {default_value: '', important: true, name: label_cost, type: string}
+- {important: true, name: button_callback, type: object}

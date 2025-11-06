@@ -10,11 +10,29 @@ from anvil.tables import app_tables
 from .processing_cost_line import processing_cost_line
 
 class c_Processing_cost(c_Processing_costTemplate):
-  def __init__(self, **properties):
+  def __init__(self,
+               cost_type,
+               cost_amount,
+               cost_currency,
+               status,
+               vendor,
+               vendor_name,
+               description,
+               cost_in_usd,
+               **properties
+                ):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.load_view_processing_cost_line()  #activates funct "load_view_processing_cost_line()" when initalizing
-
+    self.drop_down_processing_type = cost_type
+    self.text_box_cost_amount = cost_amount
+    self.drop_down_vendor_list = vendor
+    self.text_box_vendor_name = vendor_name
+    self.drop_down_status = status
+#    self.text_area_processing_description = 
+    
+    
+    
     
   # Create a function that will allow the client side to interact
   # 'In this case, view the table' from the server side
@@ -23,17 +41,17 @@ class c_Processing_cost(c_Processing_costTemplate):
 
     for view_processing_cost_line in view_processing_cost_line:
       z = processing_cost_line(cost_type=view_processing_cost_line["cost_type"],
-                               cost_amount=view_processing_cost_line["cost_amount"],
-                               cost_currency=view_processing_cost_line["cost_currency"],
-                               status=view_processing_cost_line["status"],
-                               vendor=view_processing_cost_line["vendor"],
-                               vendor_name=view_processing_cost_line["vendor_name"],
-                               description=view_processing_cost_line["description"],
-                               cost_in_usd=view_processing_cost_line["cost_in_usd"],
-                               button_callback=None
-                              )
+                              cost_amount=view_processing_cost_line["cost_amount"],
+                              cost_currency=view_processing_cost_line["cost_currency"],
+                              status=view_processing_cost_line["status"],
+                              vendor=view_processing_cost_line["vendor"],
+                              vendor_name=view_processing_cost_line["vendor_name"],
+                              description=view_processing_cost_line["description"],
+                              cost_in_usd=view_processing_cost_line["cost_in_usd"],
+                              button_callback=None
+                             )
+      self.processing_cost_info_line(z)
       
-
 
 
 
