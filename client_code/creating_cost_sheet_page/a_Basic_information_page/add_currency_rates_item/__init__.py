@@ -8,12 +8,11 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-
 class add_currency_rates_item(add_currency_rates_itemTemplate):
-  def __init__(self, from_currency, to_currency, **properties):
+  def __init__(self, **properties): # from_currency, to_currency,
     self.init_components(**properties)
-    self.from_currency = from_currency 
-    self.to_currency = to_currency
+#    self.from_currency = from_currency 
+#    self.to_currency = to_currency
 
     item_list_currency_types = []
     for row in app_tables.list_currency_types.search():

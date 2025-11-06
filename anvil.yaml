@@ -66,7 +66,7 @@ db_schema:
     server: full
     title: dict_quoted_price_scenario
   list_costing_sheet_status:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: status_type
@@ -74,7 +74,7 @@ db_schema:
     server: full
     title: list_costing_sheet_status
   list_country:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: country
@@ -90,7 +90,7 @@ db_schema:
     server: full
     title: list_currency_types
   list_overhead_cost_type:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: overhead_type
@@ -98,15 +98,15 @@ db_schema:
     server: full
     title: list_overhead_cost_type
   list_processing_cost_status:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
-      name: process_cost_status
+      name: status
       type: string
     server: full
     title: list_processing_cost_status
   list_processing_cost_type:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: type_name
@@ -117,7 +117,7 @@ db_schema:
     server: full
     title: list_processing_cost_type
   list_staff_roles:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: roles_type
@@ -125,7 +125,7 @@ db_schema:
     server: full
     title: list_staff_roles
   list_vendor:
-    client: none
+    client: search
     columns:
     - admin_ui: {order: 0, width: 200}
       name: vendor

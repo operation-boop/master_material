@@ -39,7 +39,7 @@ components:
         properties: {text: Description}
         type: Label
       - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
-        name: label_cost_in_usd
+        name: label_cost_amount_usd
         properties: {text: Cost In USD}
         type: Label
       layout_properties: {grid_position: 'KZLRVY,ROGLZA'}
@@ -93,15 +93,16 @@ components:
       properties: {include_placeholder: true, placeholder: Currency}
       type: DropDown
     - layout_properties: {grid_position: 'EZNCAE,HNHSVV'}
-      name: label_cost_amount_usd
+      name: label_cost_in_usd
       properties: {}
       type: Label
     layout_properties: {grid_position: 'IFNYXT,YOTSYQ'}
     name: column_panel_processing_cost_infor
     properties: {}
     type: ColumnPanel
-  - layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
-    name: button_4
+  - event_bindings: {click: button_add_click}
+    layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
+    name: button_add
     properties: {text: Add}
     type: Button
   layout_properties: {grid_position: 'QNTBKZ,TGMSJS'}

@@ -54,7 +54,15 @@ class creating_cost_sheet_page(creating_cost_sheet_pageTemplate):
   def radio_button_processing_cost_change(self, **event_args):
     """This method is called when this radio button is selected (but not deselected)"""
     self.column_panel_information.clear()
-    self.column_panel_information.add_component(c_Processing_cost("cost_type", "cost_amount", "cost_currency", "status", "vendor", "vendor_name", "description", "cost_in_usd"))
+    self.column_panel_information.add_component(c_Processing_cost("cost_type",
+                                                                  "cost_amount",
+                                                                  "cost_currency",
+                                                                  "status",
+                                                                  "vendor",
+                                                                  "vendor_name",
+                                                                  "description",
+                                                                 # "cost_in_usd"
+                                                                  ))
 
   def radio_button_overhead_cost_change(self, **event_args):
     """This method is called when this radio button is selected (but not deselected)"""

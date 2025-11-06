@@ -18,21 +18,12 @@ class c_Processing_cost(c_Processing_costTemplate):
                vendor,
                vendor_name,
                description,
-               cost_in_usd,
                **properties
                 ):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.load_view_processing_cost_line()  #activates funct "load_view_processing_cost_line()" when initalizing
-    self.drop_down_processing_type.selected_value = cost_type
-    self.text_box_cost_amount.text = cost_amount
-    self.drop_down_vendor_list.selected_value = vendor
-    self.text_box_vendor_name.text = vendor_name
-    self.drop_down_status.selected_value = status
-#    self.text_area_processing_description = 
-    
-    
-    
+
     
   # Create a function that will allow the client side to interact
   # 'In this case, view the table' from the server side
@@ -51,9 +42,10 @@ class c_Processing_cost(c_Processing_costTemplate):
                               button_callback=None
                               )
       self.processing_cost_info_line.add_component(z)
+
+
+
       
-
-
 
 ##  def load_currency_rate_information(self):
 #    currency_information = anvil.server.call("view_exchange_rate_line").search()
@@ -66,3 +58,38 @@ class c_Processing_cost(c_Processing_costTemplate):
 #    v = add_currency_rates_item(from_currency="USD", to_currency="VND", created_by="Jonathan")
 #    self.load_currency_rate_information()
 #    self.column_panel_currency_rate_line.add_component(v)
+
+  def button_add_click(self, **event_args):
+    """This method is called when the button is clicked"""
+
+    cost_type = self.drop_down_processing_type.selected_value
+    cost_amount = self.text_box_cost_amount.text
+    cost_currency = self.drop_down_currency_type.selected_value
+    status = self.drop_down_status.selected_value
+    vendor = self.drop_down_vendor_list.selected_value
+    vendor_name = self.text_box_vendor_name.text
+    description = self.text_area_processing_description.text
+    anvil.server.call('add_exchange_rate_data',
+                      cost_type,
+                      cost_amount,
+                      cost_currency,
+                      status,
+                      vendor,
+                      vendor_name,
+                      description,
+                     )
+
+    def clear_inputs(self):
+
+      self.drop_down_processing_type.selected_value = ""
+      self.drop_down_cost_amount.text = ""
+      self.drop_down_currency_type.selected_value = ""
+      self.drop_down_status.selected_value = ""
+      self.drop_down_vendor_list.selected_value = ""
+      self.text_box_vendor_name.text = ""
+      self.text_area_processing_description = ""
+
+
+
+
+
