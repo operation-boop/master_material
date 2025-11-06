@@ -141,7 +141,7 @@ class Material_input_form(Material_input_formTemplate):
       self.save_as_draft_btn.enabled = False
       self.save_as_draft_btn.text = "Saving..."
   
-      result = anvil.server.call("save_draft", self.current_document_id, "test_user@example.com", data)
+      result = anvil.server.call("save_or_edit_draft", self.current_document_id, "test_user@example.com", data)
       if result and result.get("ok"):
         Notification("Draft saved!", style="success", timeout=3).show()
       else:
@@ -158,29 +158,36 @@ class Material_input_form(Material_input_formTemplate):
       Notification("Please create a material first!", style="warning").show()
       return
   
-    data = self.collect_form_data()
+    data = self.collect_form_data() or {}
     if not self.validate_form(data):
       return
   
     try:
       self.submit_btn.enabled = False
       self.submit_btn.text = "Submitting..."
-      new_item = anvil.server.call('submit_material', self.current_document_id, data)
-      open_form('MaterialList', new_item=new_item)
-      
-      
   
-      result = anvil.server.call("submit_version", self.current_document_id, "test_user@example.com", data)
+      result = anvil.server.call(
+        'submit_version',
+        self.current_document_id,
+        "test_user@example.com",   # replace with your user/email variable if you have one
+        data
+      )
+  
       if result and result.get("ok"):
         Notification("Submitted successfully!", style="success").show()
-        self.raise_event("x-close-alert", value=True)
+        # Navigate (pick one):
+        open_form('Material_list', document_id=self.current_document_id)
+        # or: self.raise_event("x-close-alert", value=True)
       else:
         Notification("Submit failed!", style="danger").show()
+  
     except Exception as e:
       Notification(f"Error: {e}", style="danger").show()
+  
     finally:
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
+
   # ------------------------ VALIDATION & COLLECTION ------------------------
   def validate_form(self, data):
     required = ["name", "material_type", "supplier_name",
@@ -226,6 +233,7 @@ class Material_input_form(Material_input_formTemplate):
     return {
       # Basic Info
       "name": getattr(self, 'material_name', None) and self.material_name.text,
+      "master_material_id" : self._p(self.mat_material_id.text),
       "material_type": self.material_type_dropdown.selected_value,
       "supplier_name": self.dropdown_supplier.selected_value,
       "ref_id": self._p(self.supplier_reference_id.text),

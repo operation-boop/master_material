@@ -9,25 +9,26 @@ from ...Material_detail import Material_detail
 
 
 class MaterialCard(MaterialCardTemplate):
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
+  def __init__(self, item=None, **properties):
     self.init_components(**properties)
+    self.item = item or {}
+    self.refresh_card()
 
-  def form_show(self, **event_args):
-    self._render(self.item)
-
-  def update_from(self, summary):
-    self.item = summary
-    self._render(summary)
-
-  def _render(self, it):
-    self.lbl_material_id.text   = it.get("material_id")
-    self.lbl_name.text          = it.get("material_name")
-    self.lbl_type.text          = it.get("material_type")
-    self.lbl_supplier.text      = it.get("supplier")
-    self.lbl_weight.text        = it.get("weight")
-    self.lbl_cost.text          = it.get("cost_per_unit")
-    self.lbl_status.text        = it.get("verification_status")
-
-  def view_details_btn_click(self, **event_args):
-    open_form(Material_detail(material_data=self.item))
+    
+  def refresh_card(self):
+    self.material_id.text = self.item.get("master_material_id", "")
+    self.material_name.text = self.item.get("name", "")
+    self.ref_id.text = self.item.get("ref_id", "")
+    self.material_type.text = self.item.get("material_type", "")
+    self.fabric_composition.text = self.item.get("fabric_composition", "")
+    self.weight.text = self.item.get("weight", "")
+    self.supplier.text = self.item.get("status", "")
+    self.cost_per_unit.text = self.item.get("original_cost_per_unit", "")
+    
+    # supplier_name is optional; show only if present
+    supplier = self.item.get("supplier_name")
+    if supplier:
+      self.supplier.text = supplier
+      self.supplier.visible = True
+    else:
+      self.supplier.visible = False

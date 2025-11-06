@@ -16,6 +16,14 @@ components:
       properties: {bold: true, border: '', foreground: 'theme:Secondary 500', text: BASIC INFORMATION, underline: false}
       type: Label
     - components:
+      - layout_properties: {grid_position: 'BHGFPL,DENJHT'}
+        name: label_5
+        properties: {text: Master Material ID}
+        type: Label
+      - layout_properties: {grid_position: 'LBLPEJ,MZNTJE'}
+        name: mat_material_id
+        properties: {}
+        type: TextBox
       - layout_properties: {grid_position: 'KLGAFQ,SBSJAL'}
         name: rich_text_1
         properties: {content: 'Material Name <span style="color:red;">*</span>', format: restricted_html}

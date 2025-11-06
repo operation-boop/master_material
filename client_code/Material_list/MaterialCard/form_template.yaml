@@ -2,8 +2,7 @@ components:
 - components:
   - components:
     - components:
-      - data_bindings:
-        - {code: 'self.item[''material_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'PFSBWR,XHXNZI'}
         name: material_id
         properties:
@@ -15,8 +14,7 @@ components:
           spacing_below: none
           text: ''
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'JVYMRV,KQIQPR'}
         name: ref_id
         properties:
@@ -27,29 +25,22 @@ components:
           spacing_below: none
           text: ''
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''material_name'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'KOAOJD,NPYBLV'}
         name: material_name
         properties: {bold: true, spacing_above: none, spacing_below: none, text: ''}
         type: Label
-      - data_bindings:
-        - {code: 'self.item[''material_type'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'ZAUVOH,XIVCVY JJMJNE,LHPPKS'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'ZAUVOH,XIVCVY'}
         name: material_type
         properties: {align: center, background: '#dbf6ff', border: '', foreground: 'theme:Primary 700', text: ''}
         type: Label
-      - layout_properties: {grid_position: 'ZAUVOH,GWTOEN'}
-        name: column_panel_3
-        properties: {}
-        type: ColumnPanel
       layout_properties: {grid_position: 'FHTZRX,KOMCSM'}
       name: column_panel_1
       properties: {}
       type: ColumnPanel
     - components:
-      - data_bindings:
-        - {code: 'self.item[''verification_status'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'GMUVFW,YXBQMY'}
         name: verification_status
         properties: {align: right, bold: false}
@@ -89,8 +80,7 @@ components:
       name: linear_panel_1
       properties: {}
       type: LinearPanel
-    - data_bindings:
-      - {code: 'self.item[''cost_per_unit'']', property: text, writeback: false}
+    - data_bindings: []
       layout_properties: {grid_position: 'NMRDNO,WZXMWB CXILVO,LUDFQL'}
       name: cost_per_unit
       properties: {bold: true, foreground: red, text: ''}
@@ -100,8 +90,7 @@ components:
       name: view_details_btn
       properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White', role: primary-color, text: view details}
       type: Button
-    - data_bindings:
-      - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
+    - data_bindings: []
       layout_properties: {grid_position: 'NMRDNO,KCPASA NIOTYE,WHTGWF'}
       name: fabric_composition
       properties:
@@ -113,8 +102,7 @@ components:
         spacing_below: none
         text: ''
       type: Label
-    - data_bindings:
-      - {code: 'self.item[''weight'']', property: text, writeback: false}
+    - data_bindings: []
       layout_properties: {grid_position: 'NMRDNO,KCPASA BFHIJX,AVUDJG'}
       name: weight
       properties:
@@ -125,8 +113,7 @@ components:
         spacing_below: none
         text: ''
       type: Label
-    - data_bindings:
-      - {code: 'self.item[''supplier'']', property: text, writeback: false}
+    - data_bindings: []
       layout_properties: {grid_position: 'NMRDNO,KCPASA CRYWFS,OKOJBY'}
       name: supplier
       properties:
@@ -138,7 +125,7 @@ components:
         spacing_below: none
         text: ''
       type: Label
-    layout_properties: {width: 299.5}
+    layout_properties: {width: 368.1670244140625}
     name: card_1
     properties:
       col_widths: '{"WZXMWB":30,"KCPASA":30}'
