@@ -154,6 +154,7 @@ class Material_input_form(Material_input_formTemplate):
       if res and res.get("ok"):
         Notification("Draft saved.", style="success", timeout=2).show()
         self.raise_event("x-draft-saved", document_id=self.current_document_id, data=data)
+        open_form('Material_list', focus_document_id=self.current_document_id)
       else:
         Notification("Could not save draft.", style="danger", timeout=4).show()
     except Exception as e:
@@ -191,6 +192,7 @@ class Material_input_form(Material_input_formTemplate):
       if res and res.get("ok"):
         Notification("Submitted successfully!", style="success").show()
         self.raise_event("x-submitted", document_id=self.current_document_id, data=data)
+        open_form('Material_list', focus_document_id=self.current_document_id)
       else:
         Notification("Submit failed.", style="danger").show()
     except Exception as e:
