@@ -10,10 +10,11 @@ from anvil.tables import app_tables
 
 
 class Material_edit_form(Material_edit_formTemplate):
-  def __init__(self, **properties):
+  def __init__(self, material_data=None, **properties):
     # Set Form properties and Data Bindings.
+    print("Material data:", material_data)
     self.init_components(**properties)
-
+    self.item = material_data
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
     suppliers = anvil.server.call("get_suppliers")
     self.supplier_dropdown.items = [(s["supplier_name"], s) for s in suppliers]

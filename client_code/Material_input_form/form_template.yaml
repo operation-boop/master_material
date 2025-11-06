@@ -376,16 +376,28 @@ components:
         name: effective_cost_per_unit
         properties: {}
         type: Label
-      - layout_properties: {grid_position: 'HOVJYO,IISZIC'}
+      - layout_properties: {grid_position: 'HOVJYO,IISZIC DBPOQG,RLQSSD'}
         name: label_34
         properties: {text: 'Landed Cost (with logistics):'}
+        type: Label
+      - layout_properties: {grid_position: 'HOVJYO,IISZIC PDRDFG,KJHTIL'}
+        name: label_2
+        properties: {text: 'Logistics Fee per Unit:'}
         type: Label
       - layout_properties: {grid_position: 'HOVJYO,QIWLFI'}
         name: landed_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'HOVJYO,FBGZIE'}
+      - layout_properties: {grid_position: 'HOVJYO,QIWLFI PXVCFM,BBQHUI'}
+        name: logistics_unit_cost
+        properties: {align: right}
+        type: Label
+      - layout_properties: {grid_position: 'HOVJYO,FBGZIE LGAVEH,PGRSFR'}
         name: landed_cost
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'HOVJYO,FBGZIE LVVEPU,EFBNUA'}
+        name: logistics_fee_per_unit
         properties: {}
         type: Label
       layout_properties: {grid_position: 'YJNOHF,BNWBQK'}

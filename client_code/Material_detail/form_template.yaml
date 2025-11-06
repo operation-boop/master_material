@@ -515,7 +515,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}
       name: label_38
-      properties: {bold: true, font_size: 17, text: MATERIAL SKU}
+      properties: {bold: true, font_size: 17, text: MATERIAL SKUs}
       type: Label
     - layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
       name: add_sku_btn
@@ -526,7 +526,7 @@ components:
       properties: {height: 32}
       type: Spacer
     - components:
-      - name: repeating_panel_2
+      - name: material_sku_repeating_panel
         properties: {item_template: Material_detail.material_sku_rowtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'XIDXJO,VZAVXN'}
@@ -537,12 +537,12 @@ components:
         - {data_key: column_2, id: VJQQOR, title: REFERENCE}
         - {data_key: column_3, id: OJLQEN, title: COLOR}
         - {data_key: column_4, id: EOXPCU, title: SIZE}
-        - {data_key: column_5, id: QZSEWH, title: COST OVERRIDE}
+        - {data_key: column_5, expand: false, id: QZSEWH, title: COST OVERRIDE, width: 151}
         - {data_key: column_6, id: TSQJXM, title: QR CODE}
       type: DataGrid
     layout_properties: {grid_position: 'IBFJJX,EQUVXN'}
     name: material_sku_panel
-    properties: {col_widths: '{"GAPIHM":45,"QDCSJR":15}', visible: false}
+    properties: {col_widths: '{"GAPIHM":45,"QDCSJR":15}', visible: true}
     type: ColumnPanel
   layout_properties: {grid_position: 'FWCCAA,BVIWXJ'}
   name: column_panel_1

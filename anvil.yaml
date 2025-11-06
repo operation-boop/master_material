@@ -190,6 +190,32 @@ db_schema:
       type: string
     server: full
     title: master_material_version
+  material_sku:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: ref_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: master_material
+      type: string
+    - admin_ui: {order: 3, width: 200}
+      name: color
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: size
+      type: string
+    - admin_ui: {order: 5, width: 200}
+      name: qr_data
+      type: string
+    - admin_ui: {order: 6, width: 200}
+      name: sku_cost_override
+      type: number
+    server: full
+    title: material_sku
   material_type:
     client: none
     columns: []
@@ -275,5 +301,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Material_list, type: form}
+startup: {module: Home, type: form}
 startup_form: null

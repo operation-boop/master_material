@@ -19,10 +19,10 @@ class Material_detail(Material_detailTemplate):
     # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
-    #home = get_open_form()   # This is your Home form
-    #home.content_panel.clear()
-    #home.content_panel.add_component(Material_list(), full_width_row=True)
-    open_form('Material_list')
+    home = get_open_form()   # This is your Home form
+    home.content_panel.clear()
+    home.content_panel.add_component(Material_list(), full_width_row=True)
+    #open_form('Material_list')
 
 
   def technical_specs_tab_btn_click(self, **event_args):
@@ -49,4 +49,12 @@ class Material_detail(Material_detailTemplate):
     self.cost_details_panel.visible = False
 
   def edit_btn_click(self, **event_args):
-    open_form(Material_edit_form(material_data=self.item))
+    # Get the Home form
+    home_form = get_open_form()
+
+    # Clear the content panel and add Material_details
+    home_form.content_panel.clear()
+    home_form.content_panel.add_component(
+      Material_edit_form(material_data=self.item),
+      full_width_row=True
+    )
