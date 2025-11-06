@@ -36,3 +36,51 @@ class Material_list(Material_listTemplate):
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
 
+  def form_show(self, **event_args):
+
+    materials = [
+    {
+      "material_id": "M001",
+      "ref_id": "R1001",
+      "material_name": "Cotton White",
+      "material_type": "Fabric",
+      "fabric_composition": "100% Cotton",
+      "weight": "250gsm",
+      "supplier": "ABC Textiles",
+      "cost_per_unit": "$4.50",
+      "verification_status": "Verified"
+    },
+    {
+      "material_id": "M002",
+      "ref_id": "R1002",
+      "material_name": "Polyester Black",
+      "material_type": "Fabric",
+      "fabric_composition": "Polyester Blend",
+      "weight": "180gsm",
+      "supplier": "XYZ Fabrics",
+      "cost_per_unit": "$3.20",
+      "verification_status": "Pending"
+    },
+    {
+      "material_id": "M002",
+      "ref_id": "R1002",
+      "material_name": "Polyester Black",
+      "material_type": "Fabric",
+      "fabric_composition": "Polyester Blend",
+      "weight": "180gsm",
+      "supplier": "XYZ Fabrics",
+      "cost_per_unit": "$3.20",
+      "verification_status": "Pending"
+    }
+  ]
+
+  # CLEAR existing components before adding
+  self.flow_panel_materials.clear()
+
+  for m in materials:
+    from .MaterialCard import MaterialCard
+    card = MaterialCard(item=m)
+    card.width = "100%" 
+    self.flow_panel_materials.add_component(card)
+
+
