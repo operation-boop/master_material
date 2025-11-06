@@ -21,19 +21,19 @@ components:
     properties: {text: Vendor}
     type: Label
   - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
-    name: label_8
+    name: label_vendor_name
     properties: {text: Vendor Name}
     type: Label
   - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
-    name: label_9
+    name: label_description
     properties: {text: Description}
     type: Label
   - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
-    name: label_10
+    name: label_cost_in_usd
     properties: {text: Cost In USD}
     type: Label
   - layout_properties: {grid_position: 'CKLPPF,PIUZNM'}
-    name: button_1
+    name: button_remove
     properties: {text: X}
     type: Button
   layout_properties: {grid_position: 'SFUYHY,LENGVI'}
