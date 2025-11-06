@@ -6,34 +6,39 @@ components:
       name: back_btn
       properties: {align: left, background: 'theme:Primary 700', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
       type: Button
-    - layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,JUASDZ'}
-      name: current_material_id_label
-      properties: {bold: true, role: headline, text: 'Material: MAT-001'}
-      type: Label
-    - layout_properties: {grid_position: 'RZUCXB,CQLXAQ KCABBV,DNBBGM'}
-      name: current_version_label
-      properties: {background: 'theme:Gray 200', text: Version 3 (Current)}
-      type: Label
-    - layout_properties: {grid_position: 'RZUCXB,FNLWJR'}
+    - data_bindings:
+      - {code: 'self.item[''verification_status'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'RZUCXB,ITPPCF'}
       name: verification_status
-      properties: {background: '#3fab51', enabled: false, role: primary-color, text: verified}
-      type: Button
+      properties: {align: center, background: green, bold: true, border: '', foreground: 'theme:White', icon: '', role: input-prompt, text: ''}
+      type: Label
     - layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
       name: edit_btn
-      properties: {align: left, background: orange, icon: 'fa:edit', role: null, text: Edit}
+      properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: Edit}
       type: Button
+    - components:
+      - data_bindings:
+        - {code: '"Material:" + self.item[''material_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'NIWJSU,FLQCIB'}
+        name: current_material_id_label
+        properties: {bold: true, role: headline, text: ''}
+        type: Label
+      - layout_properties: {grid_position: 'NIWJSU,DBQUQN'}
+        name: current_version_label
+        properties: {background: 'theme:Gray 200', text: Version 3 (Current)}
+        type: Label
+      layout_properties: {grid_position: 'RFHFUP,UFMBFG'}
+      name: column_panel_17
+      properties: {}
+      type: ColumnPanel
     layout_properties: {grid_position: 'XAUZQF,AQGACW'}
     name: column_panel_16
-    properties: {background: '#9ee2ff', col_widths: '{"PZBZLE":25,"CQLXAQ":40,"AVMCXZ":15,"FNLWJR":15}'}
+    properties: {background: '', col_widths: '{"PZBZLE":35,"AVMCXZ":11,"ITPPCF":14}'}
     type: ColumnPanel
-  - layout_properties: {grid_position: 'HYPZZN,ZQJHEX'}
-    name: spacer_3
-    properties: {height: 32}
-    type: Spacer
   - components:
     - layout_properties: {grid_position: 'PIGYDS,JJPRHS'}
       name: label_27
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: BASIC INFORMATION}
+      properties: {bold: true, foreground: Red, text: BASIC INFORMATION}
       type: Label
     - components:
       - layout_properties: {grid_position: 'UTFKAM,UGBJUT HRFRHI,ELTVMC'}
@@ -41,7 +46,7 @@ components:
         properties: {bold: true, text: MATERIAL ID}
         type: Label
       - data_bindings:
-        - {code: 'self.item[''id'']', property: text, writeback: false}
+        - {code: 'self.item[''material_id'']', property: text, writeback: false}
         layout_properties: {grid_position: 'UTFKAM,UGBJUT UMNTYA,BLBYWM'}
         name: material_id
         properties: {}
@@ -51,7 +56,7 @@ components:
         properties: {bold: true, text: MATERIAL NAME}
         type: Label
       - data_bindings:
-        - {code: 'self.item[''document_id'']', property: text, writeback: false}
+        - {code: 'self.item[''material_name'']', property: text, writeback: false}
         layout_properties: {grid_position: 'UTFKAM,UGBJUT LEKGFC,OBXKFL'}
         name: material_name
         properties: {}
@@ -60,16 +65,20 @@ components:
         name: label_3
         properties: {bold: true, text: SUPPLIER}
         type: Label
-      - layout_properties: {grid_position: 'UTFKAM,UGBJUT SWOAIP,JGMVQL'}
-        name: version_number
+      - data_bindings:
+        - {code: 'self.item[''supplier'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UTFKAM,UGBJUT TOQNMQ,ZBHQVP'}
+        name: supplier
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'UTFKAM,UGBJUT HXUBAO,NUCLIM'}
         name: label_4
         properties: {bold: true, text: CREATED}
         type: Label
-      - layout_properties: {grid_position: 'UTFKAM,UGBJUT JMZWRY,EIKBUX'}
-        name: change_description
+      - data_bindings:
+        - {code: 'self.item[''created_at'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UTFKAM,UGBJUT JMZWRY,EIKBUX'}
+        name: created_at
         properties: {}
         type: Label
       - components:
@@ -77,7 +86,9 @@ components:
           name: label_10
           properties: {bold: true, text: SUPPLIER REF ID}
           type: Label
-        - layout_properties: {grid_position: 'VKITNG,SGLNFQ'}
+        - data_bindings:
+          - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VKITNG,SGLNFQ'}
           name: ref_id
           properties: {}
           type: Label
@@ -85,7 +96,9 @@ components:
           name: label_7
           properties: {bold: true, text: MATERIAL TYPE}
           type: Label
-        - layout_properties: {grid_position: 'PHEVCH,QMCOAL'}
+        - data_bindings:
+          - {code: 'self.item[''material_type'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PHEVCH,QMCOAL'}
           name: material_type
           properties: {}
           type: Label
@@ -94,15 +107,15 @@ components:
           properties: {bold: true, text: COUNTRY OF ORIGIN}
           type: Label
         - layout_properties: {grid_position: 'SJHOPW,NBAOJF'}
-          name: status
+          name: country_of_origin
           properties: {}
           type: Label
         - layout_properties: {grid_position: 'JCKSWF,NYFPQY'}
           name: label_11
           properties: {bold: true, text: CREATED BY}
           type: Label
-        - layout_properties: {grid_position: 'JQFODP,JYMABX'}
-          name: supplier
+        - layout_properties: {grid_position: 'MGTYPC,SKXLOK'}
+          name: created_by
           properties: {}
           type: Label
         layout_properties: {grid_position: 'UTFKAM,TLTLWU'}
@@ -124,15 +137,17 @@ components:
   - components:
     - layout_properties: {grid_position: 'MGLFKW,EYOOLE'}
       name: label_5
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: QUICK SPECS}
+      properties: {bold: true, foreground: Red, text: QUICK SPECS}
       type: Label
     - components:
       - layout_properties: {grid_position: 'SMMDAI,EFTBTI QVFJEH,KTBKCI'}
         name: label_22
         properties: {bold: true, text: COMPOSITION}
         type: Label
-      - layout_properties: {grid_position: 'SMMDAI,EFTBTI JQCSNB,HSMQRT'}
-        name: composition
+      - data_bindings:
+        - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'SMMDAI,EFTBTI JQCSNB,HSMQRT'}
+        name: fabric_composition
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'SMMDAI,EFTBTI HMGMRC,UUYQUI'}
@@ -144,7 +159,9 @@ components:
           name: label_26
           properties: {bold: true, text: WEIGHT}
           type: Label
-        - layout_properties: {grid_position: 'CXLHOC,WTSWOR'}
+        - data_bindings:
+          - {code: 'self.item[''weight'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'CXLHOC,WTSWOR'}
           name: weight
           properties: {text: ''}
           type: Label
@@ -179,14 +196,16 @@ components:
   - components:
     - layout_properties: {grid_position: 'SVEEJW,UBQSVO'}
       name: label_6
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: COST SUMMARY}
+      properties: {bold: true, foreground: Red, text: COST SUMMARY}
       type: Label
     - components:
       - layout_properties: {grid_position: 'DTNQUV,EWXDOD JCRAES,CVOIYZ'}
         name: label_8
         properties: {bold: true, text: COST PER METER}
         type: Label
-      - layout_properties: {grid_position: 'DTNQUV,EWXDOD OWBVRP,SFIOQP'}
+      - data_bindings:
+        - {code: 'self.item[''cost_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'DTNQUV,EWXDOD OWBVRP,SFIOQP'}
         name: cost_per_meter
         properties: {}
         type: Label
@@ -242,7 +261,7 @@ components:
       type: Button
     layout_properties: {grid_position: 'QUEXZC,ZYYROP'}
     name: flow_panel_1
-    properties: {}
+    properties: {background: 'theme:Gray 200'}
     type: FlowPanel
   - components:
     - layout_properties: {grid_position: 'PMYXEM,BCGPRR'}
@@ -256,7 +275,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'SIDMAM,FRHJNZ'}
         name: label_14
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: FABRIC COMPOSITION}
+        properties: {bold: true, foreground: Red, text: FABRIC COMPOSITION}
         type: Label
       - layout_properties: {grid_position: 'RYXMQX,SOQKVT'}
         name: fabric_composition_label
@@ -273,7 +292,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'QNAIIU,CPVKVS'}
         name: label_15
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: FABRIC DIMENSIONS}
+        properties: {bold: true, foreground: Red, text: FABRIC DIMENSIONS}
         type: Label
       - components:
         - layout_properties: {grid_position: 'ACSBNQ,ZZJWRO'}
@@ -328,7 +347,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'BLYTQT,HJWWNZ'}
         name: label_17
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: SHRINKAGE}
+        properties: {bold: true, foreground: Red, text: SHRINKAGE}
         type: Label
       - components:
         - layout_properties: {grid_position: 'FCQAFU,MLRJNS'}
@@ -372,7 +391,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'QOYAGZ,OQFPRL'}
         name: label_29
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: BASIC COST}
+        properties: {bold: true, foreground: Red, text: BASIC COST}
         type: Label
       - components:
         - layout_properties: {grid_position: 'GFJNBR,UMSKKG'}
@@ -427,7 +446,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'EAJITU,WBSIIS'}
         name: label_31
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: LANDED COST}
+        properties: {bold: true, foreground: Red, text: LANDED COST}
         type: Label
       - components:
         - layout_properties: {grid_position: 'XPCBHQ,WIEGPP'}
@@ -453,7 +472,7 @@ components:
       - components:
         - layout_properties: {grid_position: 'PQKSWX,LTHIGE'}
           name: label_37
-          properties: {text: IMPORT DUTY}
+          properties: {bold: true, text: IMPORT DUTY}
           type: Label
         - layout_properties: {grid_position: 'RCETRY,GUBYEV'}
           name: import_duty_label
@@ -492,41 +511,41 @@ components:
     name: version_history_panel
     properties: {visible: false}
     type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}
+      name: label_38
+      properties: {bold: true, font_size: 17, text: MATERIAL SKU}
+      type: Label
+    - layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
+      name: add_sku_btn
+      properties: {align: right, icon: 'fa:plus', text: add sku}
+      type: Button
+    - layout_properties: {grid_position: 'LGEYRY,ZANOZU'}
+      name: spacer_10
+      properties: {height: 32}
+      type: Spacer
+    - components:
+      - name: repeating_panel_2
+        properties: {item_template: Material_detail.material_sku_rowtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'XIDXJO,VZAVXN'}
+      name: data_grid_1
+      properties:
+        columns:
+        - {data_key: column_1, id: JKSDUP, title: SKU ID}
+        - {data_key: column_2, id: VJQQOR, title: REFERENCE}
+        - {data_key: column_3, id: OJLQEN, title: COLOR}
+        - {data_key: column_4, id: EOXPCU, title: SIZE}
+        - {data_key: column_5, id: QZSEWH, title: COST OVERRIDE}
+        - {data_key: column_6, id: TSQJXM, title: QR CODE}
+      type: DataGrid
+    layout_properties: {grid_position: 'IBFJJX,EQUVXN'}
+    name: material_sku_panel
+    properties: {col_widths: '{"GAPIHM":45,"QDCSJR":15}', visible: false}
+    type: ColumnPanel
   layout_properties: {grid_position: 'FWCCAA,BVIWXJ'}
   name: column_panel_1
-  properties: {col_widths: '{}'}
-  type: ColumnPanel
-- components:
-  - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}
-    name: label_38
-    properties: {bold: true, font_size: 17, text: MATERIAL SKU}
-    type: Label
-  - layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
-    name: add_sku_btn
-    properties: {align: right, icon: 'fa:plus', text: add sku}
-    type: Button
-  - layout_properties: {grid_position: 'LGEYRY,ZANOZU'}
-    name: spacer_10
-    properties: {height: 32}
-    type: Spacer
-  - components:
-    - name: repeating_panel_2
-      properties: {item_template: Material_detail.material_sku_rowtemplate}
-      type: RepeatingPanel
-    layout_properties: {grid_position: 'XIDXJO,VZAVXN'}
-    name: data_grid_1
-    properties:
-      columns:
-      - {data_key: column_1, id: JKSDUP, title: SKU ID}
-      - {data_key: column_2, id: VJQQOR, title: REFERENCE}
-      - {data_key: column_3, id: OJLQEN, title: COLOR}
-      - {data_key: column_4, id: EOXPCU, title: SIZE}
-      - {data_key: column_5, id: QZSEWH, title: COST OVERRIDE}
-      - {data_key: column_6, id: TSQJXM, title: QR CODE}
-    type: DataGrid
-  layout_properties: {grid_position: 'VOGKJF,EGGQTF'}
-  name: material_sku_panel
-  properties: {col_widths: '{"GAPIHM":45,"QDCSJR":15}', visible: false}
+  properties: {background: '', col_widths: '{}'}
   type: ColumnPanel
 container: {type: ColumnPanel}
 is_package: true

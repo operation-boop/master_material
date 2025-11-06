@@ -2,49 +2,49 @@ components:
 - data_bindings:
   - {code: 'self.item[''id'']', property: text, writeback: false}
   layout_properties: {column: VJQQOR}
-  name: id
+  name: material_id
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''document_id'']', property: text, writeback: false}
   layout_properties: {column: OJLQEN}
-  name: document_id
+  name: ref_id
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''current_version'']', property: text, writeback: false}
   layout_properties: {column: KMEYVT}
-  name: current_version
+  name: material_name
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''version_history'']', property: text, writeback: false}
   layout_properties: {column: MAOHBU}
-  name: version_history
+  name: material_type
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''created_at'']', property: text, writeback: false}
   layout_properties: {column: PJOXYT}
-  name: created_at
+  name: composition
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''created_by'']', property: text, writeback: false}
   layout_properties: {column: LAECHY}
-  name: created_by
+  name: weight
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''submitted_at'']', property: text, writeback: false}
   layout_properties: {column: DYZQWE}
-  name: submitted_at
+  name: supplier
   properties: {}
   type: Label
 - data_bindings:
   - {code: 'self.item[''submitted_by'']', property: text, writeback: false}
   layout_properties: {column: GAVEWF}
-  name: submitted_by
+  name: cost_per_unit
   properties: {}
   type: Label
 - event_bindings: {change: select_row_change}
@@ -52,6 +52,10 @@ components:
   name: select_row
   properties: {align: center, text: ''}
   type: CheckBox
+- layout_properties: {column: WZMZOW}
+  name: status
+  properties: {}
+  type: Label
 container: {type: DataRowPanel}
 custom_component: false
 events: []

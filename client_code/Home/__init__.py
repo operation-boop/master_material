@@ -21,7 +21,7 @@ from ..Deal import Deal
 #from ..Style_list import Style_list
 
 from ..Material_list import Material_list
-from ..Costing_sheet_base import Costing_sheet_base
+#from ..Costing_sheet_base import Costing_sheet_base
 
 
 
@@ -29,13 +29,9 @@ class Home(HomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.content_panel.add_component(Costing_sheet_base())
+    #self.content_panel.add_component(Costing_sheet_base())
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
-
-
-
-
 
   
   def link_nav_click(self, **event_args):
@@ -43,21 +39,21 @@ class Home(HomeTemplate):
     clicked_link = event_args['sender']
     source = clicked_link.tag
     page_registry = {
-      "opportunity_group": Opportunity(),
-      "request_group": RFQ(),
-      "order_group": QMO(),
-      "master_data_group": Client_list(),
-      "opportunity": Opportunity(),
-      "deal": Deal(),
-      "rfq": RFQ(),
-      "rfs": RFS(),
-      "qmo": QMO(),
-      "smo": SMO(),
-      "client": Client_list(),
-      "style": Style_list(),
+      #"opportunity_group": Opportunity(),
+      # "request_group": RFQ(),
+      # "order_group": QMO(),
+      # "master_data_group": Client_list(),
+      #"opportunity": Opportunity(),
+      #"deal": Deal(),
+      #"rfq": RFQ(),
+      #"rfs": RFS(),
+      #"qmo": QMO(),
+      #"smo": SMO(),
+      #"client": Client_list(),
+      #"style": Style_list(),
       "material": Material_list(),
       #Added in my costing sheet
-      "Costing_sheet_group": Costing_sheet_base()
+      #"Costing_sheet_group": Costing_sheet_base()
     }
     page = page_registry.get(source)
 
@@ -69,28 +65,28 @@ class Home(HomeTemplate):
     self.content_panel.add_component(page, full_width_row=True)
 
   def format_link_role_to_default(self):
-    self.link_opportunity.role = "<default>"
-    self.link_deal.role = "<default>"
-    self.link_rfq.role = "<default>"
-    self.link_rfs.role = "<default>"
-    self.link_qmo.role = "<default>"
-    self.link_smo.role = "<default>"
-    self.link_client.role = "<default>"
-    self.link_style.role = "<default>"
+    #self.link_opportunity.role = "<default>"
+    #self.link_deal.role = "<default>"
+    #self.link_rfq.role = "<default>"
+    #self.link_rfs.role = "<default>"
+    #self.link_qmo.role = "<default>"
+    #self.link_smo.role = "<default>"
+    #self.link_client.role = "<default>"
+    #self.link_style.role = "<default>"
     self.link_material.role = "<default>"
     #added my own Costing Sheet
-    self.link_costing_sheet.role = "<default>"
+    # self.link_costing_sheet.role = "<default>"
     
 
 
   def format_link_role_to_selected(self, clicked_link):
     group_default_link_registry = {
-      "opportunity_group": self.link_opportunity,
-      "request_group": self.link_rfq,
-      "order_group": self.link_qmo,
-      "master_data_group": self.link_client,
+      #"opportunity_group": self.link_opportunity,
+      #"request_group": self.link_rfq,
+      #"order_group": self.link_qmo,
+      "master_data_group": Material_list(),
       #Costing Sheet
-      "Costing_sheet_group": self.link_costing_sheet
+      # "Costing_sheet_group": self.link_costing_sheet
     }
     default_group_link = group_default_link_registry.get(clicked_link.tag)
     if default_group_link:
@@ -106,10 +102,10 @@ class Home(HomeTemplate):
     """
     group_container_registry = {
       # added in my costing sheet group
-      "costing_sheet_group": self.column_panel_group_costing_sheet,
-      "opportunity_group": self.column_panel_group_opportunity,
-      "request_group": self.column_panel_group_request,
-      "order_group": self.column_panel_group_order,
+      #"costing_sheet_group": self.column_panel_group_costing_sheet,
+      #"opportunity_group": self.column_panel_group_opportunity,
+      #"request_group": self.column_panel_group_request,
+      #"order_group": self.column_panel_group_order,
       "master_data_group": self.column_panel_group_master_data
     }
     group_container = group_container_registry.get(clicked_link.tag)
@@ -118,3 +114,16 @@ class Home(HomeTemplate):
       group_container.visible = True if not group_container.visible else False
     else:
       pass
+  
+  def open_material_list(self):
+    # Ensure master data group is visible
+    self.column_panel_group_master_data.visible = True
+  
+    # Highlight the Material link as selected
+    self.format_link_role_to_default()
+    self.link_material.role = "selected"
+  
+    # Load the Material_list page
+    from ..Material_list import Material_list
+    self.content_panel.clear()
+    self.content_panel.add_component(Material_list(), full_width_row=True)
