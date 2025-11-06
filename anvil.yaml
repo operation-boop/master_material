@@ -3,12 +3,61 @@ correct_dependency_ids: {}
 db_schema:
   dict_overhead_cost:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: cost_currency
+      target: list_currency_types
+      type: link_single
+    - admin_ui: {order: 1, width: 200}
+      name: total_overhead_cost
+      type: number
+    - admin_ui: {order: 2, width: 200}
+      name: import_logistics_cost
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: export_logistics_cost_
+      type: number
+    - admin_ui: {order: 4, width: 200}
+      name: vat_cost
+      type: number
+    - admin_ui: {order: 5, width: 200}
+      name: import_duty_cost
+      type: number
+    - admin_ui: {order: 6, width: 200}
+      name: material_testing_cost
+      type: number
+    - admin_ui: {order: 7, width: 200}
+      name: garnet_testing_cost
+      type: number
+    - admin_ui: {order: 8, width: 200}
+      name: sampling_cost
+      type: number
+    - admin_ui: {order: 9, width: 200}
+      name: moq_surcharge_cost
+      type: number
+    - admin_ui: {order: 10, width: 200}
+      name: overhead_cost_items
+      target: dict_overhead_cost_item
+      type: link_multiple
     server: full
     title: dict_overhead_cost
   dict_overhead_cost_item:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: cost_type
+      target: list_overhead_cost_type
+      type: link_multiple
+    - admin_ui: {order: 2, width: 200}
+      name: cost_amount
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: cost_currency
+      target: list_currency_types
+      type: link_single
     server: full
     title: dict_overhead_cost_item
   dict_quoted_price_scenario:
@@ -18,25 +67,42 @@ db_schema:
     title: dict_quoted_price_scenario
   list_costing_sheet_status:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: status_type
+      type: string
     server: full
     title: list_costing_sheet_status
+  list_country:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: country
+      type: string
+    server: full
+    title: list_country
   list_currency_types:
     client: search
     columns:
-    - admin_ui: {width: 200}
-      name: types
+    - admin_ui: {order: 0, width: 200}
+      name: currency_types
       type: string
     server: full
     title: list_currency_types
   list_overhead_cost_type:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: overhead_type
+      type: string
     server: full
     title: list_overhead_cost_type
   list_processing_cost_status:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: process_cost_status
+      type: string
     server: full
     title: list_processing_cost_status
   list_processing_cost_type:
@@ -52,42 +118,212 @@ db_schema:
     title: list_processing_cost_type
   list_staff_roles:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: roles_type
+      type: string
     server: full
     title: list_staff_roles
-  list_supplier_country:
-    client: none
-    columns: []
-    server: full
-    title: list_supplier_country
   list_vendor:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: vendor
+      type: string
     server: full
     title: list_vendor
   tabl_bill_of_material:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: current_version
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: version_history
+      target: tabl_bill_of_material_version
+      type: link_single
+    - admin_ui: {order: 4, width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 5, width: 200}
+      name: created_by
+      target: tabl_staff_users
+      type: link_single
+    - admin_ui: {order: 6, width: 200}
+      name: submitted_at
+      type: datetime
+    - admin_ui: {order: 7, width: 200}
+      name: submitted_by
+      target: tabl_staff_users
+      type: link_single
     server: full
     title: tabl_bill_of_material
   tabl_bill_of_material_line_item:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: bill_of_material
+      target: tabl_bill_of_material
+      type: link_single
+    - admin_ui: {order: 2, width: 200}
+      name: assigned_material
+      target: tabl_master_material
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: assigned_sku
+      target: tabl_material_sku
+      type: link_single
+    - admin_ui: {order: 4, width: 200}
+      name: gross_consumption
+      type: number
+    - admin_ui: {order: 5, width: 200}
+      name: selling_tolerance
+      type: number
+    - admin_ui: {order: 6, width: 200}
+      name: net_selling_consumption
+      type: number
+    - admin_ui: {order: 7, width: 200}
+      name: buying_tolerance
+      type: number
+    - admin_ui: {order: 8, width: 200}
+      name: net_buying_consumption
+      type: number
+    - admin_ui: {order: 9, width: 200}
+      name: native_currency
+      target: list_currency_types
+      type: link_single
+    - admin_ui: {order: 10, width: 200}
+      name: material_cost_in_usd
+      type: number
     server: full
     title: tabl_bill_of_material_line_item
   tabl_bill_of_material_version:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: version_number
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: change_description
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 5, width: 200}
+      name: created_by
+      target: tabl_staff_users
+      type: link_single
     server: full
     title: tabl_bill_of_material_version
   tabl_cost_sheet:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: current_version
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: version_history
+      target: tabl_cost_sheet_version
+      type: link_single
+    - admin_ui: {order: 4, width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 5, width: 200}
+      name: created_by
+      target: tabl_staff_users
+      type: link_single
+    - admin_ui: {order: 6, width: 200}
+      name: submitted_at
+      type: datetime
+    - admin_ui: {order: 7, width: 200}
+      name: submitted_by
+      target: tabl_staff_users
+      type: link_single
     server: full
     title: tabl_cost_sheet
   tabl_cost_sheet_version:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: version_number
+      type: number
+    - admin_ui: {order: 3, width: 200}
+      name: change_description
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 5, width: 200}
+      name: created_by
+      target: tabl_staff_users
+      type: link_single
+    - admin_ui: {order: 6, width: 200}
+      name: submitted_at
+      type: datetime
+    - admin_ui: {order: 7, width: 200}
+      name: submitted_by
+      target: tabl_staff_users
+      type: link_single
+    - admin_ui: {order: 8, width: 200}
+      name: approved_at
+      type: datetime
+    - admin_ui: {order: 9, width: 200}
+      name: approved_by
+      target: tabl_staff_users
+      type: link_single
+    - admin_ui: {order: 10, width: 200}
+      name: status
+      target: list_costing_sheet_status
+      type: link_single
+    - admin_ui: {order: 11, width: 200}
+      name: exchange_rate_used
+      target: tabl_exchange_rate
+      type: link_multiple
+    - admin_ui: {order: 12, width: 200}
+      name: bom_version
+      target: tabl_bill_of_material_version
+      type: link_single
+    - admin_ui: {order: 13, width: 200}
+      name: total_material_cost
+      type: number
+    - admin_ui: {order: 14, width: 200}
+      name: processing_cost_items
+      target: tabl_processing_cost_item
+      type: link_multiple
+    - admin_ui: {order: 15, width: 200}
+      name: total_overhead_cost
+      type: number
+    - admin_ui: {order: 16, width: 200}
+      name: expected_profit_scenarios
+      target: dict_quoted_price_scenario
+      type: link_multiple
     server: full
     title: tabl_cost_sheet_version
   tabl_exchange_rate:
@@ -192,14 +428,44 @@ db_schema:
   tabl_staff_users:
     client: search
     columns:
-    - admin_ui: {width: 200}
-      name: staff
+    - admin_ui: {order: 0, width: 200}
+      name: name
       type: string
+    - admin_ui: {order: -1, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: email
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: role
+      target: list_staff_roles
+      type: link_single
     server: full
     title: tabl_staff_users
   tabl_supplier_list:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: server_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: name
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: country
+      target: list_country
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: approved_vendor
+      type: bool
+    - admin_ui: {order: 4, width: 200}
+      name: approved_date
+      type: datetime
+    - admin_ui: {order: 5, width: 200}
+      name: approved_by
+      target: tabl_staff_users
+      type: link_single
     server: full
     title: tabl_supplier_list
 dependencies: []
