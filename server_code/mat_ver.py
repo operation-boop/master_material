@@ -1,238 +1,253 @@
 import anvil.server
 from anvil.tables import app_tables
-import uuid, json
+import uuid
 from datetime import datetime
+import anvil.tables.query as q
 
 DOC_PREFIX = "vin_mmat_"
-
 VALID_STATUSES = {
   "Creating": ["Draft", "Submitted"],
-  "Draft": ["Draft", "Submitted"],
-  "Submitted": ["Creating"],
+  "Draft": ["Creating", "Draft", "Submitted"],
+  "Submitted": ["Creating"]
 }
-
-REQUIRED_FIELDS = [
-  "name", "material_type", "supplier_name",
-  "country_of_origin", "unit_of_measurement",
-  "weight_per_unit", "weight_uom",
-  "original_cost_per_unit", "native_cost_currency",
-]
-
-# ---------------- Helpers ----------------
-
-def _now():
-  return datetime.now()
-
-def _check_status_transition(current_status, target_status):
-  allowed = VALID_STATUSES.get(current_status, [])
-  if target_status not in allowed:
-    raise Exception(
-      "Cannot transition from {} to {}. Allowed: {}".format(
-        current_status, target_status, ", ".join(allowed) or "(none)"
-      )
-    )
-
-def _get_next_document_number():
-  rows = app_tables.master_material_version.search()
-  nums = []
-  for r in rows:
-    try:
-      did = r['document_id'] or ""
-      nums.append(int(str(did).replace(DOC_PREFIX, "")))
-    except Exception:
-      continue
-  return (max(nums) + 1) if nums else 1
-
-def _is_filled(v):
-  if v is None: 
-    return False
-  if isinstance(v, str) and v.strip() == "": 
-    return False
-  return True
-
-def _merged_value(version_row, incoming, key):
-  if key in incoming and _is_filled(incoming.get(key)):
-    return incoming.get(key)
-  try:
-    return version_row[key]
-  except Exception:
-    return None
-
-def _validate_required_merged(version_row, incoming_dict):
-  missing = []
-  for k in REQUIRED_FIELDS:
-    val = _merged_value(version_row, incoming_dict, k)
-    if not _is_filled(val):
-      missing.append(k)
-  return missing
-
-def _validate_composition_sum(version_row, incoming_dict):
-  """
-  Validate fabric_composition (column is a JSON string).
-  Accepts either incoming string or uses current row value.
-  If empty, do nothing. If present, must sum ~100.
-  """
-  raw = None
-  if _is_filled(incoming_dict.get("fabric_composition")):
-    raw = incoming_dict.get("fabric_composition")
-  else:
-    try:
-      raw = version_row["fabric_composition"]
-    except Exception:
-      raw = None
-
-  if not _is_filled(raw):
-    return  # nothing entered; skip
-
-  try:
-    comp = json.loads(raw) if isinstance(raw, str) else raw
-  except Exception as e:
-    raise Exception("Invalid fabric_composition JSON: {}".format(e))
-
-  if not isinstance(comp, list):
-    raise Exception("fabric_composition must be a JSON array of items.")
-
-  total = 0.0
-  for i, item in enumerate(comp, start=1):
-    if not isinstance(item, dict):
-      raise Exception("Composition item {} must be an object.".format(i))
-    try:
-      total += float(item.get("percentage", 0))
-    except Exception:
-      raise Exception("Composition item {} has non-numeric 'percentage'.".format(i))
-
-  if abs(total - 100.0) > 0.01:
-    raise Exception("Composition must total 100% (now {:.1f}%).".format(total))
-
-def _latest_ver_num_for(document_id):
-  versions = app_tables.master_material_version.search(document_id=document_id)
-  latest = 0
-  for v in versions:
-    try:
-      n = int(v['ver_num'] or 0)
-    except Exception:
-      n = 0
-    latest = max(latest, n)
-  return latest
-
-# ---------------- API ----------------
+REQUIRED_FIELDS = ["supplier"]  
 
 @anvil.server.callable
 def create_new_master_material(created_by_user):
-  """Create master + initial version (ver 1, Creating)."""
-  now = _now()
-  uid = str(uuid.uuid4())
-  document_id = "{}{:04d}".format(DOC_PREFIX, _get_next_document_number())
+  """Create new master material document"""
+  new_uuid = str(uuid.uuid4())
+  document_id = f"{DOC_PREFIX}{get_next_document_number():04d}"
 
-  # initial version row
-  v = app_tables.master_material_version.add_row(
-    document_uid=uid,
+  version = app_tables.master_material_version.add_row(
+    document_uid=new_uuid,
     document_id=document_id,
     ver_num=1,
-    status="Creating",
-    created_at=now,
-    created_by=created_by_user,
-    updated_at=now,
+    status="Creating"
   )
 
-  # master row linking to current version
-  m = app_tables.master_material.add_row(
-    version_history_uid=uid,
-    document_id=document_id,
-    current_version=v,
-    current_version_uid=uid,
+  master = app_tables.master_material.add_row(
+    version_history_uid=new_uuid,
+    created_at=datetime.now(),
+    created_by=created_by_user,
+    current_version=version,
+    current_version_uid=new_uuid,
     current_version_number=1,
-  created_at=now,
-    created_by=created_by_user,
-    updated_at=now,
+    document_id=document_id
   )
 
-  # (Optional: if your versions table has a 'document' Link column back to master)
-  try:
-    v['document'] = m
-  except Exception:
-    pass
-
-  return m
+  return master
 
 @anvil.server.callable
+def get_next_document_number():
+  """Get next available document number"""
+  all_versions = app_tables.master_material_version.search()
+
+  if not all_versions:
+    return 1
+
+  numbers = []
+  for doc in all_versions:
+    try:
+      num = int(doc['document_id'].replace(DOC_PREFIX, ''))
+      numbers.append(num)
+    except ValueError:
+      continue
+
+  return max(numbers) + 1 if numbers else 1
+
+  # ============================================
+  # FIELD VALIDATION
+  # ============================================
+@anvil.server.callable
+def validate_required_fields(document_id):
+  """Validate all required fields on the current version row."""
+  master = get_master_material(document_id)
+  current_version = master.get('current_version')
+
+  # If there's no version row yet
+  if current_version is None:
+    return {"is_valid": False, "missing_fields": ["(no current_version row)"]}
+
+  missing = []
+  for field in REQUIRED_FIELDS:
+    try:
+      val = current_version[field]   # bracket access on Row
+    except KeyError:
+      # Column doesn't exist on the table
+      missing.append(field)
+      continue
+
+    if val is None or (isinstance(val, str) and val.strip() == ""):
+      missing.append(field)
+
+  return {"is_valid": len(missing) == 0, "missing_fields": missing}
+
+@anvil.server.callable
+def get_master_material(document_id):
+  """Get master material, raise if not found"""
+  try:
+    master = app_tables.master_material.get(document_id=document_id)
+    if not master:
+      raise Exception(f"Document {document_id} not found in master_material table")
+    return master
+  except Exception as e:
+    raise Exception(f"Error retrieving document {document_id}: {str(e)}")
+    
+def check_status_transition(current_status, target_status):
+  """Validate status transition is allowed"""
+  if target_status not in VALID_STATUSES.get(current_status, []):
+    raise Exception(
+      f"Cannot transition from {current_status} to {target_status}. " +
+      f"Allowed transitions: {', '.join(VALID_STATUSES.get(current_status, []))}"
+    )
+
+  # ============================================
+  # DRAFT WORKFLOW
+  # ============================================
+@anvil.server.callable
 def save_or_edit_draft(document_id, updated_by_user, form_data=None):
-  form_data = form_data or {}
-  master = app_tables.master_material.get(document_id=document_id)
-  if not master:
-    raise Exception("Document {} not found".format(document_id))
+  """Combined save/edit draft function - updates all fields from form"""
+  master = get_master_material(document_id)
   version = master['current_version']
-  if not version:
-    raise Exception("No current version found")
 
-  status = version['status']
-  if status not in ("Creating", "Draft"):
-    raise Exception("Cannot edit. Current status: {}".format(status))
+  if version['status'] not in ["Creating", "Draft"]:
+    raise Exception(f"Cannot edit. Current status: {version['status']}")
 
-  _check_status_transition(status, "Draft")
+  # Update all fields from form data
+  if form_data:
+    updated_fields = []
+    for key, value in form_data.items():
+      if value is not None:  # Only update non-empty fields
+        try:
+          version[key] = value
+          updated_fields.append(key)
+        except Exception as e:
+          print(f"Warning: Could not update field '{key}': {str(e)}")
+
+    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
+
   version['status'] = "Draft"
+  version['created_at'] = datetime.now()
+  version['created_by'] = updated_by_user
 
-  now = _now()
-
-  # Row-safe presence checks (no .get on rows)
-  try:
-    created_at_present = bool(version['created_at'])
-  except Exception:
-    created_at_present = False
-  if not created_at_present:
-    version['created_at'] = now
-
-  try:
-    created_by_present = bool(version['created_by'])
-  except Exception:
-    created_by_present = False
-  if not created_by_present:
-    version['created_by'] = updated_by_user
-
-  version['updated_at'] = now
-  master['updated_at'] = now
-
-  return {"ok": True, "document_id": document_id}
+  return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data=None):
-  """
-  Submit: validate required fields using merged (incoming-over-current) values,
-  validate composition, then write provided fields and mark Submitted.
-  """
-  form_data = form_data or {}
-  master = app_tables.master_material.get(document_id=document_id)
-  if not master:
-    raise Exception("Document {} not found".format(document_id))
+  """Submit document with validation - updates all fields from form"""
+  master = get_master_material(document_id)
   version = master['current_version']
-  if not version:
-    raise Exception("No current version found")
 
-  status = version['status']
-  if status not in ("Creating", "Draft"):
-    raise Exception("Cannot submit. Current status: {}".format(status))
+  check_status_transition(version['status'], "Submitted")
 
-  # Validate requireds on merged view
-  missing = _validate_required_merged(version, form_data)
-  if missing:
-    raise Exception("Missing required fields: {}".format(", ".join(missing)))
+  # Update all fields from form data FIRST
+  if form_data:
+    updated_fields = []
+    for key, value in form_data.items():
+      if value is not None:
+        try:
+          version[key] = value
+          updated_fields.append(key)
+        except Exception as e:
+          print(f"Warning: Could not update field '{key}': {str(e)}")
 
-  # Validate composition (from incoming or current)
-  _validate_composition_sum(version, form_data)
+    print(f"Updated {len(updated_fields)} fields before validation")
 
-  # Status + stamps
-  now = _now()
-  _check_status_transition(status, "Submitted")
+  # Validate AFTER updating
+  validation = validate_required_fields(document_id)
+  if not validation['is_valid']:
+    missing_str = ', '.join(validation['missing_fields'])
+    raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
+
+  # Update status and submission info
   version['status'] = "Submitted"
-  version['submitted_at'] = now
+  version['submitted_at'] = datetime.now()
   version['submitted_by'] = submitted_by_user
-  version['updated_at'] = now
 
-  master['submitted_at'] = now
+  master['submitted_at'] = datetime.now()
   master['submitted_by'] = submitted_by_user
-  master['updated_at'] = now
 
-  return {"ok": True, "document_id": document_id}
+  return {"action": "submitted", "version": version, "document_id": document_id}
+
+@anvil.server.callable
+def edit_submitted(document_id, updated_by_user):
+  """Create new version from submitted document"""
+  try:
+    master = get_master_material(document_id)
+    if not master:
+      raise Exception(f"Master document {document_id} not found")
+
+    version = master['current_version']
+    if not version:
+      raise Exception("No current version found")
+
+    check_status_transition(version['status'], "Creating")
+
+    # Validate current version before editing
+    validation = validate_required_fields(document_id)
+    if not validation['is_valid']:
+      raise Exception(
+        f"Cannot edit. Current version missing: {', '.join(validation['missing_fields'])}"
+      )
+
+      # Get latest version number efficiently
+    versions = app_tables.master_material_version.search(document_id=document_id)
+    latest_num = max((v['ver_num'] for v in versions), default=0)
+
+    new_uuid = str(uuid.uuid4())
+
+    # Copy all data from current version to new version
+    new_version = app_tables.master_material_version.add_row(
+      document_uid=new_uuid,
+      document_id=document_id,
+      ver_num=latest_num + 1,
+      status="Creating",
+      created_at=datetime.now(),
+      created_by=updated_by_user
+    )
+
+    # Copy all fields from previous version
+    for col in version.get_column_names():
+      if col not in ['document_uid', 'document_id', 'ver_num', 'status', 'created_at', 'created_by', 'row_id']:
+        try:
+          new_version[col] = version[col]
+        except Exception as e:
+          print(f"Warning: Could not copy column {col}: {e}")
+
+
+
+    master['current_version'] = new_version
+    master['current_version_uid'] = new_uuid
+    master['current_version_number'] = latest_num + 1
+
+    return {"action": "new_version_created", "version": new_version}
+
+  except Exception as e:
+    print(f"Error in edit_submitted: {e}")
+    raise
+
+@anvil.server.callable
+def get_current_status(document_id):
+  """Get status and allowed actions"""
+  master = get_master_material(document_id)
+  status = master['current_version']['status']
+
+  return {
+    "document_id": document_id,
+    "current_version_number": master['current_version_number'],
+    "status": status,
+    "can_save_draft": status in ["Creating", "Draft"],
+    "can_edit_draft": status in ["Creating", "Draft"],
+    "can_submit": status in ["Creating", "Draft"],
+    "can_edit_submitted": status == "Submitted"
+  }
+
+@anvil.server.callable
+def get_material_versions(document_id):
+  """Get all versions sorted by version number"""
+  versions = app_tables.master_material_version.search(document_id=document_id)
+  return sorted(versions, key=lambda x: x['ver_num'])
+
 
 
 
