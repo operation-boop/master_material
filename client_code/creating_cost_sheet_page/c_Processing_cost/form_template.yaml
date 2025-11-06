@@ -9,96 +9,59 @@ components:
       name: label_2
       properties: {role: text, text: 'Warning Label: Ensure all required fields are filled, or will be flagged'}
       type: Label
-    - components:
-      - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
-        name: label_3
-        properties: {text: Cost type}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
-        name: label_4
-        properties: {text: Cost amount}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
-        name: label_5
-        properties: {text: Cost Currency}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
-        name: label_6
-        properties: {text: Status}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,WAIHTG'}
-        name: label_7
-        properties: {text: Vendor}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
-        name: label_8
-        properties: {text: Vendor Name}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
-        name: label_9
-        properties: {text: Description}
-        type: Label
-      - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
-        name: label_10
-        properties: {text: Cost In USD}
-        type: Label
-      layout_properties: {grid_position: 'PGMGAZ,CFHDUV'}
-      name: column_panel_3
-      properties: {col_widths: '{"VRAFVF":9,"KCBPNX":9,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":7,"FWSDPQ":10,"FBACLD":5}'}
-      type: ColumnPanel
-    - components:
-      - components:
-        - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
-          name: label_3_copy
-          properties: {text: Cost type}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
-          name: label_4_copy
-          properties: {text: Cost amount}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
-          name: label_5_copy
-          properties: {text: Cost Currency}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
-          name: label_6_copy
-          properties: {text: Status}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,WAIHTG'}
-          name: label_7_copy
-          properties: {text: Vendor}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
-          name: label_8_copy
-          properties: {text: Vendor Name}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
-          name: label_9_copy
-          properties: {text: Description}
-          type: Label
-        - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
-          name: label_10_copy
-          properties: {text: Cost In USD}
-          type: Label
-        layout_properties: {grid_position: 'PGMGAZ,CFHDUV'}
-        name: column_panel_3_copy
-        properties: {col_widths: '{"VRAFVF":9,"KCBPNX":9,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":7,"FWSDPQ":10,"FBACLD":5}'}
-        type: ColumnPanel
-      layout_properties: {grid_position: 'BUGKHU,XLQMPS'}
-      name: column_panel_2_copy_copy
-      properties: {}
-      type: ColumnPanel
     layout_properties: {grid_position: 'OTLKWR,PBOPSQ'}
     name: column_panel_2_copy
     properties: {}
     type: ColumnPanel
-  - layout_properties: {grid_position: 'BYITZC,HZKBLP'}
-    name: card_1
-    properties: {role: card}
+  - components: []
+    layout_properties: {grid_position: 'FRRVWL,DQEIUM'}
+    name: processing_cost_info_line
+    properties: {}
+    type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'WABWHU,NLRFJV'}
+      name: label_1_copy
+      properties: {text: 'Processing #1'}
+      type: Label
+    - layout_properties: {grid_position: 'WABWHU,EZDTNU'}
+      name: spacer_1
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'WYYAVZ,XBBTNR'}
+      name: drop_down_processing_type
+      properties: {include_placeholder: true, placeholder: Processing type}
+      type: DropDown
+    - layout_properties: {grid_position: 'WYYAVZ,JOQYQI'}
+      name: drop_down_vendor_list
+      properties: {include_placeholder: true, placeholder: Vendor}
+      type: DropDown
+    - layout_properties: {grid_position: 'WYYAVZ,IHAZDQ'}
+      name: drop_down_status
+      properties: {include_placeholder: true, placeholder: Status}
+      type: DropDown
+    - layout_properties: {grid_position: 'CCCACO,GXVKGR'}
+      name: text_area_processing_description
+      properties: {}
+      type: TextArea
+    - layout_properties: {grid_position: 'EZNCAE,OSRHSV'}
+      name: text_box_cost_amount
+      properties: {}
+      type: TextBox
+    - layout_properties: {grid_position: 'EZNCAE,IFHNRW'}
+      name: drop_down_currency_type
+      properties: {include_placeholder: true, placeholder: Currency}
+      type: DropDown
+    - layout_properties: {grid_position: 'EZNCAE,HNHSVV'}
+      name: label_cost_amount_usd
+      properties: {}
+      type: Label
+    layout_properties: {grid_position: 'IFNYXT,YOTSYQ'}
+    name: column_panel_processing_cost_infor
+    properties: {}
     type: ColumnPanel
   - layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
     name: button_4
-    properties: {text: Add More}
+    properties: {text: Add}
     type: Button
   layout_properties: {grid_position: 'QNTBKZ,TGMSJS'}
   name: column_panel_4

@@ -25,6 +25,14 @@ components:
       name: drop_down_created_by
       properties: {}
       type: DropDown
+    - layout_properties: {width: 110}
+      name: spacer_1
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {}
+      name: button_remove
+      properties: {text: X}
+      type: Button
     layout_properties: {grid_position: 'CSZSZN,FMGJHF'}
     name: flow_panel_1
     properties: {}

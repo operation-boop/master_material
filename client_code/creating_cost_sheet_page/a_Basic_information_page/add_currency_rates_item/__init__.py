@@ -15,14 +15,13 @@ class add_currency_rates_item(add_currency_rates_itemTemplate):
     self.from_currency = from_currency 
     self.to_currency = to_currency
 
-    
     item_list_currency_types = []
     for row in app_tables.list_currency_types.search():
-     item_list_currency_types.append((row["types"], row))
+     item_list_currency_types.append((row["currency_types"], row))
 
     item_list_stuff_user = []
     for row in app_tables.tabl_staff_users.search():
-      item_list_stuff_user.append((row["staff"], row))
+      item_list_stuff_user.append((row["name"], row))
 
     self.drop_down_from_currency_type.items = item_list_currency_types
     self.drop_down_to_currency_type.items = item_list_currency_types

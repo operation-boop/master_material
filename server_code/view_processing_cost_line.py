@@ -14,7 +14,10 @@ import anvil.server
 # To allow anvil.server.call() to call functions here, we mark
 # them with @anvil.server.callable.
 # Here is an example - you can replace it with your own:
-#
+
+
+# Makes it so that this funct "view_processing_cost_line" can act as a link
+# to the backend for the front end to view ".client_readable()"
 @anvil.server.callable
 def view_processing_cost_line():
-  return app_tables..client_readable()
+  return app_tables.tabl_processing_cost_item.client_readable()

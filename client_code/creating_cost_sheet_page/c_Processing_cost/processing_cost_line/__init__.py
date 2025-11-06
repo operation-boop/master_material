@@ -10,8 +10,9 @@ from anvil.tables import app_tables
 
 
 class processing_cost_line(processing_cost_lineTemplate):
-  def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
+  def __init__(self, cost_amount_usd, **properties):
+     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    self.label_cost_amount_usd.text = cost_amount_usd
 
-    # Any code you write here will run before the form opens.
+
