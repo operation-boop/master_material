@@ -31,6 +31,12 @@ class Material_input_form(Material_input_formTemplate):
 
     self.details_section.visible = False
     self.advanced_cost_dropdown.items = ["Advanced Cost Calculation"]
+    
+  def _p(self, ctrl):
+    try:
+      return float(ctrl.text) if ctrl and ctrl.text else None
+    except Exception:
+      return None
 
   # ------------------------ UI BASICS ------------------------
   def close_btn_click(self, **event_args):
@@ -138,74 +144,52 @@ class Material_input_form(Material_input_formTemplate):
     except Exception as e:
       Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
 
-  def submit_button_click(self, **event_args):
-    """Collect all form data and submit"""
+  def submit_btn_click(self, **event_args):
     if not self.current_document_id:
-      Notification("Please create a material first!", style="warning", timeout=3).show()
+      Notification("Please create a material first!", style="warning").show()
       return
-
-    form_data = self.collect_form_data()
-    if not self.validate_form_data(form_data):
+  
+    data = self.collect_form_data()
+    if not self.validate_form(data):
       return
-
+  
     try:
-      if hasattr(self, "submit_btn"):
-        self.submit_btn.enabled = False
-        self.submit_btn.text = "Submitting..."
-
-      # Server should also validate and set status=Submitted
-      result = anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
+      self.submit_btn.enabled = False
+      self.submit_btn.text = "Submitting..."
+  
+      result = anvil.server.call("submit_version", self.current_document_id, "test_user@example.com", data)
       if result and result.get("ok"):
-        Notification("Submitted successfully!", style="success", timeout=3).show()
+        Notification("Submitted successfully!", style="success").show()
         self.raise_event("x-close-alert", value=True)
       else:
-        msg = (result and result.get("error")) or "Submit failed."
-        Notification(msg, style="danger", timeout=5).show()
+        Notification("Submit failed!", style="danger").show()
     except Exception as e:
-      print(f"Full error: {repr(e)}")
-      Notification(f"Submission failed: {str(e)}", style="danger", timeout=5).show()
+      Notification(f"Error: {e}", style="danger").show()
     finally:
-      if hasattr(self, "submit_btn"):
-        self.submit_btn.enabled = True
-        self.submit_btn.text = "Submit"
+      self.submit_btn.enabled = True
+      self.submit_btn.text = "Submit"
 
   # ------------------------ VALIDATION & COLLECTION ------------------------
-  def validate_form_data(self, form_data):
-    """Basic client-side validation with safer composition check."""
-    required_fields = [
-      'name', 'material_type', 'country_of_origin', 'supplier_name',
-      'unit_of_measurement', 'weight_per_unit', 'weight_uom',
-      'original_cost_per_unit', 'native_cost_currency'
-    ]
-    for field in required_fields:
-      if not form_data.get(field):
-        Notification(f"Please fill in: {field.replace('_',' ').title()}", style="warning").show()
-        return False
-
-    # composition ≈ 100%
+  def validate_form(self, data):
+    required = ["name", "material_type", "supplier_name",
+                "country_of_origin", "unit_of_measurement",
+                "weight_per_unit", "weight_uom",
+                "original_cost_per_unit", "native_cost_currency"]
+    missing = [f for f in required if not data.get(f)]
+    if missing:
+      Notification("Please fill in: " + ", ".join(missing), style="warning").show()
+      return False
+  
+      # composition 100%
     try:
-      comp = json.loads(form_data.get("fabric_composition") or "[]")
+      comp = json.loads(data.get("fabric_composition") or "[]")
+      total = sum(float(i["percentage"]) for i in comp)
+      if abs(total - 100) > 0.01:
+        Notification(f"Composition must be 100% (now {total:.1f}%)", style="warning").show()
+        return False
     except Exception:
-      Notification("Fabric composition is invalid.", style="warning").show()
+      Notification("Invalid composition.", style="warning").show()
       return False
-
-    total = sum(float(item.get("percentage", 0)) for item in comp)
-    if abs(total - 100.0) > 0.01:
-      Notification(f"Composition total must be 100% (currently {total:.2f}%)", style="warning").show()
-      return False
-
-    # ranges
-    for key in ("supplier_selling_tolerance","vietnam_vat_rate","import_duty"):
-      v = form_data.get(key)
-      if v is not None and not (0 <= v <= 100):
-        Notification(f"{key.replace('_',' ').title()} must be between 0 and 100", style="warning").show()
-        return False
-    for key in ("original_cost_per_unit","effective_cost_per_unit","logistics_rate","logistics_fee_per_unit","landed_cost_per_unit"):
-      v = form_data.get(key)
-      if v is not None and v < 0:
-        Notification(f"{key.replace('_',' ').title()} cannot be negative", style="warning").show()
-        return False
-
     return True
 
   def collect_form_data(self):

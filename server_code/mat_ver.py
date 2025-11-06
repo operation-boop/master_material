@@ -3,6 +3,7 @@ from anvil.tables import app_tables
 import uuid
 from datetime import datetime
 import anvil.tables.query as q
+import json
 
 DOC_PREFIX = "vin_mmat_"
 VALID_STATUSES = {
@@ -121,41 +122,39 @@ def check_status_transition(current_status, target_status):
     return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 @anvil.server.callable
-def submit_version(document_id, submitted_by_user, form_data=None):
-  """Submit document with validation - updates all fields from form"""
+def submit_version(document_id, submitted_by_user, form_data):
+  """Simple: update fields, validate required ones, mark submitted."""
   master = get_master_material(document_id)
   version = master['current_version']
 
-  check_status_transition(version['status'], "Submitted")
+  required = [
+    "name", "material_type", "supplier_name",
+    "country_of_origin", "unit_of_measurement",
+    "weight_per_unit", "weight_uom",
+    "original_cost_per_unit", "native_cost_currency"
+  ]
+  missing = [f for f in required if not form_data.get(f)]
+  if missing:
+    raise Exception(f"Missing required fields: {', '.join(missing)}")
 
-  # Update all fields from form data FIRST
-  if form_data:
-    updated_fields = []
-    for key, value in form_data.items():
-      if value is not None:
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
+  # composition check
+  comp = json.loads(form_data.get("fabric_composition") or "[]")
+  total = sum(float(i["percentage"]) for i in comp)
+  if abs(total - 100) > 0.01:
+    raise Exception(f"Composition must total 100% (now {total:.1f}%)")
 
-    print(f"Updated {len(updated_fields)} fields before validation")
+  # update version fields
+  for k, v in form_data.items():
+    version[k] = v
 
-  # Validate AFTER updating
-  validation = validate_required_fields(document_id)
-  if not validation['is_valid']:
-    missing_str = ', '.join(validation['missing_fields'])
-    raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
+  version["status"] = "Submitted"
+  version["submitted_at"] = datetime.now()
+  version["submitted_by"] = submitted_by_user
 
-  # Update status and submission info
-  version['status'] = "Submitted"
-  version['submitted_at'] = datetime.now()
-  version['submitted_by'] = submitted_by_user
+  master["submitted_at"] = datetime.now()
+  master["submitted_by"] = submitted_by_user
 
-  master['submitted_at'] = datetime.now()
-  master['submitted_by'] = submitted_by_user
-
-  return {"action": "submitted", "version": version, "document_id": document_id}
+  return {"ok": True, "document_id": document_id}
 
 @anvil.server.callable
 def edit_submitted(document_id, updated_by_user):
