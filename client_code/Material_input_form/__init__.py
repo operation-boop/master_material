@@ -121,7 +121,7 @@ class Material_input_form(Material_input_formTemplate):
       self.landed_cost.text = str(landed_cost)
       weight_per_unit = int(self.weight_per_unit.text)
       logistic_fee_per_unit = weight_per_unit * logistics_rate
-      self.logisitc_fee_per_unit = str(logistic_fee_per_unit)
+      self.logistics_fee_per_unit.text = str(logistic_fee_per_unit)
 
   # ------------------------ DRAFT / SUBMIT ------------------------
   def save_as_draft_btn_click(self, **event_args):

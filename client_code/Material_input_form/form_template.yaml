@@ -230,7 +230,7 @@ components:
         name: rich_text_7
         properties: {content: 'Original Cost per Unit <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - event_bindings: {}
+      - event_bindings: {change: original_cost_per_unit_change}
         layout_properties: {grid_position: 'NRESRT,MJAZHJ'}
         name: original_cost_per_unit
         properties: {type: number}
