@@ -3,9 +3,9 @@ components:
   - components:
     - components:
       - data_bindings:
-        - {code: 'self.item[''material_id'']', property: text, writeback: false}
+        - {code: 'self.item[''master_material_id'']', property: text, writeback: false}
         layout_properties: {grid_position: 'PFSBWR,XHXNZI'}
-        name: material_id
+        name: master_material_id
         properties:
           bold: true
           font_size: 18

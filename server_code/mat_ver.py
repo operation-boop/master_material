@@ -163,41 +163,7 @@ def submit_version(document_id, submitted_by_user, form_data=None):
   return {"action": "submitted", "version": version, "document_id": document_id}
 
 
-@anvil.server.callable
-def list_material_cards():
-  """
-  Return a list of dicts for Material_list UI.
-  Pulls from master_material.current_version (a link to master_material_version)
-  """
-  rows = app_tables.master_material.search()
-  cards = []
 
-  for r in rows:
-    v = r['current_version']
-    if not v:
-      continue 
-
-    weight = None
-    if v['weight_per_unit'] and v['weight_uom']:
-      weight = f"{v['weight_per_unit']} {v['weight_uom']}"
-
-    cost = None
-    if v['original_cost_per_unit'] and v['native_cost_currency']:
-      cost = f"{v['original_cost_per_unit']} {v['native_cost_currency']}"
-
-    cards.append({
-      "material_id": r['master_material_id'],
-      "ref_id": v['ref_id'],
-      "material_name": v['name'],
-      "material_type": v['material_type'],
-      "fabric_composition": v['fabric_composition'],
-      "weight": weight,
-      "supplier": v['supplier_name'],
-      "cost_per_unit": cost,
-      "verification_status": v['status'] 
-    })
-
-  return cards
 
 
 

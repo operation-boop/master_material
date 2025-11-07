@@ -8,14 +8,12 @@ class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
 
-  # --- NEW: centralised refresher ---
-  def refresh_list(self, **event_args):
-    """Fetch latest cards from server and render them."""
+  def refresh_list(self, statuses=None, **event_args):
     try:
-      materials = anvil.server.call('list_material_cards') or []
+      materials = anvil.server.call('list_material_cards', statuses or ["Draft", "Submitted"]) or []
     except Exception as e:
       Notification(f"Load failed: {e}", style="danger").show()
-      materials = []
+      return
 
     self.flow_panel_materials.clear()
     from .MaterialCard import MaterialCard
