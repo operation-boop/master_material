@@ -19,7 +19,7 @@ components:
       type: Button
     - components:
       - data_bindings:
-        - {code: 'Cost Sheet: " + self.item[''cost_sheet_id'']', property: text, writeback: false}
+        - {code: 'self.item[''cost_sheet_id'']', property: text, writeback: false}
         layout_properties: {grid_position: 'NIWJSU,FLQCIB'}
         name: cost_sheet_id_label
         properties: {bold: true, role: headline, text: ''}
@@ -215,7 +215,7 @@ components:
         properties: {text: Import Logistics}
         type: Label
       - layout_properties: {grid_position: 'THBUNR,NONDYB'}
-        name: label_18
+        name: import_logistics
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'THBUNR,UFJYGB'}
@@ -227,7 +227,7 @@ components:
         properties: {text: Export Logistics}
         type: Label
       - layout_properties: {grid_position: 'GJFZOX,EXCWHJ'}
-        name: label_19
+        name: export_logistics
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'GJFZOX,TTANMG'}
@@ -239,7 +239,7 @@ components:
         properties: {text: VAT}
         type: Label
       - layout_properties: {grid_position: 'EWLHMS,HELRCC'}
-        name: label_20
+        name: vat
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'IPMMFY,NIDGAO EWLHMS,VLMBNY'}
@@ -256,7 +256,7 @@ components:
       type: Label
     - components:
       - name: repeating_panel_6
-        properties: {item_template: wanyan_ver_cost_sheet_details.RowTemplate3}
+        properties: {item_template: wanyan_ver_cost_sheet_details.Overhead_cost_rowtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'MKMXII,NMHLTM'}
       name: data_grid_5

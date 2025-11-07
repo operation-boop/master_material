@@ -8,9 +8,9 @@ components:
       properties: {bold: true, role: headline}
       type: Label
     - data_bindings:
-      - {code: 'self.item[''version_number''] + "•" + self.item[''updated_at'']', property: text, writeback: false}
+      - {code: 'self.item[''version_number'']', property: text, writeback: false}
       layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,ITGCPP'}
-      name: version_and_updated_date
+      name: version
       properties: {}
       type: Label
     - data_bindings:

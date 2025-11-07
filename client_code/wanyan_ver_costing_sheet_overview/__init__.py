@@ -32,57 +32,57 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
   def form_show(self, **event_args):
   
     # --- Mock Data Example ---
-    cost_sheet = {
-      "cost_sheet_id": "CS-001",
-      "version_number": "1",
-      "updated_at": "1/3/2024",
-      "created_by": "John Doe",
-      "approval_status": "Approved",
-      "master_style": "MAT-005",
-      "currency": "VND",
-      "change_description": "Updated material costs...",
+    cost_sheet = [
+      {
+        "cost_sheet_id": "CS-001",
+        "version_number": "1",
+        "updated_at": "1/3/2024",
+        "created_by": "John Doe",
+        "approval_status": "Approved",
+        
+        "master_style": "MAT-005",
+        "currency": "VND",
+        "change_description": "Updated material costs",
+  
+        "bom": [
+          {"material": "Cotton White", "consumption": 2.5, "unit_cost": 4.50, "total": 11.25},
+          {"material": "Polyester Black", "consumption": 1.0, "unit_cost": 3.20, "total": 3.20},
+        ],
+  
+        "total_material_cost": 14.45,
+  
+        "processing_costs": [
+          {"type": "Cutting", "vendor": "ABC Factory", "cost": 1.20},
+          {"type": "Sewing", "vendor": "XYZ Factory", "cost": 2.80},
+        ],
+  
+        "total_processing_cost": 4.00,
+  
+        "overhead_costs": [
+          {"import_logistics": 0.50,
+          "export_logistics": 0.70,
+          "vat": 0.10,
+          "import_duty": 0.15,
+          "testing": 0.25,
+          "sampling": 0.30}
+        ],
 
-      "bom": [
-        {"material": "Cotton White", "consumption": 2.5, "unit_cost": 4.50, "total": 11.25},
-        {"material": "Polyester Black", "consumption": 1.0, "unit_cost": 3.20, "total": 3.20},
-      ],
+        "total_overhead_cost": 2.00,
+  
+        "profit_scenarios": [
+          {"quoted_price": 22.00, "margin": 20, "profit": 4.40},
+          {"quoted_price": 24.00, "margin": 25, "profit": 6.00},
+          {"quoted_price": 26.00, "margin": 30, "profit": 7.80},
+        ],
+  
+        "total_profit_scenarios_cost": 18.20
+      }
+    ]
 
-      "total_material_cost": 14.45,
-
-      "processing_costs": [
-        {"type": "Cutting", "vendor": "ABC Factory", "cost": 1.20},
-        {"type": "Sewing", "vendor": "XYZ Factory", "cost": 2.80},
-      ],
-
-      "total_processing_cost": 4.00,
-
-      "overhead_costs": {
-        "import_logistics": 0.50,
-        "export_logistics": 0.70,
-        "vat": 0.10,
-        "import_duty": 0.15,
-        "testing": 0.25,
-        "sampling": 0.30,
-        "total_overhead_cost": 2.00
-      },
-
-      "profit_scenarios": [
-        {"quoted_price": 22.00, "margin": 20, "profit": 4.40},
-        {"quoted_price": 24.00, "margin": 25, "profit": 6.00},
-        {"quoted_price": 26.00, "margin": 30, "profit": 7.80},
-      ],
-
-      "total_profit_scenarios_cost": 18.20
-    }
-
-    # Compute total cost and keep it with the item
     for cs in cost_sheet:
-    
-      # Convert safely: if field is '', None, or missing → treat as 0
-      tm = float(cs.get("total_material_cost", 0) or 0)
-      tp = float(cs.get("total_processing_cost", 0) or 0)
-      to = float(cs.get("total_overhead_cost", 0) or 0)
-    
+      tm = float(cs["total_material_cost"] or 0)
+      tp = float(cs["total_processing_cost"] or 0)
+      to = float(cs["total_overhead_cost"] or 0)
       cs["total_cost"] = tm + tp + to
-
+  
     self.repeating_panel_cost_sheet.items = cost_sheet
