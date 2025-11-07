@@ -1,21 +1,31 @@
 components:
-- layout_properties: {column: JKSDUP}
+- data_bindings:
+  - {code: 'self.item[''material'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
   name: material
   properties: {}
   type: Label
-- layout_properties: {column: VJQQOR}
+- data_bindings:
+  - {code: 'self.item[''material_type'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
   name: material_type
   properties: {}
   type: Label
-- layout_properties: {column: OJLQEN}
+- data_bindings:
+  - {code: 'self.item[''consumption'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
   name: consumption
   properties: {}
   type: Label
-- layout_properties: {column: TBHBMQ}
+- data_bindings:
+  - {code: 'self.item[''unit_cost'']', property: text, writeback: false}
+  layout_properties: {column: TBHBMQ}
   name: unit_cost
   properties: {}
   type: Label
-- layout_properties: {column: MFRJKW}
+- data_bindings:
+  - {code: 'self.item[''total_cost'']', property: text, writeback: false}
+  layout_properties: {column: MFRJKW}
   name: total_cost
   properties: {}
   type: Label

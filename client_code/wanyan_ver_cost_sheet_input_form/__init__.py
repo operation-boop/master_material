@@ -67,3 +67,32 @@ class wanyan_ver_cost_sheet_input_form(wanyan_ver_cost_sheet_input_formTemplate)
     self.material_dropdown.selected_value = None
     self.consumption.text = ""
     self.unit_cost.text = ""
+
+  def processing_costs_add_btn_click(self, **event_args):
+    type = self.type_dropdown.selected_value
+    vendor = self.vendor.text
+    cost = self.cost.text
+  
+    if not type or not vendor or not cost:
+      Notification("Please fill all Processing Cost fields.").show()
+      return
+  
+    try:
+      cost = float(cost)
+    except ValueError:
+      Notification("Cost must be a number.").show()
+      return
+  
+    self.processing_list.append({
+      "type": type,
+      "vendor": vendor,
+      "cost": cost
+    })
+  
+    self.repeating_panel_processing_costs.items = self.processing_list
+  
+    self.type_dropdown.selected_value = None
+    self.vendor.text = ""
+    self.cost.text = ""
+
+    

@@ -35,8 +35,8 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
     cost_sheet = [
       {
         "cost_sheet_id": "CS-001",
-        "version_number": "1",
-        "updated_at": "1/3/2024",
+        "version_number": "3",
+        "updated_at": "5/11/2025",
         "created_by": "John Doe",
         "approval_status": "Approved",
         
@@ -55,27 +55,30 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
           {"type": "Cutting", "vendor": "ABC Factory", "cost": 1.20},
           {"type": "Sewing", "vendor": "XYZ Factory", "cost": 2.80},
         ],
+
+        "version_history": [
+          {"version": 3, "updated_at": "5/11/2025", "created_by": "John Doe", "change_description": "Update processing costs"},
+          {"version": 2, "updated_at": "2/11/2025", "created_by": "John Doe", "change_description": "Update BOM materials"},
+          {"version": 1, "updated_at": "1/11/2025", "created_by": "John Doe", "change_description": "Update import logistics cost"}
+        ],
+
+        "overhead_costs": [
+          {"type": 3, "description": "5/11/2025", "cost": 4.20, "currency": "Update processing costs"},
+          {"type": 2, "description": "5/11/2025", "cost": "John Doe", "currency": "Update processing costs"},
+          {"type": 1, "description": "5/11/2025", "cost": "John Doe", "currency": "Update processing costs"},
+        ],
   
         "total_processing_cost": 4.00,
   
-        "overhead_costs": [
-          {"import_logistics": 0.50,
-          "export_logistics": 0.70,
-          "vat": 0.10,
-          "import_duty": 0.15,
-          "testing": 0.25,
-          "sampling": 0.30}
-        ],
-
+        
+        "import_logistics": 0.50,
+        "export_logistics": 0.70,
+        "vat": 0.10,
         "total_overhead_cost": 2.00,
   
-        "profit_scenarios": [
-          {"quoted_price": 22.00, "margin": 20, "profit": 4.40},
-          {"quoted_price": 24.00, "margin": 25, "profit": 6.00},
-          {"quoted_price": 26.00, "margin": 30, "profit": 7.80},
-        ],
-  
-        "total_profit_scenarios_cost": 18.20
+        "conservative_cost": 22.00, "conservative_gross_margin": 20, "conservative_gross_profit": 4.40, "conservative_net_margin": 3, "conservative_net_profit": 4,
+        "standard_cost": 24.00, "standard_gross_margin": 25, "standard_gross_profit": 6, "standard_net_margin": 25, "standard_net_profit": 6,
+        "premium_cost": 26.00, "premium_gross_margin": 30, "premium_gross_profit": 7.80, "premium_net_margin": 30, "premium_net_profit": 9.20
       }
     ]
 

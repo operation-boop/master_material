@@ -18,21 +18,29 @@ components:
       properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: Edit}
       type: Button
     - components:
+      - layout_properties: {grid_position: 'NIWJSU,XGCRXC'}
+        name: label_18
+        properties: {bold: true, role: headline, text: 'Cost Sheet :'}
+        type: Label
       - data_bindings:
         - {code: 'self.item[''cost_sheet_id'']', property: text, writeback: false}
         layout_properties: {grid_position: 'NIWJSU,FLQCIB'}
-        name: cost_sheet_id_label
+        name: cost_sheet_id
         properties: {bold: true, role: headline, text: ''}
         type: Label
       - data_bindings:
         - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
         layout_properties: {grid_position: 'NIWJSU,DBQUQN'}
         name: current_version_label
-        properties: {background: 'theme:Gray 200', text: Version 3 (Current)}
+        properties: {align: left, background: 'theme:Gray 200', text: Version 3 (Current)}
         type: Label
+      - layout_properties: {grid_position: 'NIWJSU,GHXKIV'}
+        name: spacer_6
+        properties: {height: 32}
+        type: Spacer
       layout_properties: {grid_position: 'RFHFUP,UFMBFG'}
       name: column_panel_17
-      properties: {}
+      properties: {col_widths: '{"XGCRXC":20,"FLQCIB":25,"DBQUQN":15,"GHXKIV":15}'}
       type: ColumnPanel
     layout_properties: {grid_position: 'XAUZQF,AQGACW'}
     name: column_panel_16
@@ -132,7 +140,7 @@ components:
       properties: {height: 32}
       type: Spacer
     - components:
-      - name: repeating_panel_2
+      - name: repeating_panel_bom
         properties: {item_template: wanyan_ver_cost_sheet_details.BOM_rowtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'DVBYYF,VQVNBX'}
@@ -169,7 +177,7 @@ components:
       properties: {height: 32}
       type: Spacer
     - components:
-      - name: repeating_panel_3
+      - name: repeating_panel_processing_costs
         properties: {item_template: wanyan_ver_cost_sheet_details.Processing_costs_rowtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'EQHTWX,QOZBDF'}
@@ -214,7 +222,9 @@ components:
         name: label_15
         properties: {text: Import Logistics}
         type: Label
-      - layout_properties: {grid_position: 'THBUNR,NONDYB'}
+      - data_bindings:
+        - {code: 'self.item[''import_logistics'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'THBUNR,NONDYB'}
         name: import_logistics
         properties: {}
         type: Label
@@ -226,7 +236,9 @@ components:
         name: label_16
         properties: {text: Export Logistics}
         type: Label
-      - layout_properties: {grid_position: 'GJFZOX,EXCWHJ'}
+      - data_bindings:
+        - {code: 'self.item[''export_logistics'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'GJFZOX,EXCWHJ'}
         name: export_logistics
         properties: {}
         type: Label
@@ -238,7 +250,9 @@ components:
         name: label_17
         properties: {text: VAT}
         type: Label
-      - layout_properties: {grid_position: 'EWLHMS,HELRCC'}
+      - data_bindings:
+        - {code: 'self.item[''vat'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'EWLHMS,HELRCC'}
         name: vat
         properties: {}
         type: Label
@@ -255,7 +269,7 @@ components:
       properties: {bold: true, text: TIER 3}
       type: Label
     - components:
-      - name: repeating_panel_6
+      - name: repeating_panel_overhead_costs
         properties: {item_template: wanyan_ver_cost_sheet_details.Overhead_cost_rowtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'MKMXII,NMHLTM'}
@@ -289,7 +303,9 @@ components:
         name: label_2
         properties: {bold: true, font_size: 18, text: Conservative}
         type: Label
-      - layout_properties: {grid_position: 'YAQBAI,IOVZMC'}
+      - data_bindings:
+        - {code: 'self.item[''conservative_cost'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'YAQBAI,IOVZMC'}
         name: conservative_cost
         properties: {bold: true, foreground: 'theme:Primary 500'}
         type: Label
@@ -298,16 +314,20 @@ components:
           name: label_4
           properties: {text: GROSS MARGIN}
           type: Label
-        - layout_properties: {grid_position: 'VIBFIW,XUGLAR'}
-          name: profit_scenarios_gross_margin
+        - data_bindings:
+          - {code: 'self.item[''conservative_gross_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VIBFIW,XUGLAR'}
+          name: conservative_gross_margin
           properties: {}
           type: Label
         - layout_properties: {grid_position: 'XZIFFU,FXXXWV'}
           name: label_13
           properties: {text: NEW MARGIN}
           type: Label
-        - layout_properties: {grid_position: 'FNJWDB,VHGWVU'}
-          name: profit_scenarios_net_margin
+        - data_bindings:
+          - {code: 'self.item[''conservative_net_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'FNJWDB,VHGWVU'}
+          name: conservative_net_margin
           properties: {}
           type: Label
         layout_properties: {grid_position: 'YNDMXA,SQYHYD'}
@@ -319,16 +339,20 @@ components:
           name: label_8
           properties: {text: GROSS PROFIT}
           type: Label
-        - layout_properties: {grid_position: 'VPINKY,LSMGEK'}
-          name: profit_scenarios_gross_profit
+        - data_bindings:
+          - {code: 'self.item[''conservative_gross_profit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VPINKY,LSMGEK'}
+          name: conservative_gross_profit
           properties: {}
           type: Label
         - layout_properties: {grid_position: 'WIRBMU,YMQOYE'}
           name: label_11
           properties: {text: NET PROFIT}
           type: Label
-        - layout_properties: {grid_position: 'LTHMMR,OALODA'}
-          name: profit_scenarios_net_profit
+        - data_bindings:
+          - {code: 'self.item[''conservative_net_profit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'LTHMMR,OALODA'}
+          name: conservative_net_profit
           properties: {}
           type: Label
         layout_properties: {grid_position: 'YNDMXA,FSEQYU'}
@@ -344,11 +368,15 @@ components:
         name: label_3
         properties: {bold: true, font_size: 18, text: Standard}
         type: Label
-      - layout_properties: {grid_position: 'TWREPI,YBPNPZ'}
+      - data_bindings:
+        - {code: 'self.item[''standard_status'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'TWREPI,YBPNPZ'}
         name: standard_status
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'QMOCRX,BIAFMT'}
+      - data_bindings:
+        - {code: 'self.item[''standard_cost'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'QMOCRX,BIAFMT'}
         name: standard_cost
         properties: {}
         type: Label
@@ -357,7 +385,9 @@ components:
           name: label_26
           properties: {text: GROSS MARGIN}
           type: Label
-        - layout_properties: {grid_position: 'QMFWUG,FJCVAO'}
+        - data_bindings:
+          - {code: 'self.item[''standard_gross_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'QMFWUG,FJCVAO'}
           name: standard_gross_margin
           properties: {}
           type: Label
@@ -365,7 +395,9 @@ components:
           name: label_44
           properties: {text: NET MARGIN}
           type: Label
-        - layout_properties: {grid_position: 'CLWDBT,WUPYYM'}
+        - data_bindings:
+          - {code: 'self.item[''standard_net_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'CLWDBT,WUPYYM'}
           name: standard_net_margin
           properties: {}
           type: Label
@@ -378,7 +410,9 @@ components:
           name: label_47
           properties: {text: GROSS PROFIT}
           type: Label
-        - layout_properties: {grid_position: 'ESIDBQ,LYGRII'}
+        - data_bindings:
+          - {code: 'self.item[''standard_gross_profit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'ESIDBQ,LYGRII'}
           name: standard_gross_profit
           properties: {}
           type: Label
@@ -386,7 +420,9 @@ components:
           name: label_49
           properties: {text: NET PROFIT}
           type: Label
-        - layout_properties: {grid_position: 'UWGNUW,IBAPZK'}
+        - data_bindings:
+          - {code: 'self.item[''standard_net_profit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'UWGNUW,IBAPZK'}
           name: standard_net_profit
           properties: {}
           type: Label
@@ -403,7 +439,9 @@ components:
         name: label_7
         properties: {bold: true, font_size: 18, text: Premium}
         type: Label
-      - layout_properties: {grid_position: 'XFRVFH,KJOJUZ'}
+      - data_bindings:
+        - {code: 'self.item[''premium_cost'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'XFRVFH,KJOJUZ'}
         name: premium_cost
         properties: {bold: true, foreground: 'theme:Primary 500'}
         type: Label
@@ -412,7 +450,9 @@ components:
           name: label_22
           properties: {text: GROSS MARGIN}
           type: Label
-        - layout_properties: {grid_position: 'YUIETS,EBMMZQ'}
+        - data_bindings:
+          - {code: 'self.item[''premium_gross_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'YUIETS,EBMMZQ'}
           name: premium_gross_margin
           properties: {}
           type: Label
@@ -420,7 +460,9 @@ components:
           name: label_28
           properties: {text: NET MARGIN}
           type: Label
-        - layout_properties: {grid_position: 'GTSDCA,HHXDZB'}
+        - data_bindings:
+          - {code: 'self.item[''premium_net_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'GTSDCA,HHXDZB'}
           name: premium_net_margin
           properties: {}
           type: Label
@@ -433,7 +475,9 @@ components:
           name: label_12
           properties: {text: GROSS PROFIT}
           type: Label
-        - layout_properties: {grid_position: 'PIOIOF,RVWUBX'}
+        - data_bindings:
+          - {code: 'self.item[''premium_gross_profit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PIOIOF,RVWUBX'}
           name: premium_gross_profit
           properties: {}
           type: Label
@@ -441,7 +485,9 @@ components:
           name: label_50
           properties: {text: NET PROFIT}
           type: Label
-        - layout_properties: {grid_position: 'JRNAQR,YFNALQ'}
+        - data_bindings:
+          - {code: 'self.item[''premium_net_profit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'JRNAQR,YFNALQ'}
           name: premium_net_profit
           properties: {}
           type: Label
@@ -495,13 +541,14 @@ components:
       name: label_36
       properties: {bold: true, font_size: 17, text: VERSION HISTORY}
       type: Label
-    - layout_properties: {grid_position: 'WPSFWM,HOBNJM'}
-      name: repeating_panel_1
-      properties: {item_template: Material_detail.version_history_itemtemplate}
+    - data_bindings: []
+      layout_properties: {grid_position: 'WPSFWM,HOBNJM'}
+      name: repeating_panel_version_history
+      properties: {item_template: wanyan_ver_cost_sheet_details.Version_history_itemtemplate}
       type: RepeatingPanel
     layout_properties: {grid_position: 'UATDRA,XCLPPA'}
     name: version_history_panel
-    properties: {visible: false}
+    properties: {visible: true}
     type: ColumnPanel
   - components:
     - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}

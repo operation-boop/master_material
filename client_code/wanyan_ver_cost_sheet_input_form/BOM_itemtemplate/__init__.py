@@ -14,10 +14,10 @@ class BOM_itemtemplate(BOM_itemtemplateTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    if self.item:
-      material_name = self.item["material"]
-      percentage = self.item["percentage"]
-      self.fabric_composition_item.text = f"{material_name} - {percentage}%"
+    self.material.text = self.item["material"]
+    self.consumption.text = str(self.item["consumption"])
+    self.unit_cost.text = str(self.item["unit_cost"])
+    self.total.text = str(self.item["total"])
     # Any code you write here will run before the form opens.
 
   def remove_btn_click(self, **event_args):

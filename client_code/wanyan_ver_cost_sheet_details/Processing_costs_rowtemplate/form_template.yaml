@@ -1,21 +1,31 @@
 components:
-- layout_properties: {column: VJQQOR}
+- data_bindings:
+  - {code: 'self.item[''vendor'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
   name: vendor
   properties: {}
   type: Label
-- layout_properties: {column: JKSDUP}
+- data_bindings:
+  - {code: 'self.item[''type'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
   name: type
   properties: {}
   type: Label
-- layout_properties: {column: OJLQEN}
+- data_bindings:
+  - {code: 'self.item[''description'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
   name: description
   properties: {}
   type: Label
-- layout_properties: {column: WEKQHK}
+- data_bindings:
+  - {code: 'self.item[''status'']', property: text, writeback: false}
+  layout_properties: {column: WEKQHK}
   name: status
   properties: {}
   type: Label
-- layout_properties: {column: BHMGBN}
+- data_bindings:
+  - {code: 'self.item[''cost'']', property: text, writeback: false}
+  layout_properties: {column: BHMGBN}
   name: cost
   properties: {}
   type: Label

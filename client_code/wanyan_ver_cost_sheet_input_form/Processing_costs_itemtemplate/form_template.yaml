@@ -15,15 +15,18 @@ components:
   name: spacer_1
   properties: {height: 32}
   type: Spacer
-- layout_properties: {grid_position: 'PNKJQH,EAMRLL'}
+- data_bindings: []
+  layout_properties: {grid_position: 'PNKJQH,EAMRLL'}
   name: type
   properties: {}
   type: Label
-- layout_properties: {grid_position: 'PNKJQH,MCGCPT'}
+- data_bindings: []
+  layout_properties: {grid_position: 'PNKJQH,MCGCPT'}
   name: vendor
   properties: {}
   type: Label
-- layout_properties: {grid_position: 'PNKJQH,CTSCZR'}
+- data_bindings: []
+  layout_properties: {grid_position: 'PNKJQH,CTSCZR'}
   name: cost
   properties: {}
   type: Label

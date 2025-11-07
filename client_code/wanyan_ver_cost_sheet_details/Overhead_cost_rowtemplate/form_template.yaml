@@ -1,17 +1,25 @@
 components:
-- layout_properties: {column: JKSDUP}
+- data_bindings:
+  - {code: 'self.item[''type'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
   name: type
   properties: {}
   type: Label
-- layout_properties: {column: VJQQOR}
+- data_bindings:
+  - {code: 'self.item[''description'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
   name: description
   properties: {}
   type: Label
-- layout_properties: {column: OJLQEN}
+- data_bindings:
+  - {code: 'self.item[''cost'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
   name: cost
   properties: {}
   type: Label
-- layout_properties: {column: REAAFS}
+- data_bindings:
+  - {code: 'self.item[''currency'']', property: text, writeback: false}
+  layout_properties: {column: REAAFS}
   name: currency
   properties: {}
   type: Label

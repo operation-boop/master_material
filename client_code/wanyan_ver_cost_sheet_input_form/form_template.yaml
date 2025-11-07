@@ -76,7 +76,8 @@ components:
       name: card_3
       properties: {col_widths: '{"YNKFKH":30,"ZNBLDM":10,"FKOITM":15,"HPIBEG":15}', role: card}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'RJLNNL,EKRMQI'}
+    - data_bindings: []
+      layout_properties: {grid_position: 'RJLNNL,EKRMQI'}
       name: total_material_cost
       properties: {align: right}
       type: Label
@@ -101,7 +102,8 @@ components:
         name: cost
         properties: {placeholder: Cost}
         type: TextBox
-      - layout_properties: {grid_position: 'GLMCCR,LDPORT'}
+      - event_bindings: {click: processing_costs_add_btn_click}
+        layout_properties: {grid_position: 'GLMCCR,LDPORT'}
         name: processing_costs_add_btn
         properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:plus', role: primary-color, text: add}
         type: Button
@@ -113,7 +115,8 @@ components:
       name: card_4
       properties: {col_widths: '{"NQLIBV":20,"TBCCQY":15,"XRLMJB":15,"LDPORT":10}', role: card}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'KQXLZF,TQGBQT'}
+    - data_bindings: []
+      layout_properties: {grid_position: 'KQXLZF,TQGBQT'}
       name: total_processing_cost
       properties: {align: right}
       type: Label
@@ -126,7 +129,8 @@ components:
       properties: {bold: true, foreground: RED, text: PROFIT SCENARIOS}
       type: Label
     - components:
-      - layout_properties: {grid_position: 'LGKINI,XCKNQJ'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'LGKINI,XCKNQJ'}
         name: profit_scenarios_total_cost
         properties: {foreground: '#9c760d', icon: 'fa:info-circle', text: 'Total Cost:'}
         type: Label
@@ -139,7 +143,8 @@ components:
         name: label_24
         properties: {bold: true, text: Scenario 1 - Price}
         type: Label
-      - layout_properties: {grid_position: 'KWXDQE,ZPDNVU'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'KWXDQE,ZPDNVU'}
         name: scenario_1_quoted_price
         properties: {placeholder: Quoted Price}
         type: TextBox
@@ -152,7 +157,8 @@ components:
           spacing_below: none
           text: 'Margin: - '
         type: Label
-      - layout_properties: {grid_position: 'KDZSRD,JWVHVL'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'KDZSRD,JWVHVL'}
         name: scenario_1_margin
         properties: {}
         type: Label
@@ -165,7 +171,8 @@ components:
           spacing_below: none
           text: 'Profit: - '
         type: Label
-      - layout_properties: {grid_position: 'GMGWAJ,ENKILI'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'GMGWAJ,ENKILI'}
         name: scenario_1_profit
         properties: {}
         type: Label
@@ -173,7 +180,8 @@ components:
         name: label_25
         properties: {bold: true, text: Scenario 2  - Price}
         type: Label
-      - layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
         name: scenario_2_quoted_price
         properties: {placeholder: Quoted Price, type: number}
         type: TextBox
@@ -186,7 +194,8 @@ components:
           spacing_below: none
           text: 'Margin: - '
         type: Label
-      - layout_properties: {grid_position: 'UTJRMK,JKMMNF'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'UTJRMK,JKMMNF'}
         name: scenario_2_margin
         properties: {}
         type: Label
@@ -199,7 +208,8 @@ components:
           spacing_below: none
           text: 'Profit: - '
         type: Label
-      - layout_properties: {grid_position: 'DVCFXR,JGMJDD'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'DVCFXR,JGMJDD'}
         name: scenario_2_profit
         properties: {}
         type: Label
@@ -207,7 +217,8 @@ components:
         name: label_29
         properties: {bold: true, text: Scenario 3 - Price}
         type: Label
-      - event_bindings: {change: scenario_3_quoted_price_change}
+      - data_bindings: []
+        event_bindings: {change: scenario_3_quoted_price_change}
         layout_properties: {grid_position: 'QDKMAH,TALLOF'}
         name: scenario_3_quoted_price
         properties: {placeholder: Quoted Price, type: number}
@@ -221,7 +232,8 @@ components:
           spacing_below: none
           text: 'Margin: - '
         type: Label
-      - layout_properties: {grid_position: 'LKBICQ,TJRNJL'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'LKBICQ,TJRNJL'}
         name: scenario_3_margin
         properties: {}
         type: Label
@@ -234,7 +246,8 @@ components:
           spacing_below: none
           text: 'Profit: - '
         type: Label
-      - layout_properties: {grid_position: 'NOVKTX,GZHOKN'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'NOVKTX,GZHOKN'}
         name: scenario_3_profit
         properties: {}
         type: Label

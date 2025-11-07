@@ -15,6 +15,7 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.item = cost_sheet_data
+    self.form_show()
     # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
@@ -38,3 +39,8 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
     self.cost_details_panel.visible = False
     self.exchange_rates_panel.visible = True
 
+  def form_show(self, **event_args):
+    self.repeating_panel_bom.items = self.item["bom"]
+    self.repeating_panel_processing_costs.items = self.item["processing_costs"]
+    self.repeating_panel_version_history.items = self.item["version_history"]
+    self.repeating_panel_overhead_costs.items = self.item["overhead_costs"]
