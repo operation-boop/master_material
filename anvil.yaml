@@ -5,9 +5,6 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: Server_id
-      type: string
-    - admin_ui: {width: 200}
       name: document_id
       type: string
     - admin_ui: {width: 200}
@@ -22,14 +19,14 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     server: full
     title: bill_of_material
@@ -37,19 +34,16 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: server_id
-      type: string
-    - admin_ui: {width: 200}
       name: bill_of_material
       target: bill_of_material
       type: link_single
     - admin_ui: {width: 200}
       name: assigned_material
-      target: tabl_master_material
+      target: master_material
       type: link_single
     - admin_ui: {width: 200}
       name: assigned_sku
-      target: tabl_material_sku
+      target: material_sku
       type: link_single
     - admin_ui: {width: 200}
       name: gross_consumption
@@ -69,14 +63,14 @@ db_schema:
     - admin_ui: {width: 200}
       name: material_cost_in_usd
       type: number
+    - admin_ui: {order: 9, width: 200}
+      name: native_currency
+      type: string
     server: full
     title: bill_of_material_line_item
   bill_of_material_version:
     client: none
     columns:
-    - admin_ui: {width: 200}
-      name: server_id
-      type: string
     - admin_ui: {width: 200}
       name: document_id
       type: string
@@ -91,16 +85,17 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
+    - admin_ui: {order: 2.5, width: 200}
+      name: line_items
+      target: bill_of_material_line_item
+      type: link_multiple
     server: full
     title: bill_of_material_version
-  tabl_cost_sheet:
+  cost_sheet:
     client: none
     columns:
-    - admin_ui: {width: 200}
-      name: server_id
-      type: string
     - admin_ui: {width: 200}
       name: document_id
       type: string
@@ -109,30 +104,27 @@ db_schema:
       type: number
     - admin_ui: {width: 200}
       name: version_history
-      target: tabl_cost_sheet_version
+      target: cost_sheet_version
       type: link_single
     - admin_ui: {width: 200}
       name: created_at
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     server: full
-    title: tabl_cost_sheet
-  tabl_cost_sheet_version:
+    title: cost_sheet
+  cost_sheet_version:
     client: none
     columns:
-    - admin_ui: {width: 200}
-      name: server_id
-      type: string
     - admin_ui: {width: 200}
       name: document_id
       type: string
@@ -147,25 +139,25 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: approved_at
       type: datetime
     - admin_ui: {width: 200}
       name: approved_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: exchange_rate_used
-      target: tabl_exchange_rate
+      target: exchange_rate
       type: link_multiple
     - admin_ui: {width: 200}
       name: bom_version
@@ -176,14 +168,17 @@ db_schema:
       type: number
     - admin_ui: {width: 200}
       name: processing_cost_items
-      target: tabl_processing_cost_item
+      target: processing_cost_item
       type: link_multiple
     - admin_ui: {width: 200}
       name: total_overhead_cost
       type: number
+    - admin_ui: {order: 10, width: 200}
+      name: status
+      type: string
     server: full
-    title: tabl_cost_sheet_version
-  tabl_exchange_rate:
+    title: cost_sheet_version
+  exchange_rate:
     client: search
     columns:
     - admin_ui: {width: 200}
@@ -200,24 +195,24 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: manager_defined
       type: simpleObject
     server: full
-    title: tabl_exchange_rate
-  tabl_master_material:
+    title: exchange_rate
+  master_material:
     client: none
     columns: []
     server: full
-    title: tabl_master_material
-  tabl_material_sku:
+    title: master_material
+  material_sku:
     client: none
     columns: []
     server: full
-    title: tabl_material_sku
-  tabl_processing_cost_item:
+    title: material_sku
+  processing_cost_item:
     client: none
     columns:
     - admin_ui: {width: 200}
@@ -243,25 +238,25 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: updated_at
       type: datetime
     - admin_ui: {width: 200}
       name: updated_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     - admin_ui: {width: 200}
       name: last_verified_date
       type: datetime
     - admin_ui: {width: 200}
       name: last_verified_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     server: full
-    title: tabl_processing_cost_item
-  tabl_staff_users:
+    title: processing_cost_item
+  staff_users:
     client: search
     columns:
     - admin_ui: {width: 200}
@@ -274,8 +269,8 @@ db_schema:
       name: email
       type: string
     server: full
-    title: tabl_staff_users
-  tabl_supplier_list:
+    title: staff_users
+  supplier_list:
     client: none
     columns:
     - admin_ui: {width: 200}
@@ -292,10 +287,10 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: approved_by
-      target: tabl_staff_users
+      target: staff_users
       type: link_single
     server: full
-    title: tabl_supplier_list
+    title: supplier_list
 dependencies: []
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material
@@ -326,5 +321,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: draft_to_be_deleted, type: form}
 startup_form: null

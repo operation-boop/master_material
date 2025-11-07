@@ -12,11 +12,11 @@ from datetime import datetime
 
 @anvil.server.callable
 def list_all_cost_sheets():
-  return app_tables.tabl_cost_sheet.search()
+  return app_tables.cost_sheet.search()
 
 @anvil.server.callable
 def list_all_cost_sheet_versions():
-  return app_tables.tabl_cost_sheet_version.search()
+  return app_tables.cost_sheet_version.search()
 
 @anvil.server.callable
 def list_all_cost_sheets_simple():
@@ -38,11 +38,11 @@ def get_cost_sheet_with_id(id):
 
 @anvil.server.callable
 def get_cost_sheet_version_with_id(id):
-  return app_tables.tabl_cost_sheet_version.get_by_id(id)
+  return app_tables.cost_sheet_version.get_by_id(id)
 
 # start with low level thinking
 def create_cost_sheet_low_level():
-  return app_tables.tabl_cost_sheet.add_row(
+  return app_tables.cost_sheet.add_row(
     created_at = datetime.now()
   )
 
@@ -60,7 +60,7 @@ def create_cost_sheet_version_low_level_ai(document_id, version_number, created_
   # Add any additional fields
   data.update(kwargs)
 
-  return app_tables.tabl_cost_sheet_version.add_row(**data)
+  return app_tables.cost_sheet_version.add_row(**data)
 
 # case 1: create new cost sheet -> version 1
 def create_cost_sheet_version_low_level(user_row, draft=True):
@@ -83,6 +83,8 @@ def create_cost_sheet_version_low_level(user_row, draft=True):
     total_material_cost = 0,
     expected_profit_scenarios = 0
   )
+
+
 
 # case 2: update cost sheet -> create new verion X
 
