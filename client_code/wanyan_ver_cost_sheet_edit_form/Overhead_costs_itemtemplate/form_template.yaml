@@ -1,0 +1,52 @@
+components:
+- layout_properties: {grid_position: 'XUXSFS,CJNBQI'}
+  name: label_1
+  properties: {text: TYPE}
+  type: Label
+- layout_properties: {grid_position: 'XUXSFS,RHSFOQ'}
+  name: label_2
+  properties: {text: DESCRIPTION}
+  type: Label
+- layout_properties: {grid_position: 'XUXSFS,ELONYL'}
+  name: label_4
+  properties: {text: COST}
+  type: Label
+- layout_properties: {grid_position: 'XUXSFS,HSDUYS'}
+  name: label_6
+  properties: {text: CURRENCY}
+  type: Label
+- layout_properties: {grid_position: 'XUXSFS,OGYAPK'}
+  name: spacer_1
+  properties: {height: 32}
+  type: Spacer
+- data_bindings:
+  - {code: 'self.item[''type'']', property: text, writeback: false}
+  layout_properties: {grid_position: 'UAQXZL,NNKKBF'}
+  name: type
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''description'']', property: text, writeback: false}
+  layout_properties: {grid_position: 'UAQXZL,EGLJSR'}
+  name: description
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''cost'']', property: text, writeback: false}
+  layout_properties: {grid_position: 'UAQXZL,OHVYRU'}
+  name: cost
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''currency'']', property: text, writeback: false}
+  layout_properties: {grid_position: 'UAQXZL,PLLPSD'}
+  name: currency
+  properties: {}
+  type: Label
+- event_bindings: {click: remove_btn_click}
+  layout_properties: {grid_position: 'UAQXZL,UMKOPY'}
+  name: remove_btn
+  properties: {role: secondary-color, text: remove}
+  type: Button
+container: {type: ColumnPanel}
+is_package: true

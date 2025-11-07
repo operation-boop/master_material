@@ -86,7 +86,8 @@ class wanyan_ver_cost_sheet_input_form(wanyan_ver_cost_sheet_input_formTemplate)
     self.processing_list.append({
       "type": type,
       "vendor": vendor,
-      "cost": cost
+      "cost": cost,
+      "form": self
     })
   
     self.repeating_panel_processing_costs.items = self.processing_list
@@ -95,4 +96,3 @@ class wanyan_ver_cost_sheet_input_form(wanyan_ver_cost_sheet_input_formTemplate)
     self.vendor.text = ""
     self.cost.text = ""
 
-    

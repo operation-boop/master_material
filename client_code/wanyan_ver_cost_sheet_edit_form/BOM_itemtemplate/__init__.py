@@ -17,7 +17,7 @@ class BOM_itemtemplate(BOM_itemtemplateTemplate):
     self.material.text = self.item["material"]
     self.consumption.text = str(self.item["consumption"])
     self.unit_cost.text = str(self.item["unit_cost"])
-    self.total.text = str(self.item["total"])
+    self.total.text = str(self.item["total_cost"])
     # Any code you write here will run before the form opens.
 
   def remove_btn_click(self, **event_args):

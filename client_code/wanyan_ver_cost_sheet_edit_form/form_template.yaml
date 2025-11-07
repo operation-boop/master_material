@@ -2,7 +2,7 @@ components:
 - components:
   - layout_properties: {grid_position: 'VNRYPC,XXGYGL'}
     name: headline_1
-    properties: {bold: true, role: headline, text: Create New Cost Sheet}
+    properties: {bold: true, role: headline, text: Edit Cost Sheet}
     type: Label
   - event_bindings: {click: close_btn_click}
     layout_properties: {grid_position: 'VNRYPC,ZITWFF'}
@@ -20,7 +20,8 @@ components:
         name: rich_text_1
         properties: {content: 'Master Style <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'HKUYPD,GOXGPW'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'HKUYPD,GOXGPW'}
         name: master_style_dropdown
         properties: {include_placeholder: true, placeholder: Select Style}
         type: DropDown
@@ -34,14 +35,22 @@ components:
         name: currency_dropdown
         properties: {include_placeholder: true, placeholder: Select Currency}
         type: DropDown
-      layout_properties: {grid_position: 'ZMNWBX,FOIBWC'}
+      layout_properties: {grid_position: 'ZMNWBX,FOIBWC CQDSFR,EUPNOB'}
       name: column_panel_10
       properties: {}
       type: ColumnPanel
+    - layout_properties: {grid_position: 'ZMNWBX,FOIBWC QNXHGS,AXXOCL'}
+      name: label_4
+      properties: {text: Change Description}
+      type: Label
     - layout_properties: {grid_position: 'ZMNWBX,PLFKQY'}
       name: column_panel_11
       properties: {}
       type: ColumnPanel
+    - layout_properties: {grid_position: 'LQRYRE,YTNZMW'}
+      name: change_description
+      properties: {placeholder: 'e.g., Update material costs...'}
+      type: TextArea
     - layout_properties: {grid_position: 'HURLWC,QFVXDB'}
       name: spacer_1
       properties: {height: 32}
@@ -70,7 +79,7 @@ components:
         type: Button
       - layout_properties: {grid_position: 'RQEWPY,FDOMQP NOBPQQ,OUKDSZ'}
         name: bom_repeating_panel
-        properties: {item_template: wanyan_ver_cost_sheet_input_form.BOM_itemtemplate}
+        properties: {item_template: wanyan_ver_cost_sheet_edit_form.BOM_itemtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'TJKGYG,EMNOCW'}
       name: card_3
@@ -109,7 +118,7 @@ components:
         type: Button
       - layout_properties: {grid_position: 'GNBZLS,ZDYLBT'}
         name: repeating_panel_processing_costs
-        properties: {item_template: wanyan_ver_cost_sheet_input_form.Processing_costs_itemtemplate}
+        properties: {item_template: wanyan_ver_cost_sheet_edit_form.Processing_costs_itemtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'JNVOHN,MBOTKY'}
       name: card_4
@@ -122,6 +131,44 @@ components:
       type: Label
     - layout_properties: {grid_position: 'LLYQNV,KTBDFW'}
       name: spacer_5
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'CABKFF,INIQXQ'}
+      name: label_5
+      properties: {bold: true, foreground: RED, text: OVERHEAD COSTS}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'ASASHW,DBLURV'}
+        name: overhead_costs_type_dropdown
+        properties: {include_placeholder: true, placeholder: Select Type}
+        type: DropDown
+      - layout_properties: {grid_position: 'ASASHW,FMHBJF'}
+        name: description
+        properties: {placeholder: Description}
+        type: TextBox
+      - layout_properties: {grid_position: 'ASASHW,USOFHA'}
+        name: overhead_costs_cost
+        properties: {placeholder: Cost}
+        type: TextBox
+      - layout_properties: {grid_position: 'ASASHW,JFHXOM'}
+        name: overhead_costs_currency
+        properties: {include_placeholder: true, placeholder: Currency}
+        type: DropDown
+      - event_bindings: {click: overhead_costs_add_btn_click}
+        layout_properties: {grid_position: 'ASASHW,VARHDR'}
+        name: overhead_costs_add_btn
+        properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:plus', text: add}
+        type: Button
+      - layout_properties: {grid_position: 'XYWQJN,FOFDJE'}
+        name: repeating_panel_overhead_costs
+        properties: {item_template: wanyan_ver_cost_sheet_edit_form.Overhead_costs_itemtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'SVMXZO,ZNWSDY'}
+      name: card_5
+      properties: {col_widths: '{"DBLURV":15,"FMHBJF":15,"USOFHA":15,"VARHDR":12,"JFHXOM":15}', role: card}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'DGKLTE,WMZUPA'}
+      name: spacer_3
       properties: {height: 32}
       type: Spacer
     - layout_properties: {grid_position: 'QLRLOT,MYNPJE'}
@@ -268,17 +315,14 @@ components:
       name: column_panel_9
       properties: {}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'FRMLPJ,VCSADV'}
-      name: save_as_draft_btn
-      properties: {align: right, background: orange, foreground: 'theme:White', role: null, text: SAve as draft}
-      type: Button
-    - layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
-      name: submit_btn
-      properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: submit}
+    - event_bindings: {click: save_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
+      name: save_btn
+      properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: save}
       type: Button
     layout_properties: {grid_position: 'UCHAOH,WTQRTI'}
     name: card_1
-    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10}', role: card}
+    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"ZFEYDI":10}', role: card}
     type: ColumnPanel
   layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
   name: column_panel_1

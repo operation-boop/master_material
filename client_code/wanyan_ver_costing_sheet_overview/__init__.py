@@ -40,20 +40,20 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
         "created_by": "John Doe",
         "approval_status": "Approved",
         
-        "master_style": "MAT-005",
+        "master_style": "MS-003 - Wool Coat",
         "currency": "VND",
         "change_description": "Updated material costs",
   
         "bom": [
-          {"material": "Cotton White", "consumption": 2.5, "unit_cost": 4.50, "total": 11.25},
-          {"material": "Polyester Black", "consumption": 1.0, "unit_cost": 3.20, "total": 3.20},
+          {"material": "Cotton White", "type": "Fabric", "consumption": 2.5, "unit_cost": 4.50, "total_cost": 11.25},
+          {"material": "Polyester Black", "type": "Fabric", "consumption": 1.0, "unit_cost": 3.20, "total_cost": 3.20},
         ],
   
         "total_material_cost": 14.45,
   
         "processing_costs": [
-          {"type": "Cutting", "vendor": "ABC Factory", "cost": 1.20},
-          {"type": "Sewing", "vendor": "XYZ Factory", "cost": 2.80},
+          {"type": "Cutting", "vendor": "ABC Factory", "description": "test4", "status":  "Verified", "cost": 1.20},
+          {"type": "Sewing", "vendor": "XYZ Factory",  "description": "test5", "status":  "Unverified", "cost": 2.80},
         ],
 
         "version_history": [
@@ -63,9 +63,16 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
         ],
 
         "overhead_costs": [
-          {"type": 3, "description": "5/11/2025", "cost": 4.20, "currency": "Update processing costs"},
-          {"type": 2, "description": "5/11/2025", "cost": "John Doe", "currency": "Update processing costs"},
-          {"type": 1, "description": "5/11/2025", "cost": "John Doe", "currency": "Update processing costs"},
+          {"type": 3, "description": "test3", "cost": 4.20, "currency": "VND"},
+          {"type": 2, "description": "test2", "cost": 7, "currency": "VND"},
+          {"type": 1, "description": "test1", "cost": 2.50, "currency": "VND"},
+        ],
+
+        "exchange_rate_record" : [
+          {"current_currency": "USD",
+          "changed_to_currency": "VND",
+          "rate": 24850,
+          "exchanged_date": "2025-02-10"}
         ],
   
         "total_processing_cost": 4.00,
@@ -76,9 +83,7 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
         "vat": 0.10,
         "total_overhead_cost": 2.00,
   
-        "conservative_cost": 22.00, "conservative_gross_margin": 20, "conservative_gross_profit": 4.40, "conservative_net_margin": 3, "conservative_net_profit": 4,
-        "standard_cost": 24.00, "standard_gross_margin": 25, "standard_gross_profit": 6, "standard_net_margin": 25, "standard_net_profit": 6,
-        "premium_cost": 26.00, "premium_gross_margin": 30, "premium_gross_profit": 7.80, "premium_net_margin": 30, "premium_net_profit": 9.20
+        "quoted_price": 22.00, "quoted_currency": "VND", "expected_gross_margin": 20, "expected_gross_income": 4.40, "expected_net_margin": 3, "expected_net_income": 4,
       }
     ]
 

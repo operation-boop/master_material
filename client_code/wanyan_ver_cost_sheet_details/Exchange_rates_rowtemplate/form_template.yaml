@@ -1,18 +1,26 @@
 components:
-- layout_properties: {column: JKSDUP}
+- data_bindings:
+  - {code: 'self.item[''current_currency'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
   name: current_currency
   properties: {}
   type: Label
-- layout_properties: {column: VJQQOR}
+- data_bindings:
+  - {code: 'self.item[''changed_to_currency'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
   name: changed_to_currency
   properties: {}
   type: Label
-- layout_properties: {column: OJLQEN}
+- data_bindings:
+  - {code: 'self.item[''rate'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
   name: rate
   properties: {}
   type: Label
-- layout_properties: {column: LGZQDU}
-  name: date
+- data_bindings:
+  - {code: 'self.item[''exchanged_date'']', property: text, writeback: false}
+  layout_properties: {column: LGZQDU}
+  name: exchanged_date
   properties: {}
   type: Label
 container: {type: DataRowPanel}

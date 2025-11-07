@@ -8,16 +8,22 @@ components:
       properties: {bold: true, role: headline}
       type: Label
     - data_bindings:
-      - {code: 'self.item[''version_number'']', property: text, writeback: false}
+      - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
       layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,ITGCPP'}
       name: version
+      properties: {}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''updated_at'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,NNEAPX'}
+      name: updated_at
       properties: {}
       type: Label
     - data_bindings:
       - {code: 'self.item[''approval_status'']', property: text, writeback: false}
       layout_properties: {grid_position: 'YRTDZE,BYYHQG IYVRHE,ZVVFTS'}
       name: approval_status
-      properties: {align: right}
+      properties: {align: center, role: null}
       type: Label
     - components:
       - layout_properties: {grid_position: 'TQQGNJ,QKVHFZ'}
@@ -110,9 +116,9 @@ components:
         type: Button
       layout_properties: {grid_position: 'LFCGAB,RLITQX'}
       name: column_panel_1
-      properties: {col_widths: '{"QVWLMV":20,"UOSGTU":40}'}
+      properties: {col_widths: '{"QVWLMV":20,"UOSGTU":40,"QKVHFZ":20,"ORSGNH":40,"BQJLCY":20,"MIKWPU":40,"UNEVOA":20,"OJFHJV":40}'}
       type: ColumnPanel
-    layout_properties: {width: 445.5}
+    layout_properties: {width: 436.5}
     name: card_1
     properties: {role: card}
     type: ColumnPanel

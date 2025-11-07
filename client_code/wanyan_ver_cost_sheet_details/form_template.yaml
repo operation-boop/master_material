@@ -4,7 +4,7 @@ components:
     - event_bindings: {click: back_btn_click}
       layout_properties: {grid_position: 'RZUCXB,PZBZLE'}
       name: back_btn
-      properties: {align: left, background: 'theme:Primary 700', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
+      properties: {align: left, background: 'theme:Primary 500', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
       type: Button
     - data_bindings:
       - {code: 'self.item[''approval_status'']', property: text, writeback: false}
@@ -18,33 +18,40 @@ components:
       properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: Edit}
       type: Button
     - components:
-      - layout_properties: {grid_position: 'NIWJSU,XGCRXC'}
-        name: label_18
-        properties: {bold: true, role: headline, text: 'Cost Sheet :'}
-        type: Label
       - data_bindings:
-        - {code: 'self.item[''cost_sheet_id'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'NIWJSU,FLQCIB'}
+        - {code: '"Cost Sheet: " + self.item[''cost_sheet_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'JXCEJF,SDWQUL'}
         name: cost_sheet_id
-        properties: {bold: true, role: headline, text: ''}
+        properties: {align: left, bold: true, foreground: 'theme:Black', role: headline, text: ''}
         type: Label
-      - data_bindings:
-        - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'NIWJSU,DBQUQN'}
-        name: current_version_label
-        properties: {align: left, background: 'theme:Gray 200', text: Version 3 (Current)}
-        type: Label
-      - layout_properties: {grid_position: 'NIWJSU,GHXKIV'}
+      - components:
+        - data_bindings:
+          - {code: '"Style: " + self.item[''master_style'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RIZSKR,FCGQSK'}
+          name: master_style
+          properties: {background: '', bold: false, foreground: 'theme:Black'}
+          type: Label
+        - data_bindings:
+          - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RIZSKR,ZQIKCX'}
+          name: current_version_label
+          properties: {align: left, background: '', bold: true, foreground: 'theme:Black', text: ''}
+          type: Label
+        layout_properties: {grid_position: 'NIWJSU,CIEFXH'}
+        name: column_panel_7
+        properties: {background: 'theme:Gray 100'}
+        type: ColumnPanel
+      - layout_properties: {grid_position: 'NIWJSU,SXEOGT'}
         name: spacer_6
         properties: {height: 32}
         type: Spacer
       layout_properties: {grid_position: 'RFHFUP,UFMBFG'}
       name: column_panel_17
-      properties: {col_widths: '{"XGCRXC":20,"FLQCIB":25,"DBQUQN":15,"GHXKIV":15}'}
+      properties: {col_widths: '{"SXEOGT":28,"CIEFXH":20}'}
       type: ColumnPanel
     layout_properties: {grid_position: 'XAUZQF,AQGACW'}
     name: column_panel_16
-    properties: {background: '', col_widths: '{"PZBZLE":35,"AVMCXZ":11,"ITPPCF":14}'}
+    properties: {background: '', col_widths: '{"PZBZLE":35,"AVMCXZ":10,"ITPPCF":15}'}
     type: ColumnPanel
   - layout_properties: {grid_position: 'XOSZAT,HCFWVU'}
     name: spacer_3
@@ -108,17 +115,17 @@ components:
   - components:
     - layout_properties: {grid_position: 'EBXRSW,BQJYXY'}
       name: label_45
-      properties: {align: center, bold: true, text: TOTAL COST}
+      properties: {align: center, bold: true, foreground: 'theme:Black', text: TOTAL COST}
       type: Label
     - data_bindings:
       - {code: 'self.item[''total_cost'']', property: text, writeback: false}
       layout_properties: {grid_position: 'OVOEBV,NYVWJW'}
       name: total_cost
-      properties: {align: center, bold: true}
+      properties: {align: center, bold: true, foreground: 'theme:Black'}
       type: Label
     layout_properties: {grid_position: 'BVFIWR,NVLBHL KRGAEL,FIEDII'}
     name: total_cost_card
-    properties: {role: card}
+    properties: {background: '#84c5e1', role: card}
     type: ColumnPanel
   - layout_properties: {grid_position: 'OCHRSZ,SMXCAT'}
     name: spacer_11
@@ -299,61 +306,71 @@ components:
       properties: {height: 32}
       type: Spacer
     - components:
-      - layout_properties: {grid_position: 'WDRTYA,BAREYK'}
-        name: label_2
-        properties: {bold: true, font_size: 18, text: Conservative}
-        type: Label
-      - data_bindings:
-        - {code: 'self.item[''conservative_cost'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'YAQBAI,IOVZMC'}
-        name: conservative_cost
-        properties: {bold: true, foreground: 'theme:Primary 500'}
-        type: Label
       - components:
-        - layout_properties: {grid_position: 'ASNUAO,XWECBG'}
-          name: label_4
-          properties: {text: GROSS MARGIN}
+        - layout_properties: {grid_position: 'GMORJC,XPAGLH'}
+          name: label_2
+          properties: {text: QUOTED PRICE}
           type: Label
         - data_bindings:
-          - {code: 'self.item[''conservative_gross_margin'']', property: text, writeback: false}
+          - {code: 'self.item[''quoted_price'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'SDIFMP,HWPBDR'}
+          name: quoted_price
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'ASNUAO,XWECBG'}
+          name: label_4
+          properties: {text: EXPECTED GROSS MARGIN}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_gross_margin'']', property: text, writeback: false}
           layout_properties: {grid_position: 'VIBFIW,XUGLAR'}
-          name: conservative_gross_margin
-          properties: {}
+          name: expected_gross_margin
+          properties: {bold: true}
           type: Label
         - layout_properties: {grid_position: 'XZIFFU,FXXXWV'}
           name: label_13
-          properties: {text: NEW MARGIN}
+          properties: {text: EXPECTED NET MARGIN}
           type: Label
         - data_bindings:
-          - {code: 'self.item[''conservative_net_margin'']', property: text, writeback: false}
+          - {code: 'self.item[''expected_net_margin'']', property: text, writeback: false}
           layout_properties: {grid_position: 'FNJWDB,VHGWVU'}
-          name: conservative_net_margin
-          properties: {}
+          name: expected_net_margin
+          properties: {bold: true}
           type: Label
         layout_properties: {grid_position: 'YNDMXA,SQYHYD'}
         name: column_panel_2
         properties: {}
         type: ColumnPanel
       - components:
-        - layout_properties: {grid_position: 'CQGNGK,MWIHVS'}
-          name: label_8
-          properties: {text: GROSS PROFIT}
+        - layout_properties: {grid_position: 'DRNRMB,XPZLUB'}
+          name: label_3
+          properties: {text: QUOTED CURRENCY}
           type: Label
         - data_bindings:
-          - {code: 'self.item[''conservative_gross_profit'']', property: text, writeback: false}
+          - {code: 'self.item[''quoted_currency'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'ARJOTR,SZNLTU'}
+          name: quoted_currency
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'CQGNGK,MWIHVS'}
+          name: label_8
+          properties: {text: EXPECTED GROSS INCOME}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_gross_income'']', property: text, writeback: false}
           layout_properties: {grid_position: 'VPINKY,LSMGEK'}
-          name: conservative_gross_profit
-          properties: {}
+          name: expected_gross_income
+          properties: {bold: true}
           type: Label
         - layout_properties: {grid_position: 'WIRBMU,YMQOYE'}
           name: label_11
-          properties: {text: NET PROFIT}
+          properties: {text: EXPECTED NET INCOME}
           type: Label
         - data_bindings:
-          - {code: 'self.item[''conservative_net_profit'']', property: text, writeback: false}
+          - {code: 'self.item[''expected_net_income'']', property: text, writeback: false}
           layout_properties: {grid_position: 'LTHMMR,OALODA'}
-          name: conservative_net_profit
-          properties: {}
+          name: expected_net_income
+          properties: {bold: true}
           type: Label
         layout_properties: {grid_position: 'YNDMXA,FSEQYU'}
         name: column_panel_3
@@ -361,142 +378,6 @@ components:
         type: ColumnPanel
       layout_properties: {grid_position: 'YLQQGY,FXMKQM'}
       name: conservative_card
-      properties: {role: card}
-      type: ColumnPanel
-    - components:
-      - layout_properties: {grid_position: 'TWREPI,LNCAGV'}
-        name: label_3
-        properties: {bold: true, font_size: 18, text: Standard}
-        type: Label
-      - data_bindings:
-        - {code: 'self.item[''standard_status'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'TWREPI,YBPNPZ'}
-        name: standard_status
-        properties: {align: right}
-        type: Label
-      - data_bindings:
-        - {code: 'self.item[''standard_cost'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'QMOCRX,BIAFMT'}
-        name: standard_cost
-        properties: {}
-        type: Label
-      - components:
-        - layout_properties: {grid_position: 'GVCDCJ,DWVIBQ'}
-          name: label_26
-          properties: {text: GROSS MARGIN}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''standard_gross_margin'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'QMFWUG,FJCVAO'}
-          name: standard_gross_margin
-          properties: {}
-          type: Label
-        - layout_properties: {grid_position: 'HWLUGX,HFFIIJ'}
-          name: label_44
-          properties: {text: NET MARGIN}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''standard_net_margin'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'CLWDBT,WUPYYM'}
-          name: standard_net_margin
-          properties: {}
-          type: Label
-        layout_properties: {grid_position: 'FETRNT,QVTPFE'}
-        name: column_panel_4
-        properties: {}
-        type: ColumnPanel
-      - components:
-        - layout_properties: {grid_position: 'YBQWHS,EUJNIQ'}
-          name: label_47
-          properties: {text: GROSS PROFIT}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''standard_gross_profit'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'ESIDBQ,LYGRII'}
-          name: standard_gross_profit
-          properties: {}
-          type: Label
-        - layout_properties: {grid_position: 'GSEVWS,YBWMFZ'}
-          name: label_49
-          properties: {text: NET PROFIT}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''standard_net_profit'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'UWGNUW,IBAPZK'}
-          name: standard_net_profit
-          properties: {}
-          type: Label
-        layout_properties: {grid_position: 'FETRNT,ZMFQYQ'}
-        name: column_panel_5
-        properties: {}
-        type: ColumnPanel
-      layout_properties: {grid_position: 'VEAWSB,AACRJT'}
-      name: card_6
-      properties: {role: card}
-      type: ColumnPanel
-    - components:
-      - layout_properties: {grid_position: 'VQJSET,QFYYXF'}
-        name: label_7
-        properties: {bold: true, font_size: 18, text: Premium}
-        type: Label
-      - data_bindings:
-        - {code: 'self.item[''premium_cost'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'XFRVFH,KJOJUZ'}
-        name: premium_cost
-        properties: {bold: true, foreground: 'theme:Primary 500'}
-        type: Label
-      - components:
-        - layout_properties: {grid_position: 'QBWPMB,RZCGIO'}
-          name: label_22
-          properties: {text: GROSS MARGIN}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''premium_gross_margin'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'YUIETS,EBMMZQ'}
-          name: premium_gross_margin
-          properties: {}
-          type: Label
-        - layout_properties: {grid_position: 'FMNPHG,ZPMNMJ'}
-          name: label_28
-          properties: {text: NET MARGIN}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''premium_net_margin'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'GTSDCA,HHXDZB'}
-          name: premium_net_margin
-          properties: {}
-          type: Label
-        layout_properties: {grid_position: 'WDZERZ,YLRAGL'}
-        name: column_panel_11
-        properties: {}
-        type: ColumnPanel
-      - components:
-        - layout_properties: {grid_position: 'TTAHNS,XQDNFW'}
-          name: label_12
-          properties: {text: GROSS PROFIT}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''premium_gross_profit'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'PIOIOF,RVWUBX'}
-          name: premium_gross_profit
-          properties: {}
-          type: Label
-        - layout_properties: {grid_position: 'YRLLBA,OOLZMD'}
-          name: label_50
-          properties: {text: NET PROFIT}
-          type: Label
-        - data_bindings:
-          - {code: 'self.item[''premium_net_profit'']', property: text, writeback: false}
-          layout_properties: {grid_position: 'JRNAQR,YFNALQ'}
-          name: premium_net_profit
-          properties: {}
-          type: Label
-        layout_properties: {grid_position: 'WDZERZ,FVSDGW'}
-        name: column_panel_6
-        properties: {}
-        type: ColumnPanel
-      layout_properties: {grid_position: 'AXCCEH,RRFVZN'}
-      name: premium_card
       properties: {role: card}
       type: ColumnPanel
     layout_properties: {grid_position: 'CXDDSP,TLRYVE'}
@@ -548,7 +429,7 @@ components:
       type: RepeatingPanel
     layout_properties: {grid_position: 'UATDRA,XCLPPA'}
     name: version_history_panel
-    properties: {visible: true}
+    properties: {visible: false}
     type: ColumnPanel
   - components:
     - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}
@@ -569,7 +450,7 @@ components:
       properties: {height: 32}
       type: Spacer
     - components:
-      - name: repeating_panel_5
+      - name: repeating_panel_exchange_rates
         properties: {item_template: wanyan_ver_cost_sheet_details.Exchange_rates_rowtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'SEZZLA,TEXVOK'}

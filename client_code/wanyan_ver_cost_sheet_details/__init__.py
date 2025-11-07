@@ -44,3 +44,16 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
     self.repeating_panel_processing_costs.items = self.item["processing_costs"]
     self.repeating_panel_version_history.items = self.item["version_history"]
     self.repeating_panel_overhead_costs.items = self.item["overhead_costs"]
+    self.repeating_panel_exchange_rates.items = self.item["exchange_rate_record"]
+
+  def edit_btn_click(self, **event_args):
+    from ..wanyan_ver_cost_sheet_edit_form import wanyan_ver_cost_sheet_edit_form
+
+    popup = wanyan_ver_cost_sheet_edit_form(cost_sheet=self.item)
+
+    alert(
+      content=popup,
+      title=None,
+      large=True,
+      buttons=None 
+    )
