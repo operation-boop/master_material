@@ -124,7 +124,7 @@ class Material_input_form(Material_input_formTemplate):
       self.landed_cost.text = str(landed_cost)
     except (ValueError, TypeError):
       Notification("Please enter valid numbers").show()
-
+##---------------------------------------------------------------
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
     if not self.current_document_id:
@@ -136,6 +136,7 @@ class Material_input_form(Material_input_formTemplate):
     try:
       anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Draft saved!", style="success", timeout=3).show()
+      self.raise_event("x-refresh-list", document_id=self.current_document_id)
     except Exception as e:
       Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
 
@@ -144,32 +145,24 @@ class Material_input_form(Material_input_formTemplate):
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
-
     form_data = self.collect_form_data()
 
-    # Add validation before submitting
     if not self.validate_form_data(form_data):
       Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
-
+      
     try:
-      # Show loading state
       self.submit_btn.enabled = False
       self.submit_btn.text = "Submitting..."
-
-      result = anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
+      anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
-
-      # Close the form or reset after successful submission
-      self.raise_event("x-close-alert", value=True)
+      self.raise_event("x-refresh-list", document_id=self.current_document_id)
 
     except Exception as e:
-      # Get the full error details
       error_msg = f"Submission failed: {str(e)}"
       print(f"Full error: {repr(e)}")  # Check console for full error
       Notification(error_msg, style="danger", timeout=5).show()
     finally:
-      # Reset button state
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
 

@@ -1,12 +1,11 @@
 from ._anvil_designer import Material_listTemplate
 from anvil import *
 import anvil.server
-import anvil.google.auth, anvil.google.drive
-from anvil.google.drive import app_files
 import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ..Material_input_form import Material_input_form
 
 
 class Material_list(Material_listTemplate):
@@ -48,6 +47,21 @@ class Material_list(Material_listTemplate):
             break
     except Exception as e:
       Notification(f"Load failed: {e}", style="danger").show()
+
+  def open_material_input_form(self, document_id=None):
+    # Show the form in a pop-up or panel
+    form = Material_input_form(document_id=document_id)
+    form.set_event_handler("x-refresh-list", self.on_material_saved)
+    form.set_event_handler("x-close-alert", self.on_form_close)
+    alert(form, title="Material Form", large=True, buttons=[])
+
+  def on_material_saved(self, sender, document_id=None, **event_args):
+    """Triggered when draft or submit happens"""
+    self.refresh_cards(focus_document_id=document_id)
+
+  def on_form_close(self, sender, **event_args):
+    """Triggered when form requests to close"""
+    self.refresh_cards()
 
   
 
