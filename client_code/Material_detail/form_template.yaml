@@ -7,13 +7,15 @@ components:
       properties: {align: left, background: 'theme:Primary 700', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
       type: Button
     - data_bindings:
-      - {code: 'self.item['''']', property: text, writeback: false}
+      - {code: 'self.item[''document_id'']', property: text, writeback: false}
       layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,JUASDZ'}
-      name: current_material_id_label
+      name: document_id
       properties: {bold: true, role: headline, text: ''}
       type: Label
-    - layout_properties: {grid_position: 'RZUCXB,CQLXAQ KCABBV,DNBBGM'}
-      name: current_version_label
+    - data_bindings:
+      - {code: 'self.item[''ver_num'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'RZUCXB,CQLXAQ KCABBV,DNBBGM'}
+      name: ver_num
       properties: {background: 'theme:Gray 200', text: ''}
       type: Label
     - layout_properties: {grid_position: 'RZUCXB,FNLWJR'}
@@ -43,7 +45,8 @@ components:
         name: label_1
         properties: {bold: true, text: MATERIAL ID}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''master_material_id'']', property: text, writeback: false}
         layout_properties: {grid_position: 'UTFKAM,UGBJUT UMNTYA,BLBYWM'}
         name: material_id
         properties: {visible: true}
@@ -52,7 +55,8 @@ components:
         name: label_2
         properties: {bold: true, text: MATERIAL NAME}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''name'']', property: text, writeback: false}
         layout_properties: {grid_position: 'UTFKAM,UGBJUT LEKGFC,OBXKFL'}
         name: material_name
         properties: {}
@@ -61,16 +65,20 @@ components:
         name: label_3
         properties: {bold: true, text: SUPPLIER}
         type: Label
-      - layout_properties: {grid_position: 'UTFKAM,UGBJUT SWOAIP,JGMVQL'}
-        name: version_number
+      - data_bindings:
+        - {code: 'self.item[''supplier'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UTFKAM,UGBJUT SWOAIP,JGMVQL'}
+        name: supplier
         properties: {}
         type: Label
       - layout_properties: {grid_position: 'UTFKAM,UGBJUT HXUBAO,NUCLIM'}
         name: label_4
         properties: {bold: true, text: CREATED}
         type: Label
-      - layout_properties: {grid_position: 'UTFKAM,UGBJUT JMZWRY,EIKBUX'}
-        name: change_description
+      - data_bindings:
+        - {code: 'self.item[''created_at'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UTFKAM,UGBJUT JMZWRY,EIKBUX'}
+        name: created_at
         properties: {}
         type: Label
       - components:
@@ -78,7 +86,9 @@ components:
           name: label_10
           properties: {bold: true, text: SUPPLIER REF ID}
           type: Label
-        - layout_properties: {grid_position: 'VKITNG,SGLNFQ'}
+        - data_bindings:
+          - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VKITNG,SGLNFQ'}
           name: ref_id
           properties: {}
           type: Label
@@ -86,7 +96,9 @@ components:
           name: label_7
           properties: {bold: true, text: MATERIAL TYPE}
           type: Label
-        - layout_properties: {grid_position: 'PHEVCH,QMCOAL'}
+        - data_bindings:
+          - {code: 'self.item[''material_type'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PHEVCH,QMCOAL'}
           name: material_type
           properties: {}
           type: Label
@@ -94,16 +106,20 @@ components:
           name: label_12
           properties: {bold: true, text: COUNTRY OF ORIGIN}
           type: Label
-        - layout_properties: {grid_position: 'SJHOPW,NBAOJF'}
-          name: status
+        - data_bindings:
+          - {code: 'self.item[''country_of_origin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'SJHOPW,NBAOJF'}
+          name: country_of_origin
           properties: {}
           type: Label
         - layout_properties: {grid_position: 'JCKSWF,NYFPQY'}
           name: label_11
           properties: {bold: true, text: CREATED BY}
           type: Label
-        - layout_properties: {grid_position: 'JQFODP,JYMABX'}
-          name: supplier
+        - data_bindings:
+          - {code: 'self.item[''created_by'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'JQFODP,JYMABX'}
+          name: created_by
           properties: {}
           type: Label
         layout_properties: {grid_position: 'UTFKAM,TLTLWU'}
@@ -132,7 +148,9 @@ components:
         name: label_22
         properties: {bold: true, text: COMPOSITION}
         type: Label
-      - layout_properties: {grid_position: 'SMMDAI,EFTBTI JQCSNB,HSMQRT'}
+      - data_bindings:
+        - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'SMMDAI,EFTBTI JQCSNB,HSMQRT'}
         name: composition
         properties: {}
         type: Label
@@ -145,7 +163,9 @@ components:
           name: label_26
           properties: {bold: true, text: WEIGHT}
           type: Label
-        - layout_properties: {grid_position: 'CXLHOC,WTSWOR'}
+        - data_bindings:
+          - {code: 'self.item[''weight_per_unit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'CXLHOC,WTSWOR'}
           name: weight
           properties: {text: ''}
           type: Label
@@ -153,7 +173,9 @@ components:
           name: label_28
           properties: {bold: true, text: CUT WIDTH}
           type: Label
-        - layout_properties: {grid_position: 'HELAMH,BUIXRO'}
+        - data_bindings:
+          - {code: 'self.item[''fabric_cut_width'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'HELAMH,BUIXRO'}
           name: cut_width
           properties: {}
           type: Label
@@ -161,7 +183,9 @@ components:
         name: column_panel_11
         properties: {}
         type: ColumnPanel
-      - layout_properties: {grid_position: 'SMMDAI,EFTBTI YNHPHK,NDMGJI'}
+      - data_bindings:
+        - {code: 'self.item[''fabric_roll_width'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'SMMDAI,EFTBTI YNHPHK,NDMGJI'}
         name: roll_width
         properties: {}
         type: Label
@@ -187,7 +211,9 @@ components:
         name: label_8
         properties: {bold: true, text: COST PER METER}
         type: Label
-      - layout_properties: {grid_position: 'DTNQUV,EWXDOD OWBVRP,SFIOQP'}
+      - data_bindings:
+        - {code: 'self.item[''original_cost_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'DTNQUV,EWXDOD OWBVRP,SFIOQP'}
         name: cost_per_meter
         properties: {}
         type: Label
@@ -196,7 +222,9 @@ components:
           name: label_13
           properties: {bold: true, text: UNIT OF MEASURE}
           type: Label
-        - layout_properties: {grid_position: 'XZTGEX,XYSARA'}
+        - data_bindings:
+          - {code: 'self.item[''unit_of_measurement'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'XZTGEX,XYSARA'}
           name: unit_of_measurement
           properties: {}
           type: Label

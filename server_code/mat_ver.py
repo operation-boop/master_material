@@ -23,8 +23,8 @@ def create_new_master_material(created_by_user):
     document_uid=new_uuid,
     document_id=document_id,
     ver_num=1,
-    status="Creating"
-    created_at
+    status="Creating",
+    created_at=datetime.now()
   )
 
   master = app_tables.master_material.add_row(
@@ -163,8 +163,6 @@ def submit_version(document_id, submitted_by_user, form_data=None):
   version['submitted_at'] = datetime.now()
   version['submitted_by'] = submitted_by_user
 
-  # Mirror to master row for convenience
-  master['status'] = combined_status
   master['submitted_at'] = version['submitted_at']
   master['submitted_by'] = submitted_by_user
 
@@ -202,8 +200,7 @@ def verify_version(document_id, verified_by_user, notes=None):
       # ignore if column not present
       pass
 
-  # Mirror to master
-  master['status'] = version['status']
+
   master['last_verified_date'] = version['last_verified_date']
   master['last_verified_by'] = version['last_verified_by']
 
