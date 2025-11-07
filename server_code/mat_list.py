@@ -38,6 +38,7 @@ def list_material_cards(statuses=None):
     cost = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else None
 
     cards.append({
+      "document_id": v["document_id"],
       "material_id": _get(v, "master_material_id") or _get(v, "document_id"),
       "ref_id": _get(v, "ref_id"),
       "material_name": _get(v, "name"),
@@ -47,8 +48,6 @@ def list_material_cards(statuses=None):
       "supplier": _get(v, "supplier_name"),
       "cost_per_unit": cost,
       "verification_status": _get(v, "status") or _get.master('status') or "Draft",
-      # Optional extras for sorting/debug:
-      "updated_at": _get(v, "updated_at"),
       "ver_num": _get(v, "ver_num"),
     })
 

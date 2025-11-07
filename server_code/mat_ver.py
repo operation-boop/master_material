@@ -24,6 +24,7 @@ def create_new_master_material(created_by_user):
     document_id=document_id,
     ver_num=1,
     status="Creating"
+    created_at
   )
 
   master = app_tables.master_material.add_row(
@@ -121,8 +122,8 @@ def save_or_edit_draft(document_id, updated_by_user, form_data=None):
     print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
 
   version['status'] = "Draft"
-  version['created_at'] = datetime.now()
-  version['created_by'] = updated_by_user
+  version['updated_at'] = datetime.now()
+  version['updated_by'] = updated_by_user
 
   return {"action": "draft_saved", "version": version, "document_id": document_id}
 
@@ -187,8 +188,8 @@ def verify_version(document_id, verified_by_user, notes=None):
 
   # allow verification only if it's in an unverified submitted state
   cur_status = version['status']
-  if cur_status not in ("Submitted - Unverified", "Submitted - Verified"):
-    raise Exception("Only a submitted (unverified) version can be verified.")
+  if cur_status != "Submitted - Unverified":
+    raise Exception("Only a 'Submitted - Unverified' version can be verified.")
 
   # Update status to verified
   version['status'] = "Submitted - Verified"
