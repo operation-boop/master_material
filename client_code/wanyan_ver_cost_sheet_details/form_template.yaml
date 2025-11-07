@@ -1,0 +1,474 @@
+components:
+- components:
+  - components:
+    - event_bindings: {click: back_btn_click}
+      layout_properties: {grid_position: 'RZUCXB,PZBZLE'}
+      name: back_btn
+      properties: {align: left, background: 'theme:Primary 500', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
+      type: Button
+    - data_bindings:
+      - {code: 'self.item[''approval_status'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'RZUCXB,ITPPCF'}
+      name: verification_status
+      properties: {align: center, background: green, bold: true, border: '', foreground: 'theme:White', icon: '', role: input-prompt, text: ''}
+      type: Label
+    - event_bindings: {click: edit_btn_click}
+      layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
+      name: edit_btn
+      properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: Edit}
+      type: Button
+    - components:
+      - data_bindings:
+        - {code: '"Cost Sheet: " + self.item[''cost_sheet_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'JXCEJF,SDWQUL'}
+        name: cost_sheet_id
+        properties: {align: left, bold: true, foreground: 'theme:Black', role: headline, text: ''}
+        type: Label
+      - components:
+        - data_bindings:
+          - {code: '"Style: " + self.item[''master_style'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RIZSKR,FCGQSK'}
+          name: master_style
+          properties: {background: '', bold: false, foreground: 'theme:Black'}
+          type: Label
+        - data_bindings:
+          - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RIZSKR,ZQIKCX'}
+          name: current_version_label
+          properties: {align: left, background: '', bold: true, foreground: 'theme:Black', text: ''}
+          type: Label
+        layout_properties: {grid_position: 'NIWJSU,CIEFXH'}
+        name: column_panel_7
+        properties: {background: 'theme:Gray 100'}
+        type: ColumnPanel
+      - layout_properties: {grid_position: 'NIWJSU,SXEOGT'}
+        name: spacer_6
+        properties: {height: 32}
+        type: Spacer
+      layout_properties: {grid_position: 'RFHFUP,UFMBFG'}
+      name: column_panel_17
+      properties: {col_widths: '{"SXEOGT":28,"CIEFXH":20}'}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'XAUZQF,AQGACW'}
+    name: column_panel_16
+    properties: {background: '', col_widths: '{"PZBZLE":35,"AVMCXZ":10,"ITPPCF":15}'}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'XOSZAT,HCFWVU'}
+    name: spacer_3
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - components:
+      - layout_properties: {grid_position: 'BFUYEP,SOQQPY'}
+        name: label_40
+        properties: {align: center, bold: true, text: MATERIAL COST}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''total_material_cost'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'CWYHNK,HWAJZD'}
+        name: material_cost
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'FQTVFW,NIVCUG'}
+      name: material_cost_card
+      properties: {role: card}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'QDPLTA,IIAAYL'}
+        name: label_43
+        properties: {align: center, bold: true, text: OVERHEAD COST}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''total_overhead_cost'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'WOGUYE,NRUVQG'}
+        name: overhead_cost
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'NFOCLZ,FHJLXW'}
+      name: overhead_cost_card
+      properties: {role: card}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'BVFIWR,MOQZQD'}
+    name: column_panel_18
+    properties: {}
+    type: ColumnPanel
+  - components:
+    - components:
+      - layout_properties: {grid_position: 'XCKPQO,ZMMTUJ'}
+        name: label_42
+        properties: {align: center, bold: true, text: PROCESSING COST}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''total_processing_cost'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'GYVXPJ,TLCWGT'}
+        name: processing_cost
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'WAWPOI,QCGIWO'}
+      name: processing_cost_card
+      properties: {role: card}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'BVFIWR,NVLBHL DXAGXO,ELHDSW'}
+    name: column_panel_19
+    properties: {}
+    type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'EBXRSW,BQJYXY'}
+      name: label_45
+      properties: {align: center, bold: true, foreground: 'theme:Black', text: TOTAL COST}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''total_cost'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'OVOEBV,NYVWJW'}
+      name: total_cost
+      properties: {align: center, bold: true, foreground: 'theme:Black'}
+      type: Label
+    layout_properties: {grid_position: 'BVFIWR,NVLBHL KRGAEL,FIEDII'}
+    name: total_cost_card
+    properties: {background: '#84c5e1', role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'OCHRSZ,SMXCAT'}
+    name: spacer_11
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'PIGYDS,JJPRHS'}
+      name: label_27
+      properties: {bold: true, font_size: 18, foreground: '', text: Bill of Materials}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''total_material_cost'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'PIGYDS,WLUYCV'}
+      name: bom_total_cost
+      properties: {align: right, bold: true, foreground: 'theme:Primary 500'}
+      type: Label
+    - layout_properties: {grid_position: 'FACDCC,FFFHLG'}
+      name: spacer_12
+      properties: {height: 32}
+      type: Spacer
+    - components:
+      - name: repeating_panel_bom
+        properties: {item_template: wanyan_ver_cost_sheet_details.BOM_rowtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'DVBYYF,VQVNBX'}
+      name: data_grid_2
+      properties:
+        columns:
+        - {data_key: column_1, id: JKSDUP, title: MATERIAL}
+        - {data_key: column_2, id: VJQQOR, title: TYPE}
+        - {data_key: column_3, id: OJLQEN, title: CONSUMPTION}
+        - {data_key: column_4, id: TBHBMQ, title: UNIT COST}
+        - {data_key: column_5, id: MFRJKW, title: TOTAL COST}
+      type: DataGrid
+    layout_properties: {grid_position: 'KIEYCY,KHLVJF'}
+    name: basic_info_section
+    properties: {role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'OKWKED,KFEUPF'}
+    name: spacer_2
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'MGLFKW,EYOOLE'}
+      name: label_5
+      properties: {bold: true, font_size: 18, foreground: '', text: Processing Costs}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''total_processing_cost'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'MGLFKW,CTSPZJ'}
+      name: processing_costs_total_cost
+      properties: {align: right, foreground: 'theme:Primary 500'}
+      type: Label
+    - layout_properties: {grid_position: 'JQIBPZ,KCXUND'}
+      name: spacer_13
+      properties: {height: 32}
+      type: Spacer
+    - components:
+      - name: repeating_panel_processing_costs
+        properties: {item_template: wanyan_ver_cost_sheet_details.Processing_costs_rowtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'EQHTWX,QOZBDF'}
+      name: data_grid_3
+      properties:
+        columns:
+        - {data_key: column_1, id: JKSDUP, title: TYPE}
+        - {data_key: column_2, id: VJQQOR, title: VENDOR}
+        - {data_key: column_3, id: OJLQEN, title: DESCRIPTION}
+        - {data_key: column_4, id: WEKQHK, title: STATUS}
+        - {data_key: column_5, id: BHMGBN, title: COST}
+      type: DataGrid
+    layout_properties: {grid_position: 'ETVKUZ,OLSHQJ'}
+    name: quick_specs_section
+    properties: {role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'ZVMOBQ,IRSJQQ'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'SVEEJW,UBQSVO'}
+      name: label_6
+      properties: {bold: true, font_size: 18, foreground: Red, text: Overhead Costs}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''total_overhead_cost'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'SVEEJW,QNINUK'}
+      name: overhead_costs_total_cost
+      properties: {align: right, bold: true, foreground: 'theme:Primary 500'}
+      type: Label
+    - layout_properties: {grid_position: 'ANBBDJ,BQZSAA'}
+      name: spacer_5
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'XJUURP,LOAWRF'}
+      name: label_10
+      properties: {bold: true, text: TIER 2}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'THBUNR,MIIWNL'}
+        name: label_15
+        properties: {text: Import Logistics}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''import_logistics'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'THBUNR,NONDYB'}
+        name: import_logistics
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'THBUNR,UFJYGB'}
+        name: overhead_cost_import_details_btn
+        properties: {role: primary-color, text: details}
+        type: Button
+      - layout_properties: {grid_position: 'GJFZOX,NLHHYX'}
+        name: label_16
+        properties: {text: Export Logistics}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''export_logistics'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'GJFZOX,EXCWHJ'}
+        name: export_logistics
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'GJFZOX,TTANMG'}
+        name: primary_color_1
+        properties: {role: primary-color, text: details}
+        type: Button
+      - layout_properties: {grid_position: 'EWLHMS,LEGNBB'}
+        name: label_17
+        properties: {text: VAT}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''vat'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'EWLHMS,HELRCC'}
+        name: vat
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'IPMMFY,NIDGAO EWLHMS,VLMBNY'}
+        name: primary_color_2
+        properties: {role: primary-color, text: details}
+        type: Button
+      layout_properties: {grid_position: 'VREILG,NDEUVH'}
+      name: card_2
+      properties: {role: card}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'SOIGZD,NRCEPP'}
+      name: label_14
+      properties: {bold: true, text: TIER 3}
+      type: Label
+    - components:
+      - name: repeating_panel_overhead_costs
+        properties: {item_template: wanyan_ver_cost_sheet_details.Overhead_cost_rowtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'MKMXII,NMHLTM'}
+      name: data_grid_5
+      properties:
+        columns:
+        - {data_key: column_1, id: JKSDUP, title: TYPE}
+        - {data_key: column_2, id: VJQQOR, title: DESCRIPTION}
+        - {data_key: column_3, id: OJLQEN, title: COST}
+        - {data_key: column_1, id: REAAFS, title: CURRENCY}
+      type: DataGrid
+    layout_properties: {grid_position: 'UGNCOF,WZWVHT'}
+    name: cost_summary_section
+    properties: {role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'BCHXEL,BHQAHZ'}
+    name: spacer_14
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'IDGZHN,KGJZRD'}
+      name: label_1
+      properties: {bold: true, font_size: 18, text: Profit Scenarios}
+      type: Label
+    - layout_properties: {grid_position: 'BLJBKL,FHIRIO'}
+      name: spacer_15
+      properties: {height: 32}
+      type: Spacer
+    - components:
+      - components:
+        - layout_properties: {grid_position: 'GMORJC,XPAGLH'}
+          name: label_2
+          properties: {text: QUOTED PRICE}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''quoted_price'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'SDIFMP,HWPBDR'}
+          name: quoted_price
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'ASNUAO,XWECBG'}
+          name: label_4
+          properties: {text: EXPECTED GROSS MARGIN}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_gross_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VIBFIW,XUGLAR'}
+          name: expected_gross_margin
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'XZIFFU,FXXXWV'}
+          name: label_13
+          properties: {text: EXPECTED NET MARGIN}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_net_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'FNJWDB,VHGWVU'}
+          name: expected_net_margin
+          properties: {bold: true}
+          type: Label
+        layout_properties: {grid_position: 'YNDMXA,SQYHYD'}
+        name: column_panel_2
+        properties: {}
+        type: ColumnPanel
+      - components:
+        - layout_properties: {grid_position: 'DRNRMB,XPZLUB'}
+          name: label_3
+          properties: {text: QUOTED CURRENCY}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''quoted_currency'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'ARJOTR,SZNLTU'}
+          name: quoted_currency
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'CQGNGK,MWIHVS'}
+          name: label_8
+          properties: {text: EXPECTED GROSS INCOME}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_gross_income'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VPINKY,LSMGEK'}
+          name: expected_gross_income
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'WIRBMU,YMQOYE'}
+          name: label_11
+          properties: {text: EXPECTED NET INCOME}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_net_income'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'LTHMMR,OALODA'}
+          name: expected_net_income
+          properties: {bold: true}
+          type: Label
+        layout_properties: {grid_position: 'YNDMXA,FSEQYU'}
+        name: column_panel_3
+        properties: {}
+        type: ColumnPanel
+      layout_properties: {grid_position: 'YLQQGY,FXMKQM'}
+      name: conservative_card
+      properties: {role: card}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'CXDDSP,TLRYVE'}
+    name: profit_scenarios_card
+    properties: {role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'UVLAXZ,YMJWXK'}
+    name: spacer_4
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - event_bindings: {click: cost_breakdown_tab_btn_click}
+      layout_properties: {}
+      name: cost_breakdown_tab_btn
+      properties: {foreground: 'theme:Black', text: cost breakdown}
+      type: Button
+    - event_bindings: {click: version_history_tab_btn_click}
+      layout_properties: {}
+      name: version_history_tab_btn
+      properties: {foreground: 'theme:Black', text: version history}
+      type: Button
+    - event_bindings: {click: exchange_rates_tab_btn_click}
+      layout_properties: {}
+      name: exchange_rates_tab_btn
+      properties: {foreground: 'theme:Black', text: exchange rates}
+      type: Button
+    layout_properties: {grid_position: 'QUEXZC,ZYYROP'}
+    name: flow_panel_1
+    properties: {background: 'theme:Gray 200'}
+    type: FlowPanel
+  - components:
+    - layout_properties: {grid_position: 'HNTBZU,TKHQQT'}
+      name: label_21
+      properties: {bold: true, font_size: 17, foreground: 'theme:Black', text: COST BREAKDOWN}
+      type: Label
+    layout_properties: {grid_position: 'WOXHOD,HTGLJH'}
+    name: cost_details_panel
+    properties: {visible: false}
+    type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'KSQRBA,SQKIIF'}
+      name: label_36
+      properties: {bold: true, font_size: 17, text: VERSION HISTORY}
+      type: Label
+    - data_bindings: []
+      layout_properties: {grid_position: 'WPSFWM,HOBNJM'}
+      name: repeating_panel_version_history
+      properties: {item_template: wanyan_ver_cost_sheet_details.Version_history_itemtemplate}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'UATDRA,XCLPPA'}
+    name: version_history_panel
+    properties: {visible: false}
+    type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}
+      name: label_38
+      properties: {bold: true, font_size: 17, text: EXCHANGE RATES USED}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'LQTEYL,SEQHXJ'}
+        name: label_9
+        properties: {background: '', foreground: '#9c760d', icon: 'fa:info-circle', text: Exchange rates recorded at time of cost sheet creation}
+        type: Label
+      layout_properties: {grid_position: 'JLQVGW,MXHEPL'}
+      name: card_1
+      properties: {background: '#fff0a3', role: card}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'LGEYRY,ZANOZU'}
+      name: spacer_10
+      properties: {height: 32}
+      type: Spacer
+    - components:
+      - name: repeating_panel_exchange_rates
+        properties: {item_template: wanyan_ver_cost_sheet_details.Exchange_rates_rowtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'SEZZLA,TEXVOK'}
+      name: data_grid_1
+      properties:
+        columns:
+        - {data_key: column_1, id: JKSDUP, title: FROM}
+        - {data_key: column_2, id: VJQQOR, title: TO}
+        - {data_key: column_3, id: OJLQEN, title: RATE}
+        - {data_key: column_4, id: LGZQDU, title: DATE}
+      type: DataGrid
+    layout_properties: {grid_position: 'IBFJJX,EQUVXN'}
+    name: exchange_rates_panel
+    properties: {col_widths: '{"GAPIHM":45}', visible: false}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'FWCCAA,BVIWXJ'}
+  name: column_panel_1
+  properties: {background: '', col_widths: '{}'}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true

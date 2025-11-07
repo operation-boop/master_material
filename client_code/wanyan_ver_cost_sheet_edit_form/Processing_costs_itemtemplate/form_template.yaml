@@ -1,0 +1,39 @@
+components:
+- layout_properties: {grid_position: 'ORMGZM,VXUGFC'}
+  name: label_1
+  properties: {text: TYPE}
+  type: Label
+- layout_properties: {grid_position: 'ORMGZM,YTKPKH'}
+  name: label_3
+  properties: {text: VENDOR}
+  type: Label
+- layout_properties: {grid_position: 'ORMGZM,QKSQVV'}
+  name: label_6
+  properties: {text: COST}
+  type: Label
+- layout_properties: {grid_position: 'ORMGZM,CDEEOM'}
+  name: spacer_1
+  properties: {height: 32}
+  type: Spacer
+- data_bindings: []
+  layout_properties: {grid_position: 'PNKJQH,EAMRLL'}
+  name: type
+  properties: {}
+  type: Label
+- data_bindings: []
+  layout_properties: {grid_position: 'PNKJQH,MCGCPT'}
+  name: vendor
+  properties: {}
+  type: Label
+- data_bindings: []
+  layout_properties: {grid_position: 'PNKJQH,CTSCZR'}
+  name: cost
+  properties: {}
+  type: Label
+- event_bindings: {click: remove_btn_click}
+  layout_properties: {grid_position: 'PNKJQH,MZNCDB'}
+  name: remove_btn
+  properties: {role: secondary-color, text: remove}
+  type: Button
+container: {type: ColumnPanel}
+is_package: true

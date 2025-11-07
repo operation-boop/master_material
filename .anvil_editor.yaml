@@ -22,13 +22,28 @@ unique_ids:
     Material_detail.material_sku_rowtemplate: XQPRO2LKNQ2NX6ZM2QATA7LPORVUTDMB
     Material_detail.version_history_itemtemplate: 32KWER7EHLPCCKMWGMCPZFB2R452AKBK
     Material_edit_form: '1762334613185566287351422.1819'
+    Material_edit_form.material_edit_itemtemplate: '1762400999362189747920482.49655'
     Material_input_form: '1762246514081760660811976.6614'
-    Material_input_form.ItemTemplate2: CABDMQSLAU5FJZ4W52SWTFVIEWGI7Z7V
+    Material_input_form.material_input_itemtemplate: CABDMQSLAU5FJZ4W52SWTFVIEWGI7Z7V
     Material_list: '176223201599762412789806.216'
     Material_list.MaterialCard: '1762336056821483042217454.3132'
-    Material_list.material_list_rowtemplate: '1762232059967980388916894.177'
     Opportunity: '1761391942918616178806726.4047'
     QMO: '17613920531692144854397.7878876'
+    wanyan_ver_cost_sheet_details: '1762484347324621512864462.969'
+    wanyan_ver_cost_sheet_details.BOM_rowtemplate: '1762484749460606510214332.3304'
+    wanyan_ver_cost_sheet_details.Exchange_rates_rowtemplate: '1762486495973319579842865.9415'
+    wanyan_ver_cost_sheet_details.Overhead_cost_rowtemplate: '1762493304190627878495335.4957'
+    wanyan_ver_cost_sheet_details.Processing_costs_rowtemplate: '1762484933355357520417609.6758'
+    wanyan_ver_cost_sheet_details.Version_history_itemtemplate: '1762499656214554359591675.5739'
+    wanyan_ver_cost_sheet_edit_form: '1762502689469214175279107.09976'
+    wanyan_ver_cost_sheet_edit_form.BOM_itemtemplate: '1762502708478932300578715.8165'
+    wanyan_ver_cost_sheet_edit_form.Overhead_costs_itemtemplate: '1762506428329211070643998.17722'
+    wanyan_ver_cost_sheet_edit_form.Processing_costs_itemtemplate: '1762502727579142109271783.0531'
+    wanyan_ver_cost_sheet_input_form: '1762486658916842948285377.4646'
+    wanyan_ver_cost_sheet_input_form.BOM_itemtemplate: '176248703171797396735154.61855'
+    wanyan_ver_cost_sheet_input_form.Processing_costs_itemtemplate: '1762489655750671338078659.128'
+    wanyan_ver_costing_sheet_overview: '1762482517025299779331947.2777'
+    wanyan_ver_costing_sheet_overview.CostSheetCard: '1762483692036380843932060.1235'
   modules: {}
   scripts: {}
   server_modules:

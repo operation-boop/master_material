@@ -18,6 +18,14 @@ class MaterialCard(MaterialCardTemplate):
     # Any code you write here will run before the form opens.
 
   def view_details_btn_click(self, **event_args):
-    open_form(Material_detail(material_data=self.item))
+    # Get the Home form
+    home_form = get_open_form()
+    
+    # Clear the content panel and add Material_details
+    home_form.content_panel.clear()
+    home_form.content_panel.add_component(
+      Material_detail(material_data=self.item),
+      full_width_row=True
+    )
 
   
