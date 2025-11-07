@@ -426,7 +426,7 @@ components:
         type: Label
       layout_properties: {grid_position: 'KSNUGT,YYBNKI'}
       name: card_2
-      properties: {background: '#ffe9c2', border: '', col_widths: '{}', role: card}
+      properties: {background: '#ffe9c2', border: '', col_widths: '{"AAEDXP":20,"CFKFQU":20,"KLECKD":20}', role: card}
       type: ColumnPanel
     - event_bindings: {click: cancel_btn_click}
       layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
