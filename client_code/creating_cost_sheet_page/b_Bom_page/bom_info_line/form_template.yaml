@@ -1,0 +1,41 @@
+components:
+- components:
+  - layout_properties: {grid_position: 'CKLPPF,VRAFVF'}
+    name: label_3
+    properties: {text: Master Material name}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,KCBPNX'}
+    name: label_4
+    properties: {text: Material SKU (Optional)}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,EHUQAU'}
+    name: label_5
+    properties: {text: Material Type}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,IVDYNX'}
+    name: label_6
+    properties: {text: Gross Consumption}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,WAIHTG'}
+    name: label_7
+    properties: {text: 'Selling Tolerance '}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,FAKVCJ'}
+    name: label_8
+    properties: {text: Display (net_selling_consumption)}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,FWSDPQ'}
+    name: label_9
+    properties: {text: Material Cost in native}
+    type: Label
+  - layout_properties: {grid_position: 'CKLPPF,FBACLD'}
+    name: label_10
+    properties: {text: Cost In USD}
+    type: Label
+  layout_properties: {grid_position: 'KRNZJK,ITPCFH'}
+  name: column_panel_3
+  properties: {col_widths: '{"VRAFVF":8,"KCBPNX":8,"EHUQAU":4,"IVDYNX":8,"WAIHTG":8,"FAKVCJ":12,"FWSDPQ":5,"FBACLD":5,"UHZAHA":2}'}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+custom_component: true
+is_package: true

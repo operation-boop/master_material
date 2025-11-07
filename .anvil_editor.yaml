@@ -28,6 +28,7 @@ unique_ids:
     creating_cost_sheet_page.a_Basic_information_page.ItemTemplate3: '1762368477135312393120372.0403'
     creating_cost_sheet_page.a_Basic_information_page.add_currency_rates_item: '1762367658796536099380741.3491'
     creating_cost_sheet_page.b_Bom_page: VBMELJI2DYD5OWORPKIV3RTLQF6C5MWR
+    creating_cost_sheet_page.b_Bom_page.bom_info_line: '1762481598238428437727529.374'
     creating_cost_sheet_page.c_Processing_cost: IJTUAU2EMMQENIQBGPHZIXLTDR7NYQ6J
     creating_cost_sheet_page.c_Processing_cost.processing_cost_line: '1762379226184639239648149.0819'
     creating_cost_sheet_page.d_Overhead_cost: UYT4SCH7OQLWRQFIVPYTFZ55UNB3YN2J
