@@ -1,15 +1,21 @@
 components:
 - components:
   - components:
-    - layout_properties: {grid_position: 'YRTDZE,CQFWZU CIEGGZ,HPLLNA'}
+    - data_bindings:
+      - {code: 'self.item[''cost_sheet_id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,CQFWZU CIEGGZ,HPLLNA'}
       name: cost_sheet_id
       properties: {bold: true, role: headline}
       type: Label
-    - layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,ITGCPP'}
+    - data_bindings:
+      - {code: 'self.item[''version_number''] + "•" + self.item[''updated_at'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,ITGCPP'}
       name: version_and_updated_date
       properties: {}
       type: Label
-    - layout_properties: {grid_position: 'YRTDZE,BYYHQG IYVRHE,ZVVFTS'}
+    - data_bindings:
+      - {code: 'self.item[''approval_status'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,BYYHQG IYVRHE,ZVVFTS'}
       name: approval_status
       properties: {align: right}
       type: Label
@@ -18,7 +24,9 @@ components:
         name: label_3
         properties: {text: 'Style:'}
         type: Label
-      - layout_properties: {grid_position: 'TQQGNJ,ORSGNH'}
+      - data_bindings:
+        - {code: 'self.item[''master_style'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'TQQGNJ,ORSGNH'}
         name: style
         properties: {align: right, bold: true}
         type: Label
@@ -26,7 +34,9 @@ components:
         name: label_4
         properties: {text: 'Currency:'}
         type: Label
-      - layout_properties: {grid_position: 'DIWMQJ,MIKWPU'}
+      - data_bindings:
+        - {code: 'self.item[''currency'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'DIWMQJ,MIKWPU'}
         name: currency
         properties: {align: right, bold: true}
         type: Label
@@ -34,7 +44,9 @@ components:
         name: label_5
         properties: {text: 'Created By:'}
         type: Label
-      - layout_properties: {grid_position: 'WRWIUI,OJFHJV'}
+      - data_bindings:
+        - {code: 'self.item[''created_by'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'WRWIUI,OJFHJV'}
         name: created_by
         properties: {align: right, bold: true}
         type: Label
@@ -47,7 +59,9 @@ components:
           name: label_7
           properties: {text: 'Materials:'}
           type: Label
-        - layout_properties: {grid_position: 'PDKDXS,GBOWOU'}
+        - data_bindings:
+          - {code: 'self.item[''total_material_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PDKDXS,GBOWOU'}
           name: material_cost
           properties: {align: right, bold: true}
           type: Label
@@ -55,7 +69,9 @@ components:
           name: label_2
           properties: {text: 'Processing:'}
           type: Label
-        - layout_properties: {grid_position: 'WINRPY,VJWLHS'}
+        - data_bindings:
+          - {code: 'self.item[''total_processing_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'WINRPY,VJWLHS'}
           name: processing_cost
           properties: {align: right, bold: true}
           type: Label
@@ -63,7 +79,9 @@ components:
           name: label_6
           properties: {text: 'Overhead:'}
           type: Label
-        - layout_properties: {grid_position: 'WCTMND,HNYRLF'}
+        - data_bindings:
+          - {code: 'self.item[''total_overhead_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'WCTMND,HNYRLF'}
           name: overhead_cost
           properties: {align: right, bold: true}
           type: Label
@@ -71,7 +89,9 @@ components:
           name: label_8
           properties: {bold: true, foreground: 'theme:Primary 500', text: 'Total Cost:'}
           type: Label
-        - layout_properties: {grid_position: 'PRKWAS,PPOVZI'}
+        - data_bindings:
+          - {code: 'self.item[''total_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PRKWAS,PPOVZI'}
           name: total_cost
           properties: {align: right, bold: true, foreground: 'theme:Primary 500'}
           type: Label

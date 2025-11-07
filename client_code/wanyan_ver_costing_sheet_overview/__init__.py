@@ -13,7 +13,7 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
+    self.form_show()
     # Any code you write here will run before the form opens.
 
   def add_btn_click(self, **event_args):
@@ -37,7 +37,7 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
       "version_number": "1",
       "updated_at": "1/3/2024",
       "created_by": "John Doe",
-      "approv"
+      "approval_status": "Approved",
       "master_style": "MAT-005",
       "currency": "VND",
       "change_description": "Updated material costs...",
@@ -75,37 +75,14 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
       "total_profit_scenarios_cost": 18.20
     }
 
-    self.
-    # --- HEADER ---
-    self.lbl_master_style.text = cost_sheet["master_style"]
-    self.lbl_currency.text = cost_sheet["currency"]
-    self.lbl_change_description.text = cost_sheet["change_description"]
-  
-    # --- BOM Section ---
-    self.repeating_panel_bom.items = cost_sheet["bom"]
-    # Example row form fields:
-    # lbl_material.text = self.item['material']
-    # lbl_consumption.text = self.item['consumption']
-    # lbl_unit_cost.text = self.item['unit_cost']
-    # lbl_total.text = self.item['total']
-  
-    # --- Processing Costs ---
-    self.repeating_panel_processing.items = cost_sheet["processing_costs"]
-    # Row form binds: type, vendor, cost
-  
-    # --- Overhead Costs ---
-    oh = cost_sheet["overhead_costs"]
-    self.lbl_import_logistics.text = oh["import_logistics"]
-    self.lbl_export_logistics.text = oh["export_logistics"]
-    self.lbl_vat.text = oh["vat"]
-    self.lbl_import_duty.text = oh["import_duty"]
-    self.lbl_testing.text = oh["testing"]
-    self.lbl_sampling.text = oh["sampling"]
-    self.lbl_total_overhead_cost.text = oh["total_overhead_cost"]
-  
-    # --- Profit Scenarios ---
-    self.repeating_panel_profit_scenarios.items = cost_sheet["profit_scenarios"]
-    # Row form binds: quoted_price, margin, profit
-  
-    # --- Totals Footer ---
-    self.lbl_total_profit_scenarios_cost.text = cost_sheet["total_profit_scenarios_cost"]
+    # Compute total cost and keep it with the item
+    for cs in cost_sheet:
+    
+      # Convert safely: if field is '', None, or missing → treat as 0
+      tm = float(cs.get("total_material_cost", 0) or 0)
+      tp = float(cs.get("total_processing_cost", 0) or 0)
+      to = float(cs.get("total_overhead_cost", 0) or 0)
+    
+      cs["total_cost"] = tm + tp + to
+
+    self.repeating_panel_cost_sheet.items = cost_sheet
