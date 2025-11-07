@@ -10,7 +10,7 @@ components:
   type: Button
 - components:
   - layout_properties: {width: 957.9996870117188}
-    name: repeating_panel_cards
+    name: repeating_panel_materials
     properties: {item_template: Material_list.MaterialCard}
     type: RepeatingPanel
   - components: []

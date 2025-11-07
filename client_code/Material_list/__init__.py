@@ -22,6 +22,8 @@ class Material_list(Material_listTemplate):
     for m in materials:
       card = MaterialCard(item=m)
       card.width = "100%"
+      card.item = m   
+      card.refresh_data_bindings()
       self.flow_panel_materials.add_component(card)
 
   def form_show(self, **event_args):

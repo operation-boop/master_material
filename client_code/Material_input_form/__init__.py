@@ -212,10 +212,12 @@ class Material_input_form(Material_input_formTemplate):
 
     return {
       # Basic Info
+      "master_material_id": self.parse_float(self.mat_material_id.text),
       "name": self.material_name.text if hasattr(self, 'material_name') else None,
       "material_type": self.material_type_dropdown.selected_value,
       "country_of_origin": self.country_of_origin_dropdown.selected_value,
       "supplier_name" : self.dropdown_supplier.selected_value,
+      "ref_id" :self.parse_float(self.supplier_reference_id.text) if hasattr(self, 'supplier_reference_id') else None,
       "unit_of_measurement": self.UOM_dropdown.selected_value,
       "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
       "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
