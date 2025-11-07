@@ -145,8 +145,8 @@ class Material_input_form(Material_input_formTemplate):
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
+      
     form_data = self.collect_form_data()
-
     if not self.validate_form_data(form_data):
       Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
@@ -157,6 +157,7 @@ class Material_input_form(Material_input_formTemplate):
       anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
+      self.raise_event("x-close-alert", value=True)
 
     except Exception as e:
       error_msg = f"Submission failed: {str(e)}"

@@ -24,6 +24,7 @@ class Material_list(Material_listTemplate):
       # Import and create popup WITH document_id
       from ..Material_input_form import Material_input_form
       popup = Material_input_form(current_document_id=document_id)  
+      popup.set_event_handler('x-refresh-list', lambda **e: self.refresh_list())
       alert(
         content=popup,
         title=None,
@@ -33,35 +34,15 @@ class Material_list(Material_listTemplate):
 
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
-
-  def refresh_cards(self, focus_document_id=None):
+      
+  def refresh_list(self):
     try:
-      items = anvil.server.call('list_material_summaries')
-      self.repeating_panel_materials.items = items
-  
-      # Optional: focus/scroll to a specific card after save/submit
-      if focus_document_id:
-        for it in items:
-          if it.get("document_id") == focus_document_id:
-            # you can set a label to bold, or flash the card—depends on your template
-            break
+      rows = anvil.server.call('get_material_overview_list')
+      self.repeating_panel_cards.items = rows
     except Exception as e:
       Notification(f"Load failed: {e}", style="danger").show()
 
-  def open_material_input_form(self, document_id=None):
-    # Show the form in a pop-up or panel
-    form = Material_input_form(document_id=document_id)
-    form.set_event_handler("x-refresh-list", self.on_material_saved)
-    form.set_event_handler("x-close-alert", self.on_form_close)
-    alert(form, title="Material Form", large=True, buttons=[])
 
-  def on_material_saved(self, sender, document_id=None, **event_args):
-    """Triggered when draft or submit happens"""
-    self.refresh_cards(focus_document_id=document_id)
-
-  def on_form_close(self, sender, **event_args):
-    """Triggered when form requests to close"""
-    self.refresh_cards()
 
   
 
