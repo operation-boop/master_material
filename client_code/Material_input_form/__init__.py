@@ -125,7 +125,7 @@ class Material_input_form(Material_input_formTemplate):
   def logistics_rate_change(self, **event_args):
     if(self.logistics_rate.text is not None):
       logistics_rate = int(self.logistics_rate.text)
-      effective_cost = int(float(int(self.effective_cost_per_unit.text)))
+      effective_cost = int(float(self.effective_cost_per_unit.text))
       landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
       self.landed_cost.text = str(landed_cost)
       weight_per_unit = int(self.weight_per_unit.text)
@@ -250,6 +250,7 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
+
 
 
 
