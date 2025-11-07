@@ -27,6 +27,7 @@ class Material_list(Material_listTemplate):
   def form_show(self, **event_args):
     # Load real data on show
     self.refresh_list()
+    self.load_material_cards()
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status and opens the popup"""
@@ -50,6 +51,16 @@ class Material_list(Material_listTemplate):
       )
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
+
+  def load_material_cards(self):
+    """Fetch a fresh snapshot from server and set repeating panel items."""
+    try:
+      # Replace with whatever server function you already use to fetch card data.
+      # get_all_versions_flat() is an example we used earlier.
+      self.repeating_panel_materials.items = anvil.server.call('get_all_versions_flat')
+    except Exception as e:
+      # Friendly fallback if server call fails
+      alert(f"Could not load material cards: {e}", title="Load error")
 
  
 
