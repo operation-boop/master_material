@@ -69,7 +69,7 @@ components:
         properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:plus', role: primary-color, text: add}
         type: Button
       - layout_properties: {grid_position: 'RQEWPY,FDOMQP NOBPQQ,OUKDSZ'}
-        name: fabric_composition_repeating_panel
+        name: bom_repeating_panel
         properties: {item_template: wanyan_ver_cost_sheet_input_form.BOM_itemtemplate}
         type: RepeatingPanel
       layout_properties: {grid_position: 'TJKGYG,EMNOCW'}
@@ -119,79 +119,6 @@ components:
       type: Label
     - layout_properties: {grid_position: 'LLYQNV,KTBDFW'}
       name: spacer_5
-      properties: {height: 32}
-      type: Spacer
-    - layout_properties: {grid_position: 'SGNYGT,GOICEG'}
-      name: label_19
-      properties: {bold: true, foreground: Red, text: OVERHEAD COSTS}
-      type: Label
-    - components:
-      - layout_properties: {grid_position: 'FXMBQX,YQNVJE'}
-        name: label_5
-        properties: {text: Import Logistics}
-        type: Label
-      - event_bindings: {change: import_logistics_change}
-        layout_properties: {grid_position: 'NRESRT,MJAZHJ'}
-        name: import_logistics
-        properties: {type: number}
-        type: TextBox
-      - layout_properties: {grid_position: 'YNWAJT,MLVEMP'}
-        name: label_6
-        properties: {text: Import Duty}
-        type: Label
-      - layout_properties: {grid_position: 'NCJNJE,BNZXYT'}
-        name: overhead_costs_import_duty
-        properties: {type: number}
-        type: TextBox
-      layout_properties: {grid_position: 'UXSSOO,SOFHHP'}
-      name: column_panel_4
-      properties: {col_widths: '{}'}
-      type: ColumnPanel
-    - components:
-      - layout_properties: {grid_position: 'IILDAP,PWGEWQ'}
-        name: label_22
-        properties: {bold: false, text: Export Logistics}
-        type: Label
-      - event_bindings: {change: export_logistics_change}
-        layout_properties: {grid_position: 'ACKBPN,PGDYMY'}
-        name: export_logistics
-        properties: {type: number}
-        type: TextBox
-      - layout_properties: {grid_position: 'MHJUOL,MEQCVS'}
-        name: label_7
-        properties: {text: Testing}
-        type: Label
-      - layout_properties: {grid_position: 'BPTGCA,KTELXW'}
-        name: testing
-        properties: {type: number}
-        type: TextBox
-      layout_properties: {grid_position: 'UXSSOO,RUABPK'}
-      name: column_panel_5
-      properties: {}
-      type: ColumnPanel
-    - components:
-      - layout_properties: {grid_position: 'JFYOAM,IWMXLY'}
-        name: label_4
-        properties: {text: VAT}
-        type: Label
-      - layout_properties: {grid_position: 'WWNAQY,DCZZCP'}
-        name: vat
-        properties: {type: number}
-        type: TextBox
-      - layout_properties: {grid_position: 'VTSVTY,CKKFNM'}
-        name: label_9
-        properties: {text: Sampling}
-        type: Label
-      - layout_properties: {grid_position: 'GEQYKK,BHELFB'}
-        name: sampling
-        properties: {type: number}
-        type: TextBox
-      layout_properties: {grid_position: 'UXSSOO,YNMMFK'}
-      name: column_panel_2
-      properties: {}
-      type: ColumnPanel
-    - layout_properties: {grid_position: 'AEVLCZ,THLHGY'}
-      name: spacer_3
       properties: {height: 32}
       type: Spacer
     - layout_properties: {grid_position: 'QLRLOT,MYNPJE'}
@@ -338,7 +265,7 @@ components:
       type: Button
     layout_properties: {grid_position: 'UCHAOH,WTQRTI'}
     name: card_1
-    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
+    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10}', role: card}
     type: ColumnPanel
   layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
   name: column_panel_1

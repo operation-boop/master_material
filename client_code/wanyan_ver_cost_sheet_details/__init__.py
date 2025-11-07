@@ -7,7 +7,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
-from ..wanyan_ver_costing_sheet_overview import wanyan_ver_cost_sheet_overview
+from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overview
 
 
 class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
@@ -20,7 +20,7 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
   def back_btn_click(self, **event_args):
     home = get_open_form()   # This is your Home form
     home.content_panel.clear()
-    home.content_panel.add_component(wanyan_ver_cost_sheet_overview(), full_width_row=True)
+    home.content_panel.add_component(wanyan_ver_costing_sheet_overview(), full_width_row=True)
 
 
   def cost_breakdown_tab_btn_click(self, **event_args):
