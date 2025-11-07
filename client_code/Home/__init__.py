@@ -20,6 +20,7 @@ from ..Deal import Deal
 from ..Client_list import Client_list
 from ..Material_list import Material_list
 #from ..Costing_sheet_base import Costing_sheet_base
+from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overview
 
 
 
@@ -51,6 +52,7 @@ class Home(HomeTemplate):
       "material": Material_list(),
       #Added in my costing sheet
       #"Costing_sheet_group": Costing_sheet_base()
+      "costing_sheet": wanyan_ver_costing_sheet_overview()
     }
     page = page_registry.get(source)
 
@@ -72,7 +74,7 @@ class Home(HomeTemplate):
     self.link_client.role = "<default>"
     self.link_material.role = "<default>"
     #added my own Costing Sheet
-    # self.link_costing_sheet.role = "<default>"
+    self.link_costing_sheet_base.role = "<default>"
     
 
 
@@ -84,6 +86,7 @@ class Home(HomeTemplate):
       "master_data_group": self.link_client,
       #Costing Sheet
       # "Costing_sheet_group": self.link_costing_sheet
+      "costing_sheet_group": self.link_costing_sheet_base
     }
     default_group_link = group_default_link_registry.get(clicked_link.tag)
     if default_group_link:
