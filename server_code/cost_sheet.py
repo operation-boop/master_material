@@ -34,7 +34,7 @@ def list_all_cost_sheet_versions_simple():
 
 @anvil.server.callable
 def get_cost_sheet_with_id(id):
-  return app_tables.tabl_cost_sheet.get_by_id(id)
+  return app_tables.cost_sheet.get_by_id(id)
 
 @anvil.server.callable
 def get_cost_sheet_version_with_id(id):
@@ -71,7 +71,7 @@ def create_cost_sheet_version_low_level(user_row, draft=True):
     created_by = user_row,
     approved_at = None,
     approved_by = None,
-    submitted_at = None if draft else datetime.now(), # keep DRAFT vs SUMBITTED
+    submitted_at = None if draft else datetime.now(), # keep DRAFT vs SUBMITTED
     submitted_by = None if draft else user_row,
     change_description = "First version created",
     version_number = 0 if draft else 1,
