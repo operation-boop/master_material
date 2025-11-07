@@ -29,6 +29,7 @@ class Material_detail(Material_detailTemplate):
     self.technical_specs_panel.visible = True
     self.cost_details_panel.visible = False
     self.version_history_panel.visible = False
+    self.material_sku_panel.visible = False
 
   def cost_details_tab_btn_click(self, **event_args):
     self.cost_details_panel.visible = True

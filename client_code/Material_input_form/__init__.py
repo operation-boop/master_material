@@ -120,24 +120,27 @@ class Material_input_form(Material_input_formTemplate):
       self.original_cost.text = self.original_cost_per_unit.text
 
   def supplier_tolerance_change(self, **event_args):
-    if(self.supplier_tolerance.text is not None):
-      original_cost = int(self.original_cost_per_unit.text)
-      supplier_tolerance_percentage = int(self.supplier_tolerance.text)
-      supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
-      self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
+    original_cost = float(self.original_cost_per_unit.text or 0)
+    supplier_tolerance_percentage = float(self.supplier_tolerance.text or 0)
   
-      effective_cost = original_cost + supplier_tolerance_cost
-      self.effective_cost_per_unit.text = str(effective_cost)
-
+    supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
+    self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
+  
+    effective_cost = original_cost + supplier_tolerance_cost
+    self.effective_cost_per_unit.text = str(effective_cost)
+  
+  
   def logistics_rate_change(self, **event_args):
-    if(self.logistics_rate.text is not None):
-      logistics_rate = int(self.logistics_rate.text)
-      effective_cost = int(float(self.effective_cost_per_unit.text))
-      landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
-      self.landed_cost.text = str(landed_cost)
-      weight_per_unit = int(self.weight_per_unit.text)
-      logistics_fee_per_unit = weight_per_unit * logistics_rate
-      self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
+    logistics_rate = float(self.logistics_rate.text or 0)
+  
+    effective_cost = float(self.effective_cost_per_unit.text or 0)   # ✅ FIXED HERE
+  
+    landed_cost = ((logistics_rate / 100) * effective_cost) + effective_cost
+    self.landed_cost.text = str(landed_cost)
+  
+    weight_per_unit = float(self.weight_per_unit.text or 0)
+    logistics_fee_per_unit = weight_per_unit * logistics_rate
+    self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
 
   def cancel_btn_click(self, **event_args):
     self.raise_event("x-close-alert")

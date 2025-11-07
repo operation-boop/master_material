@@ -1,0 +1,130 @@
+components:
+- components:
+  - components:
+    - data_bindings:
+      - {code: 'self.item[''cost_sheet_id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,CQFWZU CIEGGZ,HPLLNA'}
+      name: cost_sheet_id
+      properties: {bold: true, role: headline}
+      type: Label
+    - data_bindings:
+      - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,ITGCPP'}
+      name: version
+      properties: {}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''updated_at'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,NNEAPX'}
+      name: updated_at
+      properties: {}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''approval_status'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YRTDZE,BYYHQG IYVRHE,ZVVFTS'}
+      name: approval_status
+      properties: {align: center, role: null}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'TQQGNJ,QKVHFZ'}
+        name: label_3
+        properties: {text: 'Style:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''master_style'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'TQQGNJ,ORSGNH'}
+        name: style
+        properties: {align: right, bold: true}
+        type: Label
+      - layout_properties: {grid_position: 'DIWMQJ,BQJLCY'}
+        name: label_4
+        properties: {text: 'Currency:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''currency'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'DIWMQJ,MIKWPU'}
+        name: currency
+        properties: {align: right, bold: true}
+        type: Label
+      - layout_properties: {grid_position: 'WRWIUI,UNEVOA'}
+        name: label_5
+        properties: {text: 'Created By:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''created_by'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'WRWIUI,OJFHJV'}
+        name: created_by
+        properties: {align: right, bold: true}
+        type: Label
+      - components:
+        - layout_properties: {grid_position: 'YNRKOO,FQHEGZ'}
+          name: label_1
+          properties: {bold: true, foreground: 'theme:Primary 500', text: COST BREAKDOWN}
+          type: Label
+        - layout_properties: {grid_position: 'PDKDXS,JJPTSA'}
+          name: label_7
+          properties: {text: 'Materials:'}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''total_material_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PDKDXS,GBOWOU'}
+          name: material_cost
+          properties: {align: right, bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'WINRPY,TWXDLT'}
+          name: label_2
+          properties: {text: 'Processing:'}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''total_processing_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'WINRPY,VJWLHS'}
+          name: processing_cost
+          properties: {align: right, bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'WCTMND,IRVMIV'}
+          name: label_6
+          properties: {text: 'Overhead:'}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''total_overhead_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'WCTMND,HNYRLF'}
+          name: overhead_cost
+          properties: {align: right, bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'PRKWAS,KGEQCP'}
+          name: label_8
+          properties: {bold: true, foreground: 'theme:Primary 500', text: 'Total Cost:'}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''total_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PRKWAS,PPOVZI'}
+          name: total_cost
+          properties: {align: right, bold: true, foreground: 'theme:Primary 500'}
+          type: Label
+        layout_properties: {grid_position: 'LLSIAZ,VXOYSG'}
+        name: card_2
+        properties: {background: 'theme:Gray 100', role: card}
+        type: ColumnPanel
+      - event_bindings: {click: view_details_btn_click}
+        layout_properties: {grid_position: 'VMIUXC,QVWLMV'}
+        name: view_details_btn
+        properties: {align: left, background: '#9addf4', bold: true, foreground: '#243760', text: view details}
+        type: Button
+      - layout_properties: {grid_position: 'VMIUXC,UOSGTU'}
+        name: delete_btn
+        properties: {align: left, role: secondary-color, text: delete}
+        type: Button
+      layout_properties: {grid_position: 'LFCGAB,RLITQX'}
+      name: column_panel_1
+      properties: {col_widths: '{"QVWLMV":20,"UOSGTU":40,"QKVHFZ":20,"ORSGNH":40,"BQJLCY":20,"MIKWPU":40,"UNEVOA":20,"OJFHJV":40}'}
+      type: ColumnPanel
+    layout_properties: {width: 436.5}
+    name: card_1
+    properties: {role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'LXSPLZ,ZNNYFT'}
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
+container: {type: ColumnPanel}
+is_package: true
