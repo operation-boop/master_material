@@ -33,6 +33,7 @@ class Material_input_form(Material_input_formTemplate):
     self.raise_event("x-close-alert")
 
   def advanced_cost_dropdown_change(self, **event_args):
+    # Show the section only if a value is selected (not None or blank)
     if self.advanced_cost_dropdown.selected_value == "Advanced Cost Calculation":
       self.details_section.visible = True
     else:
@@ -44,6 +45,7 @@ class Material_input_form(Material_input_formTemplate):
     self.supplier_tolerance_cost_unit.text = self.currency_dropdown.selected_value
     self.effective_cost_unit.text = self.currency_dropdown.selected_value
     self.landed_cost_unit.text = self.currency_dropdown.selected_value
+    self.logistics_unit_cost.text = self.currency_dropdown.selected_value
 
   def add_btn_click(self, **event_args):
     selected_material = self.material_dropdown.selected_value
@@ -61,6 +63,7 @@ class Material_input_form(Material_input_formTemplate):
     total = sum([float(item['percentage']) for item in self.composition_list])
     remaining = 100 - total
 
+    # Reject invalid input
     if percentage <= 0:
       Notification("Percentage must be greater than 0.").show()
       return
@@ -70,23 +73,27 @@ class Material_input_form(Material_input_formTemplate):
       self.percentage.text = str(remaining) if remaining > 0 else ""
       return
 
+    # Add item to list
     self.composition_list.append({
       "material": selected_material,
       "percentage": percentage,
       "form": self
     })
 
+    # Refresh repeating panel
     self.fabric_composition_repeating_panel.items = self.composition_list
     self.material_dropdown.selected_value = None
-    self.percentage.text = ""
+    self.percentage.text = ""  # Clear input
     self.update_total_percentage()  
 
   def update_total_percentage(self):
     total = sum([float(item['percentage']) for item in self.composition_list if item['percentage']])
     self.total_percentage.text = f"Total: {total} %"
 
+    # Remaining percentage allowed
     remaining = 100 - total
 
+    # Disable input if total full
     if remaining <= 0:
       self.material_dropdown.enabled = False
       self.percentage.enabled = False
@@ -96,35 +103,36 @@ class Material_input_form(Material_input_formTemplate):
       self.material_dropdown.enabled = True
       self.percentage.enabled = True
       self.add_btn.enabled = True
+
+      # Also restrict textbox max manually
       self.percentage.placeholder = f"Max {remaining}% allowed"
-
-  def original_cost_per_unit_change(self, **event_args):
-    """This method is called when the text in this text box is edited"""
-    self.original_cost_unit.text = self.original_cost_per_unit.text
-
-  def supplier_tolerance_pressed_enter(self, **event_args):
-    """This method is called when the user presses Enter in this text box"""
-    try:
-      original_cost = float(self.original_cost_per_unit.text or 0)
-      supplier_tolerance_percentage = float(self.supplier_tolerance.text or 0)
+  
+  def supplier_tolerance_change(self, **event_args):
+    if(self.supplier_tolerance.text is not None):
+      original_cost = int(self.original_cost_per_unit.text)
+      supplier_tolerance_percentage = int(self.supplier_tolerance.text)
       supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
-      self.supplier_tolerance_cost_unit.text = str(supplier_tolerance_cost)
+      self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
 
       effective_cost = original_cost + supplier_tolerance_cost
       self.effective_cost_per_unit.text = str(effective_cost)
-    except (ValueError, TypeError):
-      Notification("Please enter valid numbers").show()
+
+  def original_cost_per_unit_change(self, **event_args):
+    if(self.original_cost_per_unit.text is not None):
+      self.original_cost.text = self.original_cost_per_unit.text
 
   def logistics_rate_change(self, **event_args):
-    """This method is called when the text in this text box is edited"""
-    try:
-      logistics_rate = float(self.logistics_rate.text or 0)
-      effective_cost = float(self.effective_cost_per_unit.text or 0)
-      landed_cost = ((logistics_rate/100) * effective_cost) + effective_cost
+    if(self.logistics_rate.text is not None):
+      logistics_rate = int(self.logistics_rate.text)
+      effective_cost = int(float(self.effective_cost_per_unit.text))
+      landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
       self.landed_cost.text = str(landed_cost)
-    except (ValueError, TypeError):
-      Notification("Please enter valid numbers").show()
+      weight_per_unit = int(self.weight_per_unit.text)
+      logistics_fee_per_unit = weight_per_unit * logistics_rate
+      self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
+      
 ##---------------------------------------------------------------
+  
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
     if not self.current_document_id:
@@ -137,6 +145,7 @@ class Material_input_form(Material_input_formTemplate):
       anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Draft saved!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
+      self.raise_event("x-close-alert", value=True)
     except Exception as e:
       Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
 
@@ -157,7 +166,7 @@ class Material_input_form(Material_input_formTemplate):
       anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
-      self.raise_event("x-close-alert", value=True)
+
 
     except Exception as e:
       error_msg = f"Submission failed: {str(e)}"
@@ -240,3 +249,14 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
+
+
+
+
+
+
+
+
+
+
+

@@ -9,9 +9,9 @@ from ..Material_input_form import Material_input_form
 
 
 class Material_list(Material_listTemplate):
-  def __init__(self, focus_document_id=None, **properties):
+  def __init__(self, **properties):
     self.init_components(**properties)
-    self.refresh_cards(focus_document_id)
+    self.refresh_list()
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status"""

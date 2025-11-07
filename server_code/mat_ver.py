@@ -55,7 +55,6 @@ def get_next_document_number():
 
   return max(numbers) + 1 if numbers else 1
 
-
 #-----------------------------------------------------------------------
 @anvil.server.callable
 def get_master_material(document_id):
@@ -113,7 +112,7 @@ def save_or_edit_draft(document_id, updated_by_user, form_data=None):
   if form_data:
     updated_fields = []
     for key, value in form_data.items():
-      if value is not None:  # Only update non-empty fields
+      if value is not None:  
         try:
           version[key] = value
           updated_fields.append(key)
