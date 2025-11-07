@@ -1,0 +1,23 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: material
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: material_type
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: consumption
+  properties: {}
+  type: Label
+- layout_properties: {column: TBHBMQ}
+  name: unit_cost
+  properties: {}
+  type: Label
+- layout_properties: {column: MFRJKW}
+  name: total_cost
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true

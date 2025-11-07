@@ -1,0 +1,348 @@
+components:
+- components:
+  - layout_properties: {grid_position: 'VNRYPC,XXGYGL'}
+    name: headline_1
+    properties: {bold: true, role: headline, text: Create New Cost Sheet}
+    type: Label
+  - event_bindings: {click: close_btn_click}
+    layout_properties: {grid_position: 'VNRYPC,ZITWFF'}
+    name: close_btn
+    properties: {align: right, icon: 'fa:close', text: ''}
+    type: Button
+  - components:
+    - data_bindings: []
+      layout_properties: {grid_position: 'PWGNXB,QYVPUT'}
+      name: label_1
+      properties: {bold: true, border: '', foreground: Red, text: BASIC INFORMATION, underline: false}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'KLGAFQ,SBSJAL'}
+        name: rich_text_1
+        properties: {content: 'Master Style <span style="color:red;">*</span>', format: restricted_html}
+        type: RichText
+      - layout_properties: {grid_position: 'HKUYPD,GOXGPW'}
+        name: master_style_dropdown
+        properties: {}
+        type: DropDown
+      - components: []
+        layout_properties: {grid_position: 'UDJXPE,NHXBXO'}
+        name: rich_text_8
+        properties: {content: 'Currency <span style="color:red;">*</span>', format: restricted_html}
+        type: RichText
+      - event_bindings: {change: currency_dropdown_change}
+        layout_properties: {grid_position: 'KWGEJD,JALNLQ'}
+        name: currency_dropdown
+        properties: {include_placeholder: true, placeholder: Select Currency}
+        type: DropDown
+      layout_properties: {grid_position: 'ZMNWBX,FOIBWC'}
+      name: column_panel_10
+      properties: {}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'ZMNWBX,PLFKQY'}
+      name: column_panel_11
+      properties: {}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'HURLWC,QFVXDB'}
+      name: spacer_1
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'FVRAXU,ZDFLLL'}
+      name: label_8
+      properties: {bold: true, foreground: Red, text: BILL OF MATERIALS}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'XGDENA,YNKFKH'}
+        name: material_dropdown
+        properties: {include_placeholder: true, placeholder: Select Material}
+        type: DropDown
+      - layout_properties: {grid_position: 'XGDENA,FKOITM'}
+        name: consumption
+        properties: {align: left, placeholder: Consumption}
+        type: TextBox
+      - layout_properties: {grid_position: 'XGDENA,HPIBEG'}
+        name: unit_cost
+        properties: {placeholder: Unit Cost}
+        type: TextBox
+      - event_bindings: {click: BOM_add_btn_click}
+        layout_properties: {grid_position: 'XGDENA,ZNBLDM'}
+        name: BOM_add_btn
+        properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:plus', role: primary-color, text: add}
+        type: Button
+      - layout_properties: {grid_position: 'RQEWPY,FDOMQP NOBPQQ,OUKDSZ'}
+        name: fabric_composition_repeating_panel
+        properties: {item_template: wanyan_ver_cost_sheet_input_form.BOM_itemtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'TJKGYG,EMNOCW'}
+      name: card_3
+      properties: {col_widths: '{"YNKFKH":30,"ZNBLDM":10,"FKOITM":15,"HPIBEG":15}', role: card}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'RJLNNL,EKRMQI'}
+      name: total_material_cost
+      properties: {align: right}
+      type: Label
+    - layout_properties: {grid_position: 'QPREJS,KGGTDI'}
+      name: spacer_2
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'QJSMIY,PXQAGK'}
+      name: label_3
+      properties: {bold: true, foreground: RED, text: PROCESSING COSTS}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'GLMCCR,NQLIBV'}
+        name: type_dropdown
+        properties: {include_placeholder: true, placeholder: Select Type}
+        type: DropDown
+      - layout_properties: {grid_position: 'GLMCCR,TBCCQY'}
+        name: vendor
+        properties: {placeholder: Vendor}
+        type: TextBox
+      - layout_properties: {grid_position: 'GLMCCR,XRLMJB'}
+        name: cost
+        properties: {placeholder: Cost}
+        type: TextBox
+      - layout_properties: {grid_position: 'GLMCCR,LDPORT'}
+        name: processing_costs_add_btn
+        properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:plus', role: primary-color, text: add}
+        type: Button
+      - layout_properties: {grid_position: 'GNBZLS,ZDYLBT'}
+        name: repeating_panel_processing_costs
+        properties: {item_template: wanyan_ver_cost_sheet_input_form.Processing_costs_itemtemplate}
+        type: RepeatingPanel
+      layout_properties: {grid_position: 'JNVOHN,MBOTKY'}
+      name: card_4
+      properties: {col_widths: '{"NQLIBV":20,"TBCCQY":15,"XRLMJB":15,"LDPORT":10}', role: card}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'KQXLZF,TQGBQT'}
+      name: total_processing_cost
+      properties: {align: right}
+      type: Label
+    - layout_properties: {grid_position: 'LLYQNV,KTBDFW'}
+      name: spacer_5
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'SGNYGT,GOICEG'}
+      name: label_19
+      properties: {bold: true, foreground: Red, text: OVERHEAD COSTS}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'FXMBQX,YQNVJE'}
+        name: label_5
+        properties: {text: Import Logistics}
+        type: Label
+      - event_bindings: {change: import_logistics_change}
+        layout_properties: {grid_position: 'NRESRT,MJAZHJ'}
+        name: import_logistics
+        properties: {type: number}
+        type: TextBox
+      - layout_properties: {grid_position: 'YNWAJT,MLVEMP'}
+        name: label_6
+        properties: {text: Import Duty}
+        type: Label
+      - layout_properties: {grid_position: 'NCJNJE,BNZXYT'}
+        name: overhead_costs_import_duty
+        properties: {type: number}
+        type: TextBox
+      layout_properties: {grid_position: 'UXSSOO,SOFHHP'}
+      name: column_panel_4
+      properties: {col_widths: '{}'}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'IILDAP,PWGEWQ'}
+        name: label_22
+        properties: {bold: false, text: Export Logistics}
+        type: Label
+      - event_bindings: {change: export_logistics_change}
+        layout_properties: {grid_position: 'ACKBPN,PGDYMY'}
+        name: export_logistics
+        properties: {type: number}
+        type: TextBox
+      - layout_properties: {grid_position: 'MHJUOL,MEQCVS'}
+        name: label_7
+        properties: {text: Testing}
+        type: Label
+      - layout_properties: {grid_position: 'BPTGCA,KTELXW'}
+        name: testing
+        properties: {type: number}
+        type: TextBox
+      layout_properties: {grid_position: 'UXSSOO,RUABPK'}
+      name: column_panel_5
+      properties: {}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'JFYOAM,IWMXLY'}
+        name: label_4
+        properties: {text: VAT}
+        type: Label
+      - layout_properties: {grid_position: 'WWNAQY,DCZZCP'}
+        name: vat
+        properties: {type: number}
+        type: TextBox
+      - layout_properties: {grid_position: 'VTSVTY,CKKFNM'}
+        name: label_9
+        properties: {text: Sampling}
+        type: Label
+      - layout_properties: {grid_position: 'GEQYKK,BHELFB'}
+        name: sampling
+        properties: {type: number}
+        type: TextBox
+      layout_properties: {grid_position: 'UXSSOO,YNMMFK'}
+      name: column_panel_2
+      properties: {}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'AEVLCZ,THLHGY'}
+      name: spacer_3
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'QLRLOT,MYNPJE'}
+      name: label_10
+      properties: {bold: true, foreground: RED, text: PROFIT SCENARIOS}
+      type: Label
+    - components:
+      - layout_properties: {grid_position: 'LGKINI,XCKNQJ'}
+        name: profit_scenarios_total_cost
+        properties: {foreground: '#9c760d', icon: 'fa:info-circle', text: 'Total Cost:'}
+        type: Label
+      layout_properties: {grid_position: 'EIRYCN,DBSBKC'}
+      name: card_2
+      properties: {background: '#fff0a3', role: card}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'QIIPXA,KMJNTJ'}
+        name: label_24
+        properties: {bold: true, text: Scenario 1 - Price}
+        type: Label
+      - layout_properties: {grid_position: 'KWXDQE,ZPDNVU'}
+        name: scenario_1_quoted_price
+        properties: {placeholder: Quoted Price}
+        type: TextBox
+      - layout_properties: {grid_position: 'KDZSRD,LMLFQF'}
+        name: label_2
+        properties:
+          spacing:
+            padding: [0, null, 0, null]
+          spacing_above: none
+          spacing_below: none
+          text: 'Margin: - '
+        type: Label
+      - layout_properties: {grid_position: 'KDZSRD,JWVHVL'}
+        name: scenario_1_margin
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'GMGWAJ,XQCXRB'}
+        name: label_11
+        properties:
+          spacing:
+            padding: [0, null, 0, null]
+          spacing_above: none
+          spacing_below: none
+          text: 'Profit: - '
+        type: Label
+      - layout_properties: {grid_position: 'GMGWAJ,ENKILI'}
+        name: scenario_1_profit
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'RQWCKB,IDFEGF'}
+        name: label_25
+        properties: {bold: true, text: Scenario 2  - Price}
+        type: Label
+      - layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
+        name: scenario_2_quoted_price
+        properties: {placeholder: Quoted Price, type: number}
+        type: TextBox
+      - layout_properties: {grid_position: 'UTJRMK,GQBXIM'}
+        name: label_2_copy
+        properties:
+          spacing:
+            padding: [0, null, 0, null]
+          spacing_above: none
+          spacing_below: none
+          text: 'Margin: - '
+        type: Label
+      - layout_properties: {grid_position: 'UTJRMK,JKMMNF'}
+        name: scenario_2_margin
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'DVCFXR,QNKDXI'}
+        name: label_11_copy
+        properties:
+          spacing:
+            padding: [0, null, 0, null]
+          spacing_above: none
+          spacing_below: none
+          text: 'Profit: - '
+        type: Label
+      - layout_properties: {grid_position: 'DVCFXR,JGMJDD'}
+        name: scenario_2_profit
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'BTNOSY,JZXTVA'}
+        name: label_29
+        properties: {bold: true, text: Scenario 3 - Price}
+        type: Label
+      - event_bindings: {change: scenario_3_quoted_price_change}
+        layout_properties: {grid_position: 'QDKMAH,TALLOF'}
+        name: scenario_3_quoted_price
+        properties: {placeholder: Quoted Price, type: number}
+        type: TextBox
+      - layout_properties: {grid_position: 'LKBICQ,PZBHNK'}
+        name: label_2_copy_2
+        properties:
+          spacing:
+            padding: [0, null, 0, null]
+          spacing_above: none
+          spacing_below: none
+          text: 'Margin: - '
+        type: Label
+      - layout_properties: {grid_position: 'LKBICQ,TJRNJL'}
+        name: scenario_3_margin
+        properties: {}
+        type: Label
+      - layout_properties: {grid_position: 'NOVKTX,PTWQVG'}
+        name: label_11_copy_2
+        properties:
+          spacing:
+            padding: [0, null, 0, null]
+          spacing_above: none
+          spacing_below: none
+          text: 'Profit: - '
+        type: Label
+      - layout_properties: {grid_position: 'NOVKTX,GZHOKN'}
+        name: scenario_3_profit
+        properties: {}
+        type: Label
+      layout_properties: {grid_position: 'FDJVGR,VXUSVI'}
+      name: details_section
+      properties: {col_widths: '{"LMLFQF":10,"JWVHVL":50,"XQCXRB":10,"ENKILI":50,"GQBXIM":10,"JKMMNF":50,"QNKDXI":10,"JGMJDD":50,"PZBHNK":10,"TJRNJL":50,"PTWQVG":10,"GZHOKN":50}', visible: true}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'AWARGL,HHFTCH'}
+      name: spacer_4
+      properties: {height: 32}
+      type: Spacer
+    - event_bindings: {click: cancel_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
+      name: cancel_btn
+      properties: {align: left, background: 'theme:Gray 600', foreground: 'theme:White', role: null, text: Cancel}
+      type: Button
+    - layout_properties: {grid_position: 'FRMLPJ,RIMMNM'}
+      name: column_panel_9
+      properties: {}
+      type: ColumnPanel
+    - layout_properties: {grid_position: 'FRMLPJ,VCSADV'}
+      name: save_as_draft_btn
+      properties: {align: right, background: orange, foreground: 'theme:White', role: null, text: SAve as draft}
+      type: Button
+    - layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
+      name: submit_btn
+      properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: submit}
+      type: Button
+    layout_properties: {grid_position: 'UCHAOH,WTQRTI'}
+    name: card_1
+    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
+  name: column_panel_1
+  properties: {col_widths: '{"XXGYGL":55,"ZITWFF":5}'}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true

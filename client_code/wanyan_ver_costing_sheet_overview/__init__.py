@@ -15,3 +15,16 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
     self.init_components(**properties)
 
     # Any code you write here will run before the form opens.
+
+  def add_btn_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    from ..wanyan_ver_cost_sheet_input_form import wanyan_ver_cost_sheet_input_form
+
+    popup = wanyan_ver_cost_sheet_input_form()
+
+    alert(
+      content=popup,
+      title=None,
+      large=True,
+      buttons=None 
+    )

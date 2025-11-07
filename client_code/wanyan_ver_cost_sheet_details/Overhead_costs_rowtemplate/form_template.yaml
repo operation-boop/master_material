@@ -1,0 +1,15 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: type
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: description
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: cost
+  properties: {bold: true}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true

@@ -1,0 +1,23 @@
+components:
+- layout_properties: {column: VJQQOR}
+  name: vendor
+  properties: {}
+  type: Label
+- layout_properties: {column: JKSDUP}
+  name: type
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: description
+  properties: {}
+  type: Label
+- layout_properties: {column: WEKQHK}
+  name: status
+  properties: {}
+  type: Label
+- layout_properties: {column: BHMGBN}
+  name: cost
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true

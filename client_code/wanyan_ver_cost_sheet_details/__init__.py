@@ -1,4 +1,4 @@
-from ._anvil_designer import Material_detailTemplate
+from ._anvil_designer import wanyan_ver_cost_sheet_detailsTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -11,7 +11,7 @@ from ..Material_list import Material_list
 from ..Material_edit_form import Material_edit_form
 
 
-class Material_detail(Material_detailTemplate):
+class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
   def __init__(self, material_data=None, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
@@ -25,29 +25,20 @@ class Material_detail(Material_detailTemplate):
     #open_form('Material_list')
 
 
-  def technical_specs_tab_btn_click(self, **event_args):
-    self.technical_specs_panel.visible = True
-    self.cost_details_panel.visible = False
-    self.version_history_panel.visible = False
-    self.material_sku_panel.visible = False
-
-  def cost_details_tab_btn_click(self, **event_args):
+  def cost_breakdown_tab_btn_click(self, **event_args):
     self.cost_details_panel.visible = True
-    self.technical_specs_panel.visible = False
     self.version_history_panel.visible = False
-    self.material_sku_panel.visible = False
+    self.exchange_rates_panel.visible = False
 
   def version_history_tab_btn_click(self, **event_args):
     self.version_history_panel.visible = True
-    self.technical_specs_panel.visible = False
     self.cost_details_panel.visible = False
-    self.material_sku_panel.visible = False
+    self.exchange_rates_panel.visible = False
 
-  def material_sku_tab_btn_click(self, **event_args):
-    self.material_sku_panel.visible = True
+  def exchange_rates_tab_btn_click(self, **event_args):
     self.version_history_panel.visible = False
-    self.technical_specs_panel.visible = False
     self.cost_details_panel.visible = False
+    self.exchange_rates_panel.visible = True
 
   def edit_btn_click(self, **event_args):
     # Get the Home form

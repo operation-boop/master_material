@@ -1,0 +1,19 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: current_currency
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: changed_to_currency
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: rate
+  properties: {}
+  type: Label
+- layout_properties: {column: LGZQDU}
+  name: date
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true
