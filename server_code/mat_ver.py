@@ -65,8 +65,7 @@ def get_master_material(document_id):
       raise Exception(f"Document {document_id} not found in master_material table")
     return master
   except Exception as e:
-    raise Exception(f"Error retrieving document {document_id}: {str(e)}")
-    
+    raise Exception(f"Error retrieving document {document_id}: {str(e)}")   
 @anvil.server.callable
 def validate_required_fields(document_id):
   """Validate all required fields are filled on the current version"""
@@ -79,9 +78,8 @@ def validate_required_fields(document_id):
   missing = []
   for field in REQUIRED_FIELDS:
     try:
-      value = current_version[field]   # Row uses bracket access
+      value = current_version[field] 
     except KeyError:
-      # Column not present on the table
       missing.append(field)
       continue
 
@@ -163,6 +161,8 @@ def submit_version(document_id, submitted_by_user, form_data=None):
   master['submitted_by'] = submitted_by_user
 
   return {"action": "submitted", "version": version, "document_id": document_id}
+
+
 
 
 

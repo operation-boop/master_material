@@ -29,6 +29,25 @@ class Material_list(Material_listTemplate):
       )
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
+
+  def refresh_list(self, **event_args):
+    """Fetch latest cards from server and render them."""
+    try:
+      materials = anvil.server.call('list_material_cards') or []
+    except Exception as e:
+      Notification(f"Load failed: {e}", style="danger").show()
+      materials = []
+
+    self.flow_panel_materials.clear()
+    from .MaterialCard import MaterialCard
+    for m in materials:
+      card = MaterialCard(item=m)
+      card.width = "100%"
+      self.flow_panel_materials.add_component(card)
+
+  def form_show(self, **event_args):
+    # Load real data on show
+    self.refresh_list()
       
  
 

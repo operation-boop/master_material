@@ -139,7 +139,7 @@ class Material_input_form(Material_input_formTemplate):
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
 
-    form_data = self.collect_form_data()
+    form_data = self.collect_form_data() ## collect form data
 
     try:
       anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
@@ -155,7 +155,7 @@ class Material_input_form(Material_input_formTemplate):
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
       
-    form_data = self.collect_form_data()
+    form_data = self.collect_form_data() ## collect form data 
     if not self.validate_form_data(form_data):
       Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
@@ -170,7 +170,7 @@ class Material_input_form(Material_input_formTemplate):
 
     except Exception as e:
       error_msg = f"Submission failed: {str(e)}"
-      print(f"Full error: {repr(e)}")  # Check console for full error
+      print(f"Full error: {repr(e)}") 
       Notification(error_msg, style="danger", timeout=5).show()
     finally:
       self.submit_btn.enabled = True
