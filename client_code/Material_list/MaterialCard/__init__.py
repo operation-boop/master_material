@@ -14,7 +14,11 @@ class MaterialCard(MaterialCardTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
+  def refresh_click(self, **event_args):
+    """Handle refresh if needed"""
+    self.raise_event('x-refresh-list')
 
   def view_details_btn_click(self, **event_args):
     open_form('Material_detail')
+
     

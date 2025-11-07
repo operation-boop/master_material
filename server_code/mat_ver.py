@@ -162,7 +162,60 @@ def submit_version(document_id, submitted_by_user, form_data=None):
 
   return {"action": "submitted", "version": version, "document_id": document_id}
 
+# --- in your server module (e.g., mat_ver.py) ---
+import anvil.server
+from anvil.tables import app_tables
 
+def _safe(row, key):
+  try:
+    return row[key]
+  except Exception:
+    return None
+
+@anvil.server.callable
+def list_material_cards():
+  """
+  Return a list of dicts for Material_list cards.
+  Uses the latest version (max ver_num) for each document_id.
+  """
+  versions = app_tables.master_material_version.search()
+  latest_by_doc = {}
+
+  for v in versions:
+    doc_id = _safe(v, 'document_id')
+    if not doc_id:
+      continue
+    ver_num = _safe(v, 'ver_num') or 0
+    if (doc_id not in latest_by_doc) or (ver_num > (_safe(latest_by_doc[doc_id], 'ver_num') or 0)):
+      latest_by_doc[doc_id] = v
+
+  cards = []
+  for v in latest_by_doc.values():
+    weight = None
+    wpu = _safe(v, 'weight_per_unit')
+    wuom = _safe(v, 'weight_uom')
+    if wpu is not None and wuom:
+      weight = f"{wpu} {wuom}"
+
+    cost = None
+    ocpu = _safe(v, 'original_cost_per_unit')
+    nccy = _safe(v, 'native_cost_currency')
+    if ocpu is not None and nccy:
+      cost = f"{ocpu} {nccy}"
+
+    cards.append({
+      "document_id": _safe(v, "document_id"),
+      "ref_id": _safe(v, "ref_id"),
+      "material_name": _safe(v, "name"),
+      "material_type": _safe(v, "material_type"),
+      "fabric_composition": _safe(v, "fabric_composition"),
+      "weight": weight,
+      "supplier": _safe(v, "supplier_name"),
+      "cost_per_unit": cost,
+      "verification_status": _safe(v, "status") or "Draft",
+    })
+
+  return cards
 
 
 

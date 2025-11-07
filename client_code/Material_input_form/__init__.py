@@ -20,7 +20,6 @@ class Material_input_form(Material_input_formTemplate):
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
 
-
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
     self.fabric_composition_repeating_panel.items = self.composition_list
@@ -109,28 +108,27 @@ class Material_input_form(Material_input_formTemplate):
       self.percentage.placeholder = f"Max {remaining}% allowed"
   
   def supplier_tolerance_change(self, **event_args):
-    if(self.supplier_tolerance.text is not None):
-      original_cost = int(self.original_cost_per_unit.text)
-      supplier_tolerance_percentage = int(self.supplier_tolerance.text)
-      supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
-      self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
-
-      effective_cost = original_cost + supplier_tolerance_cost
-      self.effective_cost_per_unit.text = str(effective_cost)
+    original_cost = float(self.original_cost_per_unit.text or 0)
+    supplier_tolerance_percentage = float(self.supplier_tolerance.text or 0)
+  
+    supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
+    self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
+  
+    effective_cost = original_cost + supplier_tolerance_cost
+    self.effective_cost_per_unit.text = str(effective_cost)
 
   def original_cost_per_unit_change(self, **event_args):
     if(self.original_cost_per_unit.text is not None):
       self.original_cost.text = self.original_cost_per_unit.text
 
   def logistics_rate_change(self, **event_args):
-    if(self.logistics_rate.text is not None):
-      logistics_rate = int(self.logistics_rate.text)
-      effective_cost = int(float(self.effective_cost_per_unit.text))
-      landed_cost = ((logistics_rate/100) * effective_cost ) + effective_cost
-      self.landed_cost.text = str(landed_cost)
-      weight_per_unit = int(self.weight_per_unit.text)
-      logistics_fee_per_unit = weight_per_unit * logistics_rate
-      self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
+    logistics_rate = float(self.logistics_rate.text or 0)
+    effective_cost = float(self.effective_cost_per_unit.text or 0)   # ✅ FIXED HERE
+    landed_cost = ((logistics_rate / 100) * effective_cost) + effective_cost
+    self.landed_cost.text = str(landed_cost)
+    weight_per_unit = float(self.weight_per_unit.text or 0)
+    logistics_fee_per_unit = weight_per_unit * logistics_rate
+    self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
 
 ##---------------------------------------------------------------
   
@@ -167,6 +165,7 @@ class Material_input_form(Material_input_formTemplate):
       anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
+      self.raise_event("x-close-alert", value=True)
 
 
     except Exception as e:
@@ -225,7 +224,7 @@ class Material_input_form(Material_input_formTemplate):
       "weight_uom": self.weight_uom_dropdown.selected_value,
       "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
       "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
-      "generic_material_size": self.parse_float(self.generic_material_size.text) if hasattr(self,'generic_material_size') else None,
+      "generic_material_size": self.parse_float(self.generic_material_size.text),
       "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
 
       # Costs
