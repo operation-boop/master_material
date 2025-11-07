@@ -1,7 +1,0 @@
-components:
-- layout_properties: {full_width_row: false, grid_position: 'EZIAIB,CJPGKK'}
-  name: headline_1
-  properties: {bold: true, role: headline, text: Deal}
-  type: Label
-container: {type: ColumnPanel}
-is_package: true

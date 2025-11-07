@@ -179,7 +179,7 @@ db_schema:
     server: full
     title: cost_sheet_version
   exchange_rate:
-    client: search
+    client: none
     columns:
     - admin_ui: {width: 200}
       name: server_id
@@ -257,7 +257,7 @@ db_schema:
     server: full
     title: processing_cost_item
   staff_users:
-    client: search
+    client: none
     columns:
     - admin_ui: {width: 200}
       name: server_id

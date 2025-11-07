@@ -18,6 +18,6 @@ import anvil.server
 
 # Makes it so that this funct "view_processing_cost_line" can act as a link
 # to the backend for the front end to view ".client_readable()"
-@anvil.server.callable
-def view_processing_cost_line():
-  return app_tables.tabl_processing_cost_item.client_readable()
+# @anvil.server.callable
+# def view_processing_cost_line():
+#   return app_tables.tabl_processing_cost_item.client_readable()

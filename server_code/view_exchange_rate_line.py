@@ -15,8 +15,8 @@ import anvil.server
 # them with @anvil.server.callable.
 # Here is an example - you can replace it with your own:
 #
-@anvil.server.callable
-def view_exchange_rate_line():
-  return app_tables.tabl_exchange_rate.client_readable()
+# @anvil.server.callable
+# def view_exchange_rate_line():
+#   return app_tables.tabl_exchange_rate.client_readable()
 
 
