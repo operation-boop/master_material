@@ -8,11 +8,11 @@ components:
       type: Button
     - layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,JUASDZ'}
       name: current_material_id_label
-      properties: {bold: true, role: headline, text: 'Material: MAT-001'}
+      properties: {bold: true, role: headline, text: ''}
       type: Label
     - layout_properties: {grid_position: 'RZUCXB,CQLXAQ KCABBV,DNBBGM'}
       name: current_version_label
-      properties: {background: 'theme:Gray 200', text: Version 3 (Current)}
+      properties: {background: 'theme:Gray 200', text: ''}
       type: Label
     - layout_properties: {grid_position: 'RZUCXB,FNLWJR'}
       name: verification_status

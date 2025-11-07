@@ -6,9 +6,10 @@ import anvil.tables.query as q
 
 DOC_PREFIX = "vin_mmat_"
 VALID_STATUSES = {
-  "Creating": ["Draft", "Submitted"],
-  "Draft": ["Draft", "Submitted"],
-  "Submitted": ["Creating"]
+  "Creating": ["Draft", "Submitted - Unverified"],
+  "Draft": ["Draft", "Submitted - Unverified"],
+  "Submitted - Unverified": ["Creating", "Submitted - Verified"],
+  "Submitted - Verified": ["Creating"]
 }
 REQUIRED_FIELDS = ["supplier_name"]  
 
@@ -127,13 +128,17 @@ def save_or_edit_draft(document_id, updated_by_user, form_data=None):
 
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data=None):
-  """Submit document with validation - updates all fields from form"""
+  """
+  Submit document but mark status as 'Submitted - Unverified'.
+  This stores the "yet to verify" state inside the existing 'status' column.
+  """
   master = get_master_material(document_id)
   version = master['current_version']
 
-  check_status_transition(version['status'], "Submitted")
+  # Validate allowed transition (will raise if not allowed)
+  check_status_transition(version['status'], "Submitted - Unverified")
 
-  # Update all fields from form data FIRST
+  # Update fields from form_data (if provided)
   if form_data:
     updated_fields = []
     for key, value in form_data.items():
@@ -143,24 +148,73 @@ def submit_version(document_id, submitted_by_user, form_data=None):
           updated_fields.append(key)
         except Exception as e:
           print(f"Warning: Could not update field '{key}': {str(e)}")
-
     print(f"Updated {len(updated_fields)} fields before validation")
 
-  # Validate AFTER updating
+  # Validate required fields AFTER updates
   validation = validate_required_fields(document_id)
   if not validation['is_valid']:
     missing_str = ', '.join(validation['missing_fields'])
     raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
 
-  # Update status and submission info
-  version['status'] = "Submitted"
+  # Mark as submitted-but-unverified by storing combined text
+  combined_status = "Submitted - Unverified"
+  version['status'] = combined_status
   version['submitted_at'] = datetime.now()
   version['submitted_by'] = submitted_by_user
 
-  master['submitted_at'] = datetime.now()
+  # Mirror to master row for convenience
+  master['status'] = combined_status
+  master['submitted_at'] = version['submitted_at']
   master['submitted_by'] = submitted_by_user
 
-  return {"action": "submitted", "version": version, "document_id": document_id}
+  try:
+    version['last_verified_date'] = None
+    master['last_verified_date'] = None
+  except Exception:
+    # If those fields don't exist, ignore (no schema change required)
+    pass
+
+  return {"action": "submitted_unverified", "version": version, "document_id": document_id}
+
+
+@anvil.server.callable
+def verify_version(document_id, verified_by_user, notes=None):
+  """
+  Mark the current version as verified by changing status text to
+  'Submitted - Verified' (still stored in the same 'status' column).
+  """
+  master = get_master_material(document_id)
+  version = master['current_version']
+
+  # allow verification only if it's in an unverified submitted state
+  cur_status = version['status']
+  if cur_status not in ("Submitted - Unverified", "Submitted - Verified"):
+    raise Exception("Only a submitted (unverified) version can be verified.")
+
+  # Update status to verified
+  version['status'] = "Submitted - Verified"
+  version['last_verified_date'] = datetime.now()
+  version['last_verified_by'] = verified_by_user
+  if notes is not None:
+    try:
+      version['verification_notes'] = notes
+    except Exception:
+      # ignore if column not present
+      pass
+
+  # Mirror to master
+  master['status'] = version['status']
+  master['last_verified_date'] = version['last_verified_date']
+  master['last_verified_by'] = version['last_verified_by']
+
+  return {"action": "verified", "document_id": document_id}
+
+def is_submitted(status):
+  """Return True for any submitted flavor."""
+  if not status:
+    return False
+  return status.startswith("Submitted")
+
 
 
 

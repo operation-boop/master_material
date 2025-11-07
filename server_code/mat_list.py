@@ -7,11 +7,8 @@ import anvil.tables.query as q
 
 @anvil.server.callable
 def list_material_cards(statuses=None):
-  """
-  Return one card per document (latest version), filtered by status.
-  Default statuses = ['Draft', 'Submitted'].
-  """
-  statuses = statuses or ["Draft", "Submitted"]
+
+  statuses = statuses or ["Draft", "Submitted - Unverified", "Submitted - Verified"]
 
   # Pull only rows with status in desired set
   vers = app_tables.master_material_version.search(
@@ -49,7 +46,7 @@ def list_material_cards(statuses=None):
       "weight": weight,
       "supplier": _get(v, "supplier_name"),
       "cost_per_unit": cost,
-      "verification_status": _get(v, "status") or "Draft",
+      "verification_status": _get(v, "status") or _get.master('status') or "Draft",
       # Optional extras for sorting/debug:
       "updated_at": _get(v, "updated_at"),
       "ver_num": _get(v, "ver_num"),

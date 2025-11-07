@@ -39,6 +39,9 @@ db_schema:
     - admin_ui: {order: 2.5, width: 200}
       name: updated_at
       type: datetime
+    - admin_ui: {order: 2.375, width: 200}
+      name: updated_by
+      type: string
     server: full
     title: master_material
   master_material_version:
@@ -69,13 +72,13 @@ db_schema:
     - admin_ui: {width: 200}
       name: ref_id
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 2.71240234375, width: 200}
       name: submitted_by
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 2.623291015625, width: 200}
       name: submitted_at
       type: datetime
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 2.801513671875, width: 200}
       name: status
       type: string
     - admin_ui: {width: 200}
@@ -182,9 +185,12 @@ db_schema:
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
-    - admin_ui: {order: 2.5703125, width: 200}
+    - admin_ui: {order: 1.9814453125, width: 200}
       name: updated_at
       type: datetime
+    - admin_ui: {order: 2.177734375, width: 200}
+      name: updated_by
+      type: string
     server: full
     title: master_material_version
   material_type:
