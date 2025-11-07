@@ -176,7 +176,6 @@ def submit_version(document_id, submitted_by_user, form_data=None):
 
   return {"action": "submitted_unverified", "version": version, "document_id": document_id}
 
-
 @anvil.server.callable
 def verify_version(document_id, verified_by_user, notes=None):
   """

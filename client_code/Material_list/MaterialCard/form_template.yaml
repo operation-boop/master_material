@@ -1,6 +1,10 @@
 components:
 - components:
   - components:
+    - layout_properties: {grid_position: 'CYYXNE,COLQNS'}
+      name: label_1
+      properties: {visible: false}
+      type: Label
     - components:
       - data_bindings:
         - {code: 'self.item[''master_material_id'']', property: text, writeback: false}

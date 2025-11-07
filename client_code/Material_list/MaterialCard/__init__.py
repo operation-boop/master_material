@@ -19,6 +19,18 @@ class MaterialCard(MaterialCardTemplate):
     self.raise_event('x-refresh-list')
 
   def view_details_btn_click(self, **event_args):
-    open_form('Material_detail')
+    document_id = None
+    # 'self.item' is the card's dict returned by list_material_cards()
+    if hasattr(self, "item") and self.item:
+      document_id = self.item.get("document_id") or self.item.get("document_id")
+
+    if not document_id:
+      Notification("Document id not found.", style="warning").show()
+      return
+  
+    # Create and show the detail form
+    detail = Material_detail(document_id=document_id)
+    from anvil import alert
+    alert(detail, title="Material Details", large=True)
 
     
