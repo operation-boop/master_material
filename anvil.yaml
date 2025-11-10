@@ -235,9 +235,6 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: server_id
-      type: string
-    - admin_ui: {width: 200}
       name: cost_amount
       type: number
     - admin_ui: {width: 200}
@@ -273,6 +270,9 @@ db_schema:
       name: last_verified_by
       target: staff_users
       type: link_single
+    - admin_ui: {order: 1, width: 200}
+      name: cost_type
+      type: string
     server: full
     title: processing_cost_item
   staff_users:
