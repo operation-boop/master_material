@@ -315,7 +315,7 @@ components:
       name: column_panel_9
       properties: {}
       type: ColumnPanel
-    - event_bindings: {click: save_btn_click}
+    - event_bindings: {}
       layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
       name: save_btn
       properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: save}

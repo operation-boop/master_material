@@ -136,3 +136,4 @@ class wanyan_ver_cost_sheet_edit_form(wanyan_ver_cost_sheet_edit_formTemplate):
     self.overhead_costs_cost.text = ""
     self.overhead_costs_currency.selected_value = None
 
+
