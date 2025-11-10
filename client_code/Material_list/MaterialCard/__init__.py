@@ -19,17 +19,16 @@ class MaterialCard(MaterialCardTemplate):
     """Handle refresh if needed"""
     self.raise_event('x-refresh-list')
 
-
   def view_details_btn_click(self, **event_args):
-    """Open detail view for this material"""
-    doc_id = self.item.get("document_id")  # get ID from card data
-  
-    if not doc_id:
-      alert("No document ID found for this material.", title="Error")
+    if not self.item:
+      alert("No item data!", title="Error")
       return
-  
-    from ...Material_detail import Material_detail  # keep or adapt relative import as needed
-    detail_form = Material_detail(doc_id=doc_id)
 
-    # Show it in a popup
-    alert(content=detail_form, large=True, buttons=None)
+    doc_id = self.item.get("document_id")
+    if not doc_id:
+      alert("No document ID!", title="Error")
+      return
+
+    from ...Material_detail import Material_detail
+    detail = Material_detail(doc_id=doc_id)
+    alert(content=detail, large=True)

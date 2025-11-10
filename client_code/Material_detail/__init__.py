@@ -28,9 +28,8 @@ class Material_detail(Material_detailTemplate):
       except Exception:
         pass
       return
-
     self.item = data
-
+    
     try:
       self.refresh_data_bindings()
     except Exception:

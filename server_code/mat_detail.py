@@ -1,29 +1,36 @@
 import anvil.server
 from anvil.tables import app_tables
+import anvil.tables.query as q
 
 @anvil.server.callable
 def get_material_detail(document_id):
-  v = app_tables.master_material_version.get(document_id=document_id)
+  if not document_id:
+    raise ValueError("document_id is required")
 
-  if not v:
-    raise Exception(f"No document found for ID: {document_id}")
+  # search both columns, then pick latest by ver_num
+  rows = app_tables.master_material_version.search(
+    q.or_(document_id=document_id, document_uid=document_id)
+  )
 
+  if not rows:
+    raise Exception(f"No material version found for ID: {document_id}")
 
-  def _get(key, default=None):
-    try:
-      return v.get(key, default)
-    except Exception:
-      return default
-      
-  wpu  = _get(v, "weight_per_unit")
-  wuom = _get(v, "weight_uom")
+  latest = None
+  for r in rows:
+    if latest is None or _to_num(_get(r, "ver_num")) > _to_num(_get(latest, "ver_num")):
+      latest = r
+  v = latest
+
+  # build rich detail dict (add/remove fields you need)
+  wpu   = _get(v, "weight_per_unit")
+  wuom  = _get(v, "weight_uom")
   weight = f"{wpu} {wuom}" if (wpu is not None and wuom) else ""
 
-  ocpu = _get(v, "original_cost_per_unit")
-  nccy = _get(v, "native_cost_currency")
+  ocpu  = _get(v, "original_cost_per_unit")
+  nccy  = _get(v, "native_cost_currency")
   cost_display = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else ""
 
-  return {
+  detail = {
     "document_id": _get(v, "document_id"),
     "ver_num": _get(v, "ver_num"),
     "material_id": _get(v, "master_material_id"),
@@ -47,5 +54,17 @@ def get_material_detail(document_id):
     "last_verified_date": _get(v, "last_verified_date"),
   }
 
+  return detail
 
+def _get(row, key, default=None):
+  try:
+    return row[key]
+  except Exception:
+    return default
+
+def _to_num(x, default=-1):
+  try:
+    return float(x)
+  except Exception:
+    return default
 
