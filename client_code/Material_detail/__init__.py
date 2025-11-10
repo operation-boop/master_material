@@ -9,6 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 from ..Material_list import Material_list
 from ..Material_edit_form import Material_edit_form
+from ..Material_sku_input_form import Material_sku_input_form
 
 
 class Material_detail(Material_detailTemplate):
@@ -16,7 +17,9 @@ class Material_detail(Material_detailTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.item = material_data
-    # Any code you write here will run before the form opens.
+
+    sku_rows = anvil.server.call("get_material_sku")
+    self.material_sku_repeating_panel.items = sku_rows
 
   def back_btn_click(self, **event_args):
     home = get_open_form()   # This is your Home form
@@ -57,5 +60,16 @@ class Material_detail(Material_detailTemplate):
     home_form.content_panel.clear()
     home_form.content_panel.add_component(
       Material_edit_form(material_data=self.item),
+      full_width_row=True
+    )
+
+  def add_sku_btn_click(self, **event_args):
+    # Get the Home form
+    home_form = get_open_form()
+
+    # Clear the content panel and add Material_details
+    home_form.content_panel.clear()
+    home_form.content_panel.add_component(
+      Material_sku_input_form(),
       full_width_row=True
     )
