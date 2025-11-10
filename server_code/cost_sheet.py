@@ -8,15 +8,13 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime
-
 from anvil.tables import order_by
+
 
 @anvil.server.callable
 def list_all_cost_sheet_versions():
   cost_sheet_version = app_tables.cost_sheet_version.search()
   return [dict(cost_sheet) for cost_sheet in cost_sheet_version]
-
-
   
 def generate_next_cost_sheet_document_id():
   
@@ -82,8 +80,9 @@ def create_cost_sheet_version_with_rates(draft=True,):
     total_material_cost=None,
     # expected_profit_scenarios=None
   )
-
   return new_version
+
+
 
 
 
