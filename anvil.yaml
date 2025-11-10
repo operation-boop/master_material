@@ -72,9 +72,6 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: document_id
-      type: string
-    - admin_ui: {width: 200}
       name: version_number
       type: number
     - admin_ui: {width: 200}
@@ -91,6 +88,10 @@ db_schema:
       name: line_items
       target: bill_of_material_line_item
       type: link_multiple
+    - admin_ui: {order: 1, width: 200}
+      name: document_id
+      target: bill_of_material
+      type: link_single
     server: full
     title: bill_of_material_version
   cost_sheet:
@@ -182,9 +183,6 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: server_id
-      type: string
-    - admin_ui: {width: 200}
       name: date
       type: date
     - admin_ui: {width: 200}
@@ -197,8 +195,14 @@ db_schema:
       name: created_by
       target: staff_users
       type: link_single
-    - admin_ui: {width: 200}
-      name: manager_defined
+    - admin_ui: {order: 3.75, width: 200}
+      name: from_currency
+      type: string
+    - admin_ui: {order: 3.875, width: 200}
+      name: to_currency
+      type: string
+    - admin_ui: {order: 7, width: 200}
+      name: admin_define
       type: simpleObject
     server: full
     title: exchange_rate
