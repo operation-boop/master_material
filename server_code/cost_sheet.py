@@ -12,10 +12,12 @@ from datetime import datetime
 from anvil.tables import order_by
 
 @anvil.server.callable
-def list_all_cost_sheets():
-  cost_sheet = app_tables.cost_sheet.search()
-  return [dict(cost_sheet) for cost_sheet in cost_sheet]
+def list_all_cost_sheet_versions():
+  cost_sheet_version = app_tables.cost_sheet_version.search()
+  return [dict(cost_sheet) for cost_sheet in cost_sheet_version]
 
+
+  
 def generate_next_cost_sheet_document_id():
   
     # Generate the next incremental document ID in the format CS-1001, CS-1002, ...
@@ -49,8 +51,6 @@ def generate_next_cost_sheet_document_id():
 
     # Return padded document ID
   return f"CS-{next_number}"
-
-
 
   # 2. Add the row
 @anvil.server.callable
