@@ -204,12 +204,27 @@ db_schema:
     title: exchange_rate
   master_material:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: material_name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: description
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: sku
+      type: string
     server: full
     title: master_material
   material_sku:
     client: none
-    columns: []
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: sku
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: description
+      type: string
     server: full
     title: material_sku
   processing_cost_item:

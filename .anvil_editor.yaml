@@ -24,6 +24,7 @@ unique_ids:
   scripts: {}
   server_modules:
     add_exchange_rate: '1762368989852247631180293.74374'
+    autofill: '1762743927396290312692053.8075'
     cost_sheet: '1762424426210122950563465.48772'
     view_exchange_rate_line: '176237319102784615321188.69252'
     view_processing_cost_line: '1762379618644661227702543.9282'

@@ -14,13 +14,20 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
+
+
+  def button_1_click(self, **event_args):
+    result = anvil.server.call('create_sample_boms')
+    alert(f"Created {result['boms_created']} BOMs and {result['line_items_created']} Line Items!")
+
+
     # setting the variable 'all_cost_sheets' to
     # 'anvil.server.call('list_all_cost_sheets')'
-
-    all_cost_sheets = anvil.server.call('list_all_cost_sheets') #
-
-    # use the function print to show 
-    print(all_cost_sheets)
+    
+    # all_cost_sheets = anvil.server.call('list_all_cost_sheets') #
+    
+    # # use the function print to show 
+    # print(all_cost_sheets)
 
 
 
