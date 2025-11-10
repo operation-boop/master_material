@@ -16,14 +16,10 @@ def list_all_cost_sheets():
   cost_sheet = app_tables.cost_sheet.search()
   return [dict(cost_sheet) for cost_sheet in cost_sheet]
 
-
-
-
 def generate_next_cost_sheet_document_id():
-  """
-    Generate the next incremental document ID in the format CS-1001, CS-1002, ...
-    Works on all Anvil plans without using order_by().
-    """
+  
+    # Generate the next incremental document ID in the format CS-1001, CS-1002, ...
+
   # Fetch all cost_sheet_version rows
   rows = list(app_tables.cost_sheet_version.search())
 
@@ -34,7 +30,6 @@ def generate_next_cost_sheet_document_id():
     # Extract numeric part from each document_id
     numbers = []
     for r in rows:
-
       rd = dict(r)
       doc_id = rd.get("document_id")
       if isinstance(doc_id, str) and doc_id.startswith("CS-"):
