@@ -17,8 +17,7 @@ class Material_detail(Material_detailTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.item = material_data
-
-    sku_rows = anvil.server.call("get_material_sku")
+    sku_rows = anvil.server.call("get_material_sku", self.item['material_id'])
     self.material_sku_repeating_panel.items = sku_rows
 
   def back_btn_click(self, **event_args):
@@ -64,12 +63,17 @@ class Material_detail(Material_detailTemplate):
     )
 
   def add_sku_btn_click(self, **event_args):
-    # Get the Home form
-    home_form = get_open_form()
+    """This method is called when the button is clicked"""
 
-    # Clear the content panel and add Material_details
-    home_form.content_panel.clear()
-    home_form.content_panel.add_component(
-      Material_sku_input_form(),
-      full_width_row=True
+    popup = Material_sku_input_form(master_material=self.item['material_id'])
+
+    alert(
+      content=popup,
+      title=None,
+      large=True,
+      buttons=None 
     )
+
+  def refresh_sku_panel(self, master_material):
+    # Refresh repeating panel to show all SKUs for this material
+    self.material_sku_repeating_panel.items = anvil.server.call('get_material_sku', master_material)
