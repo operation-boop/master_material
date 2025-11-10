@@ -7,6 +7,7 @@ from ..Material_input_form import Material_input_form
 class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
+    self.load_material_cards()
 
   def refresh_list(self, statuses=None, **event_args):
     try:
@@ -25,9 +26,8 @@ class Material_list(Material_listTemplate):
       self.flow_panel_materials.add_component(card)
 
   def form_show(self, **event_args):
-    # Load real data on show
     self.refresh_list()
-    self.load_material_card()
+    self.load_material_cards()
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status and opens the popup"""
@@ -40,9 +40,6 @@ class Material_list(Material_listTemplate):
       from ..Material_input_form import Material_input_form
       popup = Material_input_form(current_document_id=document_id)
 
-      # IMPORTANT: listen for the custom events the popup already raises
-      popup.set_event_handler("x-refresh-list", self.refresh_list)
-
       alert(
         content=popup,
         title=None,
@@ -53,13 +50,12 @@ class Material_list(Material_listTemplate):
       alert(f"Error creating material: {str(e)}")
 
   def load_material_cards(self):
-    """Fetch a fresh snapshot from server and set repeating panel items."""
     try:
-      self.repeating_panel_materials.items = anvil.server.call('get_all_versions_flat')
+      self.repeating_panel_materials.items = anvil.server.call('list_material_cards')
     except Exception as e:
       alert(f"Could not load material cards: {e}", title="Load error")
 
- 
+
 
 
 
