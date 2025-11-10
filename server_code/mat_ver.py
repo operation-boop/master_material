@@ -7,9 +7,9 @@ import anvil.tables.query as q
 DOC_PREFIX = "vin_mmat_"
 VALID_STATUSES = {
   "Creating": ["Draft", "Submitted - Unverified"],
-  "Draft": ["Draft", "Submitted - Unverified"],
-  "Submitted - Unverified": ["Creating", "Submitted - Verified"],
-  "Submitted - Verified": ["Creating"]
+  "Draft": ["Draft", "Submitted - Unverified"],  
+  "Submitted - Unverified": ["Creating", "Submitted - Verified"],  
+  "Submitted - Verified": ["Creating"]  
 }
 REQUIRED_FIELDS = ["supplier_name"]  
 
@@ -60,14 +60,14 @@ def get_next_document_number():
 #-----------------------------------------------------------------------
 @anvil.server.callable
 def get_master_material(document_id):
-  """Get master material, raise if not found"""
-  try:
-    master = app_tables.master_material.get(document_id=document_id)
-    if not master:
-      raise Exception(f"Document {document_id} not found in master_material table")
-    return master
-  except Exception as e:
-    raise Exception(f"Error retrieving document {document_id}: {str(e)}")   
+  """Retrieve a master material record by document_id."""
+  master = app_tables.master_material.get(document_id=document_id)
+
+  if not master:
+    raise Exception(f"Document '{document_id}' not found")
+
+  return master
+    
 @anvil.server.callable
 def validate_required_fields(document_id):
   """Validate all required fields are filled on the current version"""
@@ -136,10 +136,8 @@ def submit_version(document_id, submitted_by_user, form_data=None):
   master = get_master_material(document_id)
   version = master['current_version']
 
-  # Validate allowed transition (will raise if not allowed)
   check_status_transition(version['status'], "Submitted - Unverified")
 
-  # Update fields from form_data (if provided)
   if form_data:
     updated_fields = []
     for key, value in form_data.items():

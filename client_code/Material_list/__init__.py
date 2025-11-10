@@ -10,12 +10,12 @@ class Material_list(Material_listTemplate):
 
   def refresh_list(self, statuses=None, **event_args):
     try:
-      materials = anvil.server.call('list_material_cards', statuses or ["Draft", "Submitted"]) or []
+      materials = anvil.server.call('list_material_cards', statuses or ["Draft", "Submitted - Unverified"]) or []
     except Exception as e:
       Notification(f"Load failed: {e}", style="danger").show()
       return
 
-    self.flow_panel_materials.clear()
+
     from .MaterialCard import MaterialCard
     for m in materials:
       card = MaterialCard(item=m)
@@ -55,11 +55,8 @@ class Material_list(Material_listTemplate):
   def load_material_cards(self):
     """Fetch a fresh snapshot from server and set repeating panel items."""
     try:
-      # Replace with whatever server function you already use to fetch card data.
-      # get_all_versions_flat() is an example we used earlier.
       self.repeating_panel_materials.items = anvil.server.call('get_all_versions_flat')
     except Exception as e:
-      # Friendly fallback if server call fails
       alert(f"Could not load material cards: {e}", title="Load error")
 
  
