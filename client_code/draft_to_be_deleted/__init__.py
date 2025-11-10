@@ -16,6 +16,7 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     self.create_new_cost_sheet()
     # self.list_of_cost_sheets = []
 
+
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
     # for row in self.list_of_cost_sheets:
     #    print(dict(row))
@@ -23,9 +24,15 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
 
   def create_new_cost_sheet(self):
    # Create a draft version
-   cost_sheet_version = anvil.server.call('create_cost_sheet_version_low_level', draft=True)
+   # cost_sheet_version = anvil.server.call('create_cost_sheet_version_low_level', draft=True)
 
-   print("Created Cost Sheet Version with Document ID:", cost_sheet_version["document_id"])
+   res = anvil.server.call('create_cost_sheet_version_with_rates', True)
+   print(dict(res))
+    
+   # print("Created Cost Sheet Version with Document ID:", cost_sheet_version["document_id"])
+
+  # server call to create a draft version with up to 2 most recent exchange rates
+
 
 
 
