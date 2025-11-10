@@ -13,11 +13,23 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    self.create_new_cost_sheet()
+    # self.list_of_cost_sheets = []
 
-  
+    # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
+    # for row in self.list_of_cost_sheets:
+    #    print(dict(row))
+
+
+  def create_new_cost_sheet(self):
+   # Create a draft version
+   cost_sheet_version = anvil.server.call('create_cost_sheet_version_low_level', draft=True)
+
+   print("Created Cost Sheet Version with Document ID:", cost_sheet_version["document_id"])
 
 
 
+      
 
   # def button_1_click(self, **event_args):
   #   result = anvil.server.call('create_sample_boms')
