@@ -92,7 +92,8 @@ components:
     name: column_panel_5
     properties: {}
     type: ColumnPanel
-  - layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
+  - event_bindings: {click: button_4_click}
+    layout_properties: {grid_position: 'XNQWAU,NOEGPX'}
     name: button_4
     properties: {text: Add More}
     type: Button

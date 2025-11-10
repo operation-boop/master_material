@@ -13,7 +13,7 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.create_new_cost_sheet()
+    # self.create_new_cost_sheet()
     self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
 
@@ -22,12 +22,17 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # for row in self.list_of_cost_sheets:
     #    print(dict(row))
 
+  def button_1_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    anvil.server.call('create_cost_sheet_version_with_rates', True)
+    print("Submitted")
 
-  def create_new_cost_sheet(self):
+    
+  # def create_new_cost_sheet(self):
    # Create a draft version
    # cost_sheet_version = anvil.server.call('create_cost_sheet_version_low_level', draft=True)
 
-   res = anvil.server.call('create_cost_sheet_version_with_rates', True)
+
    # print(dict(res))
     
    # print("Created Cost Sheet Version with Document ID:", cost_sheet_version["document_id"])
@@ -118,3 +123,5 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # print(clicked_id == target_id)
 
     # print(dict(most_recent_version))
+
+
