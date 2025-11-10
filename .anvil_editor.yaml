@@ -2,6 +2,7 @@ unique_ids:
   assets:
     standard-page.html: 4WPXOJDQAJIMXWQHRCCBL5SCVCKZ7HNY
     theme.css: TWHKL7YNID6SS6TGNWHF3DXBMLLROGKK
+    twill-black.jpg: '176276430773281161955347.24812'
   forms:
     Client_list: '1761392065421341846000441.42474'
     Costing_sheet_base: VK6V62JSTW6OZFR4LQAZDW3ZAVGXUSGW
@@ -15,9 +16,6 @@ unique_ids:
     Costing_sheet_home.RowTemplate1: ZWZE66IVW44DIRQA7MYAYLLWXY2MIWWN
     Deal: '1761391960671703756629457.2389'
     Home: DNP22X3TNU36IXO4FW2GWYDLINVJ3BQN
-    Master_Mat: KIMSFIMDBFNFO6GGK3Q3R4BYI5ZAKE5L
-    Master_Mat.RowTemplate1: TGX3ARPJZWLXMU2GRZ6Z7NWQGUWHT7P3
-    Master_Mat.RowTemplate2: GD2WE2IU2GOFBLQQRLIJ3KKI3XX4XLMG
     Material_detail: '1762232363749242069688936.04575'
     Material_detail.material_sku_rowtemplate: XQPRO2LKNQ2NX6ZM2QATA7LPORVUTDMB
     Material_detail.version_history_itemtemplate: 32KWER7EHLPCCKMWGMCPZFB2R452AKBK
@@ -30,6 +28,11 @@ unique_ids:
     Material_sku_input_form: '1762750251452246261220946.20694'
     Opportunity: '1761391942918616178806726.4047'
     QMO: '17613920531692144854397.7878876'
+    Style_input_form: '1762768615031854272421166.3252'
+    Style_input_form.Color_itemtemplate: '1762770534910621690641570.1466'
+    Style_input_form.Size_itemtemplate: '1762770554238211782172043.4696'
+    Style_list: '1762762809770470500991563.1734'
+    Style_list.Style_itemtemplate: '1762763059932876511595020.4052'
     Supplier_details: '1762745368165464888352641.60834'
     Supplier_details.supplier_activity_timeline: '1762746890609227113649831.30612'
     Supplier_details.supplier_material_rowtemplate: '176274659252972079207917.72026'

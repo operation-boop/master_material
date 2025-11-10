@@ -19,6 +19,7 @@ from ..Deal import Deal
 #from ..SMO import SMO
 from ..Client_list import Client_list
 from ..Supplier_list import Supplier_list
+from ..Style_list import Style_list
 from ..Material_list import Material_list
 #from ..Costing_sheet_base import Costing_sheet_base
 from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overview
@@ -51,6 +52,7 @@ class Home(HomeTemplate):
       #"smo": SMO(),
       "client": Client_list(),
       "supplier": Supplier_list(),
+      "style": Style_list(),
       "material": Material_list(),
       #Added in my costing sheet
       #"Costing_sheet_group": Costing_sheet_base()
@@ -75,6 +77,7 @@ class Home(HomeTemplate):
     #self.link_smo.role = "<default>"
     self.link_client.role = "<default>"
     self.link_supplier.role = "<default>"
+    self.link_style.role = "<default>"
     self.link_material.role = "<default>"
     #added my own Costing Sheet
     self.link_costing_sheet_base.role = "<default>"
@@ -141,3 +144,14 @@ class Home(HomeTemplate):
 
     self.content_panel.clear()
     self.content_panel.add_component(Supplier_list(), full_width_row=True)
+
+  def open_style_list(self):
+    # Ensure master data group is visible
+    self.column_panel_group_master_data.visible = True
+
+    # Highlight the Material link as selected
+    self.format_link_role_to_default()
+    self.link_style.role = "selected"
+
+    self.content_panel.clear()
+    self.content_panel.add_component(Style_list(), full_width_row=True)

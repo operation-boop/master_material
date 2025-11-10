@@ -65,15 +65,15 @@ class Material_detail(Material_detailTemplate):
   def add_sku_btn_click(self, **event_args):
     """This method is called when the button is clicked"""
 
-    popup = Material_sku_input_form(master_material=self.item['material_id'])
+    form = Material_sku_input_form(master_material=self.item['material_id'])
+    alert(content=form, title=None, large=True, buttons=None)
+    
+    # When the form closes successfully, refresh the data 
+    if form.saved: 
+      self.refresh_data()
 
-    alert(
-      content=popup,
-      title=None,
-      large=True,
-      buttons=None 
-    )
-
-  def refresh_sku_panel(self, master_material):
-    # Refresh repeating panel to show all SKUs for this material
-    self.material_sku_repeating_panel.items = anvil.server.call('get_material_sku', master_material)
+  def refresh_data(self): 
+    try: 
+      self.material_sku_repeating_panel.items = anvil.server.call('get_material_sku', self.item['material_id']) 
+    except Exception as e: 
+      Notification(f"Error loading data: {e}").show()

@@ -1,0 +1,68 @@
+components:
+- components:
+  - data_bindings:
+    - {code: 'self.item[''picture'']', property: source, writeback: false}
+    layout_properties: {grid_position: 'SHBXAO,OJGNVT'}
+    name: picture
+    properties: {background: 'theme:White', height: 173.5, source: ''}
+    type: Image
+  - components:
+    - data_bindings:
+      - {code: '"Style: " + self.item[''id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'QBLXYY,UVWOTC'}
+      name: style_id
+      properties: {bold: true, font_size: 18, spacing_above: none, spacing_below: none}
+      type: Label
+    - data_bindings:
+      - {code: '"Client Ref: " + self.item[''ref_id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'KKIBGP,QJQZKA'}
+      name: ref_id
+      properties:
+        spacing:
+          padding: [0, null, 0, null]
+        spacing_above: none
+        spacing_below: none
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''description'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'RBATXQ,JBPEFK'}
+      name: description
+      properties:
+        spacing:
+          padding: [0, null, 0, null]
+        spacing_above: small
+        spacing_below: none
+      type: Label
+    - layout_properties: {grid_position: 'TOIDFB,LKHOXA'}
+      name: sku_variants
+      properties: {}
+      type: Label
+    - layout_properties: {grid_position: 'TOIDFB,JPQENE'}
+      name: active_rfqs
+      properties: {}
+      type: Label
+    - layout_properties: {grid_position: 'ZGADBO,DWBXET'}
+      name: view_details_btn
+      properties: {align: left, background: orange, foreground: 'theme:White', text: view details}
+      type: Button
+    layout_properties: {grid_position: 'SHBXAO,YWUGAF'}
+    name: column_panel_1
+    properties: {}
+    type: ColumnPanel
+  - components:
+    - data_bindings:
+      - {code: 'self.item[''client'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'JNBVKV,EYFPTG'}
+      name: client
+      properties: {align: center, background: '#b9f471', bold: true, font_size: 16}
+      type: Label
+    layout_properties: {grid_position: 'SHBXAO,GFHFJS'}
+    name: column_panel_2
+    properties: {}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'YLOVJS,FSWREB'}
+  name: card_1
+  properties: {col_widths: '{"OJGNVT":20,"YWUGAF":30,"GFHFJS":10}', role: card}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true
