@@ -2,7 +2,12 @@ components:
 - event_bindings: {click: button_1_click}
   layout_properties: {grid_position: 'XHTUWD,AYETOK'}
   name: button_1
-  properties: {text: button_1}
+  properties: {text: Add}
+  type: Button
+- event_bindings: {click: button_2_click}
+  layout_properties: {grid_position: 'BYQJFE,LTYQKA'}
+  name: button_2
+  properties: {text: see list}
   type: Button
 container: {type: ColumnPanel}
 is_package: true
