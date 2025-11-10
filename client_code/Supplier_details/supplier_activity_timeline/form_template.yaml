@@ -1,0 +1,26 @@
+components:
+- components:
+  - data_bindings:
+    - {code: 'self.item[''activity_timeline'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'YQLTYD,MRAKYZ'}
+    name: activity_title
+    properties: {bold: true, text: ''}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''approved_date'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'YQLTYD,PMFTWK'}
+    name: activity_date
+    properties: {align: right, text: ''}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''activity_description'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'PERKGT,AYZNYA'}
+    name: activity_description
+    properties: {text: ''}
+    type: Label
+  layout_properties: {grid_position: 'EUOEUY,JKFQQW'}
+  name: card_1
+  properties: {role: card}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true

@@ -1,0 +1,23 @@
+components:
+- layout_properties: {column: PPZRPI}
+  name: cost
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: type
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: material_name
+  properties: {}
+  type: Label
+- layout_properties: {column: JKSDUP}
+  name: material_id
+  properties: {}
+  type: Label
+- layout_properties: {column: TIQMNL}
+  name: status
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true

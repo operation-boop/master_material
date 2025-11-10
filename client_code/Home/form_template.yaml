@@ -141,6 +141,13 @@ components:
       properties: {text: '|       Client List'}
       type: Link
     - data_bindings:
+      - {code: '"supplier"', property: tag, writeback: false}
+      event_bindings: {click: link_nav_click}
+      layout_properties: {grid_position: 'HMVZDM,AVLCOO'}
+      name: link_supplier
+      properties: {text: '|       Supplier List'}
+      type: Link
+    - data_bindings:
       - {code: '"material"', property: tag, writeback: false}
       event_bindings: {click: link_nav_click}
       layout_properties: {grid_position: 'FYLCCJ,UNXWCI'}

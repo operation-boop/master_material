@@ -1,0 +1,27 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: order_id
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: material
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: quantity
+  properties: {}
+  type: Label
+- layout_properties: {column: KSCSQS}
+  name: value
+  properties: {}
+  type: Label
+- layout_properties: {column: MUWVKB}
+  name: status
+  properties: {}
+  type: Label
+- layout_properties: {column: DTVANP}
+  name: date
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true
