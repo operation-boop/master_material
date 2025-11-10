@@ -7,53 +7,56 @@ import anvil.tables.query as q
 
 @anvil.server.callable
 def list_material_cards(statuses=None):
-
   statuses = statuses or ["Draft", "Submitted - Unverified", "Submitted - Verified"]
 
-  # Pull only rows with status in desired set
   vers = app_tables.master_material_version.search(
     status=q.any_of(*statuses)
   )
 
-  # Keep the latest version by ver_num for each document_id
-  latest = {}  # doc_id -> version row
+  # Keep latest version per document
+  latest = {}
   for v in vers:
     doc_id = _get(v, "document_id") or _get(v, "document_uid")
     if not doc_id:
       continue
+
     vn = _to_num(_get(v, "ver_num"))
     cur = latest.get(doc_id)
+
     if (cur is None) or (vn > _to_num(_get(cur, "ver_num"))):
       latest[doc_id] = v
 
-  # Build plain dicts for the cards
   cards = []
   for v in latest.values():
     wpu  = _get(v, "weight_per_unit")
     wuom = _get(v, "weight_uom")
-    weight = f"{wpu} {wuom}" if (wpu is not None and wuom) else None
+    weight = f"{wpu} {wuom}" if (wpu is not None and wuom) else ""
 
     ocpu = _get(v, "original_cost_per_unit")
     nccy = _get(v, "native_cost_currency")
-    cost = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else None
+    cost = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else ""
 
     cards.append({
       "document_id": v["document_id"],
       "material_id": _get(v, "master_material_id") or _get(v, "document_id"),
-      "ref_id": _get(v, "ref_id"),
-      "material_name": _get(v, "name"),
-      "material_type": _get(v, "material_type"),
-      "fabric_composition": _get(v, "fabric_composition") or _get(v, "generic_material_composition"),
+      "ref_id": _get(v, "ref_id") or "",
+      "material_name": _get(v, "name") or "",
+      "material_type": _get(v, "material_type") or "",
+      "fabric_composition": _get(v, "fabric_composition") or _get(v, "generic_material_composition") or "",
       "weight": weight,
-      "supplier": _get(v, "supplier_name"),
+      "supplier": _get(v, "supplier_name") or "",
       "cost_per_unit": cost,
-      "verification_status": _get(v, "status") or _get.master('status') or "Draft",
-      "ver_num": _get(v, "ver_num"),
+      "verification_status": _get(v, "status") or "Draft",
+      "ver_num": _get(v, "ver_num") or 1,
+      "updated_at": _get(v, "updated_at"),
+      "submitted_at": _get(v, "submitted_at"),
+      "last_verified_date": _get(v, "last_verified_date"),
     })
 
-  # Sort newest first if you like (by updated_at then ver_num)
+  # Sort newest first (like before)
   cards.sort(key=lambda d: (d.get("updated_at") or 0, _to_num(d.get("ver_num"))), reverse=True)
   return cards
+
   
 def _get(row, key, default=None):
   try:
