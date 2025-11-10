@@ -8,6 +8,13 @@ def get_material_detail(document_id):
   if not v:
     raise Exception(f"No document found for ID: {document_id}")
 
+
+  def _get(key, default=None):
+    try:
+      return v.get(key, default)
+    except Exception:
+      return default
+      
   wpu  = _get(v, "weight_per_unit")
   wuom = _get(v, "weight_uom")
   weight = f"{wpu} {wuom}" if (wpu is not None and wuom) else ""
@@ -41,8 +48,4 @@ def get_material_detail(document_id):
   }
 
 
-def _get(row, key, default=None):
-  try:
-    return row[key]
-  except Exception:
-    return default
+
