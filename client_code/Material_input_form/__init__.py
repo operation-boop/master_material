@@ -176,7 +176,6 @@ class Material_input_form(Material_input_formTemplate):
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
     
-
   def validate_form_data(self, form_data):
     """Basic client-side validation"""
     required_fields = [

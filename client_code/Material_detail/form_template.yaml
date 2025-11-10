@@ -79,7 +79,7 @@ components:
         type: Label
       - data_bindings:
         - {code: 'self.item[''created_at'']', property: text, writeback: false}
-        layout_properties: {grid_position: 'UTFKAM,UGBJUT JMZWRY,EIKBUX'}
+        layout_properties: {grid_position: 'UTFKAM,UGBJUT RNWQXN,XQDSCN'}
         name: created_at
         properties: {}
         type: Label

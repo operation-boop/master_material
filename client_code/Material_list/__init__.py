@@ -9,24 +9,7 @@ class Material_list(Material_listTemplate):
     self.init_components(**properties)
     self.load_material_cards()
 
-  def refresh_list(self, statuses=None, **event_args):
-    try:
-      materials = anvil.server.call('list_material_cards', statuses or ["Draft", "Submitted - Unverified"]) or []
-    except Exception as e:
-      Notification(f"Load failed: {e}", style="danger").show()
-      return
-
-
-    from .MaterialCard import MaterialCard
-    for m in materials:
-      card = MaterialCard(item=m)
-      card.width = "100%"
-      card.item = m   
-      card.refresh_data_bindings()
-      self.flow_panel_materials.add_component(card)
-
   def form_show(self, **event_args):
-    self.refresh_list()
     self.load_material_cards()
 
   def add_btn_click(self, **event_args):
@@ -39,6 +22,7 @@ class Material_list(Material_listTemplate):
 
       from ..Material_input_form import Material_input_form
       popup = Material_input_form(current_document_id=document_id)
+      popup.set_event_handler("x-refresh-list", self.load_material_cards)
 
       alert(
         content=popup,
@@ -49,7 +33,7 @@ class Material_list(Material_listTemplate):
     except Exception as e:
       alert(f"Error creating material: {str(e)}")
 
-  def load_material_cards(self):
+  def load_material_cards(self, **event_args):
     try:
       self.repeating_panel_materials.items = anvil.server.call('list_material_cards')
     except Exception as e:

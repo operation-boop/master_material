@@ -8,34 +8,41 @@ def get_material_detail(document_id):
   if not v:
     raise Exception(f"No document found for ID: {document_id}")
 
-  # Format combined fields
-  wpu  = v["weight_per_unit"]
-  wuom = v["weight_uom"]
-  weight = f"{wpu} {wuom}" if wpu and wuom else ""
+  wpu  = _get(v, "weight_per_unit")
+  wuom = _get(v, "weight_uom")
+  weight = f"{wpu} {wuom}" if (wpu is not None and wuom) else ""
 
-  ocpu = v["original_cost_per_unit"]
-  nccy = v["native_cost_currency"]
-  cost = f"{ocpu} {nccy}" if ocpu and nccy else ""
+  ocpu = _get(v, "original_cost_per_unit")
+  nccy = _get(v, "native_cost_currency")
+  cost_display = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else ""
 
   return {
-    "document_id": v["document_id"],
-    "ver_num": v["ver_num"],
-    "material_id": v["master_material_id"],
-    "ref_id": v["ref_id"] or "",
-    "material_name": v["name"] or "",
-    "material_type": v["material_type"] or "",
-    "supplier": v["supplier_name"] or "",
-    "country_of_origin": v["country_of_origin"] or"",
-    "created_by": v["created_by"],
-    "created_at":["created_at"],
-    "fabric_composition": v["fabric_composition"] or v["generic_material_composition"] or "",
+    "document_id": _get(v, "document_id"),
+    "ver_num": _get(v, "ver_num"),
+    "material_id": _get(v, "master_material_id"),
+    "ref_id": _get(v, "ref_id", ""),
+    "material_name": _get(v, "name", ""),
+    "material_type": _get(v, "material_type", ""),
+    "supplier": _get(v, "supplier_name", ""),
+    "country_of_origin": _get(v, "country_of_origin", ""),
+    "created_by": _get(v, "created_by", ""),
+    "created_at": _get(v, "created_at"),
+    "fabric_composition": _get(v, "fabric_composition") or _get(v, "generic_material_composition", ""),
     "weight": weight,
-    "fabric_roll_width": v["fabric_roll_width"],
-    "fabric_cut_width": v["fabric_cut_width"],
-    "original_cost_per_unit": cost,
-    "unit_of_measurement": v["weight_uom"],
-    "verification_status": v["status"] or "Draft",
-    "updated_at": v["updated_at"],
-    "submitted_at": v["submitted_at"],
-    "last_verified_date": v["last_verified_date"],
+    "fabric_roll_width": _get(v, "fabric_roll_width"),
+    "fabric_cut_width": _get(v, "fabric_cut_width"),
+    "original_cost_per_unit": ocpu,
+    "cost_display": cost_display,
+    "unit_of_measurement": _get(v, "unit_of_measurement") or wuom,
+    "verification_status": _get(v, "status", "Draft"),
+    "updated_at": _get(v, "updated_at"),
+    "submitted_at": _get(v, "submitted_at"),
+    "last_verified_date": _get(v, "last_verified_date"),
   }
+
+
+def _get(row, key, default=None):
+  try:
+    return row[key]
+  except Exception:
+    return default

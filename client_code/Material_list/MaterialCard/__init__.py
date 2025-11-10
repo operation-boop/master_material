@@ -9,6 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 from ...Material_detail import Material_detail
 
+
 class MaterialCard(MaterialCardTemplate):
   def _init_(self, **properties):
     # Set Form properties and Data Bindings.
@@ -20,9 +21,8 @@ class MaterialCard(MaterialCardTemplate):
 
 
   def view_details_btn_click(self, **event_args):
-    doc_id = self.item["document_id"]
-    open_form('Material_detail', document_id=doc_id)
-    pass
-    
+    doc = self.item.get("document_id")
+    form = Material_detail(doc_id=doc)   # instantiate the form
+    open_form(form)                      # pass the instance
 
     
