@@ -27,7 +27,7 @@ class Material_list(Material_listTemplate):
   def form_show(self, **event_args):
     # Load real data on show
     self.refresh_list()
-    self.load_material_cards()
+    self.load_material_card()
 
   def add_btn_click(self, **event_args):
     """Creates new material with 'Creating' status and opens the popup"""
