@@ -25,10 +25,8 @@ class MaterialCard(MaterialCardTemplate):
     if not self.item:
       alert("No item data!", title="Error")
       return
-
     doc_id = self.item.get("document_id")
     if not doc_id:
       alert("No document ID!", title="Error")
       return
-    detail = Material_detail(doc_id=doc_id)
-    alert(content=detail, large=True)
+    open_form("Material_detail", doc_id=doc_id)

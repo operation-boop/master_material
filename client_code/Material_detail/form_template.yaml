@@ -256,7 +256,7 @@ components:
       name: technical_specs_tab_btn
       properties: {foreground: 'theme:Black', text: technical specs}
       type: Button
-    - event_bindings: {}
+    - event_bindings: {click: cost_details_tab_btn_click}
       layout_properties: {}
       name: cost_details_tab_btn
       properties: {foreground: 'theme:Black', text: cost details}
@@ -338,7 +338,9 @@ components:
           name: label_20
           properties: {bold: true, text: CUT WIDTH}
           type: Label
-        - layout_properties: {grid_position: 'IHIDCS,VIWVUZ'}
+        - data_bindings:
+          - {code: 'self.item[''fabric_cut_width'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'IHIDCS,VIWVUZ'}
           name: cut_width_label
           properties: {text: ''}
           type: Label
@@ -374,8 +376,10 @@ components:
           name: label_19
           properties: {bold: true, text: WEFT SHRINKAGE}
           type: Label
-        - layout_properties: {grid_position: 'YKSLJZ,VACIQQ'}
-          name: weft_shrinkage_label
+        - data_bindings:
+          - {code: 'self.item[''weft_shrinkage'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'LUQUKP,LBXJNN'}
+          name: weft_shrinkage
           properties: {}
           type: Label
         layout_properties: {grid_position: 'QBPLUH,LYDLMI'}
@@ -385,10 +389,12 @@ components:
       - components:
         - layout_properties: {grid_position: 'UGHBTE,MFFGJC'}
           name: label_25
-          properties: {bold: true, text: WARP SHRINKAGE}
+          properties: {bold: true, text: WERP SHRINKAGE}
           type: Label
-        - layout_properties: {grid_position: 'WIDBXU,HYFOUH'}
-          name: warp_shrinkage_label
+        - data_bindings:
+          - {code: 'self.item[''werp_shrinkage'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'WIDBXU,HYFOUH'}
+          name: werp_shrinkage
           properties: {}
           type: Label
         layout_properties: {grid_position: 'QBPLUH,NIETRU'}
@@ -418,7 +424,9 @@ components:
           name: label_30
           properties: {bold: true, text: ORIGINAL COST}
           type: Label
-        - layout_properties: {grid_position: 'RIQXRS,ARSYEK'}
+        - data_bindings:
+          - {code: 'self.item[''original_cost_per_unit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RIQXRS,ARSYEK'}
           name: original_cost_label
           properties: {}
           type: Label
@@ -426,7 +434,9 @@ components:
           name: label_32
           properties: {bold: true, text: SUPPLIER TOLERANCE}
           type: Label
-        - layout_properties: {grid_position: 'PTIWYJ,NOHHXX'}
+        - data_bindings:
+          - {code: 'self.item[''supplier_tolerance'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PTIWYJ,NOHHXX'}
           name: supplier_tolerance_label
           properties: {}
           type: Label
@@ -439,7 +449,9 @@ components:
           name: label_33
           properties: {bold: true, text: CURRENCY}
           type: Label
-        - layout_properties: {grid_position: 'NHGJDC,MEYFIB'}
+        - data_bindings:
+          - {code: 'self.item[''currency'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'NHGJDC,MEYFIB'}
           name: currency_label
           properties: {}
           type: Label
@@ -447,7 +459,9 @@ components:
           name: label_35
           properties: {bold: true, text: EFFECTIVE COST}
           type: Label
-        - layout_properties: {grid_position: 'XCUMRN,TXVAVO'}
+        - data_bindings:
+          - {code: 'self.item[''effective_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'XCUMRN,TXVAVO'}
           name: effective_cost_label
           properties: {}
           type: Label
@@ -469,11 +483,13 @@ components:
         properties: {bold: true, foreground: 'theme:Secondary 500', text: LANDED COST}
         type: Label
       - components:
-        - layout_properties: {grid_position: 'XPCBHQ,WIEGPP'}
+        - layout_properties: {grid_position: 'DPTOHX,ATTZHM'}
           name: label_34
           properties: {bold: true, text: VAT RATE}
           type: Label
-        - layout_properties: {grid_position: 'OLXSMU,YPEVJZ'}
+        - data_bindings:
+          - {code: 'self.item[''vat'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'OLXSMU,YPEVJZ'}
           name: vat_rate_label
           properties: {}
           type: Label
@@ -481,7 +497,9 @@ components:
           name: label_39
           properties: {bold: true, text: LOGISTICS RATE}
           type: Label
-        - layout_properties: {grid_position: 'CPGVAI,UFUVHJ'}
+        - data_bindings:
+          - {code: 'self.item[''logistics_rate'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'CPGVAI,UFUVHJ'}
           name: logistics_rate_label
           properties: {}
           type: Label
@@ -494,7 +512,9 @@ components:
           name: label_37
           properties: {text: IMPORT DUTY}
           type: Label
-        - layout_properties: {grid_position: 'RCETRY,GUBYEV'}
+        - data_bindings:
+          - {code: 'self.item[''import_duty'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RCETRY,GUBYEV'}
           name: import_duty_label
           properties: {}
           type: Label
@@ -502,7 +522,9 @@ components:
           name: label_41
           properties: {bold: true, text: LANDED COST}
           type: Label
-        - layout_properties: {grid_position: 'AGBTSM,XRCHYA'}
+        - data_bindings:
+          - {code: 'self.item[''landed_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'AGBTSM,XRCHYA'}
           name: landed_cost_label
           properties: {}
           type: Label

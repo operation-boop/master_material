@@ -60,6 +60,44 @@ class Material_detail(Material_detailTemplate):
         pass
       Notification("Material updated.", style="success").show()
 
+  def technical_specs_tab_btn_click(self, document_id=None, **event_args):
+    self.technical_specs_panel.visible = True
+    self.cost_details_panel.visible = False
+    self.version_history_panel.visible = False
+    self.material_sku_panel.visible = False
+
+    doc_id = document_id or (self.item or {}).get("document_id")
+  
+    if not doc_id:
+      alert("No document ID found!")
+      return
+  
+    technicaldetail = anvil.server.call("get_technical_detail", doc_id)
+    self.item.update(technicaldetail)
+    self.item = dict(self.item)
+    self.refresh_data_bindings()
+
+  def cost_details_tab_btn_click(self, document_id=None, **event_args):
+    self.cost_details_panel.visible = True
+    self.technical_specs_panel.visible = False
+    self.version_history_panel.visible = False
+    self.material_sku_panel.visible = False
+    
+    doc_id = document_id or (self.item or {}).get("document_id")
+
+    if not doc_id:
+      alert("No document ID found!")
+      return
+
+    costdetail = anvil.server.call("get_cost_detail", doc_id)
+    self.item.update(costdetail)
+    self.item = dict(self.item)
+    self.refresh_data_bindings()
+    pass
+
+  
+
+
 
 
 
