@@ -7,6 +7,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
+from datetime import datetime
 
 # ============================================
 # EXCHANGE RATE HELPERS
@@ -41,9 +42,9 @@ def get_latest_exchange_rate(from_currency, to_currency):
     """
 
   rate = app_tables.exchange_rates.search(
+    tables.order_by("date", ascending=False),
     from_currency=from_currency,
     to_currency=to_currency,
-    tables.order_by("date", ascending=False)
   )
 
   if len(rate) > 0:
