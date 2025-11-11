@@ -36,6 +36,8 @@ class Material_input_form(Material_input_formTemplate):
       self.item.setdefault("supplier", self.item.get("supplier_name", ""))
       self.item.setdefault("fabric_composition", self.item.get("fabric_composition", []))
       self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit", ""))
+      self.item.setdefault("ref_id",self.item.get("ref_id"))
+      self.item.setdefault("")
 
     # Convert composition string -> list of dicts expected by repeating panel (if necessary)
     comp = self.item.get("fabric_composition")
