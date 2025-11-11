@@ -17,8 +17,7 @@ def list_all_cost_sheet_versions():
   return [dict(cost_sheet) for cost_sheet in cost_sheet_version]
   
 def generate_next_cost_sheet_document_id():
-  
-    # Generate the next incremental document ID in the format CS-1001, CS-1002, ...
+    # This Generate the next incremental document ID in the format CS-1001, CS-1002, ...
 
   # Fetch all cost_sheet_version rows
   rows = list(app_tables.cost_sheet_version.search())
