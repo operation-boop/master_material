@@ -37,16 +37,22 @@ class Material_input_form(Material_input_formTemplate):
       self.item.setdefault("fabric_composition", self.item.get("fabric_composition", []))
       self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit", ""))
       self.item.setdefault("ref_id",self.item.get("ref_id"))
-      self.item.setdefault("")
-
-    # Convert composition string -> list of dicts expected by repeating panel (if necessary)
+      self.item.setdefault("fabric_roll_width",self.item.get("fabric_roll_width"))
+      self.item.setdefault("fabric_cut_width",self.item.get("fabric_cut_width"))
+      self.item.setdefault("fabric_cut_width_no_shrinkage",self.item.get("fabric_cut_width_no_shrinkage"))
+      self.item.setdefault("generic_material_size",self.item.get("generic_material_size"))
+      self.item.setdefault("weft_shrinkage",self.item.get("weft_shrinkage"))
+      self.item.setdefault("werp_shrinkage",self.item.get("werp_shrinkage"))
+      self.item.setdefault("weight_per_unit",self.item.get("weight_per_unit"))
+      self.item.setdefault("original_cost_per_unit",self.item.get("original_cost_per_unit"))
+      self.item.setdefault("supplier_selling_tolerance",self.item.get("supplier_selling_tolerance"))
+    ##-----------------------------------------------------------------
     comp = self.item.get("fabric_composition")
     if isinstance(comp, str):
       parts = [p.strip() for p in comp.split(",") if p.strip()]
       # adapt shape if your repeating panel expects dicts with keys
       self.item["fabric_composition"] = [{"component": p, "percentage": ""} for p in parts]
     elif isinstance(comp, list):
-      # ensure each entry is dict-shaped (component + percentage) for the repeating panel
       normalized = []
       for c in comp:
         if isinstance(c, dict):
@@ -54,32 +60,32 @@ class Material_input_form(Material_input_formTemplate):
         else:
           normalized.append({"component": c, "percentage": ""})
       self.item["fabric_composition"] = normalized
-
-    try:
-      if self.item.get("supplier"):
-        self.dropdown_supplier.selected_value = self.item.get("supplier")
-      if self.item.get("material_type"):
-        self.material_type_dropdown.selected_value = self.item.get("material_type")
-      if self.item.get("country_of_origin"):
-        self.country_of_origin_dropdown.selected_value = self.item.get("country_of_origin")
-      if self.item.get("unit_of_measurement"):
-        self.UOM_dropdown.selected_value = self.item.get("unit_of_measurement")
-      if self.item.get("weight_uom"):
-        self.weight_uom_dropdown.selected_value = self.item.get("weight_uom")
-      if self.item.get("native_cost_currency"):
-        self.currency_dropdown.selected_value = self.item.get("native_cost_currency")
-      if self.item.get("vietnam_vat_rate"):
-        self.vietnam_vat_rate_dropdown.selected_value = self.item.get("vietnam_vat_rate")
-      if self.item.get("shipping_term"):
-        self.shipping_term_dropdown.selected_value = self.item.get("shipping_term")
-    except Exception:
-      pass
-    try:
-      self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
-    except Exception:
-      pass
-    self.refresh_data_bindings()
+    ##_-------------------------------------------------------------------
+      def safe_set_selected(dropdown, value):
+        try:
+          if value is not None and value != "" and value in getattr(dropdown, "items", []):
+            dropdown.selected_value = value
+        except Exception:
+          pass
     
+        safe_set_selected(self.dropdown_supplier, self.item.get("supplier"))
+        safe_set_selected(self.material_type_dropdown, self.item.get("material_type"))
+        safe_set_selected(self.country_of_origin_dropdown, self.item.get("country_of_origin"))
+        safe_set_selected(self.UOM_dropdown, self.item.get("unit_of_measurement"))
+        safe_set_selected(self.weight_uom_dropdown, self.item.get("weight_uom"))
+        safe_set_selected(self.currency_dropdown, self.item.get("native_cost_currency"))
+        safe_set_selected(self.vietnam_vat_rate_dropdown, self.item.get("vietnam_vat_rate"))
+        safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
+        
+        # populate repeating panel items from normalized composition
+        try:
+          self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
+        except Exception:
+          pass
+    
+    
+    self.refresh_data_bindings()
+
   def close_btn_click(self, **event_args):
     """This method is called when the button is clicked"""
     self.raise_event("x-close-alert")
@@ -158,14 +164,14 @@ class Material_input_form(Material_input_formTemplate):
 
       # Also restrict textbox max manually
       self.percentage.placeholder = f"Max {remaining}% allowed"
-  
+
   def supplier_tolerance_change(self, **event_args):
     original_cost = float(self.original_cost_per_unit.text or 0)
     supplier_tolerance_percentage = float(self.supplier_tolerance.text or 0)
-  
+
     supplier_tolerance_cost = (supplier_tolerance_percentage / 100) * original_cost
     self.supplier_tolerance_cost.text = str(supplier_tolerance_cost)
-  
+
     effective_cost = original_cost + supplier_tolerance_cost
     self.effective_cost_per_unit.text = str(effective_cost)
 
@@ -182,8 +188,8 @@ class Material_input_form(Material_input_formTemplate):
     logistics_fee_per_unit = weight_per_unit * logistics_rate
     self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
 
-##---------------------------------------------------------------
-  
+  ##---------------------------------------------------------------
+
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
     if not self.current_document_id:
@@ -205,12 +211,12 @@ class Material_input_form(Material_input_formTemplate):
     if not self.current_document_id:
       Notification("Please create a material first!", style="warning", timeout=3).show()
       return
-      
+
     form_data = self.collect_form_data() ## collect form data 
     if not self.validate_form_data(form_data):
       Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
-      
+
     try:
       self.submit_btn.enabled = False
       self.submit_btn.text = "Submitting..."
@@ -227,7 +233,7 @@ class Material_input_form(Material_input_formTemplate):
     finally:
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
-    
+
   def validate_form_data(self, form_data):
     """Basic client-side validation"""
     required_fields = [
