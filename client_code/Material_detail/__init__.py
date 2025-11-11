@@ -2,6 +2,7 @@ from ._anvil_designer import Material_detailTemplate
 from anvil import alert
 import anvil.server
 
+
 class Material_detail(Material_detailTemplate):
   def __init__(self, doc_id=None, **properties):
     self.init_components(**properties)
@@ -14,37 +15,41 @@ class Material_detail(Material_detailTemplate):
       pass
 
   def form_show(self, **event_args):
-    if not getattr(self, "doc_id", None):
-      alert("No document id provided", title="Error")
-      return
+    doc_id = self.item.get("document_id")  # if passed from previous form
+    if doc_id:
+      self.load_material(doc_id)
+  
+  def load_material(self, document_id):
+    detail = anvil.server.call("get_material_detail", document_id)
+  
+    self.ver_num.text = detail["ver_num"]
+    self.material_id.text = detail["master_material_id"]
+    self.txt_country.text = detail["country_of_origin"]
+    self.txt_cost.text = detail["original_cost_per_unit"]
+    self.txt_weight.text = detail["weight"]
+    self.lbl_version.text = f"v{detail['ver_num']}"
 
-    try:
-      # Server returns a dict (see get_material_detail)
-      data = anvil.server.call("get_material_detail", self.doc_id)
-    except Exception as e:
-      alert(f"Failed to load material: {e}", title="Load error")
-      try:
-        self.loading_spinner.visible = False
-      except Exception:
-        pass
-      return
-    self.item = data
-    
-    try:
-      self.refresh_data_bindings()
-    except Exception:
-      pass
-
-    try:
-      self.loading_spinner.visible = False
-    except Exception:
-      pass
-
-  # Optional: if this form allows edits/saves, after saving call:
-  # self.raise_event("x-refresh-list", document_id=self.doc_id)
-  # self.raise_event("x-close-alert", True)
-
- 
+"document_id": _get(v, "document_id"),
+"ver_num": _get(v, "ver_num"),
+"material_id": _get(v, "master_material_id"),
+"ref_id": _get(v, "ref_id", ""),
+"material_name": _get(v, "name", ""),
+"material_type": _get(v, "material_type", ""),
+"supplier": _get(v, "supplier_name", ""),
+"country_of_origin": _get(v, "country_of_origin", ""),
+"created_by": _get(v, "created_by", ""),
+"created_at": _get(v, "created_at"),
+"fabric_composition": _get(v, "fabric_composition") or _get(v, "generic_material_composition", ""),
+"weight": weight,
+"fabric_roll_width": _get(v, "fabric_roll_width"),
+"fabric_cut_width": _get(v, "fabric_cut_width"),
+"original_cost_per_unit": ocpu,
+"cost_display": cost_display,
+"unit_of_measurement": _get(v, "unit_of_measurement") or wuom,
+"verification_status": _get(v, "status", "Draft"),
+"updated_at": _get(v, "updated_at"),
+"submitted_at": _get(v, "submitted_at"),
+"last_verified_date": _get(v, "last_verified_date"),
 
  
 
