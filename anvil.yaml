@@ -216,7 +216,13 @@ db_schema:
       name: description
       type: string
     - admin_ui: {order: 2, width: 200}
-      name: sku
+      name: sku_id
+      type: string
+    - admin_ui: {order: -1, width: 200}
+      name: document_id
+      type: string
+    - admin_ui: {order: 3, width: 200}
+      name: ref_id
       type: string
     server: full
     title: master_material
