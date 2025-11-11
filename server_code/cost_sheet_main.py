@@ -9,10 +9,13 @@ from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime
 
+# Import helper functions
+from . import cost_sheet_helpers as helpers
 
-# ============================================
-# COST SHEET - Main CRUD Operations
-# ============================================
+"""
+Cost Sheet Main Module
+Handles core cost sheet CRUD operations and versioning.
+"""
 
 @anvil.server.callable
 def create_cost_sheet(master_style_id, client_id, document_id, user_id, cost_currency="USD"):
@@ -47,18 +50,18 @@ def create_cost_sheet(master_style_id, client_id, document_id, user_id, cost_cur
   )
 
   # Step 3: Automatically create the first version
-  cost_sheet_version = app_tables.cost_sheet_version.add_row(
-    cost_sheet = cost_sheet,  # Link back to parent
-    document_id = document_id,
-    version_number = 1,
-    change_description = "Initial version",
-    created_at = datetime.now(),
-    created_by = user,
-    submitted_at = None,
-    submitted_by = None,
-    approved_at = None,
-    approved_by = None,
-    status = "Draft",
+  cost_sheet_version = app_tables.cost_sheet_versions.add_row(
+    cost_sheet=cost_sheet,  # Link back to parent
+    document_id=document_id,
+    version_number=1,
+    change_description="Initial version",
+    created_at=datetime.now(),
+    created_by=user,
+    submitted_at=None,
+    submitted_by=None,
+    approved_at=None,
+    approved_by=None,
+    status="Draft",
     cost_currency=cost_currency,
     master_style=master_style,
     client=client,
@@ -67,7 +70,7 @@ def create_cost_sheet(master_style_id, client_id, document_id, user_id, cost_cur
     total_processing_cost=0.0
   )
 
-  print(f"Created cost sheet {document_id} with version 1")
+  print(f"[Main] Created cost sheet {document_id} with version 1")
   return cost_sheet
 
 
@@ -76,6 +79,12 @@ def get_cost_sheet(cost_sheet_id):
   """
     Get a cost sheet by ID with its current version data.
     Simple retrieval function.
+    
+    Args:
+        cost_sheet_id: ID of the cost sheet
+    
+    Returns:
+        The cost sheet row
     """
   cost_sheet = app_tables.cost_sheets.get_by_id(cost_sheet_id)
   return cost_sheet
@@ -86,28 +95,29 @@ def list_all_cost_sheets():
   """
     Get all cost sheets in the system.
     Returns them sorted by creation date (newest first).
+    
+    Returns:
+        List of all cost sheets
     """
-  all_sheets = app_tables.cost_sheets.search(
-    tables.order_by("created_at", ascending=False)
-  )
-  return list(all_sheets)
+  all_sheets = app_tables.cost_sheets.search()
+  # Sort in Python - newest first
+  sorted_sheets = sorted(all_sheets, key=lambda x: x['created_at'], reverse=True)
+  return sorted_sheets
 
 
 @anvil.server.callable
 def get_current_version(cost_sheet_id):
   """
     Gets the current active version of a cost sheet.
+    This is a wrapper around the helper function for frontend use.
+    
+    Args:
+        cost_sheet_id: ID of the cost sheet
+    
+    Returns:
+        The current cost sheet version
     """
-  cost_sheet = app_tables.cost_sheets.get_by_id(cost_sheet_id)
-  current_version_num = cost_sheet['current_version']
-
-  # Find the version with matching number
-  current_version = app_tables.cost_sheet_version.get(
-    cost_sheet=cost_sheet,
-    version_number=current_version_num
-  )
-
-  return current_version
+  return helpers.get_current_version(cost_sheet_id)
 
 
 @anvil.server.callable
@@ -120,19 +130,22 @@ def create_new_version(cost_sheet_id, change_description, user_id):
         cost_sheet_id: Which cost sheet to version
         change_description: Why are we creating a new version?
         user_id: Who is creating this version
+    
+    Returns:
+        The newly created version
     """
 
   cost_sheet = app_tables.cost_sheets.get_by_id(cost_sheet_id)
   user = app_tables.users.get_by_id(user_id)
 
   # Get the current version to copy from
-  old_version = get_current_version(cost_sheet_id)
+  old_version = helpers.get_current_version(cost_sheet_id)
 
   # Calculate new version number
   new_version_number = cost_sheet['current_version'] + 1
 
   # Create new version, copying most data from old version
-  new_version = app_tables.cost_sheet_version.add_row(
+  new_version = app_tables.cost_sheet_versions.add_row(
     cost_sheet=cost_sheet,
     document_id=cost_sheet['document_id'],
     version_number=new_version_number,
@@ -155,5 +168,20 @@ def create_new_version(cost_sheet_id, change_description, user_id):
   # Update the cost sheet to point to new version
   cost_sheet['current_version'] = new_version_number
 
-  print(f"Created version {new_version_number} for cost sheet {cost_sheet['document_id']}")
+  print(f"[Main] Created version {new_version_number} for cost sheet {cost_sheet['document_id']}")
   return new_version
+
+
+@anvil.server.callable
+def get_cost_sheet_summary(cost_sheet_version_id):
+  """
+    Get a complete summary of a cost sheet version.
+    This is a wrapper around the helper function for frontend use.
+    
+    Args:
+        cost_sheet_version_id: ID of the cost sheet version
+    
+    Returns:
+        Dictionary with all cost summary data
+    """
+  return helpers.get_cost_sheet_summary(cost_sheet_version_id)
