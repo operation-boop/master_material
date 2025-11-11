@@ -12,3 +12,5 @@ import anvil.server
 def list_all_processing_cost():
   processing_cost_item = app_tables.processing_cost_item.search()
   return [dict(processing_cost_item) for processing_cost_item in processing_cost_item]
+
+
