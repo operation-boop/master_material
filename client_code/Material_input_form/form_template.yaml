@@ -20,7 +20,9 @@ components:
         name: label_5
         properties: {text: Master Material ID}
         type: Label
-      - layout_properties: {grid_position: 'LBLPEJ,MZNTJE'}
+      - data_bindings:
+        - {code: 'self.item[''master_material_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'LBLPEJ,MZNTJE'}
         name: mat_material_id
         properties: {}
         type: TextBox
@@ -28,16 +30,20 @@ components:
         name: rich_text_1
         properties: {content: 'Material Name <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - event_bindings: {}
+      - data_bindings:
+        - {code: 'self.item[''material_name'']', property: text, writeback: false}
+        event_bindings: {}
         layout_properties: {grid_position: 'UYHKGF,LMUWOY'}
         name: material_name
-        properties: {}
+        properties: {text: material_name}
         type: TextBox
       - layout_properties: {grid_position: 'JXCFFM,NSAIFW'}
         name: rich_text_2
         properties: {content: 'Material Type <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'UGFASQ,DEDWNP'}
+      - data_bindings:
+        - {code: 'self.item[''material_type'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'UGFASQ,DEDWNP'}
         name: material_type_dropdown
         properties: {include_placeholder: true, placeholder: Select Type}
         type: DropDown
@@ -51,7 +57,9 @@ components:
           spacing_above: small
           spacing_below: small
         type: RichText
-      - event_bindings: {}
+      - data_bindings:
+        - {code: 'self.item[''supplier'']', property: selected_value, writeback: false}
+        event_bindings: {}
         layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
         name: dropdown_supplier
         properties: {include_placeholder: true, placeholder: Select Supplier}

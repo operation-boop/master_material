@@ -8,9 +8,9 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 class Material_input_form(Material_input_formTemplate):
-  def __init__(self, current_document_id=None, **properties):
+  def __init__(self, current_document_id=None, item=None, **properties):
     self.init_components(**properties)
-    self.current_document_id = current_document_id
+    ##------------------------------------------------------------------------------------
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
     self.dropdown_supplier.items = ["ABC","CBA","HELLO","BYE"]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
@@ -19,15 +19,65 @@ class Material_input_form(Material_input_formTemplate):
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
-
+    ##------------------------------------------------------------------------------------
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
     self.fabric_composition_repeating_panel.items = self.composition_list
     self.fabric_composition_repeating_panel.update_total = self.update_total_percentage
-
+    ##------------------------------------------------------------------------------------
     self.details_section.visible = False
     self.advanced_cost_dropdown.items = ["Advanced Cost Calculation"]
+    ##-------------------------
+    self.current_document_id = current_document_id or (item or {}).get("document_id")
+    self.item = {} if item is None else dict(item)
+    if isinstance(self.item, dict):
+      self.item.setdefault("material_name", self.item.get("name", ""))
+      self.item.setdefault("master_material_id", self.item.get("master_material_id", self.item.get("material_id", "")))
+      self.item.setdefault("supplier", self.item.get("supplier_name", ""))
+      self.item.setdefault("fabric_composition", self.item.get("fabric_composition", []))
+      self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit", ""))
 
+    # Convert composition string -> list of dicts expected by repeating panel (if necessary)
+    comp = self.item.get("fabric_composition")
+    if isinstance(comp, str):
+      parts = [p.strip() for p in comp.split(",") if p.strip()]
+      # adapt shape if your repeating panel expects dicts with keys
+      self.item["fabric_composition"] = [{"component": p, "percentage": ""} for p in parts]
+    elif isinstance(comp, list):
+      # ensure each entry is dict-shaped (component + percentage) for the repeating panel
+      normalized = []
+      for c in comp:
+        if isinstance(c, dict):
+          normalized.append(c)
+        else:
+          normalized.append({"component": c, "percentage": ""})
+      self.item["fabric_composition"] = normalized
+
+    try:
+      if self.item.get("supplier"):
+        self.dropdown_supplier.selected_value = self.item.get("supplier")
+      if self.item.get("material_type"):
+        self.material_type_dropdown.selected_value = self.item.get("material_type")
+      if self.item.get("country_of_origin"):
+        self.country_of_origin_dropdown.selected_value = self.item.get("country_of_origin")
+      if self.item.get("unit_of_measurement"):
+        self.UOM_dropdown.selected_value = self.item.get("unit_of_measurement")
+      if self.item.get("weight_uom"):
+        self.weight_uom_dropdown.selected_value = self.item.get("weight_uom")
+      if self.item.get("native_cost_currency"):
+        self.currency_dropdown.selected_value = self.item.get("native_cost_currency")
+      if self.item.get("vietnam_vat_rate"):
+        self.vietnam_vat_rate_dropdown.selected_value = self.item.get("vietnam_vat_rate")
+      if self.item.get("shipping_term"):
+        self.shipping_term_dropdown.selected_value = self.item.get("shipping_term")
+    except Exception:
+      pass
+    try:
+      self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
+    except Exception:
+      pass
+    self.refresh_data_bindings()
+    
   def close_btn_click(self, **event_args):
     """This method is called when the button is clicked"""
     self.raise_event("x-close-alert")
@@ -226,7 +276,7 @@ class Material_input_form(Material_input_formTemplate):
       "weight_uom": self.weight_uom_dropdown.selected_value,
       "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
       "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
-      "generic_material_size": self.parse_float(self.generic_material_size.text),
+      "generic_material_size": self.generic_material_size.text,
       "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
 
       # Costs
