@@ -1,0 +1,19 @@
+components:
+- components:
+  - data_bindings:
+    - {code: self.item, property: text, writeback: false}
+    layout_properties: {grid_position: 'CJDFCE,RCCVXH'}
+    name: color
+    properties: {}
+    type: Label
+  - event_bindings: {click: remove_btn_click}
+    layout_properties: {grid_position: 'CJDFCE,KVDZIZ'}
+    name: remove_btn
+    properties: {align: right, icon: 'fa:close', text: ''}
+    type: Button
+  layout_properties: {grid_position: 'GLVMPF,LRJZMC'}
+  name: card_1
+  properties: {col_widths: '{"RCCVXH":50,"KVDZIZ":10}', role: card}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true
