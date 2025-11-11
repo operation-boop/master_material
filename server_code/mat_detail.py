@@ -8,9 +8,8 @@ def get_material_detail(document_id):
     raise ValueError("document_id is required")
 
   # search both columns, then pick latest by ver_num
-  rows = app_tables.master_material_version.search(
-    q.or_(document_id=document_id, document_uid=document_id)
-  )
+  rows = list(app_tables.master_material_version.search(document_id=document_id)) + \
+  list(app_tables.master_material_version.search(document_uid=document_id))
 
   if not rows:
     raise Exception(f"No material version found for ID: {document_id}")

@@ -7,6 +7,7 @@ import anvil.users
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from ...Material_detail import Material_detail
 
 
 
@@ -14,6 +15,7 @@ class MaterialCard(MaterialCardTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    
 
   def refresh_click(self, **event_args):
     """Handle refresh if needed"""
@@ -28,7 +30,5 @@ class MaterialCard(MaterialCardTemplate):
     if not doc_id:
       alert("No document ID!", title="Error")
       return
-
-    from ...Material_detail import Material_detail
     detail = Material_detail(doc_id=doc_id)
     alert(content=detail, large=True)

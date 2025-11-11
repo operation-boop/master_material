@@ -2,49 +2,28 @@ from ._anvil_designer import Material_detailTemplate
 from anvil import alert
 import anvil.server
 
+
 class Material_detail(Material_detailTemplate):
   def __init__(self, doc_id=None, **properties):
     self.init_components(**properties)
-    self.doc_id = doc_id
+    self.item = {} 
+    self.refresh_data_bindings()
 
-    # Optional: show/hide loading UI element if you have one
-    try:
-      self.loading_spinner.visible = True
-    except Exception:
-      pass
+    # If a doc id was provided, immediately load it
+    if doc_id:
+      self.load_material(doc_id)
+
 
   def form_show(self, **event_args):
-    if not getattr(self, "doc_id", None):
-      alert("No document id provided", title="Error")
-      return
+    doc_id = self.item.get("document_id")  # if passed from previous form
+    if doc_id:
+      self.load_material(doc_id)
+  
+  def load_material(self, document_id):
+    detail = anvil.server.call("get_material_detail", document_id)
+    self.item = dict(detail)
+    self.refresh_data_bindings()
 
-    try:
-      # Server returns a dict (see get_material_detail)
-      data = anvil.server.call("get_material_detail", self.doc_id)
-    except Exception as e:
-      alert(f"Failed to load material: {e}", title="Load error")
-      try:
-        self.loading_spinner.visible = False
-      except Exception:
-        pass
-      return
-    self.item = data
-    
-    try:
-      self.refresh_data_bindings()
-    except Exception:
-      pass
-
-    try:
-      self.loading_spinner.visible = False
-    except Exception:
-      pass
-
-  # Optional: if this form allows edits/saves, after saving call:
-  # self.raise_event("x-refresh-list", document_id=self.doc_id)
-  # self.raise_event("x-close-alert", True)
-
- 
 
  
 
