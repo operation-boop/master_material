@@ -12,7 +12,17 @@ components:
 - event_bindings: {click: button_3_click}
   layout_properties: {grid_position: 'PLOKPQ,WDQVAL'}
   name: button_3
-  properties: {text: Test}
+  properties: {text: Processing Test}
+  type: Button
+- event_bindings: {click: button_4_click}
+  layout_properties: {grid_position: 'UWJEAG,CQXHBO'}
+  name: button_4
+  properties: {text: overhead test}
+  type: Button
+- event_bindings: {click: button_5_click}
+  layout_properties: {grid_position: 'KDNSLA,XSIPES'}
+  name: button_5
+  properties: {text: Pricing Scenario}
   type: Button
 container: {type: ColumnPanel}
 is_package: true

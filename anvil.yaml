@@ -505,7 +505,7 @@ db_schema:
       name: quoted_currency
       type: string
     - admin_ui: {order: 2, width: 200}
-      name: qouted_price
+      name: quoted_price
       type: number
     - admin_ui: {order: 3, width: 200}
       name: quoted_price_usd

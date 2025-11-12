@@ -147,14 +147,23 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # print(dict(most_recent_version))
 
   def button_3_click(self, **event_args):
-    
-
-
-    
     """This method is called when the button is clicked"""
     result = anvil.server.call('test_processing_costs_complete')
     print(result)  # Shows in console
     alert(result, large=True)  # Shows in popup
+
+  def button_4_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    result = anvil.server.call('test_overhead_costs')
+    print(result)
+    alert(result, large=True)  # Shows in popup
+
+  def button_5_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    result = anvil.server.call('test_pricing_scenarios')
+    print(result)
+    alert(result, large=True)  # Shows in popup
+    
 
   
 
