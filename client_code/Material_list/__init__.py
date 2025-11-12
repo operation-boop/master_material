@@ -8,6 +8,8 @@ class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     self.load_material_cards()
+    anvil.server.call('create_mock_users')
+    anvil.users.login_with_form()
   
 
   def form_show(self, **event_args):

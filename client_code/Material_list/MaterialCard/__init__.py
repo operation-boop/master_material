@@ -30,3 +30,7 @@ class MaterialCard(MaterialCardTemplate):
       alert("No document ID!", title="Error")
       return
     open_form("Material_detail", doc_id=doc_id)
+
+  def verify_status_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    pass

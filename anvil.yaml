@@ -246,6 +246,9 @@ db_schema:
     - admin_ui: {order: 8, width: 200}
       name: Roles
       type: string
+    - admin_ui: {order: -1, width: 200}
+      name: full_name
+      type: string
     server: full
     title: Users
 dependencies: []
