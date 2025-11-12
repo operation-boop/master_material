@@ -93,6 +93,10 @@ class Material_detail(Material_detailTemplate):
         pass
       Notification("Material updated.", style="success").show()
 
+  def version_history_tab_btn_click(self, **event_args):
+    
+    pass
+
 
 
   

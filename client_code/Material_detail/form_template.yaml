@@ -261,7 +261,7 @@ components:
       name: cost_details_tab_btn
       properties: {foreground: 'theme:Black', text: cost details}
       type: Button
-    - event_bindings: {}
+    - event_bindings: {click: version_history_tab_btn_click}
       layout_properties: {}
       name: version_history_tab_btn
       properties: {foreground: 'theme:Black', text: version history}

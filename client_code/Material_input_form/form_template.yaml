@@ -403,6 +403,14 @@ components:
       name: spacer_4
       properties: {height: 32}
       type: Spacer
+    - layout_properties: {grid_position: 'KQVUND,ZIAQSP'}
+      name: label_2
+      properties: {text: Description}
+      type: Label
+    - layout_properties: {grid_position: 'HIBZCS,LRBCBO'}
+      name: description_box
+      properties: {}
+      type: TextBox
     - components:
       - layout_properties: {grid_position: 'FKAZNY,UDIZFN'}
         name: label_25
