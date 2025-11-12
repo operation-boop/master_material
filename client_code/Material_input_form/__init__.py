@@ -15,7 +15,7 @@ class Material_input_form(Material_input_formTemplate):
     self.UOM_dropdown.items = ["Meter", "Piece"]
     self.weight_uom_dropdown.items = ["GSM (gram/sq meter)", "GPP (gram/piece)"]
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
-    self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
+    self.vietnam_vat_rate_dropdown.items = ["N/A", "8", "10"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
@@ -47,7 +47,7 @@ class Material_input_form(Material_input_formTemplate):
     safe_set_selected(self.UOM_dropdown, self.item.get("unit_of_measurement"))
     safe_set_selected(self.weight_uom_dropdown, self.item.get("weight_uom"))
     safe_set_selected(self.currency_dropdown, self.item.get("native_cost_currency"))
-    safe_set_selected(self.vietnam_vat_rate_dropdown, self.item.get("vietnam_vat_rates"))
+    safe_set_selected(self.vietnam_vat_rate_dropdown, self.item.get("vietnam_vat_rate"))
     safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
 
     # keep UI bindings in sync
@@ -56,7 +56,6 @@ class Material_input_form(Material_input_formTemplate):
   def _normalize_item(self):
     if not isinstance(self.item, dict):
       self.item = {}
-      # Mapping / defaults: prefer existing, then alternate field names, then a sensible default.
     self.item.setdefault("material_name", self.item.get("name", ""))
     self.item.setdefault("master_material_id", self.item.get("master_material_id", ""))
     self.item.setdefault("ref_id", self.item.get("ref_id", ""))
@@ -68,32 +67,34 @@ class Material_input_form(Material_input_formTemplate):
     self.item.setdefault("weft_shrinkage", self.item.get("weft_shrinkage", ""))
     self.item.setdefault("werp_shrinkage", self.item.get("werp_shrinkage", ""))
     self.item.setdefault("weight_per_unit", self.item.get("weight_per_unit", ""))
-    self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit", ""))
+    self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit"))
     self.item.setdefault("supplier_selling_tolerance", self.item.get("supplier_selling_tolerance", ""))
     self.item.setdefault("import_duty", self.item.get("import_duty", ""))
     self.item.setdefault("logistics_rate",self.item.get("logistics_rate", ""))
-    self.item.setdefault("vietnam_vat_rate",self.item.get("vietnam_vat_rates",""))
-    self.item.setdefault()
+    self.item.setdefault("vietnam_vat_rate",self.item.get("vietnam_vat_rate",""))
+    self._update_currency_labels(self.item.get("native_cost_currency"))
 
-  def close_btn_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    self.raise_event("x-close-alert")
-
+##------------Calculate cost prices & UI for costing----------------------------
   def advanced_cost_dropdown_change(self, **event_args):
     # Show the section only if a value is selected (not None or blank)
     if self.advanced_cost_dropdown.selected_value == "Advanced Cost Calculation":
       self.details_section.visible = True
     else:
       self.details_section.visible = False
-
+      
   def currency_dropdown_change(self, **event_args):
-    """This method is called when an item is selected"""
-    self.original_cost_unit.text = self.currency_dropdown.selected_value
-    self.supplier_tolerance_cost_unit.text = self.currency_dropdown.selected_value
-    self.effective_cost_unit.text = self.currency_dropdown.selected_value
-    self.landed_cost_unit.text = self.currency_dropdown.selected_value
-    self.logistics_unit_cost.text = self.currency_dropdown.selected_value
-
+    self._update_currency_labels(self.currency_dropdown.selected_value)
+    
+  def _update_currency_labels(self, currency):
+    for label in [
+      self.original_cost_unit,
+      self.supplier_tolerance_cost_unit,
+      self.effective_cost_unit,
+      self.landed_cost_unit,
+      self.logistics_unit_cost
+    ]:
+      label.text = currency or ""
+      
   def add_btn_click(self, **event_args):
     selected_material = self.material_dropdown.selected_value
 
@@ -177,8 +178,10 @@ class Material_input_form(Material_input_formTemplate):
     logistics_fee_per_unit = weight_per_unit * logistics_rate
     self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
 
-  ##---------------------------------------------------------------
-
+##------------------------buttons---------------------------------------
+  def close_btn_click(self, **event_args):
+    self.raise_event("x-close-alert")
+    
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
     if not self.current_document_id:
@@ -223,6 +226,7 @@ class Material_input_form(Material_input_formTemplate):
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
 
+##-----------------validations + data collections------------------------
   def validate_form_data(self, form_data):
     """Basic client-side validation"""
     required_fields = [
@@ -246,16 +250,6 @@ class Material_input_form(Material_input_formTemplate):
     return True
 
   def collect_form_data(self):
-    """Collect all form fields into a dictionary"""
-
-    # Parse VAT rate safely
-    vat_value = None
-    if self.vietnam_vat_rate_dropdown.selected_value:
-      if self.vietnam_vat_rate_dropdown.selected_value != "N/A":
-        try:
-          vat_value = float(self.vietnam_vat_rate_dropdown.selected_value.replace('%', ''))
-        except (ValueError, AttributeError):
-          vat_value = None
 
     return {
       # Basic Info
@@ -282,7 +276,7 @@ class Material_input_form(Material_input_formTemplate):
       "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
       "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
       "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
-      "vietnam_vat_rate": vat_value,  # FIXED: Safe VAT parsing
+      "vietnam_vat_rate": self.vietnam_vat_rate_dropdown.selected_value,
       "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
       "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
       "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,

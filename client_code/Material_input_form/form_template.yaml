@@ -33,7 +33,7 @@ components:
       - data_bindings:
         - {code: 'self.item[''name'']', property: text, writeback: false}
         event_bindings: {}
-        layout_properties: {grid_position: 'UYHKGF,LMUWOY'}
+        layout_properties: {grid_position: 'JAIMIJ,PNSGLT'}
         name: material_name
         properties: {text: ''}
         type: TextBox
@@ -334,13 +334,13 @@ components:
     - components:
       - layout_properties: {grid_position: 'QIIPXA,KMJNTJ'}
         name: label_24
-        properties: {bold: false, text: Vietnam VAT Rate}
+        properties: {bold: false, text: Vietnam VAT Rate (%)}
         type: Label
       - data_bindings:
-        - {code: 'self.item[''vietnam_vat_rates'']', property: selected_value, writeback: false}
+        - {code: 'self.item[''vietnam_vat_rate'']', property: selected_value, writeback: false}
         layout_properties: {grid_position: 'CCXAWH,ERAIES'}
         name: vietnam_vat_rate_dropdown
-        properties: {include_placeholder: true, placeholder: 'Select Vat '}
+        properties: {include_placeholder: false, placeholder: 'Select Vat '}
         type: DropDown
       - data_bindings: []
         layout_properties: {grid_position: 'EUDKVY,NNAAOV'}
@@ -416,7 +416,8 @@ components:
         name: original_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'CZGYTK,OYBTXT'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'CZGYTK,OYBTXT'}
         name: original_cost
         properties: {}
         type: Label
@@ -428,7 +429,8 @@ components:
         name: supplier_tolerance_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'BUZNWO,GGDBDN'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'BUZNWO,GGDBDN'}
         name: supplier_tolerance_cost
         properties: {}
         type: Label
@@ -440,7 +442,8 @@ components:
         name: effective_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'IZUJAA,KLECKD'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'IZUJAA,KLECKD'}
         name: effective_cost_per_unit
         properties: {}
         type: Label
@@ -452,7 +455,8 @@ components:
         name: logistics_unit_cost
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'MCDZIZ,CQTDQO'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'MCDZIZ,CQTDQO'}
         name: logistics_fee_per_unit
         properties: {text: ''}
         type: Label
@@ -464,7 +468,8 @@ components:
         name: landed_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'HOVJYO,FBGZIE'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'HOVJYO,FBGZIE'}
         name: landed_cost
         properties: {}
         type: Label
