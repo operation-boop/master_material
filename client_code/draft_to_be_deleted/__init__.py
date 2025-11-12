@@ -16,7 +16,7 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.create_new_cost_sheet()
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
-    self.list_all_processing_cost()
+    # self.list_all_processing_cost()
 
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
     # for row in self.list_of_cost_sheets:
@@ -43,9 +43,10 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
 
 
 
-  def list_all_processing_cost(self):
-   list_all_processing_cost = anvil.server.call("list_all_processing_cost")
-   print(list_all_processing_cost)
+  # def list_all_processing_cost(self):
+  
+  #  list_all_processing_cost = anvil.server.call("list_all_processing_cost")
+  #  print(list_all_processing_cost)
 
   # def list_all_cost_sheet_versions(self):
   #   list_all_cost_sheet_versions = anvil.server.call("list_all_cost_sheet_versions")
