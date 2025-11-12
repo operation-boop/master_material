@@ -406,6 +406,9 @@ dependencies:
 - dep_id: dep_2m1szhnmo06jpe
   resolution_hints: {app_id: TGQCF3WT6FVL2EM2, name: Tabulator, package_name: tabulator}
   version: {version_tag: v3.2.0}
+- dep_id: dep_415f1645uzedh
+  resolution_hints: {app_id: PKF2MZRQMPCXFWNE, name: AutoBatch, package_name: auto_batch}
+  version: {version_tag: v0.1}
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material (temp clone)
 native_deps:
