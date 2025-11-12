@@ -1,231 +1,320 @@
+# mat_input.py - merged single-file version
 import anvil.server
 from anvil.tables import app_tables
 import uuid
 from datetime import datetime
-import anvil.tables.query as q
 
 DOC_PREFIX = "vin_mmat_"
+
 VALID_STATUSES = {
   "Creating": ["Draft", "Submitted - Unverified"],
-  "Draft": ["Draft", "Submitted - Unverified"],  
-  "Submitted - Unverified": ["Creating", "Submitted - Verified"],  
-  "Submitted - Verified": ["Creating"]  
+  "Draft": ["Draft", "Submitted - Unverified"],
+  "Submitted - Unverified": ["Creating", "Submitted - Verified"],
+  "Submitted - Verified": ["Creating"]
 }
-REQUIRED_FIELDS = ["supplier_name"]  
+
+REQUIRED_FIELDS = ["supplier_name"]
+
+
+# -----------------------
+# Low-level helpers
+# -----------------------
+def _next_num():
+  """Return next numeric suffix for a preview document id."""
+  rows = list(app_tables.master_material.search()) if app_tables.master_material else []
+  max_n = 0
+  for r in rows:
+    did = r.get("document_id") or ""
+    if isinstance(did, str) and did.startswith(DOC_PREFIX):
+      try:
+        n = int(did.replace(DOC_PREFIX, ""))
+        if n > max_n:
+          max_n = n
+      except Exception:
+        pass
+  return max_n + 1
 
 @anvil.server.callable
-def create_new_master_material(created_by_user):
-  """Create new master material document"""
-  new_uuid = str(uuid.uuid4())
-  document_id = f"{DOC_PREFIX}{get_next_document_number():04d}"
+def preview_next_document_id():
+  """Read-only preview id — safe to call, no DB writes."""
+  return f"{DOC_PREFIX}{_next_num():04d}"
 
-  version = app_tables.master_material_version.add_row(
-    document_uid=new_uuid,
-    document_id=document_id,
-    ver_num=1,
-    status="Creating",
-    created_at=datetime.now()
-  )
+def _master_exists(document_id):
+  """Return True if a master_material row with document_id exists."""
+  return bool(list(app_tables.master_material.search(document_id=document_id)))
 
-  master = app_tables.master_material.add_row(
-    version_history_uid=new_uuid,
-    created_at=datetime.now(),
-    created_by=created_by_user,
-    current_version=version,
-    current_version_uid=new_uuid,
-    current_version_number=1,
-    document_id=document_id
-  )
-
-  return master
-
-@anvil.server.callable
-def get_next_document_number():
-  """Get next available document number"""
-  all_versions = app_tables.master_material_version.search()
-
-  if not all_versions:
-    return 1
-
-  numbers = []
-  for doc in all_versions:
-    try:
-      num = int(doc['document_id'].replace(DOC_PREFIX, ''))
-      numbers.append(num)
-    except ValueError:
+def _create_master_and_version(document_id, user, data=None, status="Draft"):
+  """
+  Create master_material + master_material_version.
+  If document_id is already taken, allocate next free id and retry.
+  Returns dict with document_id, document_uid, ver_num.
+  """
+  tries = 0
+  while True:
+    tries += 1
+    if _master_exists(document_id):
+      # allocate new id and retry
+      document_id = f"{DOC_PREFIX}{_next_num():04d}"
+      if tries > 10:
+        raise Exception("Could not allocate unique document_id after multiple attempts.")
       continue
 
-  return max(numbers) + 1 if numbers else 1
+    uid = str(uuid.uuid4())
+    now = datetime.now()
 
-#-----------------------------------------------------------------------
+    ver = app_tables.master_material_version.add_row(
+      document_uid = uid,
+      document_id = document_id,
+      ver_num = 1,
+      status = status,
+      data = data or {},
+      created_at = now,
+      created_by = user
+    )
+
+    app_tables.master_material.add_row(
+      version_history_uid = uid,
+      document_id = document_id,
+      created_at = now,
+      created_by = user,
+      current_version = ver,
+      current_version_uid = uid,
+      current_version_number = 1
+    )
+
+    return {"document_id": document_id, "document_uid": uid, "ver_num": 1}
+
+# -----------------------
+# Read helpers (callable)
+# -----------------------
 @anvil.server.callable
 def get_master_material(document_id):
-  """Retrieve a master material record by document_id."""
+  """Retrieve a master_material row by document_id or raise."""
   master = app_tables.master_material.get(document_id=document_id)
-
   if not master:
     raise Exception(f"Document '{document_id}' not found")
-
   return master
-    
+
+
 @anvil.server.callable
+def get_latest_version(document_id):
+  """Return a simple dict representing the current_version for a document_id, or None."""
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    return None
+  ver = master.get("current_version")
+  if not ver:
+    return None
+  return {
+    "document_id": master.get("document_id"),
+    "document_uid": master.get("version_history_uid") or master.get("document_uid"),
+    "ver_num": ver.get("ver_num"),
+    "status": ver.get("status"),
+    "data": ver.get("data") or {},
+    "created_at": ver.get("created_at"),
+    "created_by": ver.get("created_by")
+  }
+
+
+# -----------------------
+# Validation / status helpers
+# -----------------------
 def validate_required_fields(document_id):
-  """Validate all required fields are filled on the current version"""
+  """
+  Validate required fields are present on the current version.
+  Works if version stores fields in 'data' dict or directly as columns on the version row.
+  Returns {"is_valid": bool, "missing_fields": [...]}
+  """
   master = get_master_material(document_id)
-  current_version = master["current_version"]
+  current_version = master.get("current_version")
 
   if current_version is None:
     return {"is_valid": False, "missing_fields": ["(no current_version row)"]}
 
+  # Prefer structured 'data' dict
+  data_container = current_version.get("data") if isinstance(current_version.get("data"), dict) else None
+
   missing = []
   for field in REQUIRED_FIELDS:
-    try:
-      value = current_version[field] 
-    except KeyError:
-      missing.append(field)
-      continue
+    if data_container is not None:
+      value = data_container.get(field)
+    else:
+      # fallback to directly stored column (if present)
+      value = current_version.get(field) if field in current_version.keys() else None
 
     if value is None or (isinstance(value, str) and value.strip() == ""):
       missing.append(field)
 
   return {"is_valid": len(missing) == 0, "missing_fields": missing}
 
+
 def check_status_transition(current_status, target_status):
-  """Validate status transition is allowed"""
-  if target_status not in VALID_STATUSES.get(current_status, []):
+  """
+  Ensure current_status -> target_status is allowed according to VALID_STATUSES.
+  Raises Exception if not allowed.
+  """
+  allowed = VALID_STATUSES.get(current_status, [])
+  if target_status not in allowed:
     raise Exception(
-      f"Cannot transition from {current_status} to {target_status}. " +
-      f"Allowed transitions: {', '.join(VALID_STATUSES.get(current_status, []))}"
+      f"Cannot transition from {current_status!r} to {target_status!r}. Allowed: {', '.join(allowed) or '(none)'}"
     )
 
-#-----------------------------------------------------------------------
-@anvil.server.callable
-def save_or_edit_draft(document_id, updated_by_user, form_data=None):
-  """Combined save/edit draft function - updates all fields from form"""
-  master = get_master_material(document_id)
-  version = master['current_version']
 
-  if version['status'] not in ["Creating", "Draft"]:
-    raise Exception(f"Cannot edit. Current status: {version['status']}")
-
-  # Update all fields from form data
-  if form_data:
-    updated_fields = []
-    for key, value in form_data.items():
-      if value is not None:  
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
-
-    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
-
-  version['status'] = "Draft"
-  version['updated_at'] = datetime.now()
-  version['updated_by'] = updated_by_user
-
-  return {"action": "draft_saved", "version": version, "document_id": document_id}
-
-@anvil.server.callable
-def submit_version(document_id, submitted_by_user, form_data=None):
+def verify_version(document_id, ver_num):
   """
-  Submit document but mark status as 'Submitted - Unverified'.
-  This stores the "yet to verify" state inside the existing 'status' column.
+  Return the master_material_version row for (document_id, ver_num) or raise ValueError.
+  Use to operate on historical versions safely.
   """
-  master = get_master_material(document_id)
-  version = master['current_version']
+  rows = list(app_tables.master_material_version.search(document_id=document_id, ver_num=ver_num))
+  if not rows:
+    raise ValueError(f"Version {ver_num} for {document_id} not found.")
+  return rows[0]
 
-  check_status_transition(version['status'], "Submitted - Unverified")
 
-  if form_data:
-    updated_fields = []
-    for key, value in form_data.items():
-      if value is not None:
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
-    print(f"Updated {len(updated_fields)} fields before validation")
+def is_submitted(version_or_status):
+  """Return True if the argument (status string or version row) represents a submitted state."""
+  submitted_states = ("Submitted - Unverified", "Submitted - Verified")
+  if isinstance(version_or_status, str):
+    return version_or_status in submitted_states
+  try:
+    st = version_or_status.get("status")
+    return st in submitted_states
+  except Exception:
+    return False
 
-  # Validate required fields AFTER updates
+
+# -----------------------
+# Save / Submit / Verify flows (callable)
+# -----------------------
+@anvil.server.callable
+def save_draft(document_id, user, data):
+  """
+  Create or update a Draft.
+  - If no master exists -> create master + version with status 'Draft'.
+  - If current_version.status is Creating/Draft -> update in-place.
+  - Otherwise -> create a new version (ver_num+1) with status 'Draft'.
+  Returns a dict describing the action and the document_id / ver_num.
+  """
+  masters = list(app_tables.master_material.search(document_id=document_id))
+  if not masters:
+    created = _create_master_and_version(document_id, user, data=data, status="Draft")
+    return {"action": "created_and_saved", **created, "status": "Draft"}
+
+  master = masters[0]
+  cur = master.get("current_version")
+  now = datetime.now()
+
+  if cur and cur.get("status") in ("Creating", "Draft"):
+    # update existing draft-like version
+    if isinstance(cur.get("data"), dict):
+      merged = cur.get("data").copy()
+      merged.update(data or {})
+      cur['data'] = merged
+    else:
+      for k, v in (data or {}).items():
+        cur[k] = v
+    cur['updated_at'] = now
+    cur['updated_by'] = user
+    master['current_version'] = cur
+    return {"action": "updated", "document_id": document_id, "ver_num": cur.get("ver_num"), "status": "Draft"}
+
+  # latest is submitted or otherwise non-editable -> create new draft version
+  next_ver = (cur.get("ver_num") if cur else 0) + 1
+  ver = app_tables.master_material_version.add_row(
+    document_uid = master.get("version_history_uid") or str(uuid.uuid4()),
+    document_id = document_id,
+    ver_num = next_ver,
+    status = "Draft",
+    data = data or {},
+    created_at = now,
+    created_by = user
+  )
+  master['current_version'] = ver
+  master['current_version_number'] = next_ver
+  return {"action": "new_draft", "document_id": document_id, "ver_num": next_ver, "status": "Draft"}
+
+
+@anvil.server.callable
+def submit_version(document_id, user, data):
+  """
+  Persist and mark as 'Submitted - Unverified'.
+  If master doesn't exist -> create it first (status Draft) then proceed.
+  Performs required-field validation AFTER applying incoming data.
+  """
+  masters = list(app_tables.master_material.search(document_id=document_id))
+  if not masters:
+    created = _create_master_and_version(document_id, user, data=data or {}, status="Draft")
+    document_id = created["document_id"]
+    masters = list(app_tables.master_material.search(document_id=document_id))
+
+  master = masters[0]
+  cur = master.get("current_version")
+  if cur is None:
+    raise Exception("Current version missing; cannot submit.")
+
+  # validate allowed transition
+  check_status_transition(cur.get("status"), "Submitted - Unverified")
+
+  # apply incoming data (prefer 'data' dict)
+  if data:
+    if isinstance(cur.get("data"), dict):
+      merged = cur.get("data").copy()
+      merged.update(data)
+      cur['data'] = merged
+    else:
+      for k, v in data.items():
+        cur[k] = v
+
+  # validate required fields
   validation = validate_required_fields(document_id)
   if not validation['is_valid']:
     missing_str = ', '.join(validation['missing_fields'])
     raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
 
-  # Mark as submitted-but-unverified by storing combined text
-  combined_status = "Submitted - Unverified"
-  version['status'] = combined_status
-  version['submitted_at'] = datetime.now()
-  version['submitted_by'] = submitted_by_user
+  # mark submitted
+  now = datetime.now()
+  cur['status'] = "Submitted - Unverified"
+  cur['submitted_at'] = now
+  cur['submitted_by'] = user
 
-  master['submitted_at'] = version['submitted_at']
-  master['submitted_by'] = submitted_by_user
+  master['submitted_at'] = now
+  master['submitted_by'] = user
+  master['current_version'] = cur
 
+  # ensure verification fields exist (optional initialisation)
   try:
-    version['last_verified_date'] = None
+    cur['last_verified_date'] = None
     master['last_verified_date'] = None
   except Exception:
-    # If those fields don't exist, ignore (no schema change required)
     pass
 
-  return {"action": "submitted_unverified", "version": version, "document_id": document_id}
+  return {"action": "submitted_unverified", "document_id": document_id, "ver_num": cur.get("ver_num"), "status": cur.get("status")}
 
-@anvil.server.callable
-def verify_version(document_id, verified_by_user, notes=None):
-  """
-  Mark the current version as verified by changing status text to
-  'Submitted - Verified' (still stored in the same 'status' column).
-  """
-  master = get_master_material(document_id)
-  version = master['current_version']
 
-  # allow verification only if it's in an unverified submitted state
-  cur_status = version['status']
-  if cur_status != "Submitted - Unverified":
-    raise Exception("Only a 'Submitted - Unverified' version can be verified.")
-
-  # Update status to verified
-  version['status'] = "Submitted - Verified"
-  version['last_verified_date'] = datetime.now()
-  version['last_verified_by'] = verified_by_user
-  if notes is not None:
-    try:
+  @anvil.server.callable
+  def verify_version(document_id, verified_by_user, notes=None):
+    """
+    Verify the current version. Only allowed from 'Submitted - Unverified'.
+    Sets status to 'Submitted - Verified' and records verifier info.
+    """
+    master = get_master_material(document_id)
+    version = master.get("current_version")
+    if version is None:
+      raise Exception("Current version missing; cannot verify.")
+  
+    cur_status = version.get("status")
+    if cur_status != "Submitted - Unverified":
+      raise Exception("Only a 'Submitted - Unverified' version can be verified.")
+  
+    now = datetime.now()
+    version['status'] = "Submitted - Verified"
+    version['last_verified_date'] = now
+    version['last_verified_by'] = verified_by_user
+    if notes is not None:
       version['verification_notes'] = notes
-    except Exception:
-      # ignore if column not present
-      pass
-
-
-  master['last_verified_date'] = version['last_verified_date']
-  master['last_verified_by'] = version['last_verified_by']
-
-  return {"action": "verified", "document_id": document_id}
-
-def is_submitted(status):
-  """Return True for any submitted flavor."""
-  if not status:
-    return False
-  return status.startswith("Submitted")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
+    master['last_verified_date'] = now
+    master['last_verified_by'] = verified_by_user
+    master['current_version'] = version
+  
+    return {"action": "verified", "document_id": document_id}

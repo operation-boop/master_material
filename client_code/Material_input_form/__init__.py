@@ -9,7 +9,7 @@ from anvil.tables import app_tables
 class Material_input_form(Material_input_formTemplate):
   def __init__(self, current_document_id=None, item=None, **properties):
     self.init_components(**properties)
-    
+
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
     self.dropdown_supplier.items = ["ABC", "CBA", "HELLO", "BYE"]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
@@ -18,7 +18,7 @@ class Material_input_form(Material_input_formTemplate):
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8", "10"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
-    
+
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
     self.fabric_composition_repeating_panel.items = self.composition_list
@@ -56,11 +56,11 @@ class Material_input_form(Material_input_formTemplate):
   def _normalize_item(self):
     if not isinstance(self.item, dict):
       self.item = {}
-      
+
     vat = self.item.get("vietnam_vat_rate")
     if isinstance(vat, (int, float)):
       self.item["vietnam_vat_rate"] = str(int(vat))
-        
+
     self.item.setdefault("material_name", self.item.get("name", ""))
     self.item.setdefault("master_material_id", self.item.get("master_material_id", ""))
     self.item.setdefault("ref_id", self.item.get("ref_id", ""))
@@ -190,68 +190,60 @@ class Material_input_form(Material_input_formTemplate):
     self.close_btn_click()
 
   def save_as_draft_btn_click(self, **event_args):
-    """Collect form data; create document_id on first save, then save draft."""
-    form_data = self.collect_form_data()
-    
-    if not isinstance(form_data, dict):
-      Notification("No form data to save.", style="warning").show()
+    if not self.current_document_id:
+      Notification("Missing document id", style="warning").show()
       return
 
-    if not self.current_document_id:
-      try:
-        res = anvil.server.call('create_new_master_material', anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system')
-        if isinstance(res, dict):
-          self.current_document_id = res.get('document_id')
-        else:
-          self.current_document_id = res
-        if not self.current_document_id:
-          Notification("Failed to create document id on server.", style="danger").show()
-          return
-      except Exception as e:
-        Notification(f"Failed to create new material: {e}", style="danger").show()
-        return
-  
+    data = self.collect_form_data()
     try:
-      anvil.server.call('save_or_edit_draft', self.current_document_id, anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system', form_data)
-      Notification("Draft saved!", style="success", timeout=3).show()
-      self.raise_event("x-refresh-list", document_id=self.current_document_id)
-      self.raise_event("x-close-alert", value=True)
-    except Exception as e:
-      Notification(f"Error saving draft: {e}", style="danger").show()
+      user = anvil.users.get_user()
+      res = anvil.server.call('save_draft', self.current_document_id, user, data)
+      # server may return same or a new document_id if it had to allocate one
+      new_doc_id = res.get("document_id") or self.current_document_id
+      self.current_document_id = new_doc_id
 
+      Notification("Draft saved", style="success", timeout=2).show()
+      self.raise_event("x-refresh-list", document_id=new_doc_id)
+      self.raise_event("x-close-alert", closed_by="save", document_id=new_doc_id)
+    except Exception as e:
+      Notification(f"Save failed: {e}", style="danger", timeout=4).show()
   def submit_btn_click(self, **event_args):
-    """Collect form data; create document_id on first submit, then submit version."""
-    form_data = self.collect_form_data()
-
-    if not self.validate_form_data(form_data):
-      Notification("Please fill in all required fields!", style="warning").show()
+    """Validate then call server.submit_version(document_id, user, data)."""
+    if not self.current_document_id:
+      Notification("Missing document id", style="warning").show()
       return
 
-    if not self.current_document_id:
-      try:
-        res = anvil.server.call('create_new_master_material', anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system')
-        if isinstance(res, dict):
-          self.current_document_id = res.get('document_id')
-        else:
-          self.current_document_id = res
-        if not self.current_document_id:
-          Notification("Failed to create document id on server.", style="danger").show()
-          return
-      except Exception as e:
-        Notification(f"Failed to create new material: {e}", style="danger").show()
-        return
+    data = self.collect_form_data()
+
+    ok = self.validate_form_data(data)
+    if not ok:
+      Notification("Client validation failed — please check required fields.", style="warning").show()
+      return
+
     try:
-      self.submit_btn.enabled = False
-      self.submit_btn.text = "Submitting..."
-      anvil.server.call('submit_version', self.current_document_id, anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system', form_data)
-      Notification("Submitted successfully!", style="success", timeout=3).show()
-      self.raise_event("x-refresh-list", document_id=self.current_document_id)
-      self.raise_event("x-close-alert", value=True)
+      user = anvil.users.get_user()
+      # disable UI briefly
+      try:
+        self.submit_btn.enabled = False
+        self.submit_btn.text = "Submitting..."
+      except Exception:
+        pass
+
+      res = anvil.server.call('submit_version', self.current_document_id, user, data)
+      new_doc_id = res.get("document_id") or self.current_document_id
+      self.current_document_id = new_doc_id
+      
+      Notification("Submitted", style="success", timeout=2).show()
+      self.raise_event("x-refresh-list", document_id=new_doc_id)
+      self.raise_event("x-close-alert", closed_by="submit", document_id=new_doc_id)
     except Exception as e:
-      Notification(f"Submission failed: {e}", style="danger").show()
+      Notification(f"Submit failed: {e}", style="danger", timeout=6).show()
     finally:
-      self.submit_btn.enabled = True
-      self.submit_btn.text = "Submit"
+      try:
+        self.submit_btn.enabled = True
+        self.submit_btn.text = "Submit"
+      except Exception:
+        pass
 
   ##-----------------validations + data collections------------------------
   def validate_form_data(self, form_data):
@@ -277,41 +269,41 @@ class Material_input_form(Material_input_formTemplate):
     return True
 
   def collect_form_data(self):        
-        return {
-          # Basic Info
-          "master_material_id": self.mat_material_id.text,
-          "name": self.material_name.text if hasattr(self, 'material_name') else None,
-          "material_type": self.material_type_dropdown.selected_value,
-          "country_of_origin": self.country_of_origin_dropdown.selected_value,
-          "supplier_name" : self.dropdown_supplier.selected_value,
-          "ref_id" : self.supplier_reference_id.text,
-          "unit_of_measurement": self.UOM_dropdown.selected_value,
-          "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
-          "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
-          "fabric_cut_width_no_shrinkage": self.parse_float(self.fabric_cut_width_no_shrinkage.text) if hasattr(self, 'fabric_cut_width_no_shrinkage') else None,
-          "weight_per_unit": self.parse_float(self.weight_per_unit.text) if hasattr(self, 'weight_per_unit') else None,
-          "weight_uom": self.weight_uom_dropdown.selected_value,
-          "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
-          "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
-          "generic_material_size": self.generic_material_size.text,
-          "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
+    return {
+      # Basic Info
+      "master_material_id": self.mat_material_id.text,
+      "name": self.material_name.text if hasattr(self, 'material_name') else None,
+      "material_type": self.material_type_dropdown.selected_value,
+      "country_of_origin": self.country_of_origin_dropdown.selected_value,
+      "supplier_name" : self.dropdown_supplier.selected_value,
+      "ref_id" : self.supplier_reference_id.text,
+      "unit_of_measurement": self.UOM_dropdown.selected_value,
+      "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
+      "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
+      "fabric_cut_width_no_shrinkage": self.parse_float(self.fabric_cut_width_no_shrinkage.text) if hasattr(self, 'fabric_cut_width_no_shrinkage') else None,
+      "weight_per_unit": self.parse_float(self.weight_per_unit.text) if hasattr(self, 'weight_per_unit') else None,
+      "weight_uom": self.weight_uom_dropdown.selected_value,
+      "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
+      "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
+      "generic_material_size": self.generic_material_size.text,
+      "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
 
-          # Costs
-          "original_cost_per_unit": self.parse_float(self.original_cost_per_unit.text) if hasattr(self, 'original_cost_per_unit') else None,
-          "native_cost_currency": self.currency_dropdown.selected_value,
-          "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
-          "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
-          "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
-          "vietnam_vat_rate": self.vietnam_vat_rate_dropdown.selected_value,
-          "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
-          "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
-          "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,
-          "shipping_term": self.shipping_term_dropdown.selected_value,
-          "logistics_rate": self.parse_float(self.logistics_rate.text) if hasattr(self, 'logistics_rate') else None,
-          "logistics_fee_per_unit": self.parse_float(self.logistics_fee_per_unit.text) if hasattr(self, 'logistics_fee_per_unit') else None,
-          "landed_cost_per_unit": self.parse_float(self.landed_cost.text) if hasattr(self, 'landed_cost') else None,
-          "change_description":self.description_box.text,
-        }
+      # Costs
+      "original_cost_per_unit": self.parse_float(self.original_cost_per_unit.text) if hasattr(self, 'original_cost_per_unit') else None,
+      "native_cost_currency": self.currency_dropdown.selected_value,
+      "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
+      "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
+      "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
+      "vietnam_vat_rate": self.vietnam_vat_rate_dropdown.selected_value,
+      "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
+      "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
+      "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,
+      "shipping_term": self.shipping_term_dropdown.selected_value,
+      "logistics_rate": self.parse_float(self.logistics_rate.text) if hasattr(self, 'logistics_rate') else None,
+      "logistics_fee_per_unit": self.parse_float(self.logistics_fee_per_unit.text) if hasattr(self, 'logistics_fee_per_unit') else None,
+      "landed_cost_per_unit": self.parse_float(self.landed_cost.text) if hasattr(self, 'landed_cost') else None,
+      "change_description":self.description_box.text,
+    }
 
   def parse_float(self, value):
     """Helper to safely parse float values"""
@@ -319,6 +311,8 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
+
+
 
 
 
