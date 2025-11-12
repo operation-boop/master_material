@@ -7,9 +7,9 @@ from ..Material_input_form import Material_input_form
 class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    self.load_material_cards()
-    anvil.server.call('create_mock_users')
     anvil.users.login_with_form()
+    self.repeating_panel_materials.add_event_handler('x-refresh-list', self.load_material_cards)
+    self.load_material_cards()
   
 
   def form_show(self, **event_args):
@@ -18,7 +18,6 @@ class Material_list(Material_listTemplate):
   def add_btn_click(self, **event_args):
     """Opens the popup for creating new material WITHOUT creating database row yet"""
     try:
-      # Don't create database row yet - just open the form in "new material" mode
       from ..Material_input_form import Material_input_form
       popup = Material_input_form(current_document_id=None, item=None)
       popup.set_event_handler("x-refresh-list", self.load_material_cards)

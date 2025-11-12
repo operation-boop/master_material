@@ -10,18 +10,16 @@ def generate_email(name):
 @anvil.server.callable
 def create_mock_users():
   names = [
-    "John Tan", "Michael Lee", "Sarah Lim", "Aisha Nur",
-    "David Goh", "Farhan Zaki", "Emily Wong", "Marcus Ong",
-    "Nur Hidayah", "Eliza Chua"
+     "Michael Lee", "Sarah Lim", "Aisha Nur",
   ]
 
   created = []
   for n in names:
     email = generate_email(n)
-    password = "glendongohglendongoh"  # same password for all mocks
+    password = "glendonglendon"  # same password for all mocks
     user = anvil.users.signup_with_email(email, password, remember=False)
     user['full_name'] = n
-    user['role'] = random.choice(["Admin", "Staff", "Viewer"])
+    user['role'] = random.choice(["Admin", "Staff"])
     created.append(email)
 
     return created

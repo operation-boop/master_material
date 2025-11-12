@@ -15,6 +15,11 @@ class MaterialCard(MaterialCardTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    user = anvil.users.get_user()
+    if user and user['role'] == 'Admin':
+      self.verify_status.visible = True
+    else:
+      self.verify_status.visible = False
     
 
   def refresh_click(self, **event_args):
@@ -32,5 +37,31 @@ class MaterialCard(MaterialCardTemplate):
     open_form("Material_detail", doc_id=doc_id)
 
   def verify_status_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    pass
+    if not self.item:
+      alert("No item data!", title="Error")
+      return
+  
+    doc_id = self.item['document_id']
+    if not doc_id:
+      alert("No document ID!", title="Error")
+      return
+  
+    if not confirm(f"Verify material {doc_id}? This action can only be done by admins."):
+      return
+  
+    self.verify_status.enabled = False
+    try:
+      result = anvil.server.call('verify_material', doc_id)
+      if result and result.get('ok'):  
+        Notification(f"Verified: {result.get('message')}", title="Success", style="success").show()
+        self.parent.raise_event('x-refresh-list')
+      else:
+        Notification(f"Verify call completed but returned: {result}", title="Notice", style="warning").show()
+    except Exception as e:
+      Notification(f"Verify failed: {e}", title="Error", style="danger").show()
+    finally:
+      try:
+        self.verify_status.enabled = True
+      except Exception:
+        pass
+
