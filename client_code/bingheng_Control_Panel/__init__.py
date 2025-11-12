@@ -18,7 +18,7 @@ class bingheng_Control_Panel(bingheng_Control_PanelTemplate):
     # Access control
     if self.username.lower() != "admin":
       alert("Access denied. Only admin can access Control Panel.")
-      open_form('Details_logged', username=self.username)
+      open_form('bingheng_logged_in', username=self.username)
       return
 
     # Show admin greeting
