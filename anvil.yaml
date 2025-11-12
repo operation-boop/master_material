@@ -409,6 +409,9 @@ dependencies:
 - dep_id: dep_415f1645uzedh
   resolution_hints: {app_id: PKF2MZRQMPCXFWNE, name: AutoBatch, package_name: auto_batch}
   version: {version_tag: v0.1}
+- dep_id: dep_xymmo08thrlyoc
+  resolution_hints: {app_id: 3ACFHAQDBLLJX7FL, name: NUI Library, package_name: NUI}
+  version: {version_tag: v2.1}
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material (temp clone)
 native_deps:
