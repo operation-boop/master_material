@@ -9,5 +9,10 @@ components:
   name: button_2
   properties: {text: see list}
   type: Button
+- event_bindings: {click: button_3_click}
+  layout_properties: {grid_position: 'PLOKPQ,WDQVAL'}
+  name: button_3
+  properties: {text: Test}
+  type: Button
 container: {type: ColumnPanel}
 is_package: true

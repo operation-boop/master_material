@@ -23,6 +23,7 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
+    Testing_processing_cost: '1762933419527605344549882.974'
     bill_of_material: '1762918661430814269877291.3234'
     cost_sheet_helpers: '1762918735868221558358081.34018'
     cost_sheets_main: '1762918680224826110586639.8804'
