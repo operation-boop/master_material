@@ -66,13 +66,7 @@ class Material_detail(Material_detailTemplate):
       alert("No document ID available to edit.", title="Error")
       return
 
-    # fetch the latest data from the server (get_material_detail selects latest ver_num)
-    try:
-      latest = anvil.server.call("get_material_detail", doc_id) or {}
-    except Exception as e:
-      Notification(f"Failed to load material: {e}", style="danger").show()
-      return
-
+    latest = anvil.server.call("get_material_full_row", doc_id) or {}
     # open input form with the fresh, latest data
     try:
       input_form = Material_input_form(current_document_id=doc_id, item=dict(latest))

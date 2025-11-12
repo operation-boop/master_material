@@ -108,4 +108,21 @@ def _to_num(x, default=-1):
   except Exception:
     return default
 
+@anvil.server.callable
+def get_material_full_row(document_id):
+  """Return the entire row (all columns) of the LATEST version for the given document_id"""
+  if not document_id:
+    return None
+
+  rows = app_tables.master_material_version.search(document_id=document_id)
+  
+  latest = None
+  for r in rows:
+    if latest is None or (r['ver_num'] > latest['ver_num']):
+      latest = r
+
+    # if found, return the whole row as a dict
+  if latest:
+    return dict(latest)
+  return None
 

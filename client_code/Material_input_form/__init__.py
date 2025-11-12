@@ -9,81 +9,71 @@ from anvil.tables import app_tables
 class Material_input_form(Material_input_formTemplate):
   def __init__(self, current_document_id=None, item=None, **properties):
     self.init_components(**properties)
-    ##------------------------------------------------------------------------------------
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
-    self.dropdown_supplier.items = ["ABC","CBA","HELLO","BYE"]
+    self.dropdown_supplier.items = ["ABC", "CBA", "HELLO", "BYE"]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
     self.UOM_dropdown.items = ["Meter", "Piece"]
     self.weight_uom_dropdown.items = ["GSM (gram/sq meter)", "GPP (gram/piece)"]
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8%", "10%"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
-    ##------------------------------------------------------------------------------------
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
     self.fabric_composition_repeating_panel.items = self.composition_list
     self.fabric_composition_repeating_panel.update_total = self.update_total_percentage
-    ##------------------------------------------------------------------------------------
+
     self.details_section.visible = False
     self.advanced_cost_dropdown.items = ["Advanced Cost Calculation"]
-    ##-------------------------
+
     self.current_document_id = current_document_id or (item or {}).get("document_id")
     self.item = {} if item is None else dict(item)
-    if isinstance(self.item, dict):
-      self.item.setdefault("material_name", self.item.get("name", ""))
-      self.item.setdefault("master_material_id", self.item.get("master_material_id", self.item.get("material_id", "")))
-      self.item.setdefault("supplier", self.item.get("supplier_name", ""))
-      self.item.setdefault("fabric_composition", self.item.get("fabric_composition", []))
-      self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit", ""))
-      self.item.setdefault("ref_id",self.item.get("ref_id"))
-      self.item.setdefault("fabric_roll_width",self.item.get("fabric_roll_width"))
-      self.item.setdefault("fabric_cut_width",self.item.get("fabric_cut_width"))
-      self.item.setdefault("fabric_cut_width_no_shrinkage",self.item.get("fabric_cut_width_no_shrinkage"))
-      self.item.setdefault("generic_material_size",self.item.get("generic_material_size"))
-      self.item.setdefault("weft_shrinkage",self.item.get("weft_shrinkage"))
-      self.item.setdefault("werp_shrinkage",self.item.get("werp_shrinkage"))
-      self.item.setdefault("weight_per_unit",self.item.get("weight_per_unit"))
-      self.item.setdefault("original_cost_per_unit",self.item.get("original_cost_per_unit"))
-      self.item.setdefault("supplier_selling_tolerance",self.item.get("supplier_selling_tolerance"))
-    ##-----------------------------------------------------------------
-    comp = self.item.get("fabric_composition")
-    if isinstance(comp, str):
-      parts = [p.strip() for p in comp.split(",") if p.strip()]
-      # adapt shape if your repeating panel expects dicts with keys
-      self.item["fabric_composition"] = [{"component": p, "percentage": ""} for p in parts]
-    elif isinstance(comp, list):
-      normalized = []
-      for c in comp:
-        if isinstance(c, dict):
-          normalized.append(c)
-        else:
-          normalized.append({"component": c, "percentage": ""})
-      self.item["fabric_composition"] = normalized
-    ##_-------------------------------------------------------------------
-      def safe_set_selected(dropdown, value):
-        try:
-          if value is not None and value != "" and value in getattr(dropdown, "items", []):
-            dropdown.selected_value = value
-        except Exception:
-          pass
-    
-        safe_set_selected(self.dropdown_supplier, self.item.get("supplier"))
-        safe_set_selected(self.material_type_dropdown, self.item.get("material_type"))
-        safe_set_selected(self.country_of_origin_dropdown, self.item.get("country_of_origin"))
-        safe_set_selected(self.UOM_dropdown, self.item.get("unit_of_measurement"))
-        safe_set_selected(self.weight_uom_dropdown, self.item.get("weight_uom"))
-        safe_set_selected(self.currency_dropdown, self.item.get("native_cost_currency"))
-        safe_set_selected(self.vietnam_vat_rate_dropdown, self.item.get("vietnam_vat_rate"))
-        safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
-        
-        # populate repeating panel items from normalized composition
-        try:
-          self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
-        except Exception:
-          pass
-    
-    
+    self._normalize_item()
+    try:
+      self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
+    except Exception:
+      pass
+
+    def safe_set_selected(dropdown, value):
+      try:
+        if value is not None and value != "" and value in getattr(dropdown, "items", []):
+          dropdown.selected_value = value
+      except Exception:
+        # ignore UI errors (or log in dev)
+        pass
+
+    safe_set_selected(self.dropdown_supplier, self.item.get("supplier_name"))
+    safe_set_selected(self.material_type_dropdown, self.item.get("material_type"))
+    safe_set_selected(self.country_of_origin_dropdown, self.item.get("country_of_origin"))
+    safe_set_selected(self.UOM_dropdown, self.item.get("unit_of_measurement"))
+    safe_set_selected(self.weight_uom_dropdown, self.item.get("weight_uom"))
+    safe_set_selected(self.currency_dropdown, self.item.get("native_cost_currency"))
+    safe_set_selected(self.vietnam_vat_rate_dropdown, self.item.get("vietnam_vat_rates"))
+    safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
+
+    # keep UI bindings in sync
     self.refresh_data_bindings()
+
+  def _normalize_item(self):
+    if not isinstance(self.item, dict):
+      self.item = {}
+      # Mapping / defaults: prefer existing, then alternate field names, then a sensible default.
+    self.item.setdefault("material_name", self.item.get("name", ""))
+    self.item.setdefault("master_material_id", self.item.get("master_material_id", ""))
+    self.item.setdefault("ref_id", self.item.get("ref_id", ""))
+    self.item.setdefault("fabric_composition", self.item.get("fabric_composition", []))
+    self.item.setdefault("fabric_roll_width", self.item.get("fabric_roll_width", ""))
+    self.item.setdefault("fabric_cut_width", self.item.get("fabric_cut_width", ""))
+    self.item.setdefault("fabric_cut_width_no_shrinkage", self.item.get("fabric_cut_width_no_shrinkage", ""))
+    self.item.setdefault("generic_material_size", self.item.get("generic_material_size", ""))
+    self.item.setdefault("weft_shrinkage", self.item.get("weft_shrinkage", ""))
+    self.item.setdefault("werp_shrinkage", self.item.get("werp_shrinkage", ""))
+    self.item.setdefault("weight_per_unit", self.item.get("weight_per_unit", ""))
+    self.item.setdefault("original_cost_per_unit", self.item.get("original_cost_per_unit", ""))
+    self.item.setdefault("supplier_selling_tolerance", self.item.get("supplier_selling_tolerance", ""))
+    self.item.setdefault("import_duty", self.item.get("import_duty", ""))
+    self.item.setdefault("logistics_rate",self.item.get("logistics_rate", ""))
+    self.item.setdefault("vietnam_vat_rate",self.item.get("vietnam_vat_rates",""))
+    self.item.setdefault()
 
   def close_btn_click(self, **event_args):
     """This method is called when the button is clicked"""

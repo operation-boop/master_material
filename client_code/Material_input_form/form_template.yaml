@@ -58,7 +58,7 @@ components:
           spacing_below: small
         type: RichText
       - data_bindings:
-        - {code: 'self.item[''supplier'']', property: selected_value, writeback: false}
+        - {code: 'self.item[''supplier_name'']', property: selected_value, writeback: false}
         event_bindings: {}
         layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
         name: dropdown_supplier
@@ -123,9 +123,11 @@ components:
         name: percentage
         properties: {align: left, placeholder: '%'}
         type: TextBox
-      - layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,PZJFQT YZDFEM,AZBZAU'}
+      - data_bindings:
+        - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,PZJFQT YZDFEM,AZBZAU'}
         name: total_percentage
-        properties: {}
+        properties: {text: ''}
         type: Label
       - layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,YNKFKH'}
         name: material_dropdown
@@ -334,10 +336,11 @@ components:
         name: label_24
         properties: {bold: false, text: Vietnam VAT Rate}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''vietnam_vat_rates'']', property: selected_value, writeback: false}
         layout_properties: {grid_position: 'CCXAWH,ERAIES'}
         name: vietnam_vat_rate_dropdown
-        properties: {include_placeholder: false}
+        properties: {include_placeholder: true, placeholder: 'Select Vat '}
         type: DropDown
       - data_bindings: []
         layout_properties: {grid_position: 'EUDKVY,NNAAOV'}
@@ -352,7 +355,8 @@ components:
         name: label_27
         properties: {bold: false, text: Import Duty (%)}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''import_duty'']', property: text, writeback: false}
         layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
         name: import_duty
         properties: {type: number}
@@ -370,16 +374,18 @@ components:
         name: label_29
         properties: {bold: false, text: Shipping Term}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''shipping_term'']', property: selected_value, writeback: false}
         layout_properties: {grid_position: 'OVJPAQ,GZGKHF'}
         name: shipping_term_dropdown
-        properties: {}
+        properties: {include_placeholder: true, placeholder: Select Shipping Terms}
         type: DropDown
       - layout_properties: {grid_position: 'WQAJMH,UTEUUS'}
         name: label_30
         properties: {bold: false, text: Logistics Rate (%)}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''logistics_rate'']', property: text, writeback: false}
         event_bindings: {change: logistics_rate_change}
         layout_properties: {grid_position: 'TDOAQE,NVGDOK'}
         name: logistics_rate
@@ -462,7 +468,7 @@ components:
         name: landed_cost
         properties: {}
         type: Label
-      layout_properties: {grid_position: 'KSNUGT,YYBNKI'}
+      layout_properties: {grid_position: 'BOFVYI,GKRPDM'}
       name: card_2
       properties: {background: '#ffe9c2', border: '', col_widths: '{"AAEDXP":20,"CFKFQU":20,"KLECKD":20,"FISNLK":20,"CESKJM":20,"OYBTXT":20}', role: card}
       type: ColumnPanel
