@@ -18,6 +18,7 @@ class Material_input_form(Material_input_formTemplate):
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8", "10"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
+    
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
     self.fabric_composition_repeating_panel.items = self.composition_list
@@ -39,7 +40,6 @@ class Material_input_form(Material_input_formTemplate):
         if value is not None and value != "" and value in getattr(dropdown, "items", []):
           dropdown.selected_value = value
       except Exception:
-        # ignore UI errors (or log in dev)
         pass
 
     safe_set_selected(self.dropdown_supplier, self.item.get("supplier_name"))
@@ -51,7 +51,6 @@ class Material_input_form(Material_input_formTemplate):
     safe_set_selected(self.vietnam_vat_rate_dropdown, self.item.get("vietnam_vat_rate"))
     safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
 
-    # keep UI bindings in sync
     self.refresh_data_bindings()
 
   def _normalize_item(self):
@@ -191,45 +190,65 @@ class Material_input_form(Material_input_formTemplate):
     self.close_btn_click()
 
   def save_as_draft_btn_click(self, **event_args):
-    """Collect all form data and save as draft"""
-    if not self.current_document_id:
-      Notification("Please create a material first!", style="warning", timeout=3).show()
+    """Collect form data; create document_id on first save, then save draft."""
+    form_data = self.collect_form_data()
+    
+    if not isinstance(form_data, dict):
+      Notification("No form data to save.", style="warning").show()
       return
 
-    form_data = self.collect_form_data() ## collect form data
-
+    if not self.current_document_id:
+      try:
+        res = anvil.server.call('create_new_master_material', anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system')
+        if isinstance(res, dict):
+          self.current_document_id = res.get('document_id')
+        else:
+          self.current_document_id = res
+        if not self.current_document_id:
+          Notification("Failed to create document id on server.", style="danger").show()
+          return
+      except Exception as e:
+        Notification(f"Failed to create new material: {e}", style="danger").show()
+        return
+  
     try:
-      anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
+      anvil.server.call('save_or_edit_draft', self.current_document_id, anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system', form_data)
       Notification("Draft saved!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
       self.raise_event("x-close-alert", value=True)
     except Exception as e:
-      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
+      Notification(f"Error saving draft: {e}", style="danger").show()
 
   def submit_btn_click(self, **event_args):
-    """Collect all form data and submit"""
-    if not self.current_document_id:
-      Notification("Please create a material first!", style="warning", timeout=3).show()
-      return
+    """Collect form data; create document_id on first submit, then submit version."""
+    form_data = self.collect_form_data()
 
-    form_data = self.collect_form_data() ## collect form data 
     if not self.validate_form_data(form_data):
-      Notification("Please fill in all required fields!", style="warning", timeout=3).show()
+      Notification("Please fill in all required fields!", style="warning").show()
       return
 
+    if not self.current_document_id:
+      try:
+        res = anvil.server.call('create_new_master_material', anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system')
+        if isinstance(res, dict):
+          self.current_document_id = res.get('document_id')
+        else:
+          self.current_document_id = res
+        if not self.current_document_id:
+          Notification("Failed to create document id on server.", style="danger").show()
+          return
+      except Exception as e:
+        Notification(f"Failed to create new material: {e}", style="danger").show()
+        return
     try:
       self.submit_btn.enabled = False
       self.submit_btn.text = "Submitting..."
-      anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
+      anvil.server.call('submit_version', self.current_document_id, anvil.users.get_user() if hasattr(anvil.users, 'get_user') else 'system', form_data)
       Notification("Submitted successfully!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
       self.raise_event("x-close-alert", value=True)
-
-
     except Exception as e:
-      error_msg = f"Submission failed: {str(e)}"
-      print(f"Full error: {repr(e)}") 
-      Notification(error_msg, style="danger", timeout=5).show()
+      Notification(f"Submission failed: {e}", style="danger").show()
     finally:
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
