@@ -9,6 +9,7 @@ from anvil.tables import app_tables
 class Material_input_form(Material_input_formTemplate):
   def __init__(self, current_document_id=None, item=None, **properties):
     self.init_components(**properties)
+    
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
     self.dropdown_supplier.items = ["ABC", "CBA", "HELLO", "BYE"]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
@@ -25,8 +26,8 @@ class Material_input_form(Material_input_formTemplate):
     self.details_section.visible = False
     self.advanced_cost_dropdown.items = ["Advanced Cost Calculation"]
 
-    self.current_document_id = current_document_id or (item or {}).get("document_id")
     self.item = {} if item is None else dict(item)
+    self.current_document_id = current_document_id or (item or {}).get("document_id")
     self._normalize_item()
     try:
       self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
@@ -56,6 +57,11 @@ class Material_input_form(Material_input_formTemplate):
   def _normalize_item(self):
     if not isinstance(self.item, dict):
       self.item = {}
+      
+    vat = self.item.get("vietnam_vat_rate")
+    if isinstance(vat, (int, float)):
+      self.item["vietnam_vat_rate"] = str(int(vat))
+        
     self.item.setdefault("material_name", self.item.get("name", ""))
     self.item.setdefault("master_material_id", self.item.get("master_material_id", ""))
     self.item.setdefault("ref_id", self.item.get("ref_id", ""))
@@ -71,20 +77,20 @@ class Material_input_form(Material_input_formTemplate):
     self.item.setdefault("supplier_selling_tolerance", self.item.get("supplier_selling_tolerance", ""))
     self.item.setdefault("import_duty", self.item.get("import_duty", ""))
     self.item.setdefault("logistics_rate",self.item.get("logistics_rate", ""))
-    self.item.setdefault("vietnam_vat_rate",self.item.get("vietnam_vat_rate",""))
+    self.item.setdefault("description_box",self.item.get("change_description",""))
     self._update_currency_labels(self.item.get("native_cost_currency"))
 
-##------------Calculate cost prices & UI for costing----------------------------
+  ##------------Calculate cost prices & UI for costing----------------------------
   def advanced_cost_dropdown_change(self, **event_args):
     # Show the section only if a value is selected (not None or blank)
     if self.advanced_cost_dropdown.selected_value == "Advanced Cost Calculation":
       self.details_section.visible = True
     else:
       self.details_section.visible = False
-      
+
   def currency_dropdown_change(self, **event_args):
     self._update_currency_labels(self.currency_dropdown.selected_value)
-    
+
   def _update_currency_labels(self, currency):
     for label in [
       self.original_cost_unit,
@@ -94,7 +100,7 @@ class Material_input_form(Material_input_formTemplate):
       self.logistics_unit_cost
     ]:
       label.text = currency or ""
-      
+
   def add_btn_click(self, **event_args):
     selected_material = self.material_dropdown.selected_value
 
@@ -178,10 +184,13 @@ class Material_input_form(Material_input_formTemplate):
     logistics_fee_per_unit = weight_per_unit * logistics_rate
     self.logistics_fee_per_unit.text = str(logistics_fee_per_unit)
 
-##------------------------buttons---------------------------------------
+  ##------------------------buttons---------------------------------------
   def close_btn_click(self, **event_args):
     self.raise_event("x-close-alert")
-    
+
+  def cancel_btn_click(self, **event_args):
+    pass
+
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
     if not self.current_document_id:
@@ -226,7 +235,7 @@ class Material_input_form(Material_input_formTemplate):
       self.submit_btn.enabled = True
       self.submit_btn.text = "Submit"
 
-##-----------------validations + data collections------------------------
+  ##-----------------validations + data collections------------------------
   def validate_form_data(self, form_data):
     """Basic client-side validation"""
     required_fields = [
@@ -249,42 +258,42 @@ class Material_input_form(Material_input_formTemplate):
 
     return True
 
-  def collect_form_data(self):
+  def collect_form_data(self):        
+        return {
+          # Basic Info
+          "master_material_id": self.mat_material_id.text,
+          "name": self.material_name.text if hasattr(self, 'material_name') else None,
+          "material_type": self.material_type_dropdown.selected_value,
+          "country_of_origin": self.country_of_origin_dropdown.selected_value,
+          "supplier_name" : self.dropdown_supplier.selected_value,
+          "ref_id" : self.supplier_reference_id.text,
+          "unit_of_measurement": self.UOM_dropdown.selected_value,
+          "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
+          "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
+          "fabric_cut_width_no_shrinkage": self.parse_float(self.fabric_cut_width_no_shrinkage.text) if hasattr(self, 'fabric_cut_width_no_shrinkage') else None,
+          "weight_per_unit": self.parse_float(self.weight_per_unit.text) if hasattr(self, 'weight_per_unit') else None,
+          "weight_uom": self.weight_uom_dropdown.selected_value,
+          "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
+          "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
+          "generic_material_size": self.generic_material_size.text,
+          "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
 
-    return {
-      # Basic Info
-      "master_material_id": self.mat_material_id.text,
-      "name": self.material_name.text if hasattr(self, 'material_name') else None,
-      "material_type": self.material_type_dropdown.selected_value,
-      "country_of_origin": self.country_of_origin_dropdown.selected_value,
-      "supplier_name" : self.dropdown_supplier.selected_value,
-      "ref_id" : self.supplier_reference_id.text,
-      "unit_of_measurement": self.UOM_dropdown.selected_value,
-      "fabric_roll_width": self.parse_float(self.fabric_roll_width.text) if hasattr(self, 'fabric_roll_width') else None,
-      "fabric_cut_width": self.parse_float(self.fabric_cut_width.text) if hasattr(self, 'fabric_cut_width') else None,
-      "fabric_cut_width_no_shrinkage": self.parse_float(self.fabric_cut_width_no_shrinkage.text) if hasattr(self, 'fabric_cut_width_no_shrinkage') else None,
-      "weight_per_unit": self.parse_float(self.weight_per_unit.text) if hasattr(self, 'weight_per_unit') else None,
-      "weight_uom": self.weight_uom_dropdown.selected_value,
-      "weft_shrinkage": self.parse_float(self.weft_shrinkage.text) if hasattr(self, 'weft_shrinkage') else None,
-      "werp_shrinkage": self.parse_float(self.werp_shrinkage.text) if hasattr(self, 'werp_shrinkage') else None,
-      "generic_material_size": self.generic_material_size.text,
-      "fabric_composition": "|".join([f"{item['material']}:{item['percentage']}%" for item in self.composition_list]),
-
-      # Costs
-      "original_cost_per_unit": self.parse_float(self.original_cost_per_unit.text) if hasattr(self, 'original_cost_per_unit') else None,
-      "native_cost_currency": self.currency_dropdown.selected_value,
-      "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
-      "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
-      "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
-      "vietnam_vat_rate": self.vietnam_vat_rate_dropdown.selected_value,
-      "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
-      "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
-      "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,
-      "shipping_term": self.shipping_term_dropdown.selected_value,
-      "logistics_rate": self.parse_float(self.logistics_rate.text) if hasattr(self, 'logistics_rate') else None,
-      "logistics_fee_per_unit": self.parse_float(self.logistics_fee_per_unit.text) if hasattr(self, 'logistics_fee_per_unit') else None,
-      "landed_cost_per_unit": self.parse_float(self.landed_cost.text) if hasattr(self, 'landed_cost') else None,
-    }
+          # Costs
+          "original_cost_per_unit": self.parse_float(self.original_cost_per_unit.text) if hasattr(self, 'original_cost_per_unit') else None,
+          "native_cost_currency": self.currency_dropdown.selected_value,
+          "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
+          "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
+          "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
+          "vietnam_vat_rate": self.vietnam_vat_rate_dropdown.selected_value,
+          "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
+          "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
+          "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,
+          "shipping_term": self.shipping_term_dropdown.selected_value,
+          "logistics_rate": self.parse_float(self.logistics_rate.text) if hasattr(self, 'logistics_rate') else None,
+          "logistics_fee_per_unit": self.parse_float(self.logistics_fee_per_unit.text) if hasattr(self, 'logistics_fee_per_unit') else None,
+          "landed_cost_per_unit": self.parse_float(self.landed_cost.text) if hasattr(self, 'landed_cost') else None,
+          "change_description":self.description_box.text,
+        }
 
   def parse_float(self, value):
     """Helper to safely parse float values"""
@@ -292,6 +301,8 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
+
+
 
 
 

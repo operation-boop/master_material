@@ -8,8 +8,6 @@ class Material_detail(Material_detailTemplate):
     self.init_components(**properties)
     self.item = {} 
     self.refresh_data_bindings()
-
-    # If a doc id was provided, immediately load it
     if doc_id:
       self.load_material(doc_id)
 

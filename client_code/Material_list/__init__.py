@@ -8,6 +8,7 @@ class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     self.load_material_cards()
+  
 
   def form_show(self, **event_args):
     self.load_material_cards()
