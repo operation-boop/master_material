@@ -18,6 +18,7 @@ class Material_input_form(Material_input_formTemplate):
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.vietnam_vat_rate_dropdown.items = ["N/A", "8", "10"]
     self.shipping_term_dropdown.items = ["EXW (Ex Works)", "FOB (Free On Board)", "DDP (Delivered Duty Paid)"]
+    self.vietnam_vat_rate_dropdown.selected_value = "N/A"
 
     self.composition_list = []
     self.material_dropdown.items = ["Cotton", "Polyester", "Silk", "Wool", "Elastane"]
@@ -190,60 +191,55 @@ class Material_input_form(Material_input_formTemplate):
     self.close_btn_click()
 
   def save_as_draft_btn_click(self, **event_args):
-    if not self.current_document_id:
-      Notification("Missing document id", style="warning").show()
-      return
+    """Collect all form data and save as draft - CREATE document if new"""
+    form_data = self.collect_form_data()
 
-    data = self.collect_form_data()
     try:
-      user = anvil.users.get_user()
-      res = anvil.server.call('save_draft', self.current_document_id, user, data)
-      # server may return same or a new document_id if it had to allocate one
-      new_doc_id = res.get("document_id") or self.current_document_id
-      self.current_document_id = new_doc_id
+      # If no document_id exists, this is a NEW material - create it now
+      if not self.current_document_id:
+        result = anvil.server.call('create_new_master_material', 'test_user@example.com')
+        self.current_document_id = result['document_id']
+        Notification(f"Created new material: {self.current_document_id}", style="info", timeout=2).show()
 
-      Notification("Draft saved", style="success", timeout=2).show()
-      self.raise_event("x-refresh-list", document_id=new_doc_id)
-      self.raise_event("x-close-alert", closed_by="save", document_id=new_doc_id)
+      # Now save the draft with all form data
+      anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
+      Notification("Draft saved!", style="success", timeout=3).show()
+      self.raise_event("x-refresh-list", document_id=self.current_document_id)
+      self.raise_event("x-close-alert", value=True)
     except Exception as e:
-      Notification(f"Save failed: {e}", style="danger", timeout=4).show()
+      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
+
   def submit_btn_click(self, **event_args):
-    """Validate then call server.submit_version(document_id, user, data)."""
-    if not self.current_document_id:
-      Notification("Missing document id", style="warning").show()
-      return
+    """Collect all form data and submit - CREATE document if new"""
+    form_data = self.collect_form_data()
 
-    data = self.collect_form_data()
-
-    ok = self.validate_form_data(data)
-    if not ok:
-      Notification("Client validation failed — please check required fields.", style="warning").show()
+    if not self.validate_form_data(form_data):
+      Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
 
     try:
-      user = anvil.users.get_user()
-      # disable UI briefly
-      try:
-        self.submit_btn.enabled = False
-        self.submit_btn.text = "Submitting..."
-      except Exception:
-        pass
+      self.submit_btn.enabled = False
+      self.submit_btn.text = "Submitting..."
 
-      res = anvil.server.call('submit_version', self.current_document_id, user, data)
-      new_doc_id = res.get("document_id") or self.current_document_id
-      self.current_document_id = new_doc_id
-      
-      Notification("Submitted", style="success", timeout=2).show()
-      self.raise_event("x-refresh-list", document_id=new_doc_id)
-      self.raise_event("x-close-alert", closed_by="submit", document_id=new_doc_id)
+      # If no document_id exists, this is a NEW material - create it now
+      if not self.current_document_id:
+        result = anvil.server.call('create_new_master_material', 'test_user@example.com')
+        self.current_document_id = result['document_id']
+        Notification(f"Created new material: {self.current_document_id}", style="info", timeout=2).show()
+
+      # Now submit with all form data
+      anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
+      Notification("Submitted successfully!", style="success", timeout=3).show()
+      self.raise_event("x-refresh-list", document_id=self.current_document_id)
+      self.raise_event("x-close-alert", value=True)
+
     except Exception as e:
-      Notification(f"Submit failed: {e}", style="danger", timeout=6).show()
+      error_msg = f"Submission failed: {str(e)}"
+      print(f"Full error: {repr(e)}") 
+      Notification(error_msg, style="danger", timeout=5).show()
     finally:
-      try:
-        self.submit_btn.enabled = True
-        self.submit_btn.text = "Submit"
-      except Exception:
-        pass
+      self.submit_btn.enabled = True
+      self.submit_btn.text = "Submit"
 
   ##-----------------validations + data collections------------------------
   def validate_form_data(self, form_data):
@@ -268,7 +264,14 @@ class Material_input_form(Material_input_formTemplate):
 
     return True
 
-  def collect_form_data(self):        
+  def collect_form_data(self):     
+    vat_value = self.vietnam_vat_rate_dropdown.selected_value
+    if vat_value == "N/A":
+      vat_number = None
+    else:
+      vat_number = self.parse_float(vat_value)
+
+    
     return {
       # Basic Info
       "master_material_id": self.mat_material_id.text,
@@ -294,7 +297,7 @@ class Material_input_form(Material_input_formTemplate):
       "supplier_selling_tolerance": self.parse_float(self.supplier_tolerance.text) if hasattr(self, 'supplier_tolerance') else None,
       "refundable_tolerance": self.refundable_tolerance.checked if hasattr(self, 'refundable_tolerance') else False,
       "effective_cost_per_unit": self.parse_float(self.effective_cost_per_unit.text) if hasattr(self, 'effective_cost_per_unit') else None,
-      "vietnam_vat_rate": self.vietnam_vat_rate_dropdown.selected_value,
+      "vietnam_vat_rate": vat_number,
       "refundable_vat": self.refundable_vat.checked if hasattr(self, 'refundable_vat') else False,
       "import_duty": self.parse_float(self.import_duty.text) if hasattr(self, 'import_duty') else None,
       "refundable_import_duty": self.refundable_import_duty.checked if hasattr(self,'refundable_import_duty') else False,

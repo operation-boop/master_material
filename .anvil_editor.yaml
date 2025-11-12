@@ -30,6 +30,7 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
+    ServerModule1: '1762958369858488961008816.85754'
     mat_detail: '1762507012634289144327609.31573'
     mat_input: DEORGFCBEOX6PXFPU2RSBH25IEZGRN2A
     mat_list: '1762415028890455059908817.8722'
