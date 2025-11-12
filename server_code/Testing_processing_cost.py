@@ -37,8 +37,9 @@ def test_processing_costs_complete():
     test_client = app_tables.clients.add_row(
       name="Test Client",
       price_category="Medium",
-      country="US",
+      country="USA",
       max_account_value=50000.0,
+      # max_account_value=50000.0,
       currency="USD"
     )
 
