@@ -11,7 +11,6 @@ from datetime import datetime, date
 
 class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
 

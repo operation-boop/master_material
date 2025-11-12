@@ -10,7 +10,7 @@ from anvil.tables import app_tables
 
 
 class bingheng_Control_Panel(bingheng_Control_PanelTemplate):
-  def __init__(self, **properties):
+  def __init__(self, username=None, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.username = username or "Guest"
