@@ -1,6 +1,37 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
+  client__masterstyle_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Clients
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: Clientcontact
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: Clientemail
+      type: string
+    - admin_ui: {order: 3, width: 200}
+      name: Clientbilladd
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: id
+      type: number
+    - admin_ui: {order: 5, width: 200}
+      name: created
+      type: datetime
+    server: full
+    title: Client_(masterstyle)
+  id_clients_masterstyle_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Clients
+      type: number
+    server: full
+    title: ID_Clients(masterstyle)
   master_material:
     client: none
     columns:
@@ -190,6 +221,30 @@ db_schema:
       type: string
     server: full
     title: master_material_version
+  master_style__main_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: ID
+      target: id_clients_masterstyle_
+      type: link_multiple
+    - admin_ui: {order: 1, width: 200}
+      name: ref_id
+      target: client__masterstyle_
+      type: link_multiple
+    - admin_ui: {order: 2, width: 200}
+      name: Client
+      target: client__masterstyle_
+      type: link_multiple
+    - admin_ui: {order: 3, width: 200}
+      name: Picture
+      target: client__masterstyle_
+      type: link_multiple
+    - admin_ui: {order: 4, width: 200}
+      name: description
+      type: string
+    server: full
+    title: Master_style (Main)
   material_sku:
     client: none
     columns:
@@ -216,6 +271,31 @@ db_schema:
       type: number
     server: full
     title: material_sku
+  material_sku__main_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: ref_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: color
+      target: optional__sku_
+      type: link_multiple
+    - admin_ui: {order: 3, width: 200}
+      name: size
+      target: optional__sku_
+      type: link_multiple
+    - admin_ui: {order: 4, width: 200}
+      name: qr_data
+      type: string
+    - admin_ui: {order: 5, width: 200}
+      name: sku_cost_override
+      type: string
+    server: full
+    title: Material_SKU (Main)
   material_type:
     client: none
     columns: []
@@ -226,6 +306,25 @@ db_schema:
     columns: []
     server: full
     title: Material_weight_uom
+  optional__sku_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Size
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: Color
+      type: string
+    server: full
+    title: Optional (SKU)
+  picture_masterstyle_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Client Pictures
+      type: media
+    server: full
+    title: Picture(masterstyle)
   qr_code:
     client: none
     columns:
@@ -234,6 +333,32 @@ db_schema:
       type: string
     server: full
     title: Qr_code
+  style_sku__main_:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: ref_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: master_style
+      target: master_style__main_
+      type: link_multiple
+    - admin_ui: {order: 3, width: 200}
+      name: Color
+      target: optional__sku_
+      type: link_multiple
+    - admin_ui: {order: 4, width: 200}
+      name: size
+      target: optional__sku_
+      type: link_multiple
+    - admin_ui: {order: 5, width: 200}
+      name: qr_data
+      type: string
+    server: full
+    title: Style_SKU (Main)
   supplier:
     client: none
     columns:
@@ -271,7 +396,10 @@ db_schema:
       type: datetime
     server: full
     title: Users
-dependencies: []
+dependencies:
+- dep_id: dep_g6uz8n5mejkmz
+  resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
+  version: {version_tag: v3.5.0}
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material (temp clone)
 native_deps:

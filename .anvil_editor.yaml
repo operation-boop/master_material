@@ -14,6 +14,7 @@ unique_ids:
     Costing_sheet_home.Creating_cost_sheet_page.e_Profit_scenarios: EDBJGV2WBB33ULAWADZMOQ6YOVUZRTBE
     Costing_sheet_home.RowTemplate1: ZWZE66IVW44DIRQA7MYAYLLWXY2MIWWN
     Deal: '1761391960671703756629457.2389'
+    Details_Page: '1762921212737172142719238.1171'
     Home: DNP22X3TNU36IXO4FW2GWYDLINVJ3BQN
     Master_Mat: KIMSFIMDBFNFO6GGK3Q3R4BYI5ZAKE5L
     Master_Mat.RowTemplate1: TGX3ARPJZWLXMU2GRZ6Z7NWQGUWHT7P3
@@ -29,6 +30,7 @@ unique_ids:
     Material_list.MaterialCard: '1762336056821483042217454.3132'
     Opportunity: '1761391942918616178806726.4047'
     QMO: '17613920531692144854397.7878876'
+    bingheng_createprofile: '1762918165921727911813156.2933'
     wanyan_ver_cost_sheet_details: '1762484347324621512864462.969'
     wanyan_ver_cost_sheet_details.BOM_rowtemplate: '1762484749460606510214332.3304'
     wanyan_ver_cost_sheet_details.Exchange_rates_rowtemplate: '1762486495973319579842865.9415'
