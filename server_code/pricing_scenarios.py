@@ -10,7 +10,7 @@ import anvil.server
 from datetime import datetime
 
 # Import helper functions
-from . import cost_sheet_helpers_module as helpers
+from . import cost_sheet_helpers as helpers
 
 """
 Pricing Scenarios Module
