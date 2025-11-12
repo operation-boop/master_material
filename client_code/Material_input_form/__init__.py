@@ -187,9 +187,8 @@ class Material_input_form(Material_input_formTemplate):
   ##------------------------buttons---------------------------------------
   def close_btn_click(self, **event_args):
     self.raise_event("x-close-alert")
-
   def cancel_btn_click(self, **event_args):
-    pass
+    self.close_btn_click()
 
   def save_as_draft_btn_click(self, **event_args):
     """Collect all form data and save as draft"""
