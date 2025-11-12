@@ -13,7 +13,6 @@ class Material_detail(Material_detailTemplate):
     if doc_id:
       self.load_material(doc_id)
 
-
   def form_show(self, **event_args):
     doc_id = self.item.get("document_id")  # if passed from previous form
     if doc_id:
