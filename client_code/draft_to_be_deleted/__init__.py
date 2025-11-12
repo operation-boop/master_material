@@ -147,7 +147,7 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
 
   def button_3_click(self, **event_args):
     """This method is called when the button is clicked"""
-    result = anvil.server.call('test_processing_costs_simple')
+    result = anvil.server.call('test_processing_costs_complete')
     print(result)  # Shows in console
     alert(result, large=True)  # Shows in popup
 

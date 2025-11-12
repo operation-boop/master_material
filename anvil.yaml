@@ -15,14 +15,14 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
-      target: users
+      target: user
       type: link_single
     server: full
     title: bill_of_material
@@ -81,7 +81,7 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: bill_of_material
@@ -126,14 +126,14 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
-      target: users
+      target: user
       type: link_single
     server: full
     title: cost_sheet
@@ -154,21 +154,21 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {width: 200}
       name: submitted_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: approved_at
       type: datetime
     - admin_ui: {width: 200}
       name: approved_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 10.90625, width: 200}
       name: bom_version
@@ -192,7 +192,7 @@ db_schema:
       type: string
     - admin_ui: {order: 10.75, width: 200}
       name: master_style
-      target: master_styles
+      target: master_style
       type: link_single
     - admin_ui: {order: 10.875, width: 200}
       name: client
@@ -248,7 +248,7 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 0.5, width: 200}
       name: from_currency
@@ -275,18 +275,18 @@ db_schema:
       type: datetime
     - admin_ui: {order: 2, width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 3, width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {order: 4, width: 200}
       name: submitted_by
-      target: users
+      target: user
       type: link_single
     server: full
     title: master_material
-  master_material_versions:
+  master_material_version:
     client: none
     columns:
     - admin_ui: {order: 0, width: 200}
@@ -307,14 +307,14 @@ db_schema:
       type: datetime
     - admin_ui: {order: 5, width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 6, width: 200}
       name: submitted_at
       type: datetime
     - admin_ui: {order: 7, width: 200}
       name: submitted_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 8, width: 200}
       name: ref_id
@@ -327,7 +327,7 @@ db_schema:
       type: string
     - admin_ui: {order: 11, width: 200}
       name: supplier
-      target: suppliers
+      target: supplier
       type: link_single
     - admin_ui: {order: 12, width: 200}
       name: supplier_name
@@ -370,11 +370,11 @@ db_schema:
       type: datetime
     - admin_ui: {order: 25, width: 200}
       name: last_verified_by
-      target: users
+      target: user
       type: link_single
     server: full
-    title: master_material_versions
-  master_styles:
+    title: master_material_version
+  master_style:
     client: none
     columns:
     - admin_ui: {order: 0, width: 200}
@@ -391,7 +391,7 @@ db_schema:
       name: description
       type: string
     server: full
-    title: master_styles
+    title: master_style
   material_sku:
     client: none
     columns:
@@ -403,7 +403,7 @@ db_schema:
       type: string
     server: full
     title: material_sku
-  overhead_cost_items:
+  overhead_cost_item:
     client: none
     columns:
     - admin_ui: {width: 200}
@@ -424,24 +424,24 @@ db_schema:
       type: string
     - admin_ui: {width: 200}
       name: material_version
-      target: master_material_versions
+      target: master_material_version
       type: link_single
     - admin_ui: {width: 200}
       name: created_at
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: updated_at
       type: datetime
     - admin_ui: {width: 200}
       name: updated_by
-      target: users
+      target: user
       type: link_single
     server: full
-    title: overhead_cost_items
+    title: overhead_cost_item
   processing_cost_item:
     client: none
     columns:
@@ -459,21 +459,21 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: updated_at
       type: datetime
     - admin_ui: {width: 200}
       name: updated_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {width: 200}
       name: last_verified_date
       type: datetime
     - admin_ui: {width: 200}
       name: last_verified_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 1, width: 200}
       name: cost_type
@@ -490,11 +490,11 @@ db_schema:
       type: string
     - admin_ui: {width: 200}
       name: vendor
-      target: suppliers
+      target: supplier
       type: link_single
     server: full
     title: processing_cost_item
-  quoted_price_scenarios:
+  quoted_price_scenario:
     client: none
     columns:
     - admin_ui: {order: 0, width: 200}
@@ -530,18 +530,18 @@ db_schema:
       type: datetime
     - admin_ui: {order: 10, width: 200}
       name: created_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 11, width: 200}
       name: updated_at
       type: datetime
     - admin_ui: {order: 12, width: 200}
       name: updated_by
-      target: users
+      target: user
       type: link_single
     server: full
-    title: quoted_price_scenarios
-  suppliers:
+    title: quoted_price_scenario
+  supplier:
     client: none
     columns:
     - admin_ui: {width: 200}
@@ -555,14 +555,14 @@ db_schema:
       type: datetime
     - admin_ui: {width: 200}
       name: approved_by
-      target: users
+      target: user
       type: link_single
     - admin_ui: {order: 2, width: 200}
       name: country
       type: string
     server: full
-    title: suppliers
-  users:
+    title: supplier
+  user:
     client: none
     columns:
     - admin_ui: {width: 200}
@@ -575,7 +575,7 @@ db_schema:
       name: role
       type: string
     server: full
-    title: users
+    title: user
 dependencies: []
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material
