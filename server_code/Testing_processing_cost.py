@@ -12,7 +12,7 @@ from datetime import datetime
 
 @anvil.server.callable
 def test_processing_costs_complete():
-  """Complete test for processing costs - SINGULAR table names"""
+  """Complete test for processing costs - PLURAL table names"""
 
   try:
     results = []
@@ -25,7 +25,7 @@ def test_processing_costs_complete():
     results.append("SETUP: Creating test data...")
 
     # Create test user
-    test_user = app_tables.user.add_row(
+    test_user = app_tables.users.add_row(
       name="Test User",
       email="test@test.com",
       role="staff"
@@ -34,7 +34,7 @@ def test_processing_costs_complete():
     results.append(f"✅ Created user: {user_id}")
 
     # Create test client
-    test_client = app_tables.client.add_row(
+    test_client = app_tables.clients.add_row(
       name="Test Client",
       price_category="Medium",
       country="US",
@@ -43,7 +43,7 @@ def test_processing_costs_complete():
     )
 
     # Create test style
-    test_style = app_tables.master_style.add_row(
+    test_style = app_tables.master_styles.add_row(
       ref_id="TEST-STYLE-001",
       client=test_client,
       picture="test",
@@ -51,7 +51,7 @@ def test_processing_costs_complete():
     )
 
     # Create test cost sheet
-    test_cost_sheet = app_tables.cost_sheet.add_row(
+    test_cost_sheet = app_tables.cost_sheets.add_row(
       document_id="TEST-CS-001",
       current_version=1,
       created_at=datetime.now(),
@@ -59,7 +59,7 @@ def test_processing_costs_complete():
     )
 
     # Create test cost sheet version
-    test_version = app_tables.cost_sheet_version.add_row(
+    test_version = app_tables.cost_sheet_versions.add_row(
       cost_sheet=test_cost_sheet,
       document_id="TEST-CS-001",
       version_number=1,
@@ -99,7 +99,7 @@ def test_processing_costs_complete():
     results.append(f"   Status: {pc1['status']}")
 
     # Check total
-    test_version = app_tables.cost_sheet_version.get_by_id(version_id)
+    test_version = app_tables.cost_sheet_versions.get_by_id(version_id)
     results.append(f"   Total processing cost: ${test_version['total_processing_cost']:.2f}")
     results.append("")
 
@@ -119,9 +119,9 @@ def test_processing_costs_complete():
     results.append(f"   Amount: ${pc2['cost_amount']:.2f}")
 
     # Check updated total
-    test_version = app_tables.cost_sheet_version.get_by_id(version_id)
+    test_version = app_tables.cost_sheet_versions.get_by_id(version_id)
     results.append(f"   Total processing cost: ${test_version['total_processing_cost']:.2f}")
-    results.append("   Expected: $7.50 (5.50 + 2.00)")
+    results.append(f"   Expected: $7.50 (5.50 + 2.00)")
 
     # Verify
     if abs(test_version['total_processing_cost'] - 7.50) < 0.01:
@@ -150,14 +150,14 @@ def test_processing_costs_complete():
       user_id,
       "Verified"  # Changed status
     )
-    results.append("✅ Updated processing cost")
+    results.append(f"✅ Updated processing cost")
     results.append(f"   Old amount: $5.50 → New amount: ${updated_pc['cost_amount']:.2f}")
     results.append(f"   Old status: Draft → New status: {updated_pc['status']}")
 
     # Check updated total
-    test_version = app_tables.cost_sheet_version.get_by_id(version_id)
+    test_version = app_tables.cost_sheet_versions.get_by_id(version_id)
     results.append(f"   Total processing cost: ${test_version['total_processing_cost']:.2f}")
-    results.append("   Expected: $8.00 (6.00 + 2.00)")
+    results.append(f"   Expected: $8.00 (6.00 + 2.00)")
 
     if abs(test_version['total_processing_cost'] - 8.00) < 0.01:
       results.append("   ✅ Total updated correctly!")
@@ -168,7 +168,7 @@ def test_processing_costs_complete():
     # TEST 5: Verify processing cost
     results.append("TEST 5: Testing verify function...")
     verified_pc = anvil.server.call('verify_processing_cost', pc2.get_id(), user_id)
-    results.append("✅ Verified processing cost")
+    results.append(f"✅ Verified processing cost")
     results.append(f"   Status: {verified_pc['status']}")
     results.append(f"   Verified by: {verified_pc['last_verified_by']['name']}")
     results.append("")
@@ -179,9 +179,9 @@ def test_processing_costs_complete():
     results.append("✅ Deleted processing cost")
 
     # Check total after delete
-    test_version = app_tables.cost_sheet_version.get_by_id(version_id)
+    test_version = app_tables.cost_sheet_versions.get_by_id(version_id)
     results.append(f"   Total processing cost: ${test_version['total_processing_cost']:.2f}")
-    results.append("   Expected: $6.00 (only Cut-make left)")
+    results.append(f"   Expected: $6.00 (only Cut-make left)")
 
     if abs(test_version['total_processing_cost'] - 6.00) < 0.01:
       results.append("   ✅ Total recalculated correctly after delete!")
@@ -201,12 +201,12 @@ def test_processing_costs_complete():
       "Stone wash",
       user_id
     )
-    results.append("✅ Added VND processing cost: 125,000 VND")
+    results.append(f"✅ Added VND processing cost: 125,000 VND")
 
     # Check total (should convert VND to USD)
-    test_version = app_tables.cost_sheet_version.get_by_id(version_id)
+    test_version = app_tables.cost_sheet_versions.get_by_id(version_id)
     results.append(f"   Total processing cost in USD: ${test_version['total_processing_cost']:.2f}")
-    results.append("   Expected: ~$11.00 (6.00 + 125000/25000)")
+    results.append(f"   Expected: ~$11.00 (6.00 + 125000/25000)")
     results.append("")
 
     # CLEANUP

@@ -18,6 +18,7 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
 
+
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
     # for row in self.list_of_cost_sheets:
     #    print(dict(row))
@@ -146,10 +147,14 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # print(dict(most_recent_version))
 
   def button_3_click(self, **event_args):
+    
+
+
+    
     """This method is called when the button is clicked"""
     result = anvil.server.call('test_processing_costs_complete')
     print(result)  # Shows in console
     alert(result, large=True)  # Shows in popup
 
-
+  
 
