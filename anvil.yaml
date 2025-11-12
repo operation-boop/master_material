@@ -412,6 +412,9 @@ dependencies:
 - dep_id: dep_xymmo08thrlyoc
   resolution_hints: {app_id: 3ACFHAQDBLLJX7FL, name: NUI Library, package_name: NUI}
   version: {version_tag: v2.1}
+- dep_id: dep_ko2104hc3rr0lm
+  resolution_hints: {app_id: N7KFE4YBWMGWJ5OX, name: anvil-reactive, package_name: anvil_reactive}
+  version: {version_tag: v0.1.3}
 metadata: {description: Structured Data for Growth Department, title: VINMAKE - Growth}
 name: master material (temp clone)
 native_deps:
@@ -422,9 +425,10 @@ native_deps:
 package_name: vm_growth_birdseye
 runtime_options:
   client_version: '3'
+  legacy_features: {__dict__: true, bootstrap3: true, class_names: true, root_container: true}
   server_spec: {base: python310-standard}
   server_version: python3-sandbox
-  version: 2
+  version: 3
 services:
 - client_config: {}
   server_config: {}
