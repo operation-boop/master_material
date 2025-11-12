@@ -199,10 +199,6 @@ db_schema:
       target: client
       type: link_single
     - admin_ui: {width: 200}
-      name: exchange_rates_used
-      target: exchange_rates
-      type: link_multiple
-    - admin_ui: {width: 200}
       name: overhead_export_logistics
       type: number
     - admin_ui: {width: 200}
@@ -232,6 +228,10 @@ db_schema:
     - admin_ui: {width: 200}
       name: total_processing_cost
       type: number
+    - admin_ui: {order: 24.75, width: 200}
+      name: exchange_rates_used
+      target: exchange_rate
+      type: link_multiple
     server: full
     title: cost_sheet_version
   exchange_rate:
@@ -261,33 +261,6 @@ db_schema:
       type: simpleObject
     server: full
     title: exchange_rate
-  exchange_rates:
-    client: none
-    columns:
-    - admin_ui: {width: 200}
-      name: date
-      type: date
-    - admin_ui: {width: 200}
-      name: rate
-      type: string
-    - admin_ui: {width: 200}
-      name: from_currency
-      type: string
-    - admin_ui: {width: 200}
-      name: to_currency
-      type: string
-    - admin_ui: {width: 200}
-      name: created_at
-      type: datetime
-    - admin_ui: {width: 200}
-      name: created_by
-      target: users
-      type: link_single
-    - admin_ui: {width: 200}
-      name: admin_define
-      type: simpleObject
-    server: full
-    title: exchange_rates
   master_material:
     client: none
     columns:
