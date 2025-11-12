@@ -1,4 +1,4 @@
-from ._anvil_designer import Details_PageTemplate
+from ._anvil_designer import bingheng_Details_PageTemplate
 from anvil import *
 import anvil.server
 import anvil.google.auth, anvil.google.drive
@@ -9,11 +9,11 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class Details_Page(Details_PageTemplate):
+class bingheng_Details_Page(bingheng_Details_PageTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-   self.clear_inputs()
+    self.clear_inputs()
 
   def clear_inputs(self):
     """Clear all input fields"""
