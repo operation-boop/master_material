@@ -56,7 +56,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
 
   def edit_button(self, **event_args):
     """This method is called when the button is clicked"""
-  open_form('Style_SKU.SKU_Sheet')
+  open_form('bingheng_Style_SKU.Style_SKU_sheet')
   pass
 def button_generate_qr_click(self, **event_args):
   sku_id = self.text_box_sku_id.text.strip()

@@ -11,51 +11,59 @@ from datetime import datetime, date
 
 class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
   def __init__(self, **properties):
+    """Initialize the form"""
     self.init_components(**properties)
 
-
-  def submit_button1(self, **event_args):
+  # -----------------------------
+  # Submit Button
+  # -----------------------------
+  def submit_button1_click(self, **event_args):
     """This method is called when the Submit button is clicked"""
 
     # Get values from the TextBoxes
-  Enter_Your_Name = self.Enter_Your_Name.text.strip()
-Contact_Number = self.Contact_Number.text.strip()
-Email = self.Email.text.strip()
-Address = self.Address.text.strip()
-Notification("Submitted").show()
-# Basic validation BEFORE sending to backend
-if not Enter_Your_Name or not Contact_Number:
-  alert("Please fill in both the Client Name and Contact Number.")
-  return
+    Enter_Your_Name = self.Enter_Your_Name.text.strip()
+    Contact_Number = self.Contact_Number.text.strip()
+    Email = self.Email.text.strip()
+    Address = self.Address.text.strip()
 
-  # Now call your server function safely,
-  try:
-    result = anvil.server.call(
-      'save_client_info',
-      Enter_Your_Name,
-      Contact_Number,
-      Email,
-      Address
-    )
-    alert(result)
+    Notification("Submitted").show()
 
-  except Exception as e:
-    alert(f"Error: {e}")
+    # Basic validation BEFORE sending to backend
+    if not Enter_Your_Name or not Contact_Number:
+      alert("Please fill in both the Client Name and Contact Number.")
+      return
 
-# ---- Other buttons (navigation) ----
-def create_button1(self, **event_args):
-  open_form('bingheng_createprofile')
+    # Now call your server function safely
+    try:
+      result = anvil.server.call(
+        'save_client_info',
+        Enter_Your_Name,
+        Contact_Number,
+        Email,
+        Address
+      )
+      alert(result)
 
-  def update_button1(self, **event_args):
-    open_form('bingheng_createprofile')
+    except Exception as e:
+      alert(f"Error: {e}")
 
-def edit_button1(self, **event_args):
-  open_form('bingheng_createprofile')
+  # -----------------------------
+  # Navigation Buttons
+  # -----------------------------
+  def create_button1_click(self, **event_args):
+    """Navigate to Create Profile"""
+    open_form('bingheng_CreateProfile')
 
-  def home_button1(self, **event_args):
-    """This method is called when the button is clicked"""
+  def update_button1_click(self, **event_args):
+    """Navigate to Update Profile"""
+    open_form('bingheng_CreateProfile')
+
+  def edit_button1_click(self, **event_args):
+    """Navigate to Edit Profile"""
+    open_form('bingheng_CreateProfile')
+
+  def home_button1_click(self, **event_args):
+    """Navigate to Home"""
     open_form('bingheng_Details_Page')
-    pass
-
 
     # Any code you write here will run before the form opens.

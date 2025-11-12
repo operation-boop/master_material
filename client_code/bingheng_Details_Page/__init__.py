@@ -37,7 +37,7 @@ class bingheng_Details_Page(bingheng_Details_PageTemplate):
 
       if result:
         alert(f"Welcome, {client_name}!")
-        open_form('Master_Style.Details_logged', username=client_name)
+        open_form('bingheng_logged_in', username=client_name)
       else:
         alert("Invalid name or ID. Please try again.")
     except Exception as e:
@@ -47,6 +47,6 @@ class bingheng_Details_Page(bingheng_Details_PageTemplate):
 
   def create_button2(self, **event_args):
     """Go to Create Form"""
-    open_form('Master_Style.Create_Form')
+    open_form('bingheng_CreateProfile')
 
     # ---- TextBox Event Handlers (optional) ----

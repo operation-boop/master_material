@@ -30,6 +30,22 @@ components:
     name: outlined_card_1
     properties: {role: outlined-card}
     type: ColumnPanel
+  - components:
+    - name: repeating_panel_1
+      properties: {item_template: bingheng_Style_SKU.Style_SKU_sheet}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'KOUERX,RXGPOJ'}
+    name: data_grid_1
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: Style}
+      - {data_key: column_2, id: VJQQOR, title: Color}
+      - {data_key: column_3, id: OJLQEN, title: Seasonal}
+      - {data_key: column_1, id: EDMNHR, title: Size}
+      - {data_key: column_2, id: QAHAQX, title: SKU}
+      - {data_key: column_3, id: YWSYMN, title: Storage}
+      - {data_key: column_4, id: WDNGDQ, title: Material(s)}
+    type: DataGrid
   layout_properties: {slot: default}
   name: content_panel
   properties: {}
@@ -42,32 +58,6 @@ components:
   name: SKU
   properties: {bold: true, text: 'SKU '}
   type: Label
-- components:
-  - components:
-    - data_bindings: []
-      layout_properties: {pinned: false}
-      name: repeating_panel_1
-      properties: {item_template: Style_SKU.SKU_Sheet}
-      type: RepeatingPanel
-    data_bindings: []
-    layout_properties: {grid_position: 'NXMTTT,JHDZAS'}
-    name: data_grid_1
-    properties:
-      columns:
-      - {data_key: Style, expand: false, id: JKSDUP, title: Style, width: 99.33331298828125}
-      - {data_key: Colour, expand: false, id: VJQQOR, title: Colour, width: 99.88885498046875}
-      - {data_key: Spring/Summer/Fall/Winter, expand: false, id: OJLQEN, title: Seasonal, width: 93.33331298828125}
-      - {data_key: XS/S/M/L/XL, expand: false, id: QKBKSN, title: Size, width: 66.111083984375}
-      - {data_key: S-K-U, expand: false, id: LAVOSN, title: SKU, width: 79.7777099609375}
-      - {data_key: Location, expand: false, id: NUIAKR, title: Storage, width: 107.4444580078125}
-      - {data_key: Materials %, expand: false, id: ENZKRV, title: Material(s), width: 127.4444580078125}
-      role: tonal-data-grid
-      show_page_controls: true
-    type: DataGrid
-  layout_properties: {slot: default}
-  name: outlined_card_2
-  properties: {role: outlined-card}
-  type: ColumnPanel
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
