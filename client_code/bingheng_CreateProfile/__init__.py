@@ -1,4 +1,4 @@
-from ._anvil_designer import bingheng_createprofileTemplate
+from ._anvil_designer import bingheng_CreateProfileTemplate
 from anvil import *
 import anvil.tables as tables
 import anvil.tables.query as q
@@ -9,7 +9,7 @@ from anvil.google.drive import app_files
 import anvil.users
 from datetime import datetime, date
 
-class bingheng_createprofile(bingheng_createprofileTemplate):
+class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)

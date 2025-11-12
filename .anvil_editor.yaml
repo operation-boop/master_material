@@ -29,8 +29,10 @@ unique_ids:
     Material_list.MaterialCard: '1762336056821483042217454.3132'
     Opportunity: '1761391942918616178806726.4047'
     QMO: '17613920531692144854397.7878876'
+    bingheng_Control_Panel: '1762932326782669381652729.7533'
+    bingheng_CreateProfile: '1762918165921727911813156.2933'
     bingheng_Details_Page: '1762921212737172142719238.1171'
-    bingheng_createprofile: '1762918165921727911813156.2933'
+    bingheng_Style_SKU: '1762931740987929352130472.4476'
     bingheng_logged_in: '1762929936993426745284746.57434'
     bingheng_logged_in.bingheng_logged_in_sheet: '1762930195189508696949540.98944'
     wanyan_ver_cost_sheet_details: '1762484347324621512864462.969'
@@ -52,5 +54,6 @@ unique_ids:
   scripts: {}
   server_modules:
     ServerPackage1: 5BP6BG7RRPGB4I2XQTMDQJZSS54IHI3G
+    bingheng_Servercode: '1762932197967395002359605.68463'
     mat_ver: DEORGFCBEOX6PXFPU2RSBH25IEZGRN2A
     material: '1762240770923235863181415.2722'
