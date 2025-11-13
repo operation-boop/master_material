@@ -173,10 +173,15 @@ def create_material(created_by_user, form_data):
           version[k] = v
         except Exception as e:
           print(f"Warn: cannot set {k}: {e}")
-
-  # Link version to master
+          
+  current_list = list(master['version_history'] or [])
+  current_list.append(version)
+  master['version_history'] = current_list
+  master['version_history_uid'] = "|".join([v['document_uid'] for v in current_list])
+  
   master['current_version'] = version
-
+  master['current_version_number'] = 1
+  master['current_version_uid'] = document_uid
   return {"action": "created", "document_id": document_id}
 
 @anvil.server.callable
@@ -229,8 +234,14 @@ def create_and_submit_material(created_by_user, form_data):
         except Exception as e:
           print(f"Warn: cannot set {k}: {e}")
 
-  # Link version to master
+  current_list = list(master['version_history'] or [])
+  current_list.append(version)
+  master['version_history'] = current_list
+  master['version_history_uid'] = "|".join([v['document_uid'] for v in current_list])
+  
   master['current_version'] = version
+  master['current_version_number'] = 1
+  master['current_version_uid'] = document_uid
 
   return {"action": "created_and_submitted", "document_id": document_id}
 #-----------------------------------------------------------------------
