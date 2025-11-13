@@ -125,4 +125,3 @@ def get_material_full_row(document_id):
   if latest:
     return dict(latest)
   return None
-

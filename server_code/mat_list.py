@@ -62,4 +62,3 @@ def _to_num(x, default=-1):
     return float(x)
   except Exception:
     return default
-

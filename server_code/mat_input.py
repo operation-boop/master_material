@@ -210,23 +210,3 @@ def is_submitted(status):
   if not status:
     return False
   return status.startswith("Submitted")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
