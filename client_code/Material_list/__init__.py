@@ -36,11 +36,3 @@ class Material_list(Material_listTemplate):
       self.repeating_panel_materials.items = anvil.server.call('list_material_cards')
     except Exception as e:
       alert(f"Could not load material cards: {e}", title="Load error")
-
-
-
-
-
-  
-
-

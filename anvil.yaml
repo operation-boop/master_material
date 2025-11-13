@@ -50,7 +50,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: document_id
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: -6, width: 200}
       name: ver_num
       type: number
     - admin_ui: {width: 200}
@@ -174,12 +174,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: landed_cost_per_unit
       type: number
-    - admin_ui: {order: 1.9814453125, width: 200}
-      name: updated_at
-      type: datetime
-    - admin_ui: {order: 2.177734375, width: 200}
-      name: updated_by
-      type: string
     - admin_ui: {order: 2.77923583984375, width: 200}
       name: last_verified_by
       type: string
@@ -261,7 +255,7 @@ runtime_options:
   server_version: python3-sandbox
   version: 2
 services:
-- client_config: {}
+- client_config: {enable_v2: true}
   server_config: {}
   source: /runtime/services/tables.yml
 - client_config: {allow_remember_me: false, allow_signup: true, confirm_email: true, enable_automatically: false, remember_me_days: 7, require_secure_passwords: true, share_login_status: true, use_email: true, use_google: true}

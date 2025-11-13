@@ -29,6 +29,10 @@ class Material_input_form(Material_input_formTemplate):
     self.details_section.visible = False
     self.advanced_cost_dropdown.items = ["Advanced Cost Calculation"]
 
+    self.refundable_tolerance.checked = bool(self.item.get("refundable_tolerance",False))
+    self.refundable_vat.checked = bool(self.item.get("refundable_vat",False))
+    self.refundable_import_duty.checked = bool(self.item.get("refundable_import_duty",False))
+
     self.item = {} if item is None else dict(item)
     self.current_document_id = current_document_id or (item or {}).get("document_id")
     self._normalize_item()
@@ -53,43 +57,8 @@ class Material_input_form(Material_input_formTemplate):
     safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
 
     self.refresh_data_bindings()
-  def _load_fabric_composition(self):
-    """Parse fabric composition string and populate the repeating panel"""
-    fabric_comp = self.item.get("fabric_composition", "")
-  
-    # If it's already a list (new material), use it as-is
-    if isinstance(fabric_comp, list):
-      self.composition_list = fabric_comp
-      self.fabric_composition_repeating_panel.items = self.composition_list
-      self.update_total_percentage()
-      return
-  
-      # If it's a string, parse it
-    if isinstance(fabric_comp, str) and fabric_comp.strip():
-      try:
-        # Parse "Cotton:50%|Polyester:50%" format
-        parts = fabric_comp.split("|")
-        for part in parts:
-          if ":" in part:
-            material, percent_str = part.split(":", 1)
-            # Remove the % sign and convert to float
-            percent_str = percent_str.strip().replace("%", "")
-            percentage = float(percent_str)
-  
-            self.composition_list.append({
-              "material": material.strip(),
-              "percentage": percentage,
-              "form": self
-            })
-  
-            # Update the repeating panel
-        self.fabric_composition_repeating_panel.items = self.composition_list
-        self.update_total_percentage()
-  
-      except Exception as e:
-        print(f"Error parsing fabric composition: {e}")
-        self.composition_list = []
-        self.fabric_composition_repeating_panel.items = []
+    if self.current_document_id and self.original_cost_per_unit.text:
+      self.supplier_tolerance_change()
   def _normalize_item(self):
     if not isinstance(self.item, dict):
       self.item = {}
@@ -114,6 +83,9 @@ class Material_input_form(Material_input_formTemplate):
     self.item.setdefault("import_duty", self.item.get("import_duty", ""))
     self.item.setdefault("logistics_rate",self.item.get("logistics_rate", ""))
     self.item.setdefault("description_box",self.item.get("change_description",""))
+    self.item.setdefault("effective_cost_per_unit",self.item.get("effective_cost_per_unit", ""))
+    self.item.setdefault("logistics_fee_per_unit",self.item.get("logistics_fee_per_unit",""))
+    self.item.setdefault("landed_cost_per_unit",self.item.get("landed_cost_per_unit",""))
     self._update_currency_labels(self.item.get("native_cost_currency"))
   def _determine_mode(self):
     """Determine what mode the form is in based on current status"""
@@ -146,6 +118,43 @@ class Material_input_form(Material_input_formTemplate):
       self.save_as_draft_btn.visible = True
       self.submit_btn.visible = True
       self.submit_btn.text = "Submit"
+  def _load_fabric_composition(self):
+    """Parse fabric composition string and populate the repeating panel"""
+    fabric_comp = self.item.get("fabric_composition", "")
+
+    # If it's already a list (new material), use it as-is
+    if isinstance(fabric_comp, list):
+      self.composition_list = fabric_comp
+      self.fabric_composition_repeating_panel.items = self.composition_list
+      self.update_total_percentage()
+      return
+
+      # If it's a string, parse it
+    if isinstance(fabric_comp, str) and fabric_comp.strip():
+      try:
+        # Parse "Cotton:50%|Polyester:50%" format
+        parts = fabric_comp.split("|")
+        for part in parts:
+          if ":" in part:
+            material, percent_str = part.split(":", 1)
+            # Remove the % sign and convert to float
+            percent_str = percent_str.strip().replace("%", "")
+            percentage = float(percent_str)
+
+            self.composition_list.append({
+              "material": material.strip(),
+              "percentage": percentage,
+              "form": self
+            })
+
+            # Update the repeating panel
+        self.fabric_composition_repeating_panel.items = self.composition_list
+        self.update_total_percentage()
+
+      except Exception as e:
+        print(f"Error parsing fabric composition: {e}")
+        self.composition_list = []
+        self.fabric_composition_repeating_panel.items = []
 
   ##------------Calculate cost prices & UI for costing----------------------------
   def advanced_cost_dropdown_change(self, **event_args):

@@ -294,7 +294,8 @@ components:
         name: supplier_tolerance
         properties: {type: number}
         type: TextBox
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''refundable_tolerance'']', property: checked, writeback: false}
         layout_properties: {grid_position: 'IIOGXX,LYDSEP'}
         name: refundable_tolerance
         properties: {align: center, checked: false, text: ''}
@@ -341,7 +342,8 @@ components:
         name: vietnam_vat_rate_dropdown
         properties: {include_placeholder: false, placeholder: 'Select Vat '}
         type: DropDown
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''refundable_vat'']', property: checked, writeback: false}
         layout_properties: {grid_position: 'EUDKVY,NNAAOV'}
         name: refundable_vat
         properties: {align: center, text: ''}
@@ -360,7 +362,8 @@ components:
         name: import_duty
         properties: {type: number}
         type: TextBox
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''refundable_import_duty'']', property: checked, writeback: false}
         layout_properties: {grid_position: 'AGZOIO,JUNYKV'}
         name: refundable_import_duty
         properties: {text: ''}
@@ -425,7 +428,8 @@ components:
         name: original_cost_unit
         properties: {align: right}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''original_cost_per_unit'']', property: text, writeback: false}
         layout_properties: {grid_position: 'CZGYTK,OYBTXT'}
         name: original_cost
         properties: {}
@@ -451,7 +455,8 @@ components:
         name: effective_cost_unit
         properties: {align: right}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''effective_cost_per_unit'']', property: text, writeback: false}
         layout_properties: {grid_position: 'IZUJAA,KLECKD'}
         name: effective_cost_per_unit
         properties: {}
@@ -464,7 +469,8 @@ components:
         name: logistics_unit_cost
         properties: {align: right}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''logistics_fee_per_unit'']', property: text, writeback: false}
         layout_properties: {grid_position: 'MCDZIZ,CQTDQO'}
         name: logistics_fee_per_unit
         properties: {text: ''}
@@ -477,7 +483,8 @@ components:
         name: landed_cost_unit
         properties: {align: right}
         type: Label
-      - data_bindings: []
+      - data_bindings:
+        - {code: 'self.item[''landed_cost_per_unit'']', property: text, writeback: false}
         layout_properties: {grid_position: 'HOVJYO,FBGZIE'}
         name: landed_cost
         properties: {}

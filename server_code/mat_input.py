@@ -23,7 +23,7 @@ REQUIRED_FIELDS = [
 ]  
 
 def _next_ver_num(master_row):
-  current = master_row['current_version_number'] or 1
+  current = master_row['current_version_number'] or 0
   return current + 1
 
 def _clone_version_fields(src_row, dest_row):
@@ -64,7 +64,12 @@ def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=
     status       = "Draft", 
     created_at   = datetime.now()
   )
+  current_list = list(master['version_history'] or [])
+  current_list.append(new_v)
+  master['version_history'] = current_list
+  master['version_history_uid'] = "|".join([v['document_uid'] for v in master['version_history']])
   _clone_version_fields(old_v, new_v)
+  
 
   if form_data:
     for k, v in form_data.items():
@@ -323,7 +328,6 @@ def submit_version(document_id, submitted_by_user, form_data=None):
     missing_str = ', '.join(validation['missing_fields'])
     raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
 
-  # Mark as submitted-but-unverified by storing combined text
   version['status'] = "Submitted - Unverified"
   version['submitted_at'] = datetime.now()
   version['submitted_by'] = submitted_by_user
