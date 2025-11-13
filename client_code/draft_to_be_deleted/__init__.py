@@ -9,15 +9,16 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 class draft_to_be_deleted(draft_to_be_deletedTemplate):
-  def __init__(self, **properties):
+  def __init__(self, cost_sheet_version_id, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     # self.create_new_cost_sheet()
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
-    cost_sheet_version_id = app_tables.cost_sheet_versions.get_by_id(cost_sheet_version_id)
-    self.list_overhead_cost_items(cost_sheet_version_id)
+    self.cost_sheet_version_id = cost_sheet_version_id
+    self.list_overhead_cost_items ()
+
     
 
 
@@ -44,6 +45,34 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     for row in list_overhead_cost_items:
         print(dict(row))
 
+
+  #   def __init__(self, cost_sheet_version_id, **properties):
+  #     self.init_components(**properties)
+  #     self.cost_sheet_version_id = cost_sheet_version_id
+  #     self.load_overhead_items()
+
+  #   def load_overhead_items(self):
+  #     """Simple: just list all items"""
+  #     try:
+  #       # Call the simpler list function
+  #       items = anvil.server.call(
+  #         'list_overhead_cost_items',
+  #         self.cost_sheet_version_id  # ← Pass the ID here!
+  #       )
+
+  #       # Display in repeating panel
+  #       self.repeating_panel_overhead.items = items
+
+  #       # Calculate total (optional)
+  #       total = sum(item['cost_amount'] for item in items)
+  #       self.label_total.text = f"Total: ${total:.2f}"
+
+  #     except Exception as e:
+  #       alert(f"Error: {str(e)}")
+
+  #   def button_refresh_click(self, **event_args):
+  #     """Refresh the list"""
+  #     self.load_overhead_items()
 
 
 
