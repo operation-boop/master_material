@@ -16,7 +16,6 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
-    cost_sheet_version_id = anvil.server.call('get_current_version', cost_sheet_id)
     cost_sheet_version_id = app_tables.cost_sheet_versions.get_by_id(cost_sheet_version_id)
     self.list_overhead_cost_items(cost_sheet_version_id)
     
