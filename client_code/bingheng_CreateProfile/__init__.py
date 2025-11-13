@@ -26,36 +26,41 @@ class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
     Email = self.Email.text.strip()
     Address = self.Address.text.strip()
 
-    Notification("Submitted").show()
+Notification("Submitted").show()
+result = anvil.server.call('save_client_info', name, contact, email, address)
 
-    # Basic validation BEFORE sending to backend
-    if not Enter_Your_Name or not Contact_Number:
-      alert("Please fill in both the Client Name and Contact Number.")
-      return
-
-    # Now call your server function safely
-    try:
-      result = anvil.server.call(
-        'save_client_info',
-        Enter_Your_Name,
-        Contact_Number,
-        Email,
-        Address
-      )
-      alert(result)
-
-    except Exception as e:
-      alert(f"Error: {e}")
-
-  # -----------------------------
-  # Navigation Buttons
-  # -----------------------------
+alert(f"{result['message']}\nYour unique reference ID is: {result['ref_id']}")
 
 
-  def home_button1(self, **event_args):
-    """Navigate to Home"""
-    open_form('bingheng_Details_Page')
+# Basic validation BEFORE sending to backend
+if not Enter_Your_Name or not Contact_Number:
+  alert("Please fill in both the Client Name and Contact Number.")
+  return
 
-    # Any code you write here will run before the form opens.
+# Now call your server function safely
+try:
+  result = anvil.server.call(
+    'save_client_info',
+    Enter_Your_Name,
+    Contact_Number,
+    Email,
+    Address
+  )
+  alert(result)
 
-  
+except Exception as e:
+  alert(f"Error: {e}")
+
+# -----------------------------
+# Navigation Buttons
+# -----------------------------
+
+
+def home_button1(self, **event_args):
+  """Navigate to Home"""
+open_form('bingheng_Details_Page')
+
+# Any code you write here will run before the form opens.
+
+
+
