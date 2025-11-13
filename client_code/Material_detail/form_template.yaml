@@ -1,7 +1,7 @@
 components:
 - components:
   - components:
-    - event_bindings: {}
+    - event_bindings: {click: back_btn_click}
       layout_properties: {grid_position: 'RZUCXB,PZBZLE'}
       name: back_btn
       properties: {align: left, background: 'theme:Primary 700', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}

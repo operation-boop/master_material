@@ -57,42 +57,39 @@ class Material_detail(Material_detailTemplate):
     pass
     
   def edit_btn_click(self, **event_args):
-    """Simple: fetch the latest version for this document_id and open the edit form."""
-    # get document id
     doc_id = (self.item or {}).get("document_id") or getattr(self, "current_document_id", None)
     if not doc_id:
       alert("No document ID available to edit.", title="Error")
       return
 
+    # Get the full row data
     latest = anvil.server.call("get_material_full_row", doc_id) or {}
-    # open input form with the fresh, latest data
+  
     try:
       input_form = Material_input_form(current_document_id=doc_id, item=dict(latest))
+    
+      # Set event handler for refresh
+      input_form.set_event_handler("x-refresh-list", lambda **args: self.load_material(doc_id))
+    
+      result = alert(content=input_form, title="Edit Material", large=True, buttons=None)
+    
+      # Refresh if saved/submitted
+      if result in ("saved", "submitted", "edited_and_resubmitted"):
+        try:
+          self.load_material(doc_id)
+        except Exception:
+          pass
+        Notification("Material updated.", style="success").show()
+    
     except Exception as e:
       Notification(f"Failed to open edit form: {e}", style="danger").show()
-      return
-
-    result = alert(content=input_form, large=True)
-
-    # if saved/submitted, reload and refresh list
-    if result in ("saved", "submitted", "edited"):
-      try:
-        self.load_material(doc_id)
-      except Exception:
-        pass
-      try:
-        main = open_form("Material_list")
-        if main is not None:
-          if hasattr(main, "refresh_materials"):
-            main.refresh_materials()
-          elif hasattr(main, "load_material_cards"):
-            main.load_material_cards()
-      except Exception:
-        pass
-      Notification("Material updated.", style="success").show()
 
   def version_history_tab_btn_click(self, **event_args):
     
+    pass
+
+  def back_btn_click(self, **event_args):
+    open_form("Material_list")
     pass
 
 

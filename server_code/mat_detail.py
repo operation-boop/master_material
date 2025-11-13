@@ -7,19 +7,14 @@ def get_material_detail(document_id):
   if not document_id:
     raise ValueError("document_id is required")
 
-  # search both columns, then pick latest by ver_num
-  rows = list(app_tables.master_material_version.search(document_id=document_id)) + \
-  list(app_tables.master_material_version.search(document_uid=document_id))
+  # Get from master_material
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    raise Exception(f"No material found for ID: {document_id}")
 
-  if not rows:
-    raise Exception(f"No material version found for ID: {document_id}")
-
-  latest = None
-  for r in rows:
-    if latest is None or _to_num(_get(r, "ver_num")) > _to_num(_get(latest, "ver_num")):
-      latest = r
-  v = latest
-
+  v = master['current_version']
+  if not v:
+    raise Exception(f"No current version found for ID: {document_id}")
 
   ocpu  = _get(v, "original_cost_per_unit")
   nccy  = _get(v, "native_cost_currency")
@@ -53,49 +48,47 @@ def get_material_detail(document_id):
 
 @anvil.server.callable
 def get_technical_detail(document_id):
-  rows = list(app_tables.master_material_version.search(document_id=document_id)) + \
-  list(app_tables.master_material_version.search(document_uid=document_id))
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    raise Exception(f"No material found for ID: {document_id}")
 
-  latest = None
-  for r in rows:
-    if latest is None or _to_num(_get(r, "ver_num")) > _to_num(_get(latest, "ver_num")):
-      latest = r
-    v = latest
+  v = master['current_version']
+  if not v:
+    raise Exception(f"No current version found for ID: {document_id}")
 
-    techdetails = {
-      "fabric_composition": _get(v, "fabric_composition"),
-      "fabric_roll_width": _get(v,"fabric_roll_width"),
-      "fabric_cut_width": _get(v,"fabric_cut_width"),
-      "fabric_cut_width_no_shrinkage": _get(v,"fabric_cut_width_no_shrinkage"),
-      "weight_per_unit":_get(v,"weight_per_unit"),
-      "weft_shrinkage":_get(v,"weft_shrinkage"),
-      "werp_shrinkage":_get(v,"werp_shrinkage"),
-    }
-    return techdetails
+  techdetails = {
+    "fabric_composition": _get(v, "fabric_composition"),
+    "fabric_roll_width": _get(v,"fabric_roll_width"),
+    "fabric_cut_width": _get(v,"fabric_cut_width"),
+    "fabric_cut_width_no_shrinkage": _get(v,"fabric_cut_width_no_shrinkage"),
+    "weight_per_unit":_get(v,"weight_per_unit"),
+    "weft_shrinkage":_get(v,"weft_shrinkage"),
+    "werp_shrinkage":_get(v,"werp_shrinkage"),
+  }
+  return techdetails
 
 @anvil.server.callable
 def get_cost_detail(document_id):
-  rows = list(app_tables.master_material_version.search(document_id=document_id)) + \
-  list(app_tables.master_material_version.search(document_uid=document_id))
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    raise Exception(f"No material found for ID: {document_id}")
 
-  latest = None
-  for r in rows:
-    if latest is None or _to_num(_get(r, "ver_num")) > _to_num(_get(latest, "ver_num")):
-      latest = r
-    v = latest
-
-    costdetails = {
-      "original_cost_per_unit": _get(v,"original_cost_per_unit"),
-      "currency": _get(v,"native_cost_currency"),
-      "supplier_tolerance": _get(v,"supplier_selling_tolerance"),
-      "effective_cost": _get(v,"effective_cost_per_unit"),
-      "vat": _get(v,"vietnam_vat_rate"),
-      "import_duty": _get(v,"import_duty"),
-      "logistics_rate": _get(v,"logistics_rate"),
-      "landed_cost": _get(v,"landed_cost_per_unit"),
-    }
-    return costdetails
+  v = master['current_version']
+  if not v:
+    raise Exception(f"No current version found for ID: {document_id}")
     
+  costdetails = {
+    "original_cost_per_unit": _get(v,"original_cost_per_unit"),
+    "currency": _get(v,"native_cost_currency"),
+    "supplier_tolerance": _get(v,"supplier_selling_tolerance"),
+    "effective_cost": _get(v,"effective_cost_per_unit"),
+    "vat": _get(v,"vietnam_vat_rate"),
+    "import_duty": _get(v,"import_duty"),
+    "logistics_rate": _get(v,"logistics_rate"),
+    "landed_cost": _get(v,"landed_cost_per_unit"),
+  }
+  return costdetails
+
 def _get(row, key, default=None):
   try:
     return row[key]
@@ -113,15 +106,18 @@ def get_material_full_row(document_id):
   """Return the entire row (all columns) of the LATEST version for the given document_id"""
   if not document_id:
     return None
-
-  rows = app_tables.master_material_version.search(document_id=document_id)
   
-  latest = None
-  for r in rows:
-    if latest is None or (r['ver_num'] > latest['ver_num']):
-      latest = r
-
-    # if found, return the whole row as a dict
-  if latest:
-    return dict(latest)
-  return None
+  # Get from master_material
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    return None
+  
+  version = master['current_version']
+  if not version:
+    return None
+  
+    # Convert to dict and add status field
+  result = dict(version)
+  result['verification_status'] = version['status']
+  
+  return result

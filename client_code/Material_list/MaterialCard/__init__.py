@@ -51,7 +51,7 @@ class MaterialCard(MaterialCardTemplate):
   
     self.verify_status.enabled = False
     try:
-      result = anvil.server.call('verify_material', doc_id)
+      result = anvil.server.call('verify_material_version', doc_id)
       if result and result.get('ok'):  
         Notification(f"Verified: {result.get('message')}", title="Success", style="success").show()
         self.parent.raise_event('x-refresh-list')

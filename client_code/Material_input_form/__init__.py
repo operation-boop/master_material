@@ -6,6 +6,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
+
 class Material_input_form(Material_input_formTemplate):
   def __init__(self, current_document_id=None, item=None, **properties):
     self.init_components(**properties)
@@ -31,6 +32,10 @@ class Material_input_form(Material_input_formTemplate):
     self.item = {} if item is None else dict(item)
     self.current_document_id = current_document_id or (item or {}).get("document_id")
     self._normalize_item()
+
+    self.mode = self._determine_mode()
+    self._configure_buttons_for_mode()
+    
     try:
       self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
     except Exception:
@@ -80,11 +85,39 @@ class Material_input_form(Material_input_formTemplate):
     self.item.setdefault("description_box",self.item.get("change_description",""))
     self._update_currency_labels(self.item.get("native_cost_currency"))
 
-  def _current_user_name(self):
-    import anvil.users
-    user = anvil.users.get_user() or anvil.users.login_with_form()
-    # adjust the field if your Users table stores email at a different key
-    return (user.get('full_name') if hasattr(user, "get") else user['full_name'])
+  def _determine_mode(self):
+    """Determine what mode the form is in based on current status"""
+    if not self.current_document_id:
+      return "new"  # Creating new material
+
+    # Get current status
+    current_status = self.item.get("verification_status") or self.item.get("status")
+
+    if current_status == "Submitted - Verified":
+      return "edit_verified"  # Editing verified material
+    elif current_status in ["Draft", "Creating", "Submitted - Unverified"]:
+      return "edit_draft"  # Editing draft or unverified
+    else:
+      return "new"
+
+  def _configure_buttons_for_mode(self):
+    """Show/hide buttons based on mode"""
+    if self.mode == "edit_verified":
+      # Editing verified material - only show Submit button
+      self.save_as_draft_btn.visible = False
+      self.submit_btn.visible = True
+      self.submit_btn.text = "Submit New Version"
+    elif self.mode == "edit_draft":
+      # Editing draft - show both buttons
+      self.save_as_draft_btn.visible = True
+      self.submit_btn.visible = True
+      self.submit_btn.text = "Submit"
+    else:
+      # New material - show both buttons
+      self.save_as_draft_btn.visible = True
+      self.submit_btn.visible = True
+      self.submit_btn.text = "Submit"
+
   ##------------Calculate cost prices & UI for costing----------------------------
   def advanced_cost_dropdown_change(self, **event_args):
     # Show the section only if a value is selected (not None or blank)
@@ -194,12 +227,24 @@ class Material_input_form(Material_input_formTemplate):
     self.raise_event("x-close-alert")
   def cancel_btn_click(self, **event_args):
     self.close_btn_click()
+    
+  def _current_user_name(self):
+    user = anvil.users.get_user() or anvil.users.login_with_form()
+    return user['email'] if user else "Unknown"
 
   def save_as_draft_btn_click(self, **event_args):
+    """Save as draft - only for new materials or editing drafts"""
     form_data = self.collect_form_data()
     try:
       user_name = self._current_user_name()
-      resp = anvil.server.call('save_draft',self.current_document_id, user_name ,form_data)
+
+      if not self.current_document_id:
+        # New material - create it
+        resp = anvil.server.call('create_material', user_name, form_data)
+      else:
+        # Editing draft
+        resp = anvil.server.call('save_or_edit_draft', self.current_document_id, user_name, form_data)
+
       self.current_document_id = resp.get('document_id') or self.current_document_id
       Notification("Draft saved!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
@@ -208,40 +253,60 @@ class Material_input_form(Material_input_formTemplate):
       Notification(f"Error: {e}", style="danger", timeout=3).show()
 
   def submit_btn_click(self, **event_args):
-    """Collect all form data and submit - CREATE document if new"""
+    """Submit material - handles all cases: new, edit draft, edit verified"""
     form_data = self.collect_form_data()
+  
     if not self.validate_form_data(form_data):
       Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
-
-      self.submit_btn.enabled = False
-      self.submit_btn.text = "Submitting..."
+  
+    self.submit_btn.enabled = False
+    self.submit_btn.text = "Submitting..."
+  
+    try:
       user_name = self._current_user_name()
-
-      if getattr(self, "mode", None) == "edit_verified":
+  
+      mode = getattr(self, 'mode', 'new')  # Get mode safely
+  
+      if mode == "edit_verified":
+        # Editing verified material - create new version as Submitted - Unverified
         resp = anvil.server.call(
           'edit_verified_and_submit',
           document_id=self.current_document_id,
           edited_by_user=user_name,
           form_data=form_data,
-          notes="Edited via UI"
+          notes=form_data.get('change_description', 'Edited via UI')
         )
-      self.current_document_id = resp.get('document_id') or self.current_document_id
-      result_token = "edited_and_resubmitted"
-      success_msg = "Edited & resubmitted for verification."
-    else:
-      # Normal draft/unverified submit (server lazily creates if needed)
-      resp = anvil.server.call('submit', self.current_document_id, user_email, form_data)
-      self.current_document_id = resp.get('document_id') or self.current_document_id
-      result_token = "submitted"
-      success_msg = "Submitted successfully!"
-
+        self.current_document_id = resp.get('document_id') or self.current_document_id
+        success_msg = f"New version {resp.get('new_version_number')} created and submitted for verification."
+        result_token = "edited_and_resubmitted"
+  
+      elif mode == "edit_draft":
+        # Editing draft or unverified - submit it
+        resp = anvil.server.call('submit_version', self.current_document_id, user_name, form_data)
+        self.current_document_id = resp.get('document_id') or self.current_document_id
+        success_msg = "Submitted successfully!"
+        result_token = "submitted"
+  
+      else:
+        # New material - create and submit
+        resp = anvil.server.call('create_and_submit_material', user_name, form_data)
+        self.current_document_id = resp.get('document_id') or self.current_document_id
+        success_msg = "Material created and submitted!"
+        result_token = "submitted"
+  
       Notification(success_msg, style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
       self.raise_event("x-close-alert", value=result_token)
+  
+    except Exception as e:
+      Notification(f"Error: {e}", style="danger", timeout=5).show()
+    finally:
+      self.submit_btn.enabled = True
+      # Use getattr to safely get mode
+      mode = getattr(self, 'mode', 'new')
+      self.submit_btn.text = "Submit New Version" if mode == "edit_verified" else "Submit"
 
-    self.submit_btn.enabled = True
-    self.submit_btn.text = "Submit"
   ##-----------------validations + data collections------------------------
   def validate_form_data(self, form_data):
     """Basic client-side validation"""

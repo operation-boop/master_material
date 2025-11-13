@@ -10,11 +10,20 @@ VALID_STATUSES = {
   "Submitted - Unverified": ["Draft", "Submitted - Verified"],
   "Submitted - Verified": ["Draft"]  
 }
-REQUIRED_FIELDS = ["supplier_name"]  
+REQUIRED_FIELDS = [
+  "supplier_name", 
+  "name", 
+  "material_type", 
+  "country_of_origin",
+  "unit_of_measurement",
+  "weight_per_unit",
+  "weight_uom",
+  "original_cost_per_unit",
+  "native_cost_currency"
+]  
 
 def _next_ver_num(master_row):
-  """Compute next version number from master.current_version_number or fallback to 1."""
-  current = master_row.get('current_version_number') or 1
+  current = master_row['current_version_number'] or 1
   return current + 1
 
 def _clone_version_fields(src_row, dest_row):
@@ -22,7 +31,7 @@ def _clone_version_fields(src_row, dest_row):
     "document_uid","document_id","ver_num",
     "status","created_at","updated_at","updated_by",
     "submitted_at","submitted_by",
-    "last_verified_date","last_verified_by","verification_notes"
+    "last_verified_date","last_verified_by"
   }
   cols = [c['name'] for c in app_tables.master_material_version.list_columns()]
   for name in cols:
@@ -122,7 +131,107 @@ def get_next_document_number():
       continue
 
   return max(numbers) + 1 if numbers else 1
+  
+@anvil.server.callable
+def create_material(created_by_user, form_data):
+  """Create a new material with version 1 as Draft"""
 
+  # Generate document_id
+  doc_num = get_next_document_number()
+  document_id = f"{DOC_PREFIX}{doc_num:04d}"
+  document_uid = str(uuid.uuid4())
+
+  # Create master_material row
+  master = app_tables.master_material.add_row(
+    document_id=document_id,
+    current_version_number=1,
+    current_version_uid=document_uid,
+    created_at=datetime.now(),
+    created_by=created_by_user
+  )
+
+  # Create version 1 as Draft
+  version = app_tables.master_material_version.add_row(
+    document_id=document_id,
+    document_uid=document_uid,
+    ver_num=1,
+    status="Draft",
+    created_at=datetime.now(),
+    created_by=created_by_user,
+    updated_at=datetime.now(),
+    updated_by=created_by_user
+  )
+
+  # Apply form data
+  if form_data:
+    for k, v in form_data.items():
+      if v is not None:
+        try:
+          version[k] = v
+        except Exception as e:
+          print(f"Warn: cannot set {k}: {e}")
+
+  # Link version to master
+  master['current_version'] = version
+
+  return {"action": "created", "document_id": document_id}
+
+@anvil.server.callable
+def create_and_submit_material(created_by_user, form_data):
+  """Create a new material and submit it immediately as Submitted - Unverified"""
+
+  # Validate required fields
+  missing = []
+  for field in REQUIRED_FIELDS:
+    if not form_data.get(field):
+      missing.append(field)
+
+  if missing:
+    raise Exception(f"Cannot submit. Missing required fields: {', '.join(missing)}")
+
+  # Generate document_id
+  doc_num = get_next_document_number()
+  document_id = f"{DOC_PREFIX}{doc_num:04d}"
+  document_uid = str(uuid.uuid4())
+
+  # Create master_material row
+  master = app_tables.master_material.add_row(
+    document_id=document_id,
+    current_version_number=1,
+    current_version_uid=document_uid,
+    created_at=datetime.now(),
+    created_by=created_by_user,
+    submitted_at=datetime.now(),
+    submitted_by=created_by_user
+  )
+
+  # Create version 1 as Submitted - Unverified
+  version = app_tables.master_material_version.add_row(
+    document_id=document_id,
+    document_uid=document_uid,
+    ver_num=1,
+    status="Submitted - Unverified",
+    created_at=datetime.now(),
+    created_by=created_by_user,
+    updated_at=datetime.now(),
+    updated_by=created_by_user,
+    submitted_at=datetime.now(),
+    submitted_by=created_by_user
+  )
+
+  # Apply form data
+  if form_data:
+    for k, v in form_data.items():
+      if v is not None:
+        try:
+          version[k] = v
+        except Exception as e:
+          print(f"Warn: cannot set {k}: {e}")
+
+  # Link version to master
+  master['current_version'] = version
+
+  return {"action": "created_and_submitted", "document_id": document_id}
 #-----------------------------------------------------------------------
 @anvil.server.callable
 def get_master_material(document_id):
@@ -222,33 +331,39 @@ def submit_version(document_id, submitted_by_user, form_data=None):
     raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
 
   # Mark as submitted-but-unverified by storing combined text
-  combined_status = "Submitted - Unverified"
-  version['status'] = combined_status
+  version['status'] = "Submitted - Unverified"
   version['submitted_at'] = datetime.now()
   version['submitted_by'] = submitted_by_user
-
+  version['updated_at'] = datetime.now()
+  version['updated_by'] = submitted_by_user
   master['submitted_at'] = version['submitted_at']
   master['submitted_by'] = submitted_by_user
-
   try:
     version['last_verified_date'] = None
+    version['last_verified_by'] = None
     master['last_verified_date'] = None
+    master['last_verified_by'] = None
   except Exception:
-    # If those fields don't exist, ignore (no schema change required)
     pass
 
   return {"action": "submitted_unverified", "version": version, "document_id": document_id}
 
 @anvil.server.callable
-def verify_version(document_id, verified_by_user, notes=None):
+def verify_material_version(document_id):
   """
-  Mark the current version as verified by changing status text to
-  'Submitted - Verified' (still stored in the same 'status' column).
+  Admin function: Mark the current version as verified.
+  Changes status from 'Submitted - Unverified' to 'Submitted - Verified'.
   """
+  user = anvil.users.get_user()
+  if not user:
+    raise Exception("You must be logged in to verify materials.")
+  if user['role'] != "Admin":
+    raise Exception("Permission denied: only admins can verify.")
+
   master = get_master_material(document_id)
   version = master['current_version']
 
-  # allow verification only if it's in an unverified submitted state
+  # Allow verification only if it's in unverified submitted state
   cur_status = version['status']
   if cur_status != "Submitted - Unverified":
     raise Exception("Only a 'Submitted - Unverified' version can be verified.")
@@ -256,19 +371,15 @@ def verify_version(document_id, verified_by_user, notes=None):
   # Update status to verified
   version['status'] = "Submitted - Verified"
   version['last_verified_date'] = datetime.now()
-  version['last_verified_by'] = verified_by_user
-  if notes is not None:
-    try:
-      version['verification_notes'] = notes
-    except Exception:
-      # ignore if column not present
-      pass
-
+  version['last_verified_by'] = user['email'] or user['full_name'] or "Unknown"
 
   master['last_verified_date'] = version['last_verified_date']
   master['last_verified_by'] = version['last_verified_by']
 
-  return {"action": "verified", "document_id": document_id}
+  return {
+    "ok": True, 
+    "message": f"{document_id} verified by {version['last_verified_by']}."
+  }
 
 def is_submitted(status):
   """Return True for any submitted flavor."""
