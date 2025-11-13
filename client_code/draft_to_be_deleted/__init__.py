@@ -8,7 +8,6 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-
 class draft_to_be_deleted(draft_to_be_deletedTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
@@ -17,7 +16,10 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
-    self.get_overhead_summary_by_type(**properties)
+    cost_sheet_version_id = anvil.server.call('get_current_version', cost_sheet_id)
+    cost_sheet_version_id = app_tables.cost_sheet_versions.get_by_id(cost_sheet_version_id)
+    self.list_overhead_cost_items(cost_sheet_version_id)
+    
 
 
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
@@ -38,11 +40,9 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
 
 
 
-
-
-  def get_overhead_summary_by_type(self):
-    list_all_overhead = anvil.server.call('get_overhead_summary_by_type')
-    for row in list_all_overhead:
+  def list_overhead_cost_items(self, cost_sheet_version_id):
+    list_overhead_cost_items = anvil.server.call('list_overhead_cost_items', cost_sheet_version_id)
+    for row in list_overhead_cost_items:
         print(dict(row))
 
 
