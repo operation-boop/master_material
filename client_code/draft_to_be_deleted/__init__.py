@@ -9,7 +9,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 class draft_to_be_deleted(draft_to_be_deletedTemplate):
-  def __init__(self, cost_sheet_version_id, **properties):
+  def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     # self.create_new_cost_sheet()
