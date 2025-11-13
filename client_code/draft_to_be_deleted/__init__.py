@@ -17,6 +17,7 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
+    self.get_overhead_summary_by_type(**properties)
 
 
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
@@ -39,7 +40,10 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
 
 
 
-
+  def get_overhead_summary_by_type(self):
+    list_all_overhead = anvil.server.call('get_overhead_summary_by_type')
+    for row in list_all_overhead:
+        print(dict(row))
 
 
 
