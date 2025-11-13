@@ -24,11 +24,16 @@ from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overvie
 
 
 
+
 class Home(HomeTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    #self.content_panel.add_component(Costing_sheet_base())
+    # self.content_panel.add_component(Costing_sheet_base())
+    self.content_panel.add_component(costing_sheet_base())
+
+
+    
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
 

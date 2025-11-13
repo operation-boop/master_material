@@ -1,0 +1,146 @@
+components:
+- components:
+  - layout_properties: {grid_position: 'JQKUDD,UCYIEG'}
+    name: label_1
+    properties: {role: headline, text: cost sheets}
+    type: Label
+  - event_bindings: {click: button_create_new_sheet_click}
+    layout_properties: {grid_position: 'JQKUDD,BOZSXJ'}
+    name: button_create_new_sheet
+    properties: {text: Create new sheet}
+    type: Button
+  - layout_properties: {grid_position: 'JQKUDD,JLYCDO'}
+    name: button_1
+    properties: {text: Dummy Button}
+    type: Button
+  - layout_properties: {grid_position: 'LUNKUE,TZSPCL'}
+    name: spacer_2
+    properties: {height: 32}
+    type: Spacer
+  - layout_properties: {grid_position: 'NHXSMW,FCAHDB'}
+    name: label_4
+    properties: {align: center, text: 'Total Sheets: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NHXSMW,LQUVKI'}
+    name: label_4_copy
+    properties: {align: center, text: 'Under Review: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NHXSMW,CACOPC'}
+    name: label_4_copy_2
+    properties: {align: center, text: 'Approved: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NHXSMW,KAFVBF'}
+    name: label_4_copy_3
+    properties: {align: center, text: 'Draft/ Rejected: no.'}
+    type: Label
+  - layout_properties: {grid_position: 'NIFLXW,OOZLZL'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {}
+      name: text_box_1
+      properties: {text: Search Feature}
+      type: TextBox
+    - layout_properties: {width: 266}
+      name: spacer_3
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {}
+      name: drop_down_1
+      properties: {}
+      type: DropDown
+    - layout_properties: {}
+      name: drop_down_2
+      properties: {}
+      type: DropDown
+    - layout_properties: {}
+      name: drop_down_3
+      properties: {}
+      type: DropDown
+    - layout_properties: {}
+      name: button_2
+      properties: {text: Filter}
+      type: Button
+    layout_properties: {grid_position: 'NRJHFG,ASABXT'}
+    name: flow_panel_1
+    properties: {}
+    type: FlowPanel
+  - components:
+    - components:
+      - layout_properties: {column: JKSDUP}
+        name: label_2
+        properties: {text: '1'}
+        type: Label
+      - layout_properties: {column: VJQQOR}
+        name: label_3
+        properties: {text: Blazer}
+        type: Label
+      - layout_properties: {column: OJLQEN}
+        name: label_5
+        properties: {text: Petal & Pup}
+        type: Label
+      - layout_properties: {column: FMSBBK}
+        name: label_6
+        properties: {role: null, text: V1}
+        type: Label
+      - layout_properties: {column: WELSFV}
+        name: label_7
+        properties: {text: Draft}
+        type: Label
+      - layout_properties: {column: OTGCHP}
+        name: label_10
+        properties: {text: 25/10}
+        type: Label
+      - layout_properties: {column: GTYVLP}
+        name: label_11
+        properties: {text: Jon}
+        type: Label
+      - layout_properties: {column: QPCLTQ}
+        name: label_9
+        properties: {text: USD}
+        type: Label
+      - layout_properties: {column: BOBMZH}
+        name: label_8
+        properties: {text: '25'}
+        type: Label
+      - layout_properties: {column: QECZPX}
+        name: button_3
+        properties: {text: View}
+        type: Button
+      - layout_properties: {column: KNEWTO}
+        name: button_4
+        properties: {text: Edit}
+        type: Button
+      - layout_properties: {column: EMHIHV}
+        name: button_5
+        properties: {text: Delete}
+        type: Button
+      name: data_row_panel_1
+      properties: {}
+      type: DataRowPanel
+    layout_properties: {grid_position: 'LSXVFH,ZVFHGB'}
+    name: data_grid_2
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: Doc. ID}
+      - {data_key: column_2, id: VJQQOR, title: Style Name}
+      - {data_key: column_3, id: OJLQEN, title: Client}
+      - {data_key: column_4, id: FMSBBK, title: Version}
+      - {data_key: column_5, id: WELSFV, title: Status}
+      - {data_key: column_7, id: BOBMZH, title: 'Total cost:'}
+      - {data_key: column_6, expand: false, id: QPCLTQ, title: Native Currency, width: 101}
+      - {data_key: column_8, id: OTGCHP, title: Created date}
+      - {data_key: column_9, id: GTYVLP, title: Created By}
+      - {data_key: column_1, id: QECZPX, title: ''}
+      - {data_key: column_2, id: KNEWTO, title: ''}
+      - {data_key: column_3, id: EMHIHV, title: ''}
+    type: DataGrid
+  layout_properties: {grid_position: 'TECQQW,XPGQFK'}
+  name: card_costing_sheet_home
+  properties: {col_widths: '{}', role: card}
+  type: ColumnPanel
+container:
+  properties: {col_widths: '{"XPGQFK":60}'}
+  type: ColumnPanel
+is_package: true
