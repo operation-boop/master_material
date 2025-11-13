@@ -123,8 +123,7 @@ components:
         name: percentage
         properties: {align: left, placeholder: '%'}
         type: TextBox
-      - data_bindings:
-        - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,PZJFQT YZDFEM,AZBZAU'}
         name: total_percentage
         properties: {text: ''}

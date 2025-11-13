@@ -35,12 +35,7 @@ class Material_input_form(Material_input_formTemplate):
 
     self.mode = self._determine_mode()
     self._configure_buttons_for_mode()
-    
-    try:
-      self.fabric_composition_repeating_panel.items = self.item.get("fabric_composition", [])
-    except Exception:
-      pass
-
+    self._load_fabric_composition()
     def safe_set_selected(dropdown, value):
       try:
         if value is not None and value != "" and value in getattr(dropdown, "items", []):
@@ -58,7 +53,44 @@ class Material_input_form(Material_input_formTemplate):
     safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
 
     self.refresh_data_bindings()
-
+    
+  def _load_fabric_composition(self):
+    """Parse fabric composition string and populate the repeating panel"""
+    fabric_comp = self.item.get("fabric_composition", "")
+  
+    # If it's already a list (new material), use it as-is
+    if isinstance(fabric_comp, list):
+      self.composition_list = fabric_comp
+      self.fabric_composition_repeating_panel.items = self.composition_list
+      self.update_total_percentage()
+      return
+  
+      # If it's a string, parse it
+    if isinstance(fabric_comp, str) and fabric_comp.strip():
+      try:
+        # Parse "Cotton:50%|Polyester:50%" format
+        parts = fabric_comp.split("|")
+        for part in parts:
+          if ":" in part:
+            material, percent_str = part.split(":", 1)
+            # Remove the % sign and convert to float
+            percent_str = percent_str.strip().replace("%", "")
+            percentage = float(percent_str)
+  
+            self.composition_list.append({
+              "material": material.strip(),
+              "percentage": percentage,
+              "form": self
+            })
+  
+            # Update the repeating panel
+        self.fabric_composition_repeating_panel.items = self.composition_list
+        self.update_total_percentage()
+  
+      except Exception as e:
+        print(f"Error parsing fabric composition: {e}")
+        self.composition_list = []
+        self.fabric_composition_repeating_panel.items = []
   def _normalize_item(self):
     if not isinstance(self.item, dict):
       self.item = {}
