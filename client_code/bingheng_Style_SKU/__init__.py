@@ -15,9 +15,9 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
     self.init_components(**properties)
     self.load_data()
 
-  ############################################
-  # Load data from the database
-  ############################################
+    ############################################
+    # Load data from the database
+    ############################################
   def load_data(self):
     """Load SKU data from your database table"""
     if hasattr(app_tables, "sku_table"):
@@ -27,9 +27,9 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       self.repeating_panel_1.items = []
       alert("⚠️ Table 'sku_table' not found — please create it in Data Tables.")
 
-  ############################################
-  # Add SKU Entry
-  ############################################
+    ############################################
+    # Add SKU Entry
+    ############################################
   def button_add_sku(self, **event_args):
     """Add a new SKU to the database"""
     try:
@@ -43,6 +43,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
 
       price = float(price_text)
 
+      # server call is fine when invoked from an event handler (not at import)
       anvil.server.call('add_sku', sku_id, material, price)
       alert(f"✅ SKU {sku_id} added successfully!")
 
@@ -55,36 +56,35 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       alert(f"❌ Error adding SKU: {e}")
 
   def edit_button(self, **event_args):
-    """This method is called when the button is clicked"""
-  open_form('bingheng_Style_SKU.Style_SKU_sheet')
-  pass
+    """Called when edit button is clicked — open the sheet"""
+    # This call will only run when the button is clicked (not at import)
+    open_form('bingheng_Style_SKU.Style_SKU_sheet')
 
- 
-def button_generate_qr(self, **event_args):
-  sku_id = self.text_box_sku_id.text.strip()
-  if not sku_id:
-    alert("Please enter a SKU ID first.")
-    return
-
-  try:
-    qr_img = anvil.server.call('get_qr_code', sku_id)
-    self.image_qr_preview.source = qr_img
-    alert("✅ Unique QR code generated!")
-  except Exception as e:
-    alert(f"⚠️ QR generation failed: {e}")
-
-
-def button_export_pdf(self, **event_args):
-  """Manual export to PDF with QR codes"""
-  try:
-    data = self.repeating_panel_1.items or []
-    if not data:
-      alert("No SKU data available to export.")
+  def button_generate_qr(self, **event_args):
+    sku_id = self.text_box_sku_id.text.strip()
+    if not sku_id:
+      alert("Please enter a SKU ID first.")
       return
 
-    pdf_file = anvil.server.call('generate_sku_pdf', data)
-    download(pdf_file)
-    alert("✅ PDF exported successfully!")
+    try:
+      # server call from event handler — allowed
+      qr_img = anvil.server.call('get_qr_code', sku_id)
+      self.image_qr_preview.source = qr_img
+      alert("✅ Unique QR code generated!")
+    except Exception as e:
+      alert(f"⚠️ QR generation failed: {e}")
 
-  except Exception as e:
-    alert(f"❌ Error exporting PDF: {e}")
+  def button_export_pdf(self, **event_args):
+    """Manual export to PDF with QR codes"""
+    try:
+      data = self.repeating_panel_1.items or []
+      if not data:
+        alert("No SKU data available to export.")
+        return
+
+      pdf_file = anvil.server.call('generate_sku_pdf', data)
+      download(pdf_file)
+      alert("✅ PDF exported successfully!")
+
+    except Exception as e:
+      alert(f"❌ Error exporting PDF: {e}")

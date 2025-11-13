@@ -31,7 +31,7 @@ class bingheng_Control_Panel(bingheng_Control_PanelTemplate):
     """Placeholder for admin-only actions"""
     alert("This is where you can add admin actions later.")
 
-def button_backup_click(self, **event_args):
+def button_backup(self, **event_args):
   """Backup all Data Tables when the backup button is clicked"""
   try:
     confirm_backup = confirm("This will back up all data tables.\nProceed?")

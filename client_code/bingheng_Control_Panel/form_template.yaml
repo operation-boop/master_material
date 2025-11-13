@@ -1,10 +1,10 @@
 components:
 - components:
   - components:
-    - event_bindings: {click: button_backup_click}
+    - event_bindings: {click: button_backup}
       layout_properties: {grid_position: 'PXUBZK,FIDMWE'}
       name: button_backup
-      properties: {text: Backup Fullstack}
+      properties: {icon: 'fa:repeat', text: Backup Fullstack}
       type: Button
     layout_properties: {grid_position: 'ORKJIF,WUAWNF'}
     name: outlined_card_1
