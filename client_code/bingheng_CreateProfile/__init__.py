@@ -17,7 +17,7 @@ class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
   # -----------------------------
   # Submit Button
   # -----------------------------
-  def submit_button1_click(self, **event_args):
+  def submit_button1(self, **event_args):
     """This method is called when the Submit button is clicked"""
 
     # Get values from the TextBoxes
@@ -67,3 +67,5 @@ class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
     open_form('bingheng_Details_Page')
 
     # Any code you write here will run before the form opens.
+
+  
