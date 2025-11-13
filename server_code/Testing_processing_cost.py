@@ -39,7 +39,6 @@ def test_processing_costs_complete():
       price_category="Medium",
       country="USA",
       max_account_value=50000.0,
-      # max_account_value=50000.0,
       currency="USD"
     )
 
