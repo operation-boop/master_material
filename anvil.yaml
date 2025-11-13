@@ -19,10 +19,9 @@ db_schema:
     - admin_ui: {order: 5, width: 200}
       name: created
       type: datetime
-    - admin_ui: {order: 4, width: 200}
+    - admin_ui: {width: 200}
       name: ref_id
-      target: id_counter__masterstyle_
-      type: link_multiple
+      type: string
     server: full
     title: Client_(masterstyle)
   id_clients_masterstyle_:

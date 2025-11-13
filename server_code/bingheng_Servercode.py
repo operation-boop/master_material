@@ -19,7 +19,7 @@ import anvil.pdf
 from PIL import Image
 import csv
 import zipfile
-import blobmedia 
+
 
 
 # -----------------------
@@ -28,15 +28,20 @@ import blobmedia
 @anvil.server.callable
 def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
   """Save client info to Data Table"""
+  ref_id = uuid.uuid4().hex[:8].upper()
+  
   app_tables.client__masterstyle_.add_row(
     Clients=Enter_Your_Name,
     Clientcontact=Contact_Number,
     Clientemail=Email,
     Clientbilladd=Address,
+    ref_id=ref_id,
     created=datetime.now()
   )
-  return f"Client {Enter_Your_Name} saved successfully."
-
+  return {
+  "message":f"Client {Enter_Your_Name} saved successfully.",
+  "ref_id": ref_id
+  }
 
 @anvil.server.callable
 def verify_client_login(client_name, ref_id):
@@ -178,40 +183,40 @@ def backup_fullstack():
   filename = f"anvil_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
   return BlobMedia("application/zip", zip_buffer.read(), name=filename)
   
-#########################TEST#######################
+# #########################TEST#######################
 
-@anvil.server.callable
-def get_next_ref_id():
-  """Fetch and increment the client ref_id counter."""
-  # Fetch the one and only counter row
-  counter_row = app_tables.counter.get(name="client_ref")
+# @anvil.server.callable
+# def get_next_ref_id():
+#   """Fetch and increment the client ref_id counter."""
+#   # Fetch the one and only counter row
+#   counter_row = app_tables.counter.get(name="client_ref")
 
-  # Create if it doesn't exist yet
-  if counter_row is None:
-    counter_row = app_tables.counter.add_row(name="client_ref", value=1000)
+#   # Create if it doesn't exist yet
+#   if counter_row is None:
+#     counter_row = app_tables.counter.add_row(name="client_ref", value=1000)
 
-  # Increment and save
-  new_ref = counter_row['value'] + 1
-  counter_row['value'] = new_ref
-  counter_row.update()
+#   # Increment and save
+#   new_ref = counter_row['value'] + 1
+#   counter_row['value'] = new_ref
+#   counter_row.update()
 
-  return new_ref
+#   return new_ref
 
 
-@anvil.server.callable
-def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
-  """Save client info and auto-generate unique ref_id."""
-  new_ref_id = get_next_ref_id()
+# @anvil.server.callable
+# def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
+#   """Save client info and auto-generate unique ref_id."""
+#   new_ref_id = get_next_ref_id()
 
-  # Save to main client table
-  app_tables.client__masterstyle_.add_row(
-    Clients=Enter_Your_Name,
-    Clientcontact=Contact_Number,
-    Clientemail=Email,
-    Clientbilladd=Address,
-    ref_id=new_ref_id,
-    created=datetime.now()
-  )
+#   # Save to main client table
+#   app_tables.client__masterstyle_.add_row(
+#     Clients=Enter_Your_Name,
+#     Clientcontact=Contact_Number,
+#     Clientemail=Email,
+#     Clientbilladd=Address,
+#     ref_id=new_ref_id,
+#     created=datetime.now()
+#   )
 
-  return f"✅ Client {Enter_Your_Name} saved successfully with ID {new_ref_id}"
+#   return f"✅ Client {Enter_Your_Name} saved successfully with ID {new_ref_id}"
 

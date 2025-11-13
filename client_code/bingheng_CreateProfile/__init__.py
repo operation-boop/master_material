@@ -50,19 +50,9 @@ class bingheng_CreateProfile(bingheng_CreateProfileTemplate):
   # -----------------------------
   # Navigation Buttons
   # -----------------------------
-  def create_button1_click(self, **event_args):
-    """Navigate to Create Profile"""
-    open_form('bingheng_CreateProfile')
 
-  def update_button1_click(self, **event_args):
-    """Navigate to Update Profile"""
-    open_form('bingheng_CreateProfile')
 
-  def edit_button1_click(self, **event_args):
-    """Navigate to Edit Profile"""
-    open_form('bingheng_CreateProfile')
-
-  def home_button1_click(self, **event_args):
+  def home_button1(self, **event_args):
     """Navigate to Home"""
     open_form('bingheng_Details_Page')
 
