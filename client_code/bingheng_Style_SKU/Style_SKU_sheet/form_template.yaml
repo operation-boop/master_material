@@ -1,3 +1,31 @@
-components: []
+components:
+- layout_properties: {column: JKSDUP}
+  name: text_box_1
+  properties: {}
+  type: form:dep_xymmo08thrlyoc:TextBox
+- layout_properties: {column: VJQQOR}
+  name: text_box_2
+  properties: {}
+  type: TextBox
+- layout_properties: {column: OJLQEN}
+  name: text_box_3
+  properties: {}
+  type: TextBox
+- layout_properties: {column: EDMNHR}
+  name: text_box_4
+  properties: {}
+  type: TextBox
+- layout_properties: {column: QAHAQX}
+  name: text_box_5
+  properties: {}
+  type: TextBox
+- layout_properties: {column: YWSYMN}
+  name: text_box_6
+  properties: {}
+  type: TextBox
+- layout_properties: {column: WDNGDQ}
+  name: text_box_7
+  properties: {}
+  type: TextBox
 container: {type: DataRowPanel}
 is_package: true

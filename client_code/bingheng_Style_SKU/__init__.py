@@ -30,7 +30,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   ############################################
   # Add SKU Entry
   ############################################
-  def button_add_sku_click(self, **event_args):
+  def button_add_sku(self, **event_args):
     """Add a new SKU to the database"""
     try:
       sku_id = self.text_box_sku_id.text.strip()
@@ -58,7 +58,9 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
     """This method is called when the button is clicked"""
   open_form('bingheng_Style_SKU.Style_SKU_sheet')
   pass
-def button_generate_qr_click(self, **event_args):
+
+ 
+def button_generate_qr(self, **event_args):
   sku_id = self.text_box_sku_id.text.strip()
   if not sku_id:
     alert("Please enter a SKU ID first.")
@@ -72,7 +74,7 @@ def button_generate_qr_click(self, **event_args):
     alert(f"⚠️ QR generation failed: {e}")
 
 
-def button_export_pdf_click(self, **event_args):
+def button_export_pdf(self, **event_args):
   """Manual export to PDF with QR codes"""
   try:
     data = self.repeating_panel_1.items or []

@@ -40,7 +40,7 @@ class bingheng_logged_in(bingheng_logged_inTemplate):
   # -----------------------------
   # Button event handlers
   # -----------------------------
-  def sku_button_click(self, **event_args):
+  def button_sku(self, **event_args):
     """Handle click for SKU button"""
     if self.username.lower() == "admin":
       alert("Welcome Admin — Access granted to SKU Management.")
@@ -48,11 +48,11 @@ class bingheng_logged_in(bingheng_logged_inTemplate):
     else:
       alert("Access denied. Only admin can access SKU functions.")
 
-  def edit_button3_click(self, **event_args):
-    """Handle click for Create Profile button"""
-    open_form('bingheng_CreateProfile')
+  # def edit_button3(self, **event_args):
+  #   """Handle click for Create Profile button"""
+  #   open_form('bingheng_CreateProfile')
 
-  def control_panel_click(self, **event_args):
+  def control_panel(self, **event_args):
     """Handle click for Control Panel button"""
     if self.username.lower() == "admin":
       alert("Welcome Admin — Access granted to Control Panel.")
@@ -61,3 +61,6 @@ class bingheng_logged_in(bingheng_logged_inTemplate):
       alert("Access denied. Only admin can access Control Panel.")
 
 #######################################
+
+ 
+

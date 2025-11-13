@@ -45,14 +45,18 @@ def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
 
 @anvil.server.callable
 def verify_client_login(client_name, ref_id):
-  """Verify client login with name and ref ID"""
-  try:
-    ref_id = int(ref_id)
-  except Exception:
+  """Verify client login with name and ref ID (returns True/False)."""
+  if not client_name or not ref_id:
     return False
 
-  row = app_tables.client__masterstyle_.get(Clients=client_name, id=ref_id)
+  # normalize inputs (trim whitespace)
+  client_name = str(client_name).strip()
+  ref_id = str(ref_id).strip().upper()
+
+  # look up by Clients and the custom ref_id column
+  row = app_tables.client__masterstyle_.get(Clients=client_name, ref_id=ref_id)
   return row is not None
+
 
 
 # -----------------------

@@ -32,19 +32,19 @@ components:
   - event_bindings: {click: create_button3_click}
     layout_properties: {grid_position: 'IGVUOF,TNONGH'}
     name: create_button3
-    properties: {background: '', text: Create}
+    properties: {background: '', enabled: false, text: Create}
     type: Button
   - event_bindings: {click: edit_button3}
-    layout_properties: {grid_position: 'AFEOLU,LFROYQ'}
+    layout_properties: {grid_position: 'YGQTMV,FKRUUO'}
     name: edit_button3
-    properties: {background: '', text: Edit}
+    properties: {background: '', enabled: false, text: Edit, visible: true}
     type: Button
-  - event_bindings: {click: sku}
+  - event_bindings: {click: button_sku}
     layout_properties: {grid_position: 'OHGIKO,ZBQSNZ'}
-    name: sku
+    name: button_sku
     properties: {text: SKU}
     type: Button
-  - event_bindings: {click: control_panel_click}
+  - event_bindings: {click: control_panel}
     layout_properties: {grid_position: 'GHXOCR,DIHRLQ'}
     name: control_panel
     properties: {text: Control Panel}

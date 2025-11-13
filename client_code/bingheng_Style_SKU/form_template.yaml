@@ -6,22 +6,22 @@ components:
       name: edit_button
       properties: {text: Edit Button}
       type: Button
-    - event_bindings: {click: button_add_sku_click}
+    - event_bindings: {click: button_add_sku}
       layout_properties: {grid_position: 'PXUBZK,CEOZVJ'}
       name: button_add_sku
       properties: {text: Insert SKU}
       type: Button
-    - event_bindings: {click: button_export_pdf_click}
+    - event_bindings: {click: button_export_pdf}
       layout_properties: {grid_position: 'PXUBZK,ZTCWLU'}
       name: button_export_pdf
       properties: {background: '', text: Export PDF}
       type: Button
-    - event_bindings: {click: preview_qr_click}
+    - event_bindings: {click: preview_qr}
       layout_properties: {grid_position: 'PXUBZK,BJNOXM'}
       name: preview_qr
       properties: {text: Preview QR}
       type: Button
-    - event_bindings: {click: get_qr_code_click}
+    - event_bindings: {click: get_qr_code}
       layout_properties: {grid_position: 'PXUBZK,ZFHDOF'}
       name: get_qr_code
       properties: {text: Generate QR}
