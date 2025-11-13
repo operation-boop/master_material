@@ -80,6 +80,11 @@ class Material_input_form(Material_input_formTemplate):
     self.item.setdefault("description_box",self.item.get("change_description",""))
     self._update_currency_labels(self.item.get("native_cost_currency"))
 
+  def _current_user_name(self):
+    import anvil.users
+    user = anvil.users.get_user() or anvil.users.login_with_form()
+    # adjust the field if your Users table stores email at a different key
+    return (user.get('full_name') if hasattr(user, "get") else user['full_name'])
   ##------------Calculate cost prices & UI for costing----------------------------
   def advanced_cost_dropdown_change(self, **event_args):
     # Show the section only if a value is selected (not None or blank)
@@ -191,56 +196,52 @@ class Material_input_form(Material_input_formTemplate):
     self.close_btn_click()
 
   def save_as_draft_btn_click(self, **event_args):
-    """Collect all form data and save as draft - CREATE document if new"""
     form_data = self.collect_form_data()
-
     try:
-      # If no document_id exists, this is a NEW material - create it now
-      if not self.current_document_id:
-        result = anvil.server.call('create_new_master_material', 'test_user@example.com')
-        self.current_document_id = result['document_id']
-        Notification(f"Created new material: {self.current_document_id}", style="info", timeout=2).show()
-
-      # Now save the draft with all form data
-      anvil.server.call('save_or_edit_draft', self.current_document_id, 'test_user@example.com', form_data)
+      user_name = self._current_user_name()
+      resp = anvil.server.call('save_draft',self.current_document_id, user_name ,form_data)
+      self.current_document_id = resp.get('document_id') or self.current_document_id
       Notification("Draft saved!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
-      self.raise_event("x-close-alert", value=True)
+      self.raise_event("x-close-alert", value="saved")
     except Exception as e:
-      Notification(f"Error: {str(e)}", style="danger", timeout=3).show()
+      Notification(f"Error: {e}", style="danger", timeout=3).show()
 
   def submit_btn_click(self, **event_args):
     """Collect all form data and submit - CREATE document if new"""
     form_data = self.collect_form_data()
-
     if not self.validate_form_data(form_data):
       Notification("Please fill in all required fields!", style="warning", timeout=3).show()
       return
 
-    try:
       self.submit_btn.enabled = False
       self.submit_btn.text = "Submitting..."
+      user_name = self._current_user_name()
 
-      # If no document_id exists, this is a NEW material - create it now
-      if not self.current_document_id:
-        result = anvil.server.call('create_new_master_material', 'test_user@example.com')
-        self.current_document_id = result['document_id']
-        Notification(f"Created new material: {self.current_document_id}", style="info", timeout=2).show()
+      if getattr(self, "mode", None) == "edit_verified":
+        resp = anvil.server.call(
+          'edit_verified_and_submit',
+          document_id=self.current_document_id,
+          edited_by_user=user_name,
+          form_data=form_data,
+          notes="Edited via UI"
+        )
+      self.current_document_id = resp.get('document_id') or self.current_document_id
+      result_token = "edited_and_resubmitted"
+      success_msg = "Edited & resubmitted for verification."
+    else:
+      # Normal draft/unverified submit (server lazily creates if needed)
+      resp = anvil.server.call('submit', self.current_document_id, user_email, form_data)
+      self.current_document_id = resp.get('document_id') or self.current_document_id
+      result_token = "submitted"
+      success_msg = "Submitted successfully!"
 
-      # Now submit with all form data
-      anvil.server.call('submit_version', self.current_document_id, 'test_user@example.com', form_data)
-      Notification("Submitted successfully!", style="success", timeout=3).show()
+      Notification(success_msg, style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
-      self.raise_event("x-close-alert", value=True)
+      self.raise_event("x-close-alert", value=result_token)
 
-    except Exception as e:
-      error_msg = f"Submission failed: {str(e)}"
-      print(f"Full error: {repr(e)}") 
-      Notification(error_msg, style="danger", timeout=5).show()
-    finally:
-      self.submit_btn.enabled = True
-      self.submit_btn.text = "Submit"
-
+    self.submit_btn.enabled = True
+    self.submit_btn.text = "Submit"
   ##-----------------validations + data collections------------------------
   def validate_form_data(self, form_data):
     """Basic client-side validation"""
@@ -271,7 +272,7 @@ class Material_input_form(Material_input_formTemplate):
     else:
       vat_number = self.parse_float(vat_value)
 
-    
+
     return {
       # Basic Info
       "master_material_id": self.mat_material_id.text,
@@ -314,19 +315,5 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

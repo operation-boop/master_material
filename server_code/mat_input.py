@@ -6,40 +6,105 @@ import anvil.tables.query as q
 
 DOC_PREFIX = "vin_mmat_"
 VALID_STATUSES = {
-  "Creating": ["Draft", "Submitted - Unverified"],
-  "Draft": ["Draft", "Submitted - Unverified"],  
-  "Submitted - Unverified": ["Creating", "Submitted - Verified"],  
-  "Submitted - Verified": ["Creating"]  
+  "Draft": ["Draft", "Submitted - Unverified"],
+  "Submitted - Unverified": ["Draft", "Submitted - Verified"],
+  "Submitted - Verified": ["Draft"]  
 }
 REQUIRED_FIELDS = ["supplier_name"]  
 
+def _next_ver_num(master_row):
+  """Compute next version number from master.current_version_number or fallback to 1."""
+  current = master_row.get('current_version_number') or 1
+  return current + 1
+
+def _clone_version_fields(src_row, dest_row):
+  exclude = {
+    "document_uid","document_id","ver_num",
+    "status","created_at","updated_at","updated_by",
+    "submitted_at","submitted_by",
+    "last_verified_date","last_verified_by","verification_notes"
+  }
+  cols = [c['name'] for c in app_tables.master_material_version.list_columns()]
+  for name in cols:
+    if name in exclude:
+      continue
+    try:
+      dest_row[name] = src_row[name]
+    except Exception as e:
+      print(f"Warn: cannot copy '{name}': {e}")
+
 @anvil.server.callable
-def create_new_master_material(created_by_user):
-  """Create new master material document"""
-  new_uuid = str(uuid.uuid4())
-  document_id = f"{DOC_PREFIX}{get_next_document_number():04d}"
+def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=None):
 
-  version = app_tables.master_material_version.add_row(
-    document_uid=new_uuid,
-    document_id=document_id,
-    ver_num=1,
-    status="Creating",
-    created_at=datetime.now()
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    raise Exception(f"Document '{document_id}' not found")
+
+  old_v = master['current_version']
+  if not old_v or old_v['status'] != "Submitted - Verified":
+    raise Exception("This action is only for 'Submitted - Verified' documents.")
+
+
+  new_uid = str(uuid.uuid4())
+  new_ver_num = _next_ver_num(master)
+
+  new_v = app_tables.master_material_version.add_row(
+    document_uid = new_uid,
+    document_id  = document_id,
+    ver_num      = new_ver_num,
+    status       = "Draft", 
+    created_at   = datetime.now()
   )
+  _clone_version_fields(old_v, new_v)
 
-  master = app_tables.master_material.add_row(
-    version_history_uid=new_uuid,
-    created_at=datetime.now(),
-    created_by=created_by_user,
-    current_version=version,
-    current_version_uid=new_uuid,
-    current_version_number=1,
-    document_id=document_id
-  )
+  if form_data:
+    for k, v in form_data.items():
+      if v is not None:
+        try:
+          new_v[k] = v
+        except Exception as e:
+          print(f"Warn: cannot set {k}: {e}")
 
-  # Return a dictionary with document_id so the client can use it easily
-  return {"document_id": document_id, "master": master}
+  new_v['updated_at'] = datetime.now()
+  new_v['updated_by'] = edited_by_user
 
+  # 3) Validate required fields on the NEW version
+  missing = []
+  for field in REQUIRED_FIELDS:
+    try:
+      val = new_v[field]
+    except KeyError:
+      missing.append(field)
+      continue
+    if val is None or (isinstance(val, str) and not val.strip()):
+      missing.append(field)
+
+  if missing:
+    raise Exception(f"Cannot re-submit. Missing required fields: {', '.join(missing)}")
+
+  # 4) Mark new version as Submitted - Unverified
+  new_v['status'] = "Submitted - Unverified"
+  new_v['submitted_at'] = datetime.now()
+  new_v['submitted_by'] = edited_by_user
+  try:
+    if notes is not None:
+      new_v['verification_notes'] = notes
+  except Exception:
+    pass
+
+  # 5) Advance master pointers to the NEW version
+  master['current_version'] = new_v
+  master['current_version_uid'] = new_uid
+  master['current_version_number'] = new_ver_num
+  master['submitted_at'] = new_v['submitted_at']
+  master['submitted_by'] = edited_by_user
+
+  return {
+    "action": "edited_and_resubmitted",
+    "document_id": document_id,
+    "new_version_number": new_ver_num
+  }
+ 
 @anvil.server.callable
 def get_next_document_number():
   """Get next available document number"""
