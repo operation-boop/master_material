@@ -36,11 +36,11 @@ db_schema:
     - admin_ui: {width: 200}
       name: submitted_by
       type: string
-    - admin_ui: {order: 2.5, width: 200}
-      name: updated_at
+    - admin_ui: {order: 6, width: 200}
+      name: last_verified_date
       type: datetime
-    - admin_ui: {order: 2.375, width: 200}
-      name: updated_by
+    - admin_ui: {order: 7, width: 200}
+      name: last_verified_by
       type: string
     server: full
     title: master_material
@@ -56,10 +56,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: document_uid
       type: string
-    - admin_ui: {width: 200}
-      name: document
-      target: master_material
-      type: link_single
     - admin_ui: {width: 200}
       name: change_description
       type: string
@@ -96,7 +92,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: name
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 2.7569580078125, width: 200}
       name: last_verified_date
       type: datetime
     - admin_ui: {width: 200}
@@ -184,7 +180,7 @@ db_schema:
     - admin_ui: {order: 2.177734375, width: 200}
       name: updated_by
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 2.77923583984375, width: 200}
       name: last_verified_by
       type: string
     server: full

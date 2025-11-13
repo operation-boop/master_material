@@ -29,7 +29,7 @@ def _next_ver_num(master_row):
 def _clone_version_fields(src_row, dest_row):
   exclude = {
     "document_uid","document_id","ver_num",
-    "status","created_at","updated_at","updated_by",
+    "status","created_at",
     "submitted_at","submitted_by",
     "last_verified_date","last_verified_by"
   }
@@ -74,8 +74,8 @@ def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=
         except Exception as e:
           print(f"Warn: cannot set {k}: {e}")
 
-  new_v['updated_at'] = datetime.now()
-  new_v['updated_by'] = edited_by_user
+  new_v['submitted_at'] = datetime.now()
+  new_v['submitted_by'] = edited_by_user
 
   # 3) Validate required fields on the NEW version
   missing = []
@@ -158,8 +158,6 @@ def create_material(created_by_user, form_data):
     status="Draft",
     created_at=datetime.now(),
     created_by=created_by_user,
-    updated_at=datetime.now(),
-    updated_by=created_by_user
   )
 
   # Apply form data
@@ -213,8 +211,6 @@ def create_and_submit_material(created_by_user, form_data):
     status="Submitted - Unverified",
     created_at=datetime.now(),
     created_by=created_by_user,
-    updated_at=datetime.now(),
-    updated_by=created_by_user,
     submitted_at=datetime.now(),
     submitted_by=created_by_user
   )
@@ -275,7 +271,7 @@ def check_status_transition(current_status, target_status):
 
 #-----------------------------------------------------------------------
 @anvil.server.callable
-def save_or_edit_draft(document_id, updated_by_user, form_data=None):
+def save_or_edit_draft(document_id,form_data=None):
   """Combined save/edit draft function - updates all fields from form"""
   master = get_master_material(document_id)
   version = master['current_version']
@@ -297,9 +293,6 @@ def save_or_edit_draft(document_id, updated_by_user, form_data=None):
     print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
 
   version['status'] = "Draft"
-  version['updated_at'] = datetime.now()
-  version['updated_by'] = updated_by_user
-
   return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 @anvil.server.callable

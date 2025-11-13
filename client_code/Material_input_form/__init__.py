@@ -53,7 +53,6 @@ class Material_input_form(Material_input_formTemplate):
     safe_set_selected(self.shipping_term_dropdown, self.item.get("shipping_term"))
 
     self.refresh_data_bindings()
-    
   def _load_fabric_composition(self):
     """Parse fabric composition string and populate the repeating panel"""
     fabric_comp = self.item.get("fabric_composition", "")
@@ -116,7 +115,6 @@ class Material_input_form(Material_input_formTemplate):
     self.item.setdefault("logistics_rate",self.item.get("logistics_rate", ""))
     self.item.setdefault("description_box",self.item.get("change_description",""))
     self._update_currency_labels(self.item.get("native_cost_currency"))
-
   def _determine_mode(self):
     """Determine what mode the form is in based on current status"""
     if not self.current_document_id:
@@ -131,7 +129,6 @@ class Material_input_form(Material_input_formTemplate):
       return "edit_draft"  # Editing draft or unverified
     else:
       return "new"
-
   def _configure_buttons_for_mode(self):
     """Show/hide buttons based on mode"""
     if self.mode == "edit_verified":
@@ -412,5 +409,3 @@ class Material_input_form(Material_input_formTemplate):
       return float(value) if value else None
     except (ValueError, TypeError):
       return None
-
-
