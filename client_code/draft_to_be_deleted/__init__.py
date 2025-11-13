@@ -16,10 +16,6 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
-    self.cost_sheet_version_id = cost_sheet_version_id
-    self.list_overhead_cost_items ()
-
-    
 
 
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
@@ -39,11 +35,6 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
       print(r)
 
 
-
-  def list_overhead_cost_items(self, cost_sheet_version_id):
-    list_overhead_cost_items = anvil.server.call('list_overhead_cost_items', cost_sheet_version_id)
-    for row in list_overhead_cost_items:
-        print(dict(row))
 
 
   #   def __init__(self, cost_sheet_version_id, **properties):
