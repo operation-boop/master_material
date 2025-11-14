@@ -39,6 +39,11 @@ components:
     name: edit_button3
     properties: {background: '', enabled: false, text: Edit, visible: true}
     type: Button
+  - event_bindings: {click: back_button1}
+    layout_properties: {grid_position: 'SWSNXY,LHREOG'}
+    name: back_button1
+    properties: {text: Back}
+    type: Button
   - event_bindings: {click: button_sku}
     layout_properties: {grid_position: 'OHGIKO,ZBQSNZ'}
     name: button_sku

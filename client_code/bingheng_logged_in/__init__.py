@@ -62,5 +62,10 @@ class bingheng_logged_in(bingheng_logged_inTemplate):
 
 #######################################
 
+  def back_button1(self, **event_args):
+    """This method is called when the button is clicked"""
+    open_form('bingheng_Details_Page')
+    pass
+
  
 
