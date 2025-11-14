@@ -9,6 +9,35 @@ components:
   name: button_2
   properties: {text: see list}
   type: Button
+- layout_properties: {grid_position: 'KYRPGQ,EGWUOQ'}
+  name: spacer_1
+  properties: {height: 32}
+  type: Spacer
+- event_bindings: {click: button_6_click}
+  layout_properties: {grid_position: 'EXEQPC,LADBMQ'}
+  name: button_6
+  properties: {text: cost sheet test}
+  type: Button
+- event_bindings: {click: button_7_click}
+  layout_properties: {grid_position: 'YYCKLB,VCYVKT'}
+  name: button_7
+  properties: {text: Bom test}
+  type: Button
+- event_bindings: {click: button_7_copy_click}
+  layout_properties: {grid_position: 'XMUURF,IIQJHC'}
+  name: button_7_copy
+  properties: {text: workflow operations test}
+  type: Button
+- event_bindings: {click: button_7_copy_2_click}
+  layout_properties: {grid_position: 'LXEZXN,LRPFOX'}
+  name: button_7_copy_2
+  properties: {text: exchange rates test}
+  type: Button
+- event_bindings: {click: button_7_copy_3_click}
+  layout_properties: {grid_position: 'PFLNCX,TGDHNS'}
+  name: button_7_copy_3
+  properties: {text: integration test}
+  type: Button
 - event_bindings: {click: button_3_click}
   layout_properties: {grid_position: 'PLOKPQ,WDQVAL'}
   name: button_3
@@ -24,17 +53,14 @@ components:
   name: button_5
   properties: {text: Pricing Scenario test}
   type: Button
-- layout_properties: {grid_position: 'PNIPKU,WURLPJ'}
-  name: label_1
-  properties: {align: center, text: Processing Cost}
+- event_bindings: {click: button_8_click}
+  layout_properties: {grid_position: 'KBRXLT,PYQHAO'}
+  name: button_8
+  properties: {text: run all test}
+  type: Button
+- layout_properties: {grid_position: 'MAQJWZ,IEOWPY'}
+  name: label_status
+  properties: {align: center, bold: true}
   type: Label
-- layout_properties: {grid_position: 'ROXIOB,JGPPPE'}
-  name: cut_type
-  properties: {}
-  type: TextBox
-- layout_properties: {grid_position: 'ROXIOB,RINZYM'}
-  name: cost_amount
-  properties: {}
-  type: TextBox
 container: {type: ColumnPanel}
 is_package: true
