@@ -2,12 +2,23 @@ import anvil.server
 from anvil.tables import app_tables
 import anvil.tables.query as q
 
+def _get(row, key, default=None):
+  """Safely get a value from a row"""
+  try:
+    return row[key]
+  except Exception:
+    return default
+
+# ============================================================================
+# PUBLIC API - MATERIAL DETAILS
+# ============================================================================
+
 @anvil.server.callable
 def get_material_detail(document_id):
+  """Get basic material details for display"""
   if not document_id:
     raise ValueError("document_id is required")
 
-  # Get from master_material
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
     raise Exception(f"No material found for ID: {document_id}")
@@ -16,8 +27,8 @@ def get_material_detail(document_id):
   if not v:
     raise Exception(f"No current version found for ID: {document_id}")
 
-  ocpu  = _get(v, "original_cost_per_unit")
-  nccy  = _get(v, "native_cost_currency")
+  ocpu = _get(v, "original_cost_per_unit")
+  nccy = _get(v, "native_cost_currency")
   cost_display = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else ""
 
   detail = {
@@ -32,7 +43,7 @@ def get_material_detail(document_id):
     "created_by": _get(v, "created_by", ""),
     "created_at": _get(v, "created_at"),
     "fabric_composition": _get(v, "fabric_composition"),
-    "weight_per_unit": _get(v,"weight_per_unit"),
+    "weight_per_unit": _get(v, "weight_per_unit"),
     "fabric_roll_width": _get(v, "fabric_roll_width"),
     "fabric_cut_width": _get(v, "fabric_cut_width"),
     "original_cost_per_unit": ocpu,
@@ -48,6 +59,7 @@ def get_material_detail(document_id):
 
 @anvil.server.callable
 def get_technical_detail(document_id):
+  """Get technical specifications for material"""
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
     raise Exception(f"No material found for ID: {document_id}")
@@ -56,19 +68,19 @@ def get_technical_detail(document_id):
   if not v:
     raise Exception(f"No current version found for ID: {document_id}")
 
-  techdetails = {
+  return {
     "fabric_composition": _get(v, "fabric_composition"),
-    "fabric_roll_width": _get(v,"fabric_roll_width"),
-    "fabric_cut_width": _get(v,"fabric_cut_width"),
-    "fabric_cut_width_no_shrinkage": _get(v,"fabric_cut_width_no_shrinkage"),
-    "weight_per_unit":_get(v,"weight_per_unit"),
-    "weft_shrinkage":_get(v,"weft_shrinkage"),
-    "werp_shrinkage":_get(v,"werp_shrinkage"),
+    "fabric_roll_width": _get(v, "fabric_roll_width"),
+    "fabric_cut_width": _get(v, "fabric_cut_width"),
+    "fabric_cut_width_no_shrinkage": _get(v, "fabric_cut_width_no_shrinkage"),
+    "weight_per_unit": _get(v, "weight_per_unit"),
+    "weft_shrinkage": _get(v, "weft_shrinkage"),
+    "werp_shrinkage": _get(v, "werp_shrinkage"),
   }
-  return techdetails
 
 @anvil.server.callable
 def get_cost_detail(document_id):
+  """Get cost details and calculations for material"""
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
     raise Exception(f"No material found for ID: {document_id}")
@@ -76,69 +88,54 @@ def get_cost_detail(document_id):
   v = master['current_version']
   if not v:
     raise Exception(f"No current version found for ID: {document_id}")
-    
-  costdetails = {
-    "original_cost_per_unit": _get(v,"original_cost_per_unit"),
-    "currency": _get(v,"native_cost_currency"),
-    "supplier_tolerance": _get(v,"supplier_selling_tolerance"),
-    "effective_cost": _get(v,"effective_cost_per_unit"),
-    "vat": _get(v,"vietnam_vat_rate"),
-    "import_duty": _get(v,"import_duty"),
-    "logistics_rate": _get(v,"logistics_rate"),
-    "landed_cost": _get(v,"landed_cost_per_unit"),
+
+  return {
+    "original_cost_per_unit": _get(v, "original_cost_per_unit"),
+    "currency": _get(v, "native_cost_currency"),
+    "supplier_tolerance": _get(v, "supplier_selling_tolerance"),
+    "effective_cost": _get(v, "effective_cost_per_unit"),
+    "vat": _get(v, "vietnam_vat_rate"),
+    "import_duty": _get(v, "import_duty"),
+    "logistics_rate": _get(v, "logistics_rate"),
+    "landed_cost": _get(v, "landed_cost_per_unit"),
   }
-  return costdetails
 
 @anvil.server.callable
 def get_version_history(document_id):
-  """Return simple version history for a document_id"""
+  """Return version history for a document_id"""
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
     return []
 
   versions = list(master['version_history'] or [])
-  versions.sort(key=lambda v: v['ver_num'])  # 1,2,3,...
+  versions.sort(key=lambda v: v['ver_num'])
 
-  # return only what the UI needs
   return [
     {
       "ver_num": v['ver_num'],
       "submitted_by": v.get('submitted_by', ''),
       "submitted_at": v.get('submitted_at', None),
-      "change_description": v.get('change_description','')
+      "change_description": v.get('change_description', '')
     }
     for v in versions
   ]
 
-def _get(row, key, default=None):
-  try:
-    return row[key]
-  except Exception:
-    return default
-
-def _to_num(x, default=-1):
-  try:
-    return float(x)
-  except Exception:
-    return default
-
 @anvil.server.callable
 def get_material_full_row(document_id):
-  """Return the entire row (all columns) of the LATEST version for the given document_id"""
+  """Return the entire row (all columns) of the LATEST version for editing"""
   if not document_id:
     return None
-  
-  # Get from master_material
+
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
     return None
-  
+
   version = master['current_version']
   if not version:
     return None
-  
-    # Convert to dict and add status field
+
+  # Convert to dict and add status field for form compatibility
   result = dict(version)
   result['verification_status'] = version['status']
-  
+
   return result

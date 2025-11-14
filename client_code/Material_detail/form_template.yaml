@@ -7,31 +7,31 @@ components:
       properties: {align: left, background: 'theme:Primary 700', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
       type: Button
     - data_bindings:
-      - {code: 'self.item[''document_id'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,JUASDZ'}
-      name: document_id
-      properties: {bold: true, role: headline, text: ''}
-      type: Label
-    - data_bindings:
       - {code: 'self.item[''verification_status'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,ACPSAD'}
+      layout_properties: {grid_position: 'RZUCXB,QDFBCZ'}
       name: verification_status
-      properties: {}
-      type: Label
-    - data_bindings:
-      - {code: '"Version " +str(self.item[''ver_num''])', property: text, writeback: false}
-      layout_properties: {grid_position: 'RZUCXB,CQLXAQ KCABBV,DNBBGM'}
-      name: ver_num
-      properties: {background: 'theme:Gray 200', text: ''}
+      properties: {align: center}
       type: Label
     - event_bindings: {click: edit_btn_click}
       layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
       name: edit_btn
-      properties: {align: left, background: orange, icon: 'fa:edit', role: null, text: Edit}
+      properties: {align: right, background: orange, icon: 'fa:edit', role: null, text: Edit}
       type: Button
+    - data_bindings:
+      - {code: 'self.item[''document_id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XHRTWE,VCFWKS'}
+      name: document_id
+      properties: {bold: true, role: headline, text: ''}
+      type: Label
+    - data_bindings:
+      - {code: '"Version " +str(self.item[''ver_num''])', property: text, writeback: false}
+      layout_properties: {grid_position: 'XHRTWE,XEQTDQ'}
+      name: ver_num
+      properties: {background: 'theme:Gray 200', text: ''}
+      type: Label
     layout_properties: {grid_position: 'XAUZQF,AQGACW'}
     name: column_panel_16
-    properties: {background: '#9ee2ff', col_widths: '{"PZBZLE":25,"CQLXAQ":40,"AVMCXZ":15}'}
+    properties: {background: '', col_widths: '{"PZBZLE":25,"AVMCXZ":10,"QDFBCZ":25,"VCFWKS":45,"XEQTDQ":15}'}
     type: ColumnPanel
   - layout_properties: {grid_position: 'HYPZZN,ZQJHEX'}
     name: spacer_3
@@ -40,7 +40,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'PIGYDS,JJPRHS'}
       name: label_27
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: BASIC INFORMATION}
+      properties: {bold: true, foreground: Red, text: BASIC INFORMATION}
       type: Label
     - components:
       - layout_properties: {grid_position: 'UTFKAM,UGBJUT HRFRHI,ELTVMC'}
@@ -143,7 +143,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'MGLFKW,EYOOLE'}
       name: label_5
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: QUICK SPECS}
+      properties: {bold: true, foreground: red, text: QUICK SPECS}
       type: Label
     - components:
       - layout_properties: {grid_position: 'SMMDAI,EFTBTI QVFJEH,KTBKCI'}
@@ -206,7 +206,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'SVEEJW,UBQSVO'}
       name: label_6
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: COST SUMMARY}
+      properties: {bold: true, foreground: red, text: COST SUMMARY}
       type: Label
     - components:
       - layout_properties: {grid_position: 'DTNQUV,EWXDOD JCRAES,CVOIYZ'}
@@ -287,7 +287,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'IOSXBK,FFWTEV'}
         name: label_14
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: FABRIC COMPOSITION}
+        properties: {bold: true, foreground: red, text: FABRIC COMPOSITION}
         type: Label
       - data_bindings:
         - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
@@ -306,7 +306,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'QNAIIU,CPVKVS'}
         name: label_15
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: FABRIC DIMENSIONS}
+        properties: {bold: true, foreground: red, text: FABRIC DIMENSIONS}
         type: Label
       - components:
         - layout_properties: {grid_position: 'ACSBNQ,ZZJWRO'}
@@ -369,7 +369,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'BLYTQT,HJWWNZ'}
         name: label_17
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: SHRINKAGE}
+        properties: {bold: true, foreground: red, text: SHRINKAGE, visible: true}
         type: Label
       - components:
         - layout_properties: {grid_position: 'FCQAFU,MLRJNS'}
@@ -417,7 +417,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'QOYAGZ,OQFPRL'}
         name: label_29
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: BASIC COST}
+        properties: {bold: true, foreground: red, text: BASIC COST}
         type: Label
       - components:
         - layout_properties: {grid_position: 'GFJNBR,UMSKKG'}
@@ -480,7 +480,7 @@ components:
     - components:
       - layout_properties: {grid_position: 'EAJITU,WBSIIS'}
         name: label_31
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: LANDED COST}
+        properties: {bold: true, foreground: red, text: LANDED COST}
         type: Label
       - components:
         - layout_properties: {grid_position: 'DPTOHX,ATTZHM'}
@@ -510,7 +510,7 @@ components:
       - components:
         - layout_properties: {grid_position: 'PQKSWX,LTHIGE'}
           name: label_37
-          properties: {text: IMPORT DUTY}
+          properties: {bold: true, text: IMPORT DUTY}
           type: Label
         - data_bindings:
           - {code: 'self.item[''import_duty'']', property: text, writeback: false}
@@ -572,7 +572,7 @@ components:
     properties: {height: 32}
     type: Spacer
   - components:
-    - name: repeating_panel_2
+    - name: material_sku_repeating_panel
       properties: {item_template: Material_detail.material_sku_rowtemplate}
       type: RepeatingPanel
     layout_properties: {grid_position: 'XIDXJO,VZAVXN'}

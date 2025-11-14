@@ -1,54 +1,45 @@
 from ._anvil_designer import MaterialCardTemplate
 from anvil import *
 import anvil.server
-import anvil.google.auth, anvil.google.drive
-from anvil.google.drive import app_files
 import anvil.users
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
 from ...Material_detail import Material_detail
-
-
 
 class MaterialCard(MaterialCardTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    self.set_verification_status(self.item['verification_status'].lower())
     user = anvil.users.get_user()
-    if user and user['role'] == 'Admin':
-      self.verify_status.visible = True
-    else:
-      self.verify_status.visible = False
+    self.verify_status.visible = (user and user['role'] == 'Admin')
+    
     
 
-  def refresh_click(self, **event_args):
-    """Handle refresh if needed"""
-    self.raise_event('x-refresh-list')
-
   def view_details_btn_click(self, **event_args):
+    """Open material detail view"""
     if not self.item:
       alert("No item data!", title="Error")
       return
+
     doc_id = self.item.get("document_id")
     if not doc_id:
       alert("No document ID!", title="Error")
       return
+
     open_form("Material_detail", doc_id=doc_id)
 
   def verify_status_click(self, **event_args):
+    """Verify material (Admin only)"""
     if not self.item:
       alert("No item data!", title="Error")
       return
-  
+
     doc_id = self.item['document_id']
     if not doc_id:
       alert("No document ID!", title="Error")
       return
-  
+
     if not confirm(f"Verify material {doc_id}? This action can only be done by admins."):
       return
-  
+
     self.verify_status.enabled = False
     try:
       result = anvil.server.call('verify_material_version', doc_id)
@@ -60,8 +51,28 @@ class MaterialCard(MaterialCardTemplate):
     except Exception as e:
       Notification(f"Verify failed: {e}", title="Error", style="danger").show()
     finally:
-      try:
-        self.verify_status.enabled = True
-      except Exception:
-        pass
+      self.verify_status.enabled = True
 
+  def set_verification_status(self, status_value):
+    """
+    Sets the background color and text of the verification_status component
+    based on the status_value.
+    """
+    status = (status_value or "").lower()
+
+    if status == "submitted - verified":
+      self.verification_status.background = "lightgreen"
+      self.verification_status.text = "✓ Verified"
+      self.verify_status.visible = False
+    elif status == "submitted - unverified":
+      self.verification_status.background = "orange"
+      self.verification_status.text = "\u2717 Unverified"
+      self.verify_status.visible = True
+    elif status == "draft":
+      self.verification_status.background = "#c7c7c7"
+      self.verification_status.text = "📝 Draft"
+      self.verify_status.visible = False
+    else:
+      self.verification_status.background = "#ffffff"
+      self.verification_status.text = status.capitalize() if status else "Unknown"
+      self.verify_status.visible = False

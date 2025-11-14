@@ -11,71 +11,104 @@ class Material_detail(Material_detailTemplate):
     self.refresh_data_bindings()
     if doc_id:
       self.load_material(doc_id)
-    sku_rows = anvil.server.call("get_material_sku", self.item['material_id'])
-    self.material_sku_repeating_panel.items = sku_rows
+      self.refresh_data()
+    self.set_verification_status(self.item['verification_status'].lower())
 
   def form_show(self, **event_args):
-    doc_id = self.item.get("document_id")  # if passed from previous form
+    """Load material when form is shown"""
+    doc_id = self.item.get("document_id")
     if doc_id:
       self.load_material(doc_id)
-  
+
   def load_material(self, document_id):
+    """Load material basic details"""
     detail = anvil.server.call("get_material_detail", document_id)
     self.item = dict(detail)
     self.refresh_data_bindings()
 
-  def technical_specs_tab_btn_click(self, document_id=None, **event_args):
+  # ========================================================================
+  # TAB NAVIGATION
+  # ========================================================================
+
+  def technical_specs_tab_btn_click(self, **event_args):
+    """Show technical specifications panel"""
     self.technical_specs_panel.visible = True
     self.cost_details_panel.visible = False
     self.version_history_panel.visible = False
     self.material_sku_panel.visible = False
 
-    doc_id = document_id or (self.item or {}).get("document_id")
-
+    doc_id = self.item.get("document_id")
     if not doc_id:
       alert("No document ID found!")
       return
 
-    technicaldetail = anvil.server.call("get_technical_detail", doc_id)
-    self.item.update(technicaldetail)
+    technical_detail = anvil.server.call("get_technical_detail", doc_id)
+    self.item.update(technical_detail)
     self.item = dict(self.item)
     self.refresh_data_bindings()
 
-  def cost_details_tab_btn_click(self, document_id=None, **event_args):
+  def cost_details_tab_btn_click(self, **event_args):
+    """Show cost details panel"""
     self.cost_details_panel.visible = True
     self.technical_specs_panel.visible = False
     self.version_history_panel.visible = False
     self.material_sku_panel.visible = False
 
-    doc_id = document_id or (self.item or {}).get("document_id")
-
+    doc_id = self.item.get("document_id")
     if not doc_id:
       alert("No document ID found!")
       return
 
-    costdetail = anvil.server.call("get_cost_detail", doc_id)
-    self.item.update(costdetail)
+    cost_detail = anvil.server.call("get_cost_detail", doc_id)
+    self.item.update(cost_detail)
     self.item = dict(self.item)
     self.refresh_data_bindings()
-    pass
-    
+
+  def version_history_tab_btn_click(self, **event_args):
+    """Show version history panel"""
+    self.version_history_panel.visible = True
+    self.technical_specs_panel.visible = False
+    self.cost_details_panel.visible = False
+    self.material_sku_panel.visible = False
+
+    doc_id = self.item.get("document_id")
+    if not doc_id:
+      alert("No document ID found!")
+      return
+
+    history = anvil.server.call("get_version_history", doc_id)
+    self.repeating_panel_version_history.items = history
+
+  def material_sku_tab_btn_click(self, **event_args):
+    """Show material SKU panel"""
+    self.material_sku_panel.visible = True
+    self.version_history_panel.visible = False
+    self.cost_details_panel.visible = False
+    self.technical_specs_panel.visible = False
+    self.refresh_data()
+
+  # ========================================================================
+  # ACTIONS
+  # ========================================================================
+
   def edit_btn_click(self, **event_args):
-    doc_id = (self.item or {}).get("document_id") or getattr(self, "current_document_id", None)
+    """Open edit form for current material"""
+    doc_id = self.item.get("document_id")
     if not doc_id:
       alert("No document ID available to edit.", title="Error")
       return
 
-    # Get the full row data
+    # Get the full row data for editing
     latest = anvil.server.call("get_material_full_row", doc_id) or {}
-  
+
     try:
       input_form = Material_input_form(current_document_id=doc_id, item=dict(latest))
-    
-      # Set event handler for refresh
+
+      # Set event handler to refresh this form when changes are saved
       input_form.set_event_handler("x-refresh-list", lambda **args: self.load_material(doc_id))
-    
+
       result = alert(content=input_form, title="Edit Material", large=True, buttons=None)
-    
+
       # Refresh if saved/submitted
       if result in ("saved", "submitted", "edited_and_resubmitted"):
         try:
@@ -83,59 +116,59 @@ class Material_detail(Material_detailTemplate):
         except Exception:
           pass
         Notification("Material updated.", style="success").show()
-    
+
     except Exception as e:
       Notification(f"Failed to open edit form: {e}", style="danger").show()
 
-  def version_history_tab_btn_click(self, **event_args):
-    self.version_history_panel.visible = True
-    self.technical_specs_panel.visible = False
-    self.cost_details_panel.visible = False
-    doc_id = (self.item or {}).get("document_id")
+  def back_btn_click(self, **event_args):
+    """Return to material list"""
+    open_form("Material_list")
+
+  def add_sku_btn_click(self, **event_args):
+    """Open form to add new SKU variant"""
+    doc_id = self.item.get("document_id")
     if not doc_id:
       alert("No document ID found!")
       return
-    history = anvil.server.call("get_version_history", doc_id)
 
+    form = Material_sku_input_form(document_id=doc_id)
+    alert(form, large=True)
 
-    self.repeating_panel_version_history.items = history
-
-  def back_btn_click(self, **event_args):
-    open_form("Material_list")
-    pass
-
-  def material_sku_tab_btn_click(self, **event_args):
-    self.material_sku_panel.visible = True
-    self.version_history_panel.visible = False
-    self.cost_details_panel.visible = False
-    self.technical_specs_panel.visible = False
-    pass
-    
-  def add_sku_btn_click(self, **event_args):
-    form = Material_sku_input_form(master_material=self.item['material_id'])
-    alert(content=form, title=None, large=True, buttons=None)
-  
-    # When the form closes successfully, refresh the data 
-    if form.saved: 
+    if getattr(form, "saved", False):
       self.refresh_data()
 
-  def refresh_data(self): 
-    try: 
-      self.material_sku_repeating_panel.items = anvil.server.call('get_material_sku', self.item['material_id']) 
-    except Exception as e: 
+  def set_verification_status(self, status_value):
+    """
+    Sets the background color and text of the verification_status component
+    based on the status_value.
+    """
+    status = (status_value or "").lower()
+
+    if status == "submitted - verified":
+      self.verification_status.background = "lightgreen"
+      self.verification_status.text = "✓ Verified"
+    elif status == "submitted - unverified":
+      self.verification_status.background = "orange"
+      self.verification_status.text = "\u2717 Unverified"
+    elif status == "draft":
+      self.verification_status.background = "#c7c7c7"
+      self.verification_status.text = "📝 Draft"
+    else:
+      self.verification_status.background = "#ffffff"
+      self.verification_status.text = status.capitalize() if status else "Unknown"
+
+      
+  def refresh_data(self):
+    """Reload SKU data from server"""
+    doc_id = self.item.get("document_id")
+    if not doc_id:
+      return
+
+    try:
+      self.material_sku_repeating_panel.items = anvil.server.call(
+        "get_material_sku",
+        doc_id
+      )
+    except Exception as e:
       Notification(f"Error loading data: {e}").show()
-
-
-
   
-
-
-
-
-
- 
-
-  
-
-
-    

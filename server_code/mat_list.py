@@ -1,15 +1,11 @@
 import anvil.server
 from anvil.tables import app_tables
-import uuid
-from datetime import datetime
-import anvil.tables.query as q
-
 
 @anvil.server.callable
 def list_material_cards(statuses=None):
+  """Get list of material cards filtered by status"""
   statuses = statuses or ["Draft", "Submitted - Unverified", "Submitted - Verified"]
 
-  # Get all master materials
   masters = app_tables.master_material.search()
 
   cards = []
@@ -22,7 +18,7 @@ def list_material_cards(statuses=None):
     if version['status'] not in statuses:
       continue
 
-    # Build card data
+    # Build display strings
     wpu = version['weight_per_unit']
     wuom = version['weight_uom']
     weight = f"{wpu} {wuom}" if (wpu and wuom) else ""
@@ -33,11 +29,11 @@ def list_material_cards(statuses=None):
 
     cards.append({
       "document_id": master['document_id'],
-      "material_id": version['master_material_id'],
+      "master_material_id": version['master_material_id'],
       "ref_id": version['ref_id'] or "",
       "material_name": version['name'] or "",
       "material_type": version['material_type'] or "",
-      "fabric_composition": version['fabric_composition'] ,
+      "fabric_composition": version['fabric_composition'],
       "weight": weight,
       "supplier": version['supplier_name'] or "",
       "cost_per_unit": cost,
@@ -46,15 +42,3 @@ def list_material_cards(statuses=None):
     })
 
   return cards
-
-def _get(row, key, default=None):
-  try:
-    return row[key]
-  except Exception:
-    return default
-
-def _to_num(x, default=-1):
-  try:
-    return float(x)
-  except Exception:
-    return default

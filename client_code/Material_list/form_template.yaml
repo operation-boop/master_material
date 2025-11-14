@@ -4,12 +4,12 @@ components:
   properties: {bold: true, role: headline, text: Master Material}
   type: Label
 - event_bindings: {click: add_btn_click}
-  layout_properties: {grid_position: 'QMUIBQ,NNELXZ PZAWQB,LIITRG'}
+  layout_properties: {grid_position: 'QMUIBQ,NNELXZ'}
   name: add_btn
   properties: {align: right, background: green, foreground: 'theme:White', icon: 'fa:plus', role: null, text: new material}
   type: Button
 - components:
-  - layout_properties: {width: 957.9996870117188}
+  - layout_properties: {width: 475.66700000000003}
     name: repeating_panel_materials
     properties: {item_template: Material_list.MaterialCard}
     type: RepeatingPanel

@@ -11,27 +11,44 @@ VALID_STATUSES = {
   "Submitted - Verified": ["Draft"]  
 }
 REQUIRED_FIELDS = [
-  "supplier_name", 
+  "master_material_id",
   "name", 
-  "material_type", 
+  "material_type",
+  "supplier_name",
+  "ref_id",
   "country_of_origin",
   "unit_of_measurement",
+  "fabric_roll_width",
+  "fabric_cut_width",
+  "fabric_cut_width_no_shrinkage",
   "weight_per_unit",
   "weight_uom",
+  "generic_material_size",
   "original_cost_per_unit",
-  "native_cost_currency"
+  "native_cost_currency",
+  "supplier_selling_tolerance",
+  "refundable_tolerance",
+  "vietnam_vat_rate",
+  "refundable_vat",
+  "import_duty",
+  "refundable_import_duty",
+  "shipping_term",
+  "logistics_rate",
+  "change_description",
 ]  
 
 def _next_ver_num(master_row):
+  """Get next version number for a master material"""
   current = master_row['current_version_number'] or 0
   return current + 1
 
 def _clone_version_fields(src_row, dest_row):
+  """Clone all fields from source version to destination version, excluding metadata"""
   exclude = {
-    "document_uid","document_id","ver_num",
-    "status","created_at",
-    "submitted_at","submitted_by",
-    "last_verified_date","last_verified_by"
+    "document_uid", "document_id", "ver_num",
+    "status", "created_at",
+    "submitted_at", "submitted_by",
+    "last_verified_date", "last_verified_by"
   }
   cols = [c['name'] for c in app_tables.master_material_version.list_columns()]
   for name in cols:
@@ -40,85 +57,58 @@ def _clone_version_fields(src_row, dest_row):
     try:
       dest_row[name] = src_row[name]
     except Exception as e:
-      print(f"Warn: cannot copy '{name}': {e}")
+      print(f"Warning: cannot copy '{name}': {e}")
 
-@anvil.server.callable
-def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=None):
-
-  master = app_tables.master_material.get(document_id=document_id)
-  if not master:
-    raise Exception(f"Document '{document_id}' not found")
-
-  old_v = master['current_version']
-  if not old_v or old_v['status'] != "Submitted - Verified":
-    raise Exception("This action is only for 'Submitted - Verified' documents.")
-
-
-  new_uid = str(uuid.uuid4())
-  new_ver_num = _next_ver_num(master)
-
-  new_v = app_tables.master_material_version.add_row(
-    document_uid = new_uid,
-    document_id  = document_id,
-    ver_num      = new_ver_num,
-    status       = "Draft", 
-    created_at   = datetime.now()
-  )
-  current_list = list(master['version_history'] or [])
-  current_list.append(new_v)
-  master['version_history'] = current_list
-  master['version_history_uid'] = "|".join([v['document_uid'] for v in master['version_history']])
-  _clone_version_fields(old_v, new_v)
-  
-
-  if form_data:
-    for k, v in form_data.items():
-      if v is not None:
-        try:
-          new_v[k] = v
-        except Exception as e:
-          print(f"Warn: cannot set {k}: {e}")
-
-  new_v['submitted_at'] = datetime.now()
-  new_v['submitted_by'] = edited_by_user
-
-  # 3) Validate required fields on the NEW version
+def _validate_required_fields(version_row):
+  """Validate all required fields are filled. Returns (is_valid, missing_fields)"""
   missing = []
   for field in REQUIRED_FIELDS:
     try:
-      val = new_v[field]
+      val = version_row[field]
     except KeyError:
       missing.append(field)
       continue
     if val is None or (isinstance(val, str) and not val.strip()):
       missing.append(field)
 
-  if missing:
-    raise Exception(f"Cannot re-submit. Missing required fields: {', '.join(missing)}")
+  return len(missing) == 0, missing
 
-  # 4) Mark new version as Submitted - Unverified
-  new_v['status'] = "Submitted - Unverified"
-  new_v['submitted_at'] = datetime.now()
-  new_v['submitted_by'] = edited_by_user
-  try:
-    if notes is not None:
-      new_v['verification_notes'] = notes
-  except Exception:
-    pass
+def _check_status_transition(current_status, target_status):
+  """Validate status transition is allowed"""
+  if target_status not in VALID_STATUSES.get(current_status, []):
+    raise Exception(
+      f"Cannot transition from {current_status} to {target_status}. "
+      f"Allowed transitions: {', '.join(VALID_STATUSES.get(current_status, []))}"
+    )
 
-  # 5) Advance master pointers to the NEW version
-  master['current_version'] = new_v
-  master['current_version_uid'] = new_uid
-  master['current_version_number'] = new_ver_num
-  master['submitted_at'] = new_v['submitted_at']
-  master['submitted_by'] = edited_by_user
+def _get_master_material(document_id):
+  """Retrieve a master material record by document_id"""
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    raise Exception(f"Document '{document_id}' not found")
+  return master
 
-  return {
-    "action": "edited_and_resubmitted",
-    "document_id": document_id,
-    "new_version_number": new_ver_num
-  }
- 
+def _update_version_history(master_row, version_row):
+  """Add version to master's version history and update UIDs"""
+  current_list = list(master_row['version_history'] or [])
+  current_list.append(version_row)
+  master_row['version_history'] = current_list
+  master_row['version_history_uid'] = "|".join([v['document_uid'] for v in current_list])
+
+def _apply_form_data(version_row, form_data):
+  """Apply form data to version row"""
+  if form_data:
+    for k, v in form_data.items():
+      if v is not None:
+        try:
+          version_row[k] = v
+        except Exception as e:
+          print(f"Warning: cannot set {k}: {e}")
+
+# ============================================================================
+# PUBLIC API - CREATE OPERATIONS
+# ============================================================================
+
 @anvil.server.callable
 def get_next_document_number():
   """Get next available document number"""
@@ -136,22 +126,21 @@ def get_next_document_number():
       continue
 
   return max(numbers) + 1 if numbers else 1
-  
+
 @anvil.server.callable
 def create_material(created_by_user, form_data):
   """Create a new material with version 1 as Draft"""
-
-  # Generate document_id
   doc_num = get_next_document_number()
   document_id = f"{DOC_PREFIX}{doc_num:04d}"
   document_uid = str(uuid.uuid4())
+  now = datetime.now()
 
-  # Create master_material row
+  # Create master material row
   master = app_tables.master_material.add_row(
     document_id=document_id,
     current_version_number=1,
     current_version_uid=document_uid,
-    created_at=datetime.now(),
+    created_at=now,
     created_by=created_by_user
   )
 
@@ -161,33 +150,20 @@ def create_material(created_by_user, form_data):
     document_uid=document_uid,
     ver_num=1,
     status="Draft",
-    created_at=datetime.now(),
+    created_at=now,
     created_by=created_by_user,
   )
 
-  # Apply form data
-  if form_data:
-    for k, v in form_data.items():
-      if v is not None:
-        try:
-          version[k] = v
-        except Exception as e:
-          print(f"Warn: cannot set {k}: {e}")
-          
-  current_list = list(master['version_history'] or [])
-  current_list.append(version)
-  master['version_history'] = current_list
-  master['version_history_uid'] = "|".join([v['document_uid'] for v in current_list])
-  
+  _apply_form_data(version, form_data)
+  _update_version_history(master, version)
+
   master['current_version'] = version
-  master['current_version_number'] = 1
-  master['current_version_uid'] = document_uid
+
   return {"action": "created", "document_id": document_id}
 
 @anvil.server.callable
 def create_and_submit_material(created_by_user, form_data):
   """Create a new material and submit it immediately as Submitted - Unverified"""
-
   # Validate required fields
   missing = []
   for field in REQUIRED_FIELDS:
@@ -197,19 +173,19 @@ def create_and_submit_material(created_by_user, form_data):
   if missing:
     raise Exception(f"Cannot submit. Missing required fields: {', '.join(missing)}")
 
-  # Generate document_id
   doc_num = get_next_document_number()
   document_id = f"{DOC_PREFIX}{doc_num:04d}"
   document_uid = str(uuid.uuid4())
+  now = datetime.now()
 
-  # Create master_material row
+  # Create master material row
   master = app_tables.master_material.add_row(
     document_id=document_id,
     current_version_number=1,
     current_version_uid=document_uid,
-    created_at=datetime.now(),
+    created_at=now,
     created_by=created_by_user,
-    submitted_at=datetime.now(),
+    submitted_at=now,
     submitted_by=created_by_user
   )
 
@@ -219,135 +195,63 @@ def create_and_submit_material(created_by_user, form_data):
     document_uid=document_uid,
     ver_num=1,
     status="Submitted - Unverified",
-    created_at=datetime.now(),
+    created_at=now,
     created_by=created_by_user,
-    submitted_at=datetime.now(),
+    submitted_at=now,
     submitted_by=created_by_user
   )
 
-  # Apply form data
-  if form_data:
-    for k, v in form_data.items():
-      if v is not None:
-        try:
-          version[k] = v
-        except Exception as e:
-          print(f"Warn: cannot set {k}: {e}")
+  _apply_form_data(version, form_data)
+  _update_version_history(master, version)
 
-  current_list = list(master['version_history'] or [])
-  current_list.append(version)
-  master['version_history'] = current_list
-  master['version_history_uid'] = "|".join([v['document_uid'] for v in current_list])
-  
   master['current_version'] = version
-  master['current_version_number'] = 1
-  master['current_version_uid'] = document_uid
 
   return {"action": "created_and_submitted", "document_id": document_id}
 
+# ============================================================================
+# PUBLIC API - EDIT OPERATIONS
+# ============================================================================
 
-#-----------------------------------------------------------------------
 @anvil.server.callable
-def get_master_material(document_id):
-  """Retrieve a master material record by document_id."""
-  master = app_tables.master_material.get(document_id=document_id)
-
-  if not master:
-    raise Exception(f"Document '{document_id}' not found")
-
-  return master
-    
-@anvil.server.callable
-def validate_required_fields(document_id):
-  """Validate all required fields are filled on the current version"""
-  master = get_master_material(document_id)
-  current_version = master["current_version"]
-
-  if current_version is None:
-    return {"is_valid": False, "missing_fields": ["(no current_version row)"]}
-
-  missing = []
-  for field in REQUIRED_FIELDS:
-    try:
-      value = current_version[field] 
-    except KeyError:
-      missing.append(field)
-      continue
-
-    if value is None or (isinstance(value, str) and value.strip() == ""):
-      missing.append(field)
-
-  return {"is_valid": len(missing) == 0, "missing_fields": missing}
-
-def check_status_transition(current_status, target_status):
-  """Validate status transition is allowed"""
-  if target_status not in VALID_STATUSES.get(current_status, []):
-    raise Exception(
-      f"Cannot transition from {current_status} to {target_status}. " +
-      f"Allowed transitions: {', '.join(VALID_STATUSES.get(current_status, []))}"
-    )
-
-#-----------------------------------------------------------------------
-@anvil.server.callable
-def save_or_edit_draft(document_id,form_data=None):
-  """Combined save/edit draft function - updates all fields from form"""
-  master = get_master_material(document_id)
+def save_or_edit_draft(document_id, form_data=None):
+  """Update draft material - only works on Draft status"""
+  master = _get_master_material(document_id)
   version = master['current_version']
 
-  if version['status'] not in ["Creating", "Draft"]:
-    raise Exception(f"Cannot edit. Current status: {version['status']}")
+  if version['status'] != "Draft":
+    raise Exception(f"Cannot edit. Current status is '{version['status']}', must be 'Draft'")
 
-  # Update all fields from form data
-  if form_data:
-    updated_fields = []
-    for key, value in form_data.items():
-      if value is not None:  
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
-
-    print(f"Updated {len(updated_fields)} fields: {', '.join(updated_fields)}")
-
+  _apply_form_data(version, form_data)
   version['status'] = "Draft"
+
   return {"action": "draft_saved", "version": version, "document_id": document_id}
 
 @anvil.server.callable
 def submit_version(document_id, submitted_by_user, form_data=None):
-  """
-  Submit document but mark status as 'Submitted - Unverified'.
-  This stores the "yet to verify" state inside the existing 'status' column.
-  """
-  master = get_master_material(document_id)
+  """Submit draft material as 'Submitted - Unverified'"""
+  master = _get_master_material(document_id)
   version = master['current_version']
+  now = datetime.now()
 
-  check_status_transition(version['status'], "Submitted - Unverified")
+  _check_status_transition(version['status'], "Submitted - Unverified")
 
-  if form_data:
-    updated_fields = []
-    for key, value in form_data.items():
-      if value is not None:
-        try:
-          version[key] = value
-          updated_fields.append(key)
-        except Exception as e:
-          print(f"Warning: Could not update field '{key}': {str(e)}")
-    print(f"Updated {len(updated_fields)} fields before validation")
+  # Apply any final updates from form
+  _apply_form_data(version, form_data)
 
   # Validate required fields AFTER updates
-  validation = validate_required_fields(document_id)
-  if not validation['is_valid']:
-    missing_str = ', '.join(validation['missing_fields'])
-    raise Exception(f"Cannot submit. Missing required fields: {missing_str}")
+  is_valid, missing_fields = _validate_required_fields(version)
+  if not is_valid:
+    raise Exception(f"Cannot submit. Missing required fields: {', '.join(missing_fields)}")
 
+  # Update to Submitted - Unverified
   version['status'] = "Submitted - Unverified"
-  version['submitted_at'] = datetime.now()
+  version['submitted_at'] = now
   version['submitted_by'] = submitted_by_user
-  version['updated_at'] = datetime.now()
-  version['updated_by'] = submitted_by_user
-  master['submitted_at'] = version['submitted_at']
+
+  master['submitted_at'] = now
   master['submitted_by'] = submitted_by_user
+
+  # Clear verification fields
   try:
     version['last_verified_date'] = None
     version['last_verified_by'] = None
@@ -359,40 +263,110 @@ def submit_version(document_id, submitted_by_user, form_data=None):
   return {"action": "submitted_unverified", "version": version, "document_id": document_id}
 
 @anvil.server.callable
+def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=None):
+  """Edit a verified material by creating a new version as Submitted - Unverified"""
+  master = _get_master_material(document_id)
+  old_v = master['current_version']
+
+  if not old_v or old_v['status'] != "Submitted - Verified":
+    raise Exception("This action is only for 'Submitted - Verified' documents.")
+
+  new_uid = str(uuid.uuid4())
+  new_ver_num = _next_ver_num(master)
+  now = datetime.now()
+
+  # Create new version
+  new_v = app_tables.master_material_version.add_row(
+    document_uid=new_uid,
+    document_id=document_id,
+    ver_num=new_ver_num,
+    status="Draft",
+    created_at=now
+  )
+
+  # Clone fields from old version
+  _clone_version_fields(old_v, new_v)
+
+  # Apply new changes
+  _apply_form_data(new_v, form_data)
+
+  # Validate required fields
+  is_valid, missing_fields = _validate_required_fields(new_v)
+  if not is_valid:
+    raise Exception(f"Cannot re-submit. Missing required fields: {', '.join(missing_fields)}")
+
+  # Mark as Submitted - Unverified
+  new_v['status'] = "Submitted - Unverified"
+  new_v['submitted_at'] = now
+  new_v['submitted_by'] = edited_by_user
+
+  try:
+    if notes:
+      new_v['verification_notes'] = notes
+  except Exception:
+    pass
+
+  # Update master pointers
+  _update_version_history(master, new_v)
+  master['current_version'] = new_v
+  master['current_version_uid'] = new_uid
+  master['current_version_number'] = new_ver_num
+  master['submitted_at'] = now
+  master['submitted_by'] = edited_by_user
+
+  return {
+    "action": "edited_and_resubmitted",
+    "document_id": document_id,
+    "new_version_number": new_ver_num
+  }
+
+# ============================================================================
+# PUBLIC API - VERIFICATION (ADMIN ONLY)
+# ============================================================================
+
+@anvil.server.callable
 def verify_material_version(document_id):
-  """
-  Admin function: Mark the current version as verified.
-  Changes status from 'Submitted - Unverified' to 'Submitted - Verified'.
-  """
+  """Admin function: Mark current version as verified"""
   user = anvil.users.get_user()
   if not user:
     raise Exception("You must be logged in to verify materials.")
   if user['role'] != "Admin":
     raise Exception("Permission denied: only admins can verify.")
 
-  master = get_master_material(document_id)
+  master = _get_master_material(document_id)
   version = master['current_version']
 
-  # Allow verification only if it's in unverified submitted state
-  cur_status = version['status']
-  if cur_status != "Submitted - Unverified":
+  if version['status'] != "Submitted - Unverified":
     raise Exception("Only a 'Submitted - Unverified' version can be verified.")
 
-  # Update status to verified
-  version['status'] = "Submitted - Verified"
-  version['last_verified_date'] = datetime.now()
-  version['last_verified_by'] = user['email'] or user['full_name'] or "Unknown"
+  now = datetime.now()
+  verified_by = user['email'] or user['full_name'] or "Unknown"
 
-  master['last_verified_date'] = version['last_verified_date']
-  master['last_verified_by'] = version['last_verified_by']
+  # Update to verified status
+  version['status'] = "Submitted - Verified"
+  version['last_verified_date'] = now
+  version['last_verified_by'] = verified_by
+
+  master['last_verified_date'] = now
+  master['last_verified_by'] = verified_by
 
   return {
     "ok": True, 
-    "message": f"{document_id} verified by {version['last_verified_by']}."
+    "message": f"{document_id} verified by {verified_by}."
   }
 
-def is_submitted(status):
-  """Return True for any submitted flavor."""
-  if not status:
-    return False
-  return status.startswith("Submitted")
+# ============================================================================
+# PUBLIC API - VALIDATION (Used internally and by forms)
+# ============================================================================
+
+@anvil.server.callable
+def validate_required_fields(document_id):
+  """Validate all required fields are filled on the current version"""
+  master = _get_master_material(document_id)
+  current_version = master["current_version"]
+
+  if current_version is None:
+    return {"is_valid": False, "missing_fields": ["(no current_version row)"]}
+
+  is_valid, missing_fields = _validate_required_fields(current_version)
+  return {"is_valid": is_valid, "missing_fields": missing_fields}
