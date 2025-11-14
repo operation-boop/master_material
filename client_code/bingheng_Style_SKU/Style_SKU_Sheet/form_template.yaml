@@ -1,4 +1,8 @@
-components: []
+components:
+- layout_properties: {column: TCILGR}
+  name: text_area_1
+  properties: {text: ''}
+  type: form:dep_xymmo08thrlyoc:TextArea
 container:
   data_bindings: []
   event_bindings: {}

@@ -39,7 +39,8 @@ components:
     properties: {role: outlined-card}
     type: ColumnPanel
   - components:
-    - layout_properties: {pinned: false}
+    - data_bindings:
+      - {code: 'self.item[''Material_SKU (Main)'']', property: tag, writeback: false}
       name: repeating_panel_1
       properties: {item_template: bingheng_Style_SKU.Style_SKU_Sheet}
       type: RepeatingPanel
