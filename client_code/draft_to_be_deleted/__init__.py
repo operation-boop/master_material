@@ -17,9 +17,13 @@ class draft_to_be_deleted(draft_to_be_deletedTemplate):
     # self.list_all_cost_sheet_versions()
     # self.list_of_cost_sheets = []
     # self.list_all_processing_cost()
+    self.test()
 
 
-
+  def test(self):
+    printing_id = anvil.server.call('testing_understanding')
+    print(printing_id)
+    
     # list_of_cost_sheets = anvil.server.call('create_cost_sheet_version_low_level')
     # for row in self.list_of_cost_sheets:
     #    print(dict(row))

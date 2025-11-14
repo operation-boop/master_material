@@ -30,11 +30,18 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
     )
 
   def form_show(self, **event_args):
-  
+
+    cost_sheet_id = cost_sheet_id
+    
+
+
+
+
+    
     # --- Mock Data Example ---
     cost_sheet = [
       {
-        "cost_sheet_id": "CS-001",
+        "cost_sheet_id": cost_sheet_id,
         "version_number": "3",
         "updated_at": "5/11/2025",
         "created_by": "John Doe",
