@@ -205,6 +205,11 @@ db_schema:
       type: string
     server: full
     title: Supplier
+  table_8:
+    client: none
+    columns: []
+    server: full
+    title: Table 8
   users:
     client: none
     columns:

@@ -244,6 +244,8 @@ def create_and_submit_material(created_by_user, form_data):
   master['current_version_uid'] = document_uid
 
   return {"action": "created_and_submitted", "document_id": document_id}
+
+
 #-----------------------------------------------------------------------
 @anvil.server.callable
 def get_master_material(document_id):

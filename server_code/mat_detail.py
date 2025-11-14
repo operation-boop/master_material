@@ -89,6 +89,27 @@ def get_cost_detail(document_id):
   }
   return costdetails
 
+@anvil.server.callable
+def get_version_history(document_id):
+  """Return simple version history for a document_id"""
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    return []
+
+  versions = list(master['version_history'] or [])
+  versions.sort(key=lambda v: v['ver_num'])  # 1,2,3,...
+
+  # return only what the UI needs
+  return [
+    {
+      "ver_num": v['ver_num'],
+      "submitted_by": v.get('submitted_by', ''),
+      "submitted_at": v.get('submitted_at', None),
+      "change_description": v.get('change_description','')
+    }
+    for v in versions
+  ]
+
 def _get(row, key, default=None):
   try:
     return row[key]

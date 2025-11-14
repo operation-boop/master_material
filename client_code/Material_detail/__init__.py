@@ -85,8 +85,17 @@ class Material_detail(Material_detailTemplate):
       Notification(f"Failed to open edit form: {e}", style="danger").show()
 
   def version_history_tab_btn_click(self, **event_args):
-    
-    pass
+    self.version_history_panel.visible = True
+    self.technical_specs_panel.visible = False
+    self.cost_details_panel.visible = False
+    doc_id = (self.item or {}).get("document_id")
+    if not doc_id:
+      alert("No document ID found!")
+      return
+    history = anvil.server.call("get_version_history", doc_id)
+
+
+    self.repeating_panel_version_history.items = history
 
   def back_btn_click(self, **event_args):
     open_form("Material_list")

@@ -281,7 +281,7 @@ class Material_input_form(Material_input_formTemplate):
         resp = anvil.server.call('create_material', user_name, form_data)
       else:
         # Editing draft
-        resp = anvil.server.call('save_or_edit_draft', self.current_document_id, user_name, form_data)
+        resp = anvil.server.call('save_or_edit_draft', self.current_document_id, form_data)
 
       self.current_document_id = resp.get('document_id') or self.current_document_id
       Notification("Draft saved!", style="success", timeout=3).show()

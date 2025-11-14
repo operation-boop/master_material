@@ -11,7 +11,5 @@ from anvil.tables import app_tables
 
 class version_history_itemtemplate(version_history_itemtemplateTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    # Any code you write here will run before the form opens.
