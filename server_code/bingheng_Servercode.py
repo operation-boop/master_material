@@ -10,7 +10,7 @@ import anvil.server
 from datetime import datetime
 import uuid
 import pyqrcode
-from io import BytesIO
+from io import BytesIO, StringIO
 import base64
 import anvil.media
 from reportlab.lib.pagesizes import A4
@@ -19,6 +19,7 @@ import anvil.pdf
 from PIL import Image
 import csv
 import zipfile
+from anvil import BlobMedia
 
 
 
@@ -158,69 +159,119 @@ def add_sku(sku_id, material, price):
 # -----------------------
 # FULL STACK BACKUP
 # -----------------------
-@anvil.server.callable
-def backup_fullstack():
-  """Create and return a zip of all app_tables as CSV files."""
-  zip_buffer = BytesIO()
-  with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
-    for table_name in dir(app_tables):
-      if table_name.startswith("_"):
-        continue
-      table = getattr(app_tables, table_name)
-      rows = list(table.search())
+# @anvil.server.callable
+# def backup_fullstack():
+#   """Create and return a zip of all app_tables as CSV files."""
+#   zip_buffer = BytesIO()
+#   with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
+#     for table_name in dir(app_tables):
+#       if table_name.startswith("_"):
+#         continue
+#       table = getattr(app_tables, table_name)
+#       rows = list(table.search())
 
-      # Build CSV text
-      csv_buf = BytesIO()
-      writer = csv.writer(csv_buf)
-      if rows:
-        # header
-        fieldnames = list(rows[0].keys())
-        writer.writerow(fieldnames)
-        for r in rows:
-          writer.writerow([r.get(f, "") for f in fieldnames])
-      else:
-        writer.writerow(["No data in this table"])
+#       # Build CSV text
+#       csv_buf = BytesIO()
+#       writer = csv.writer(csv_buf)
+#       if rows:
+#         # header
+#         fieldnames = list(rows[0].keys())
+#         writer.writerow(fieldnames)
+#         for r in rows:
+#           writer.writerow([r.get(f, "") for f in fieldnames])
+#       else:
+#         writer.writerow(["No data in this table"])
 
-      zipf.writestr(f"{table_name}.csv", csv_buf.getvalue().decode("utf-8"))
+#       zipf.writestr(f"{table_name}.csv", csv_buf.getvalue().decode("utf-8"))
 
-  zip_buffer.seek(0)
-  filename = f"anvil_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
-  return BlobMedia("application/zip", zip_buffer.read(), name=filename)
+#   zip_buffer.seek(0)
+#   filename = f"anvil_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
+#   return BlobMedia("application/zip", zip_buffer.read(), name=filename)
   
 # #########################TEST#######################
 
-# @anvil.server.callable
-# def get_next_ref_id():
-#   """Fetch and increment the client ref_id counter."""
-#   # Fetch the one and only counter row
-#   counter_row = app_tables.counter.get(name="client_ref")
+@anvil.server.callable
+def backup_fullstack():
+  """Create a ZIP containing:
+     - CSV export of each app_table
+     - All app_files (if any)
+     Works on Standard Python Server (BlobMedia only).
+  """
 
-#   # Create if it doesn't exist yet
-#   if counter_row is None:
-#     counter_row = app_tables.counter.add_row(name="client_ref", value=1000)
+  # --- Helper serializer for complex values ---
+  def serialize(value):
+    if value is None:
+      return ""
+    # Handle Media objects
+    if hasattr(value, "get_bytes"):
+      return getattr(value, "name", "<media>")
+    # Handle datetime
+    if hasattr(value, "isoformat"):
+      try:
+        return value.isoformat()
+      except:
+        pass
+    # Fallback
+    return str(value)
 
-#   # Increment and save
-#   new_ref = counter_row['value'] + 1
-#   counter_row['value'] = new_ref
-#   counter_row.update()
+  zip_buffer = BytesIO()
 
-#   return new_ref
+  with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zipf:
 
+    # === Export all app_tables as CSV ===
+    for table_name in dir(app_tables):
+      if table_name.startswith("_"):
+        continue
 
-# @anvil.server.callable
-# def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
-#   """Save client info and auto-generate unique ref_id."""
-#   new_ref_id = get_next_ref_id()
+      table_obj = getattr(app_tables, table_name)
 
-#   # Save to main client table
-#   app_tables.client__masterstyle_.add_row(
-#     Clients=Enter_Your_Name,
-#     Clientcontact=Contact_Number,
-#     Clientemail=Email,
-#     Clientbilladd=Address,
-#     ref_id=new_ref_id,
-#     created=datetime.now()
-#   )
+      # Skip non-table attributes
+      try:
+        rows = list(table_obj.search())
+      except:
+        continue
 
-#   return f"✅ Client {Enter_Your_Name} saved successfully with ID {new_ref_id}"
+      csv_buf = StringIO()
+      writer = csv.writer(csv_buf)
 
+      if rows:
+        first_row = dict(rows[0])
+        fieldnames = sorted(first_row.keys())
+        writer.writerow(fieldnames)
+
+        for r in rows:
+          rd = dict(r)
+          writer.writerow([serialize(rd.get(f)) for f in fieldnames])
+      else:
+        writer.writerow(["(no rows)"])
+
+      # Add CSV to ZIP
+      zipf.writestr(
+        f"tables/{table_name}.csv",
+        csv_buf.getvalue().encode("utf-8")
+      )
+
+    # === Add app_files ===
+    try:
+      from anvil.google.drive import app_files
+      for f in dir(app_files):
+        if f.startswith("_"):
+          continue
+        file_obj = getattr(app_files, f)
+        try:
+          data = file_obj.get_bytes()
+          name = getattr(file_obj, "name", f)
+          zipf.writestr(f"app_files/{name}", data)
+        except:
+          pass
+    except:
+      pass
+
+  # Finalize ZIP
+  zip_buffer.seek(0)
+  zip_bytes = zip_buffer.read()
+
+  filename = f"anvil_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
+
+  # RETURN AS BLOBMEDIA (Standard Server uses this)
+  return BlobMedia("application/zip", zip_bytes, name=filename)

@@ -292,17 +292,21 @@ db_schema:
       name: ref_id
       type: string
     - admin_ui: {order: 2, width: 200}
+      name: master_material
+      target: master_material
+      type: link_multiple
+    - admin_ui: {order: 3, width: 200}
       name: color
       target: optional__sku_
       type: link_multiple
-    - admin_ui: {order: 3, width: 200}
+    - admin_ui: {order: 4, width: 200}
       name: size
       target: optional__sku_
       type: link_multiple
-    - admin_ui: {order: 4, width: 200}
+    - admin_ui: {order: 5, width: 200}
       name: qr_data
       type: string
-    - admin_ui: {order: 5, width: 200}
+    - admin_ui: {order: 6, width: 200}
       name: sku_cost_override
       type: string
     server: full
@@ -320,10 +324,10 @@ db_schema:
   optional__sku_:
     client: none
     columns:
-    - admin_ui: {order: 0, width: 200}
+    - admin_ui: {order: -2, width: 200}
       name: Size
       type: string
-    - admin_ui: {order: 1, width: 200}
+    - admin_ui: {order: -1, width: 200}
       name: Color
       type: string
     server: full
