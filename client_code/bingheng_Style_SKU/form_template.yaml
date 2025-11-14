@@ -4,27 +4,27 @@ components:
     - event_bindings: {click: edit_button}
       layout_properties: {grid_position: 'PXUBZK,FIDMWE'}
       name: edit_button
-      properties: {text: Edit Button}
+      properties: {icon: 'fa:pencil', icon_align: left_edge, text: Edit Button}
       type: Button
-    - event_bindings: {click: button_add_sku}
-      layout_properties: {grid_position: 'PXUBZK,CEOZVJ'}
-      name: button_add_sku
+    - layout_properties: {grid_position: 'PXUBZK,CEOZVJ'}
+      name: file_loader_1
       properties: {text: Insert SKU}
-      type: Button
-    - event_bindings: {click: button_export_pdf}
+      type: FileLoader
+    - data_bindings: []
+      event_bindings: {click: button_export_pdf}
       layout_properties: {grid_position: 'PXUBZK,ZTCWLU'}
       name: button_export_pdf
-      properties: {background: '', text: Export PDF}
+      properties: {background: '', icon: 'fa:download', icon_align: left_edge, text: Export PDF}
       type: Button
     - event_bindings: {click: preview_qr}
       layout_properties: {grid_position: 'PXUBZK,BJNOXM'}
       name: preview_qr
-      properties: {text: Preview QR}
+      properties: {icon: 'fa:eye', icon_align: left_edge, text: Preview QR}
       type: Button
     - event_bindings: {click: get_qr_code}
       layout_properties: {grid_position: 'PXUBZK,ZFHDOF'}
       name: get_qr_code
-      properties: {text: Generate QR}
+      properties: {icon: 'fa:qrcode', icon_align: left_edge, text: Generate QR}
       type: Button
     layout_properties: {grid_position: 'GDDSGX,QGUIIH'}
     name: outlined_card_1
@@ -34,17 +34,16 @@ components:
     - name: repeating_panel_1
       properties: {item_template: bingheng_Style_SKU.Style_SKU_sheet}
       type: RepeatingPanel
+    event_bindings: {show: data_grid_1_show}
     layout_properties: {grid_position: 'KOUERX,RXGPOJ'}
     name: data_grid_1
     properties:
       columns:
-      - {data_key: column_1, id: JKSDUP, title: Style}
-      - {data_key: column_2, id: VJQQOR, title: Color}
-      - {data_key: column_3, id: OJLQEN, title: Seasonal}
-      - {data_key: column_1, id: EDMNHR, title: Size}
-      - {data_key: column_2, id: QAHAQX, title: SKU}
-      - {data_key: column_3, id: YWSYMN, title: Storage}
-      - {data_key: column_4, id: WDNGDQ, title: Material(s)}
+      - {data_key: column_1, id: JKSDUP, title: SKU ID}
+      - {data_key: column_2, expand: false, id: VJQQOR, title: REFERENCE}
+      - {data_key: column_3, id: OJLQEN, title: COLOR}
+      - {data_key: column_1, id: EDMNHR, title: SIZE}
+      - {data_key: column_2, id: QAHAQX, title: COST OVERRIDE}
     type: DataGrid
   layout_properties: {slot: default}
   name: content_panel

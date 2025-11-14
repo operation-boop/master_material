@@ -30,30 +30,30 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
     ############################################
     # Add SKU Entry
     ############################################
-  def button_add_sku(self, **event_args):
-    """Add a new SKU to the database"""
-    try:
-      sku_id = self.text_box_sku_id.text.strip()
-      material = self.text_box_material.text.strip()
-      price_text = self.text_box_price.text.strip()
+  # def button_add_sku(self, **event_args):
+  #   """Add a new SKU to the database"""
+  #   try:
+  #     sku_id = self.text_box_sku_id.text.strip()
+  #     material = self.text_box_material.text.strip()
+  #     price_text = self.text_box_price.text.strip()
 
-      if not sku_id or not material or not price_text:
-        alert("Please fill in all fields.")
-        return
+  #     if not sku_id or not material or not price_text:
+  #       alert("Please fill in all fields.")
+  #       return
 
-      price = float(price_text)
+  #     price = float(price_text)
 
-      # server call is fine when invoked from an event handler (not at import)
-      anvil.server.call('add_sku', sku_id, material, price)
-      alert(f"✅ SKU {sku_id} added successfully!")
+  #     # server call is fine when invoked from an event handler (not at import)
+  #     anvil.server.call('add_sku', sku_id, material, price)
+  #     alert(f"✅ SKU {sku_id} added successfully!")
 
-      # Reload table after adding
-      self.load_data()
+  #     # Reload table after adding
+  #     self.load_data()
 
-    except ValueError:
-      alert("❌ Price must be a valid number.")
-    except Exception as e:
-      alert(f"❌ Error adding SKU: {e}")
+  #   except ValueError:
+  #     alert("❌ Price must be a valid number.")
+  #   except Exception as e:
+  #     alert(f"❌ Error adding SKU: {e}")
 
   def edit_button(self, **event_args):
     """Called when edit button is clicked — open the sheet"""
@@ -88,3 +88,8 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
 
     except Exception as e:
       alert(f"❌ Error exporting PDF: {e}")
+
+  def data_grid_1_show(self, **event_args):
+    """This method is called when the data grid is shown on the screen"""
+    
+    pass
