@@ -21,6 +21,7 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
     from ..wanyan_ver_cost_sheet_input_form import wanyan_ver_cost_sheet_input_form
 
     popup = wanyan_ver_cost_sheet_input_form()
+    
 
     alert(
       content=popup,
@@ -29,19 +30,27 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
       buttons=None 
     )
 
+  @anvil.server.callable
+  def get_cost_sheet(cost_sheet_id):
+     row = app_tables.cost_sheets.get_by_id(cost_sheet_id)
+     if row is None:
+        return None
+    # return only the fields you care about (serializable)
+     return {
+      "id": row.get_id(),
+       "name": row.get("name"),
+       "client_name": row.get("client") and row["client"].get("name"),
+        "created_at": row.get("created_at")
+       }
+
+  
   def form_show(self, **event_args):
-
-    cost_sheet_id = cost_sheet_id
-    
-
-
-
 
     
     # --- Mock Data Example ---
     cost_sheet = [
       {
-        "cost_sheet_id": cost_sheet_id,
+        "cost_sheet_id": "CS-1001",
         "version_number": "3",
         "updated_at": "5/11/2025",
         "created_by": "John Doe",
