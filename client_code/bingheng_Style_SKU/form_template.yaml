@@ -1,41 +1,11 @@
 components:
 - components:
   - components:
-    - event_bindings: {click: edit_button}
-      layout_properties: {grid_position: 'PXUBZK,FIDMWE'}
-      name: edit_button
-      properties: {icon: 'fa:pencil', icon_align: left_edge, text: Edit Button}
-      type: Button
-    - layout_properties: {grid_position: 'PXUBZK,CEOZVJ'}
-      name: file_loader_1
-      properties: {text: Insert SKU}
-      type: FileLoader
-    - data_bindings: []
-      event_bindings: {click: button_export_pdf}
-      layout_properties: {grid_position: 'PXUBZK,ZTCWLU'}
-      name: button_export_pdf
-      properties: {background: '', icon: 'fa:download', icon_align: left_edge, text: Export PDF}
-      type: Button
-    - event_bindings: {click: preview_qr}
-      layout_properties: {grid_position: 'PXUBZK,BJNOXM'}
-      name: preview_qr
-      properties: {icon: 'fa:eye', icon_align: left_edge, text: Preview QR}
-      type: Button
-    - event_bindings: {click: get_qr_code}
-      layout_properties: {grid_position: 'PXUBZK,ZFHDOF'}
-      name: get_qr_code
-      properties: {icon: 'fa:qrcode', icon_align: left_edge, text: Generate QR}
-      type: Button
-    layout_properties: {grid_position: 'GDDSGX,QGUIIH'}
-    name: outlined_card_1
-    properties: {role: outlined-card}
-    type: ColumnPanel
-  - components:
     - layout_properties: {pinned: false}
       name: repeating_panel_1
       properties: {item_template: bingheng_Style_SKU.Style_SKU_Sheet}
       type: RepeatingPanel
-    layout_properties: {grid_position: 'XAHXJO,HPPBOE'}
+    layout_properties: {grid_position: 'LQUIHD,ZBTWFU'}
     name: data_grid_1
     properties:
       columns:
@@ -47,6 +17,40 @@ components:
       - {data_key: qr_data, expand: false, id: QSKYEV, title: qr_data, width: 103.4444580078125}
       - {data_key: sku_cost_override, id: PQSAJS, title: sku_cost_override}
     type: DataGrid
+  - components:
+    - components:
+      - layout_properties: {}
+        name: text_box_1
+        properties: {text: id}
+        type: TextBox
+      layout_properties: {grid_position: 'RONMOF,HAGONQ'}
+      name: data_row_panel_1
+      properties: {}
+      type: DataRowPanel
+    - layout_properties: {grid_position: 'RONMOF,JGTTGI'}
+      name: text_box_4
+      properties: {text: ref_id}
+      type: TextBox
+    - layout_properties: {grid_position: 'RONMOF,DUDBEI'}
+      name: text_box_3
+      properties: {text: master_material}
+      type: TextBox
+    - layout_properties: {grid_position: 'RONMOF,AAKUYQ'}
+      name: text_box_2
+      properties: {text: color}
+      type: TextBox
+    - layout_properties: {grid_position: 'RONMOF,PWMQOV'}
+      name: text_box_6
+      properties: {text: size}
+      type: TextBox
+    - layout_properties: {grid_position: 'RONMOF,VZOHUP'}
+      name: text_box_5
+      properties: {text: qr_data}
+      type: TextBox
+    layout_properties: {grid_position: 'CNFFMQ,NERWQV'}
+    name: column_panel_1
+    properties: {}
+    type: ColumnPanel
   layout_properties: {slot: default}
   name: content_panel
   properties: {}
