@@ -46,7 +46,6 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
   
   def form_show(self, **event_args):
 
-    
     # --- Mock Data Example ---
     cost_sheet = [
       {
