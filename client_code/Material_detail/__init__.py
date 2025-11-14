@@ -101,6 +101,27 @@ class Material_detail(Material_detailTemplate):
     open_form("Material_list")
     pass
 
+  def material_sku_tab_btn_click(self, **event_args):
+    self.material_sku_panel.visible = True
+    self.version_history_panel.visible = False
+    self.cost_details_panel.visible = False
+    self.technical_specs_panel.visible = False
+    pass
+
+  def add_sku_btn_click(self, **event_args):
+    form = Material_sku_input_form(master_material=self.item['material_id'])
+    alert(content=form, title=None, large=True, buttons=None)
+  
+    # When the form closes successfully, refresh the data 
+    if form.saved: 
+      self.refresh_data()
+
+  def refresh_data(self): 
+    try: 
+      self.material_sku_repeating_panel.items = anvil.server.call('get_material_sku', self.item['material_id']) 
+    except Exception as e: 
+      Notification(f"Error loading data: {e}").show()
+
 
 
   

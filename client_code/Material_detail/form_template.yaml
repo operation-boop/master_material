@@ -266,7 +266,7 @@ components:
       name: version_history_tab_btn
       properties: {foreground: 'theme:Black', text: version history}
       type: Button
-    - event_bindings: {}
+    - event_bindings: {click: material_sku_tab_btn_click}
       layout_properties: {}
       name: material_sku_tab_btn
       properties: {foreground: 'theme:Black', text: material sku}
@@ -562,7 +562,8 @@ components:
     name: label_38
     properties: {bold: true, font_size: 17, text: MATERIAL SKU}
     type: Label
-  - layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
+  - event_bindings: {click: add_sku_btn_click}
+    layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
     name: add_sku_btn
     properties: {align: right, icon: 'fa:plus', text: add sku}
     type: Button

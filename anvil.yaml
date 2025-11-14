@@ -179,6 +179,33 @@ db_schema:
       type: string
     server: full
     title: master_material_version
+  material_sku:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: ref_id
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: master_material
+      target: master_material
+      type: link_single
+    - admin_ui: {order: 3, width: 200}
+      name: color
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: size
+      type: string
+    - admin_ui: {order: 5, width: 200}
+      name: qr_data
+      type: string
+    - admin_ui: {order: 6, width: 200}
+      name: sku_cost_override
+      type: string
+    server: full
+    title: material_sku
   material_type:
     client: none
     columns: []
@@ -205,11 +232,6 @@ db_schema:
       type: string
     server: full
     title: Supplier
-  table_8:
-    client: none
-    columns: []
-    server: full
-    title: Table 8
   users:
     client: none
     columns:
