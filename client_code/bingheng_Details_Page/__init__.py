@@ -50,3 +50,6 @@ class bingheng_Details_Page(bingheng_Details_PageTemplate):
     open_form('bingheng_CreateProfile')
 
     # ---- TextBox Event Handlers (optional) ----
+
+
+    
