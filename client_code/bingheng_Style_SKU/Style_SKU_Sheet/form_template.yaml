@@ -1,5 +1,6 @@
 components:
-- layout_properties: {column: TCILGR}
+- event_bindings: {input: text_area_1_input}
+  layout_properties: {column: TCILGR}
   name: text_area_1
   properties: {text: ''}
   type: form:dep_xymmo08thrlyoc:TextArea
