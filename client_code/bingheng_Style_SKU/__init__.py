@@ -8,7 +8,6 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-
 # class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
 #   def __init__(self, **properties):
 #     # Set Form properties and Data Bindings.
@@ -238,3 +237,44 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
 
     except Exception as e:
       alert(f"❌ Error exporting PDF: {e}")
+
+
+#-----------------------------------------------------
+#                 MOCK GENERATED QR
+#------------------------------------------------------
+def generate_mock_qr(self, text):
+  """
+  Generates a fake QR code purely for mock/testing purposes.
+  Creates a small black–white pixel grid.
+  """
+
+  # very small 8×8 black/white pattern (not a real QR)
+  pattern = [
+    [0,255,0,255,0,255,0,255],
+    [255,0,255,0,255,0,255,0],
+    [0,255,0,255,0,255,0,255],
+    [255,0,255,0,255,0,255,0],
+    [0,255,0,255,0,255,0,255],
+    [255,0,255,0,255,0,255,0],
+    [0,255,0,255,0,255,0,255],
+    [255,0,255,0,255,0,255,0],
+  ]
+
+  from PIL import Image
+  import io
+
+  img = Image.new("RGB", (8,8))
+  for y,row in enumerate(pattern):
+    for x,value in enumerate(row):
+      img.putpixel((x,y), (value, value, value))
+
+  # scale it up so it looks like a real QR
+  img = img.resize((300,300), Image.NEAREST)
+
+  # Convert to PNG bytes
+  buf = io.BytesIO()
+  img.save(buf, format="PNG")
+  png_bytes = buf.getvalue()
+
+  return anvil.BlobMedia("image/png", png_bytes, name=f"mock_qr_{text}.png")
+  #--------------------------END---------------------------------------------
