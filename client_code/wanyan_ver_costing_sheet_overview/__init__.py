@@ -195,14 +195,14 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
 
           # Other fields (blank/default for now)
           "created_by": "",
-          "master_style": "",
+         # "master_style": "",
           "currency": "",
-          "change_description": "",
+          # "change_description": "",
           "total_material_cost": 0.0,
           "total_processing_cost": 0.0,
           "total_overhead_cost": 0.0,
           "total_cost": 0.0,
-          "scenarios": []
+          # "scenarios": []
         }
 
         cost_sheet_data.append(cost_sheet_item)

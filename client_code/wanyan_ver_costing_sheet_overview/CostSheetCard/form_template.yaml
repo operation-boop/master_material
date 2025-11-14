@@ -3,25 +3,25 @@ components:
   - components:
     - data_bindings:
       - {code: 'self.item[''cost_sheet_id'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'YRTDZE,CQFWZU CIEGGZ,HPLLNA'}
+      layout_properties: {grid_position: 'PDYWMU,AXALJM YRTDZE,CQFWZU CIEGGZ,HPLLNA'}
       name: cost_sheet_id
       properties: {bold: true, role: headline}
       type: Label
     - data_bindings:
       - {code: '"Version " + self.item[''version_number'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,ITGCPP'}
+      layout_properties: {grid_position: 'PDYWMU,AXALJM YRTDZE,CQFWZU CHWYGL,ITGCPP'}
       name: version
       properties: {}
       type: Label
     - data_bindings:
       - {code: 'self.item[''updated_at'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'YRTDZE,CQFWZU CHWYGL,NNEAPX'}
+      layout_properties: {grid_position: 'PDYWMU,AXALJM YRTDZE,CQFWZU CHWYGL,NNEAPX'}
       name: updated_at
       properties: {}
       type: Label
     - data_bindings:
       - {code: 'self.item[''approval_status'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'YRTDZE,BYYHQG IYVRHE,ZVVFTS'}
+      layout_properties: {grid_position: 'PDYWMU,AXALJM YRTDZE,BYYHQG'}
       name: approval_status
       properties: {align: center, role: null}
       type: Label
@@ -114,17 +114,20 @@ components:
         name: delete_btn
         properties: {align: left, role: secondary-color, text: delete}
         type: Button
-      layout_properties: {grid_position: 'LFCGAB,RLITQX'}
+      layout_properties: {grid_position: 'PDYWMU,AXALJM LFCGAB,RLITQX'}
       name: column_panel_1
       properties: {col_widths: '{"QVWLMV":20,"UOSGTU":40,"QKVHFZ":20,"ORSGNH":40,"BQJLCY":20,"MIKWPU":40,"UNEVOA":20,"OJFHJV":40}'}
       type: ColumnPanel
     layout_properties: {width: 436.5}
     name: card_1
-    properties: {role: card}
+    properties:
+      role: card
+      spacing:
+        padding: [null, 3, null, null]
     type: ColumnPanel
   layout_properties: {grid_position: 'LXSPLZ,ZNNYFT'}
   name: flow_panel_1
-  properties: {}
+  properties: {align: center}
   type: FlowPanel
 container: {type: ColumnPanel}
 is_package: true
