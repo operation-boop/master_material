@@ -2,6 +2,7 @@ from ._anvil_designer import Material_detailTemplate
 import anvil.server
 from anvil import alert, Notification, open_form
 from ..Material_input_form import Material_input_form
+from ..Material_sku_input_form import Material_sku_input_form
 
 class Material_detail(Material_detailTemplate):
   def __init__(self, doc_id=None, **properties):
@@ -10,6 +11,8 @@ class Material_detail(Material_detailTemplate):
     self.refresh_data_bindings()
     if doc_id:
       self.load_material(doc_id)
+    sku_rows = anvil.server.call("get_material_sku", self.item['material_id'])
+    self.material_sku_repeating_panel.items = sku_rows
 
   def form_show(self, **event_args):
     doc_id = self.item.get("document_id")  # if passed from previous form
@@ -107,7 +110,7 @@ class Material_detail(Material_detailTemplate):
     self.cost_details_panel.visible = False
     self.technical_specs_panel.visible = False
     pass
-
+    
   def add_sku_btn_click(self, **event_args):
     form = Material_sku_input_form(master_material=self.item['material_id'])
     alert(content=form, title=None, large=True, buttons=None)
