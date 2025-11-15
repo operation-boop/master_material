@@ -436,7 +436,7 @@ components:
         properties: {}
         type: Label
       - data_bindings:
-        - {code: '"Supplier Tolerance (" +(self.item[''supplier_selling_tolerance''])+"%):"', property: text, writeback: false}
+        - {code: '"Supplier Tolerance (" +str(self.item[''supplier_selling_tolerance''])+"%):"', property: text, writeback: false}
         layout_properties: {grid_position: 'BUZNWO,BCWJOU'}
         name: supplier_tolerance_show
         properties:
