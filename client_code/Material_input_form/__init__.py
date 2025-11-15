@@ -9,7 +9,7 @@ class Material_input_form(Material_input_formTemplate):
 
     # Initialize dropdown options
     self.material_type_dropdown.items = ["Main Fabric", "Secondary Fabric", "Accessory"]
-    self.dropdown_supplier.items = ["ABC", "CBA", "HELLO", "BYE"]
+    self.dropdown_supplier.items = ["Puma", "Nike", "Uniqlo", "Adidas"]
     self.country_of_origin_dropdown.items = ["Vietnam", "China"]
     self.UOM_dropdown.items = ["Meter", "Piece"]
     self.weight_uom_dropdown.items = ["GSM (gram/sq meter)", "GPP (gram/piece)"]
@@ -79,7 +79,7 @@ class Material_input_form(Material_input_formTemplate):
       "weft_shrinkage": "",
       "werp_shrinkage": "",
       "weight_per_unit": "",
-      "original_cost_per_unit": None,
+      "original_cost_per_unit": "",
       "supplier_selling_tolerance": "",
       "import_duty": "",
       "logistics_rate": "",
@@ -248,7 +248,6 @@ class Material_input_form(Material_input_formTemplate):
     )
 
   def currency_dropdown_change(self, **event_args):
-    """Update currency labels when currency changes"""
     self._update_currency_labels(self.currency_dropdown.selected_value)
 
   def _update_currency_labels(self, currency):
@@ -264,8 +263,8 @@ class Material_input_form(Material_input_formTemplate):
       label.text = currency or ""
 
   def original_cost_per_unit_change(self, **event_args):
-    if self.supplier_tolerance.text:
-      self.supplier_tolerance_change()
+    if(self.original_cost_per_unit.text is not None):
+      self.original_cost.text = self.original_cost_per_unit.text
 
   def supplier_tolerance_change(self, **event_args):
     """Calculate effective cost based on tolerance"""

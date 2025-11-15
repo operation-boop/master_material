@@ -25,7 +25,6 @@ class Material_list(Material_listTemplate):
 
       result = alert(
         content=popup,
-        title="Create New Material",
         large=True,
         buttons=None
       )
