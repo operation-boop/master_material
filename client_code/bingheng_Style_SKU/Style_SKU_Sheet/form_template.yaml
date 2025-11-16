@@ -1,8 +1,36 @@
 components:
-- event_bindings: {input: text_area_1_input}
+- data_bindings:
+  - {code: 'self.item['''']', property: text, writeback: false}
+  event_bindings: {input: text_area_1_input}
   layout_properties: {column: TCILGR}
-  name: text_area_1
-  properties: {text: ''}
+  name: sku_id
+  properties: {placeholder: id, text: ''}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings:
+  - {code: 'self.item['''']', property: text, writeback: false}
+  layout_properties: {column: FGNQUH}
+  name: ref_id
+  properties: {placeholder: reference id}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- layout_properties: {column: XSBKVQ}
+  name: master_material
+  properties: {placeholder: Master Material}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- layout_properties: {column: KRDNYM}
+  name: color
+  properties: {placeholder: Color}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- layout_properties: {column: TEWPKJ}
+  name: size
+  properties: {placeholder: Size}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- layout_properties: {column: QSKYEV}
+  name: qr_data
+  properties: {placeholder: QR data}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- layout_properties: {column: PQSAJS}
+  name: sku_override
+  properties: {placeholder: SKU override}
   type: form:dep_xymmo08thrlyoc:TextArea
 container:
   data_bindings: []
