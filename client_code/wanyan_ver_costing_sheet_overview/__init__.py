@@ -185,28 +185,27 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
           print(f"Warning: Cost sheet {cost_sheet['document_id']} has no current version - skipping")
           continue
 
-          # Get calculated summary (totals)
-          summary = anvil.server.call('get_cost_sheet_summary', current_version.get_id())
-
           # Build simplified data with only 4 essential fields
           cost_sheet_item = {
             "cost_sheet_id": cost_sheet['document_id'],
             "version_number": str(current_version['version_number']),
             "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
             "created_by": current_version['created_by']['name'] if current_version['created_by'] else "Unknown",
-            "approval_status": current_version['status'],
+            "approval_status": current_version['status'] if current_version['status'] else "Unknown",
 
             "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
             "currency": current_version['cost_currency'],
             "change_description": current_version['change_description'],
 
             # Real calculated costs from summary
-            "total_material_cost": summary['material_cost'],
-            "total_processing_cost": summary['processing_cost'],
-            "total_overhead_cost": summary['overhead_cost'],
-            "total_cost": summary['total_cost'],
+            "total_material_cost": current_version['total_material_cost'] or 0.0,
+            "total_processing_cost": current_version['total_processing_cost'] or 0.0,
+            "total_overhead_cost": current_version['total_overhead_cost'] or 0.0,
+            "total_cost": ((current_version['total_material_cost'] or 0.0) +
+                           (current_version['total_processing_cost'] or 0.0) +
+                           (current_version['total_overhead_cost'] or 0.0)),
+            "scenarios": []  # Skip for now, or fetch separately later
 
-            "scenarios": summary.get('scenarios', [])
           }
 
         cost_sheet_data.append(cost_sheet_item)
