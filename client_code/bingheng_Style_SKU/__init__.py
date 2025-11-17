@@ -19,6 +19,17 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   ############################################
   # Load data from the database
   ############################################
+  def load_items(self):
+    rows = list(app_tables.material_sku__main_
+      .search())
+    self.repeating_panel_1.items = rows
+
+  def btn_refresh(self, **event_args):
+    new_row = bingheng_Style_SKUTemplate.add_row(
+      id="", ref_id="", master_material="", color="", size="",qr_data="", sku_override=""
+    )
+  self.load_items()
+  
   def load_data(self):
     """Load SKU data from your database table and bind to repeating_panel_1.
 
@@ -97,43 +108,43 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
     except Exception as e:
       alert(f"❌ Error uploading file / adding SKU: {e}")
 
-  ############################################
-  # Edit / QR / Export handlers (kept from your original code)
-  ############################################
-  def edit_button(self, **event_args):
-    """Called when edit button is clicked — open the sheet"""
-    try:
-      open_form('bingheng_Style_SKU.Style_SKU_sheet')
-    except Exception as e:
-      alert(f"❌ Could not open edit sheet: {e}")
+      ############################################
+      # Edit / QR / Export handlers (kept from your original code)
+      ############################################
+      def edit_button(self, **event_args):
+        """Called when edit button is clicked — open the sheet"""
+        try:
+          open_form('bingheng_Style_SKU.Style_SKU_sheet')
+        except Exception as e:
+          alert(f"❌ Could not open edit sheet: {e}")
 
-  def get_qr_code(self, **event_args):
-    sku_id = (self.text_box_sku_id.text or "").strip()
-    if not sku_id:
-      alert("Please enter a SKU ID first.")
-      return
+      def get_qr_code(self, **event_args):
+        sku_id = (self.text_box_sku_id.text or "").strip()
+        if not sku_id:
+          alert("Please enter a SKU ID first.")
+          return
 
-    try:
-      qr_img = anvil.server.call('get_qr_code', sku_id)
-      self.image_qr_preview.source = qr_img
-      alert("✅ Unique QR code generated!")
-    except Exception as e:
-      alert(f"⚠️ QR generation failed: {e}")
+        try:
+          qr_img = anvil.server.call('get_qr_code', sku_id)
+          self.image_qr_preview.source = qr_img
+          alert("✅ Unique QR code generated!")
+        except Exception as e:
+          alert(f"⚠️ QR generation failed: {e}")
 
-  def button_export_pdf(self, **event_args):
-    """Manual export to PDF with QR codes"""
-    try:
-      data = self.repeating_panel_1.items or []
-      if not data:
-        alert("No SKU data available to export.")
-        return
+      def button_export_pdf(self, **event_args):
+        """Manual export to PDF with QR codes"""
+        try:
+          data = self.repeating_panel_1.items or []
+          if not data:
+            alert("No SKU data available to export.")
+            return
 
-      pdf_file = anvil.server.call('generate_sku_pdf', data)
-      download(pdf_file)
-      alert("✅ PDF exported successfully!")
+          pdf_file = anvil.server.call('generate_sku_pdf', data)
+          download(pdf_file)
+          alert("✅ PDF exported successfully!")
 
-    except Exception as e:
-      alert(f"❌ Error exporting PDF: {e}")
+        except Exception as e:
+          alert(f"❌ Error exporting PDF: {e}")
 
 
 #-----------------------------------------------------

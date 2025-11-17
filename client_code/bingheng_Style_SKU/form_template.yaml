@@ -73,6 +73,10 @@ components:
   name: content_panel
   properties: {}
   type: ColumnPanel
+- layout_properties: {slot: left-nav}
+  name: btn_refresh
+  properties: {text: Refresh}
+  type: Button
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate

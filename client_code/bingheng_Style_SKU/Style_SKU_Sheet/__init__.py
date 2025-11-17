@@ -10,7 +10,7 @@ from anvil.tables import app_tables
 
 ################## TEST RUN ########################
 
-skutable = app_tables.material_sku__main_
+app_tables.material_sku__main_ = app_tables.material_sku__main_
 
 def form_show(self, **event_args):
   self.Style_SKU_Sheet.id.item = self.item["id"]
