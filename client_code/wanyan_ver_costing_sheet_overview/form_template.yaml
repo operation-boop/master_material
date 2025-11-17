@@ -9,7 +9,7 @@ components:
   properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:plus', role: primary-color, text: new cost sheet}
   type: Button
 - components:
-  - layout_properties: {width: 649.5}
+  - layout_properties: {expand: true, width: 649.5}
     name: repeating_panel_cost_sheet
     properties: {item_template: wanyan_ver_costing_sheet_overview.CostSheetCard, spacing_above: small}
     type: RepeatingPanel
