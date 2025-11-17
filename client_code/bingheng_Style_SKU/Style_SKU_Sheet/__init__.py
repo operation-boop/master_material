@@ -163,11 +163,11 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
       if hasattr(self, "text_box_qr"):
         self.text_box_qr.text = item.get("qr_data") or ""
       if hasattr(self, "text_box_override"):
-        self.text_box_override.text = str(item.get("m") or "")
+        self.text_box_override.text = str(item.get("sku_cost_override") or "")
     except Exception:
       pass
 
-  def btn_save_click(self, **event_args):
+  def btn_save(self, **event_args):
     """Raise event 'x-save' back to the parent form (main form will handle server update)."""
     # Ensure item contains the latest edited values. If you used data-bind write-back, this is automatic.
     # Otherwise copy values from textboxes into the item dict before raising event:
