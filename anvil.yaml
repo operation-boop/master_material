@@ -393,6 +393,9 @@ db_schema:
     - admin_ui: {order: 3, width: 200}
       name: description
       type: string
+    - admin_ui: {order: 4, width: 200}
+      name: name
+      type: string
     server: full
     title: master_styles
   material_sku:

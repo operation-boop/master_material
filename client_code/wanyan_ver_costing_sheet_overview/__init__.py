@@ -186,7 +186,7 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
           continue
 
           # Build simplified data with only 4 essential fields
-          cost_sheet_item = {
+        cost_sheet_item = {
             "cost_sheet_id": cost_sheet['document_id'],
             "version_number": str(current_version['version_number']),
             "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
