@@ -275,3 +275,22 @@ def backup_fullstack():
 
   # RETURN AS BLOBMEDIA (Standard Server uses this)
   return BlobMedia("application/zip", zip_bytes, name=filename)
+
+#---------------------------------------------------------------------------
+#--------------- ADD SKU FUNCTION ------------------------------------------
+#---------------------------------------------------------------------------
+
+@anvil.server.callable
+def get_skus():
+  """Return SKUs as a list of dicts for client-side display."""
+  rows = app_tables.material_sku__main_.search()
+  result = []
+  for r in rows:
+    result.append({
+      "row_id": r.get_id(),
+      "sku_id": r["sku_id"],
+      "material": r["material"],
+      "price": r["price"],
+      "created": r["created"],
+    })
+  return result
