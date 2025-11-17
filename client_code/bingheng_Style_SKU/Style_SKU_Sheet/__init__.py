@@ -10,6 +10,17 @@ from anvil.tables import app_tables
 
 ################## TEST RUN ########################
 
+skutable = app_tables.material_sku__main_
+
+def form_show(self, **event_args):
+  self.Style_SKU_Sheet.id.item = self.item["id"]
+  self.Style_SKU_Sheet.ref_id.item = self.item["ref_id"]
+  self.Style_SKU_Sheet.master_material.item = self.item["master_material"]
+  self.Style_SKU_Sheet.color.item = self.item["color"]
+  self.Style_SKU_Sheet.size.item = self.item["size"]
+  self.Style_SKU_Sheet.qr_data.item = self.item["qr_data"]
+  self.Style_SKU_Sheet.sku_override.item = self.item["sku_cost_override"]
+  
 class Style_SKU_Sheet(Style_SKU_SheetTemplate):
   def __init__(self, row=None, **properties):
     # Set Form properties and Data Bindings.

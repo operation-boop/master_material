@@ -1,39 +1,43 @@
 components:
-- data_bindings:
-  - {code: 'self.item['''']', property: text, writeback: false}
-  event_bindings: {input: text_area_1_input}
-  layout_properties: {column: TCILGR}
-  name: sku_id
-  properties: {placeholder: id, text: ''}
-  type: form:dep_xymmo08thrlyoc:TextArea
-- data_bindings:
-  - {code: 'self.item['''']', property: text, writeback: false}
-  layout_properties: {column: FGNQUH}
-  name: ref_id
-  properties: {placeholder: reference id}
-  type: form:dep_xymmo08thrlyoc:TextArea
-- layout_properties: {column: XSBKVQ}
-  name: master_material
+- data_bindings: []
+  layout_properties: {column: XSBKVQ}
+  name: text_box_master
   properties: {placeholder: Master Material}
   type: form:dep_xymmo08thrlyoc:TextArea
-- layout_properties: {column: KRDNYM}
-  name: color
+- data_bindings: []
+  layout_properties: {column: KRDNYM}
+  name: text_box_color
   properties: {placeholder: Color}
   type: form:dep_xymmo08thrlyoc:TextArea
-- layout_properties: {column: TEWPKJ}
-  name: size
+- data_bindings: []
+  layout_properties: {column: TEWPKJ}
+  name: text_box_size
   properties: {placeholder: Size}
   type: form:dep_xymmo08thrlyoc:TextArea
-- layout_properties: {column: QSKYEV}
-  name: qr_data
+- data_bindings: []
+  layout_properties: {column: QSKYEV}
+  name: text_box_qr
   properties: {placeholder: QR data}
   type: form:dep_xymmo08thrlyoc:TextArea
-- layout_properties: {column: PQSAJS}
-  name: sku_override
+- data_bindings: []
+  layout_properties: {column: PQSAJS}
+  name: text_box_override
   properties: {placeholder: SKU override}
   type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings:
+  - {code: 'self.item[''id'']', property: attributes, writeback: false}
+  layout_properties: {column: TCILGR}
+  name: text_box_id
+  properties: {placeholder: ID}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings: []
+  layout_properties: {column: FGNQUH}
+  name: text_box_ref
+  properties: {placeholder: reference id}
+  type: form:dep_xymmo08thrlyoc:TextArea
 container:
-  data_bindings: []
+  data_bindings:
+  - {code: 'self.item[''Material_SKU.ref_id'']', property: auto_display_data, writeback: false}
   event_bindings: {}
   properties: {align: left}
   type: DataRowPanel
