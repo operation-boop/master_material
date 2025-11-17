@@ -41,6 +41,7 @@ components:
   - components:
     - data_bindings:
       - {code: 'self.item[''Material_SKU (Main)'']', property: tag, writeback: false}
+      layout_properties: {pinned: true}
       name: repeating_panel_1
       properties: {item_template: bingheng_Style_SKU.Style_SKU_Sheet}
       type: RepeatingPanel

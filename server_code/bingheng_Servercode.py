@@ -22,7 +22,6 @@ import zipfile
 from anvil import BlobMedia
 
 
-
 # -----------------------
 # CLIENT MANAGEMENT
 # -----------------------
@@ -77,83 +76,83 @@ def admin_action(username):
 # -----------------------
 # QR / SKU
 # -----------------------
-@anvil.server.callable
-def get_qr_code(sku_id):
-  """Return a PNG BlobMedia containing a unique QR code for sku_id."""
-  if not sku_id:
-    raise ValueError("sku_id required")
+# @anvil.server.callable
+# def get_qr_code(sku_id):
+#   """Return a PNG BlobMedia containing a unique QR code for sku_id."""
+#   if not sku_id:
+#     raise ValueError("sku_id required")
 
-  unique_code = f"{sku_id}-{uuid.uuid4().hex[:8]}"
-  qr = pyqrcode.create(unique_code)
+#   unique_code = f"{sku_id}-{uuid.uuid4().hex[:8]}"
+#   qr = pyqrcode.create(unique_code)
 
-  buf = BytesIO()
-  qr.png(buf, scale=5)
-  buf.seek(0)
-  return BlobMedia("image/png", buf.read(), name=f"{sku_id}_qr.png")
-
-
-@anvil.server.callable
-def generate_sku_pdf(data):
-  """
-  Generate a PDF containing SKU rows (list of dicts with keys sku_id, material, price)
-  and embedded QR codes. Returns a BlobMedia('application/pdf', ...).
-  """
-  if not isinstance(data, (list, tuple)):
-    raise ValueError("data must be a list of dicts")
-
-  out = BytesIO()
-  c = canvas.Canvas(out, pagesize=A4)
-  width, height = A4
-  y = height - 60
-
-  c.setFont("Helvetica-Bold", 16)
-  c.drawString(50, y, "SKU Export Report with QR Codes")
-  y -= 40
-
-  for row in data:
-    sku_id = str(row.get("sku_id", "Unknown"))
-    material = str(row.get("material", "N/A"))
-    price = str(row.get("price", "N/A"))
-
-    # Draw SKU text
-    c.setFont("Helvetica", 12)
-    c.drawString(50, y, f"SKU ID: {sku_id}")
-    c.drawString(250, y, f"Material: {material}")
-    c.drawString(450, y, f"Price: {price}")
-    y -= 20
-
-    # create QR bytes (unique per PDF generation)
-    qr_payload = f"{sku_id}-{uuid.uuid4().hex[:8]}"
-    qr = pyqrcode.create(qr_payload)
-    qr_buf = BytesIO()
-    qr.png(qr_buf, scale=3)
-    qr_bytes = qr_buf.getvalue()
-
-    # drawInlineImage accepts raw image bytes; provide bytes
-    c.drawInlineImage(qr_bytes, 480, y - 50, width=60, height=60)
-
-    y -= 80
-    if y < 100:
-      c.showPage()
-      y = height - 60
-
-  c.save()
-  out.seek(0)
-  return BlobMedia("application/pdf", out.read(), name="SKU_Report.pdf")
+#   buf = BytesIO()
+#   qr.png(buf, scale=5)
+#   buf.seek(0)
+#   return BlobMedia("image/png", buf.read(), name=f"{sku_id}_qr.png")
 
 
-@anvil.server.callable
-def add_sku(sku_id, material, price):
-  """Add a new SKU row"""
-  if not sku_id:
-    raise ValueError("sku_id required")
-  app_tables.sku_table.add_row(
-    sku_id=sku_id,
-    material=material,
-    price=price,
-    created=datetime.now()
-  )
-  return f"✅ SKU {sku_id} added successfully."
+# @anvil.server.callable
+# def generate_sku_pdf(data):
+#   """
+#   Generate a PDF containing SKU rows (list of dicts with keys sku_id, material, price)
+#   and embedded QR codes. Returns a BlobMedia('application/pdf', ...).
+#   """
+#   if not isinstance(data, (list, tuple)):
+#     raise ValueError("data must be a list of dicts")
+
+#   out = BytesIO()
+#   c = canvas.Canvas(out, pagesize=A4)
+#   width, height = A4
+#   y = height - 60
+
+#   c.setFont("Helvetica-Bold", 16)
+#   c.drawString(50, y, "SKU Export Report with QR Codes")
+#   y -= 40
+
+#   for row in data:
+#     sku_id = str(row.get("sku_id", "Unknown"))
+#     material = str(row.get("material", "N/A"))
+#     price = str(row.get("price", "N/A"))
+
+#     # Draw SKU text
+#     c.setFont("Helvetica", 12)
+#     c.drawString(50, y, f"SKU ID: {sku_id}")
+#     c.drawString(250, y, f"Material: {material}")
+#     c.drawString(450, y, f"Price: {price}")
+#     y -= 20
+
+#     # create QR bytes (unique per PDF generation)
+#     qr_payload = f"{sku_id}-{uuid.uuid4().hex[:8]}"
+#     qr = pyqrcode.create(qr_payload)
+#     qr_buf = BytesIO()
+#     qr.png(qr_buf, scale=3)
+#     qr_bytes = qr_buf.getvalue()
+
+#     # drawInlineImage accepts raw image bytes; provide bytes
+#     c.drawInlineImage(qr_bytes, 480, y - 50, width=60, height=60)
+
+#     y -= 80
+#     if y < 100:
+#       c.showPage()
+#       y = height - 60
+
+#   c.save()
+#   out.seek(0)
+#   return BlobMedia("application/pdf", out.read(), name="SKU_Report.pdf")
+
+
+# @anvil.server.callable
+# def add_sku(sku_id, material, price):
+#   """Add a new SKU row"""
+#   if not sku_id:
+#     raise ValueError("sku_id required")
+#   app_tables.sku_table.add_row(
+#     sku_id=sku_id,
+#     material=material,
+#     price=price,
+#     created=datetime.now()
+#   )
+#   return f"✅ SKU {sku_id} added successfully."
 
 
 # -----------------------
@@ -266,8 +265,7 @@ def generate_sku_pdf(data):
   and embedded QR codes. Returns a BlobMedia('application/pdf', ...).
   """
   # Keep your existing implementation or use this one
-  from reportlab.lib.pagesizes import A4
-  from reportlab.pdfgen import canvas
+ 
 
   if not isinstance(data, (list, tuple)):
     raise ValueError("data must be a list of dicts")

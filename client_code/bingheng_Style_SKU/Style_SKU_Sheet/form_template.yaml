@@ -7,33 +7,33 @@ components:
 - data_bindings: []
   layout_properties: {column: KRDNYM}
   name: text_box_color
-  properties: {placeholder: Color}
+  properties: {placeholder: Color, text: WHITE}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: TEWPKJ}
   name: text_box_size
-  properties: {placeholder: Size}
+  properties: {placeholder: Size, text: S}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: QSKYEV}
   name: text_box_qr
-  properties: {placeholder: QR data}
+  properties: {placeholder: QR data, text: M001-WHT-S}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: PQSAJS}
   name: text_box_override
-  properties: {placeholder: SKU override}
+  properties: {placeholder: SKU override, text: M001-WHT-S}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings:
   - {code: 'self.item[''id'']', property: attributes, writeback: false}
   layout_properties: {column: TCILGR}
   name: text_box_id
-  properties: {placeholder: ID}
+  properties: {placeholder: ID, text: SKU001}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: FGNQUH}
   name: text_box_ref
-  properties: {placeholder: reference id}
+  properties: {placeholder: reference id, text: REF-1324}
   type: form:dep_xymmo08thrlyoc:TextArea
 container:
   data_bindings:
