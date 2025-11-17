@@ -150,7 +150,7 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
     # but setting them ensures textboxes are in sync for non-binding setups.
     try:
       self.text_box_sku_id.text = item.get("sku_id") or item.get("id") or ""
-      if hasattr(self, "text_box_ref_id"):
+      if hasattr(self, "text_box_ref"):
         self.text_box_ref_id.text = item.get("ref_id") or ""
       if hasattr(self, "text_box_master"):
         # if master_material is a linked row, you might want to display a friendly string
@@ -174,9 +174,9 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
     try:
       item = self.item or {}
       item["sku_id"] = (self.text_box_sku_id.text or "").strip()
-      if hasattr(self, "text_box_ref_id"):
+      if hasattr(self, "text_box_ref"):
         item["ref_id"] = (self.text_box_ref_id.text or "").strip()
-      if hasattr(self, "text_box_master_material"):
+      if hasattr(self, "text_box_master"):
         item["master_material"] = (self.text_box_master_material.text or "").strip()
       if hasattr(self, "text_box_color"):
         item["color"] = (self.text_box_color.text or "").strip()
@@ -184,7 +184,7 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
         item["size"] = (self.text_box_size.text or "").strip()
       if hasattr(self, "text_box_qr"):
         item["qr_data"] = (self.text_box_qr.text or "").strip()
-      if hasattr(self, "text_box_price"):
+      if hasattr(self, "text_box_override"):
         try:
           ptxt = (self.text_box_price.text or "").strip()
           item["price"] = float(ptxt) if ptxt else None
@@ -196,6 +196,6 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
     except Exception as e:
       alert(f"Could not prepare save: {e}")
 
-  def btn_delete_click(self, **event_args):
+  def btn_delete(self, **event_args):
     """Raise event 'x-delete' — parent will handle confirmation/server delete."""
     self.raise_event('x-delete')
