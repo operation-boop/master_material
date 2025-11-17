@@ -12,17 +12,17 @@ components:
 - data_bindings: []
   layout_properties: {column: TEWPKJ}
   name: text_box_size
-  properties: {placeholder: Size, text: S}
+  properties: {placeholder: Size}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: QSKYEV}
   name: text_box_qr
-  properties: {placeholder: QR data, text: M001-WHT-S}
+  properties: {placeholder: QR data}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: PQSAJS}
   name: text_box_override
-  properties: {placeholder: SKU override, text: M001-WHT-S}
+  properties: {placeholder: SKU override}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings:
   - {code: 'self.item[''id'']', property: attributes, writeback: false}
