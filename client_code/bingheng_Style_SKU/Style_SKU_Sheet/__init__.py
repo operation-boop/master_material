@@ -30,7 +30,7 @@ from anvil.tables import app_tables
   #     # Clear fields for new entry
   #     self.text_box_sku_id.text = ""
   #     self.text_box_material.text = ""
-  #     self.text_box_price.text = ""
+  #     self.text_box_override.text = ""
   #     # If you have an Image control to show attachment preview:
   #     if hasattr(self, "image_attachment_preview"):
   #       self.image_attachment_preview.source = None
@@ -46,7 +46,7 @@ from anvil.tables import app_tables
   #     self.text_box_sku_id.text = r.get("sku_id", "") if r else ""
   #     self.text_box_material.text = r.get("material", "") if r else ""
   #     # convert number to string for text box
-  #     self.text_box_price.text = "" if r is None else str(r.get("price", ""))
+  #     self.text_box_override.text = "" if r is None else str(r.get("override", ""))
   #     # If you store a Media in column 'attachment', show preview link or image
   #     if hasattr(self, "image_attachment_preview"):
   #       media = r.get("attachment") if r else None
@@ -63,7 +63,7 @@ from anvil.tables import app_tables
   #   try:
   #     sku_id = (self.text_box_sku_id.text or "").strip()
   #     material = (self.text_box_material.text or "").strip()
-  #     price_text = (self.text_box_price.text or "").strip()
+  #     override_text = (self.text_box_override.text or "").strip()
 
   #     # simple validation
   #     if not sku_id:
@@ -73,16 +73,16 @@ from anvil.tables import app_tables
   #       alert("Material required.")
   #       return
   #     try:
-  #       price_val = float(price_text) if price_text != "" else None
+  #       override_val = float(override_text) if override_text != "" else None
   #     except Exception:
-  #       alert("Price must be a number.")
+  #       alert("override must be a number.")
   #       return
 
   #     # Prepare row data
   #     row_data = dict(
   #       sku_id = sku_id,
   #       material = material,
-  #       price = price_val
+  #       override = override_val
   #     )
 
   #     # If you have a FileLoader on the form (file_loader_attachment) and a selected file,
@@ -186,10 +186,10 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
         item["qr_data"] = (self.text_box_qr.text or "").strip()
       if hasattr(self, "text_box_override"):
         try:
-          ptxt = (self.text_box_price.text or "").strip()
-          item["price"] = float(ptxt) if ptxt else None
-        except Exception as e:
-          alert(f"Could not prepare save: {e}")
+          ptxt = (self.text_box_override.text or "").strip()
+          item["override"] = float(ptxt) if ptxt else None
+        except Exception:
+          alert("override must be a number")
       # push changed item back to repeating panel's list
       # (the repeating panel already contains references to the same item dict)
       self.raise_event('x-save')
