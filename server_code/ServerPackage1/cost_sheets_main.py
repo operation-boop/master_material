@@ -90,19 +90,113 @@ def get_cost_sheet(cost_sheet_id):
   return cost_sheet
 
 
-@anvil.server.callable
-def list_all_cost_sheets():
-  """
-    Get all cost sheets in the system.
-    Returns them sorted by creation date (newest first).
+# @anvil.server.callable
+# def list_all_cost_sheets():
+#   """
+#     Get all cost sheets in the system.
+#     Returns them sorted by creation date (newest first).
     
-    Returns:
-        List of all cost sheets
+#     Returns:
+#         List of all cost sheets
+#     """
+#   all_sheets = app_tables.cost_sheets.search()
+#   # Sort in Python - newest first
+#   sorted_sheets = sorted(all_sheets, key=lambda x: x['created_at'], reverse=True)
+#   return sorted_sheets
+
+
+
+
+@anvil.server.callable
+def get_all_cost_sheets_with_current_versions():
+  """
+    Fetches all cost sheets with their latest version.
+    Returns a list of dictionaries ready for the repeating panel and detail form.
     """
-  all_sheets = app_tables.cost_sheets.search()
-  # Sort in Python - newest first
-  sorted_sheets = sorted(all_sheets, key=lambda x: x['created_at'], reverse=True)
-  return sorted_sheets
+  try:
+    all_cost_sheets = list(app_tables.cost_sheets.search())
+    if not all_cost_sheets:
+      return []
+
+    cost_sheet_data = []
+
+    for cost_sheet in all_cost_sheets:
+      # Get all versions for this cost sheet
+      versions_all = list(app_tables.cost_sheet_versions.search(cost_sheet=cost_sheet))
+
+      if not versions_all:
+        print(f"Warning: Cost sheet {cost_sheet['document_id']} has no versions - skipping")
+        continue
+
+        # Sort versions descending by version_number to get latest
+      versions_all.sort(key=lambda v: v['version_number'] or 0, reverse=True)
+      current_version = versions_all[0]
+
+      # Build version history for the detail form
+      version_history = []
+      for v in versions_all:
+        version_history.append({
+          "version": v['version_number'],
+          "updated_at": v['created_at'].strftime('%d/%m/%Y') if v['created_at'] else None,
+          "created_by": v['created_by']['name'] if v['created_by'] else None,
+          "change_description": v['change_description'],
+        })
+
+        # Build the item for overview and detail
+      cost_sheet_item = {
+        # Overview fields
+        "cost_sheet_id": cost_sheet['document_id'],
+        "version_number": str(current_version['version_number'] or "N/A"),
+        "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
+        "created_by": current_version['created_by']['name'] if current_version['created_by'] else "Unknown",
+        "approval_status": current_version['status'] or "Unknown",
+        "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
+        "currency": current_version['cost_currency'],
+        "change_description": current_version['change_description'],
+
+        # Totals
+        "total_material_cost": float(current_version['total_material_cost'] or 0.0),
+        "total_processing_cost": float(current_version['total_processing_cost'] or 0.0),
+        "total_overhead_cost": float(current_version['total_overhead_cost'] or 0.0),
+        "total_cost": (
+          float(current_version['total_material_cost'] or 0.0) +
+          float(current_version['total_processing_cost'] or 0.0) +
+          float(current_version['total_overhead_cost'] or 0.0)
+        ),
+
+        # Grouped data for detail form
+        "bom": list(current_version['bom'] or []),
+        "processing_costs": list(current_version['processing_costs'] or []),
+        "overhead_costs": list(current_version['overhead_costs'] or []),
+        "exchange_rate_record": list(current_version['exchange_rate_record'] or []),
+        "version_history": version_history,
+        "scenarios": list(current_version['scenarios'] or []),
+
+        # Raw access if needed later
+        "current_version_raw": current_version,
+        "full_cost_sheet_raw": cost_sheet
+      }
+
+      cost_sheet_data.append(cost_sheet_item)
+
+    return cost_sheet_data
+
+  except Exception as e:
+    print(f"Server error loading cost sheets: {str(e)}")
+    raise
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @anvil.server.callable

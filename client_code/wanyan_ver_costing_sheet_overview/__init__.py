@@ -29,9 +29,39 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
       buttons=None 
     )
 
+  """
+  OPTIMIZED Client-side code for wanyan_ver_costing_sheet_overview form
+  Replace your existing form_show method with this
+  """
+
+  def form_show(self, **event_args):
+    """Form shown event - loads all cost sheets with single server call"""
+    # Clear existing items
+    self.repeating_panel_cost_sheet.items = []
+
+    try:
+      # SINGLE SERVER CALL - returns all data ready to display
+      cost_sheet_data = anvil.server.call('get_all_cost_sheets_with_current_versions')
+
+      if not cost_sheet_data or len(cost_sheet_data) == 0:
+        print("No cost sheets found in database")
+        return
+
+      # Directly assign to repeating panel - data is already formatted
+      self.repeating_panel_cost_sheet.items = cost_sheet_data
+      print(f"Loaded {len(cost_sheet_data)} cost sheets successfully")
+
+    except Exception as e:
+      print(f"Error loading cost sheets: {str(e)}")
+      alert(f"Failed to load cost sheets: {str(e)}", title="Error")
+      self.repeating_panel_cost_sheet.items = []
 
 
-  """mock data"""
+
+
+  
+
+  # """mock data"""
   
   # def form_show(self, **event_args):
     # testing =      {
@@ -154,65 +184,65 @@ class wanyan_ver_costing_sheet_overview(wanyan_ver_costing_sheet_overviewTemplat
 
 
 
-  def form_show(self, **event_args):
-    """This method is called when the form is opened"""
+  # def form_show(self, **event_args):
+  #   """This method is called when the form is opened"""
 
-    # Clear the repeating panel initially
-    self.repeating_panel_cost_sheet.items = []
+  #   # Clear the repeating panel initially
+  #   self.repeating_panel_cost_sheet.items = []
 
-    try:
-      # Step 1: Call server to get all cost sheets from database
-      all_cost_sheets = anvil.server.call('list_all_cost_sheets')
+  #   try:
+  #     # Step 1: Call server to get all cost sheets from database
+  #     all_cost_sheets = anvil.server.call('list_all_cost_sheets')
 
-      # Step 2: Check if we have any cost sheets
-      if not all_cost_sheets or len(all_cost_sheets) == 0:
-        print("No cost sheets found in database")
-        self.repeating_panel_cost_sheet.items = []
-        return
+  #     # Step 2: Check if we have any cost sheets
+  #     if not all_cost_sheets or len(all_cost_sheets) == 0:
+  #       print("No cost sheets found in database")
+  #       self.repeating_panel_cost_sheet.items = []
+  #       return
 
-        # Step 3: Process each cost sheet
-      cost_sheet_data = []
+  #       # Step 3: Process each cost sheet
+  #     cost_sheet_data = []
 
-      for cost_sheet in all_cost_sheets:
-        # Get the current version for this cost sheet
-        current_version = anvil.server.call('get_current_version', cost_sheet.get_id())
+  #     for cost_sheet in all_cost_sheets:
+  #       # Get the current version for this cost sheet
+  #       current_version = anvil.server.call('get_current_version', cost_sheet.get_id())
 
-        # If no current version exists, skip this cost sheet
-        if not current_version:
-          print(f"Warning: Cost sheet {cost_sheet['document_id']} has no current version - skipping")
-          continue
+  #       # If no current version exists, skip this cost sheet
+  #       if not current_version:
+  #         print(f"Warning: Cost sheet {cost_sheet['document_id']} has no current version - skipping")
+  #         continue
 
-          # Build simplified data with only 4 essential fields
-        cost_sheet_item = {
-            "cost_sheet_id": cost_sheet['document_id'],
-            "version_number": str(current_version['version_number']),
-            "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
-            "created_by": current_version['created_by']['name'] if current_version['created_by'] else "Unknown",
-            "approval_status": current_version['status'] if current_version['status'] else "Unknown",
+  #         # Build simplified data with only 4 essential fields
+  #       cost_sheet_item = {
+  #           "cost_sheet_id": cost_sheet['document_id'],
+  #           "version_number": str(current_version['version_number']),
+  #           "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
+  #           "created_by": current_version['created_by']['name'] if current_version['created_by'] else "Unknown",
+  #           "approval_status": current_version['status'] if current_version['status'] else "Unknown",
 
-            "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
-            "currency": current_version['cost_currency'],
-            "change_description": current_version['change_description'],
+  #           "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
+  #           "currency": current_version['cost_currency'],
+  #           "change_description": current_version['change_description'],
 
-            # Real calculated costs from summary
-            "total_material_cost": current_version['total_material_cost'] or 0.0,
-            "total_processing_cost": current_version['total_processing_cost'] or 0.0,
-            "total_overhead_cost": current_version['total_overhead_cost'] or 0.0,
-            "total_cost": ((current_version['total_material_cost'] or 0.0) +
-                           (current_version['total_processing_cost'] or 0.0) +
-                           (current_version['total_overhead_cost'] or 0.0)),
-            "scenarios": []  # Skip for now, or fetch separately later
+  #           # Real calculated costs from summary
+  #           "total_material_cost": current_version['total_material_cost'] or 0.0,
+  #           "total_processing_cost": current_version['total_processing_cost'] or 0.0,
+  #           "total_overhead_cost": current_version['total_overhead_cost'] or 0.0,
+  #           "total_cost": ((current_version['total_material_cost'] or 0.0) +
+  #                          (current_version['total_processing_cost'] or 0.0) +
+  #                          (current_version['total_overhead_cost'] or 0.0)),
+  #           "scenarios": []  # Skip for now, or fetch separately later
 
-          }
+  #         }
 
-        cost_sheet_data.append(cost_sheet_item)
+  #       cost_sheet_data.append(cost_sheet_item)
 
-        # Step 4: Assign to repeating panel
-      self.repeating_panel_cost_sheet.items = cost_sheet_data
-      print(f"✓ Loaded {len(cost_sheet_data)} cost sheets successfully")
+  #       # Step 4: Assign to repeating panel
+  #     self.repeating_panel_cost_sheet.items = cost_sheet_data
+  #     print(f"✓ Loaded {len(cost_sheet_data)} cost sheets successfully")
 
-    except Exception as e:
-      # Step 5: Handle any errors gracefully
-      print(f"✗ Error loading cost sheets: {str(e)}")
-      alert(f"Failed to load cost sheets: {str(e)}", title="Error")
-      self.repeating_panel_cost_sheet.items = []
+  #   except Exception as e:
+  #     # Step 5: Handle any errors gracefully
+  #     print(f"✗ Error loading cost sheets: {str(e)}")
+  #     alert(f"Failed to load cost sheets: {str(e)}", title="Error")
+  #     self.repeating_panel_cost_sheet.items = []
