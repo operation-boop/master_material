@@ -633,5 +633,5 @@ services:
 - client_config: {}
   server_config: {}
   source: /runtime/services/anvil/email.yml
-startup: {module: wanyan_ver_costing_sheet_overview, type: form}
+startup: {module: Home, type: form}
 startup_form: null
