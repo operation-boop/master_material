@@ -107,12 +107,13 @@ def get_cost_sheet(cost_sheet_id):
 
 
 
+# ============================================================================
+# OVERVIEW FUNCTION - Returns minimal data for ALL cost sheets
+# ============================================================================
+
 @anvil.server.callable
 def get_all_cost_sheets_with_current_versions():
-  """
-    Fetches all cost sheets with their latest version.
-    Returns a list of dictionaries ready for the repeating panel and detail form.
-    """
+  """Returns OVERVIEW data only (fast loading)"""
   try:
     all_cost_sheets = list(app_tables.cost_sheets.search())
     if not all_cost_sheets:
@@ -122,19 +123,18 @@ def get_all_cost_sheets_with_current_versions():
 
     for cost_sheet in all_cost_sheets:
       # Get all versions for this cost sheet
-      versions_all = list(app_tables.cost_sheet_versions.search(cost_sheet=cost_sheet))
+      versions = list(app_tables.cost_sheet_versions.search(cost_sheet=cost_sheet))
 
-      if not versions_all:
-        print(f"Warning: Cost sheet {cost_sheet['document_id']} has no versions - skipping")
+      if not versions:
         continue
 
-        # Sort versions descending by version_number to get latest
-      versions_all.sort(key=lambda v: v['version_number'] or 0, reverse=True)
-      current_version = versions_all[0]
+        # Sort by version number (highest first) - Python sorting
+      versions_sorted = sorted(versions, key=lambda v: v['version_number'] or 0, reverse=True)
+      current_version = versions_sorted[0]
 
-      # Build version history for the detail form
+      # Build version history
       version_history = []
-      for v in versions_all:
+      for v in versions_sorted:
         version_history.append({
           "version": v['version_number'],
           "updated_at": v['created_at'].strftime('%d/%m/%Y') if v['created_at'] else None,
@@ -142,9 +142,8 @@ def get_all_cost_sheets_with_current_versions():
           "change_description": v['change_description'],
         })
 
-        # Build the item for overview and detail
+        # Build overview item (NO bom, processing_costs, etc. - those load on-demand)
       cost_sheet_item = {
-        # Overview fields
         "cost_sheet_id": cost_sheet['document_id'],
         "version_number": str(current_version['version_number'] or "N/A"),
         "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
@@ -153,8 +152,6 @@ def get_all_cost_sheets_with_current_versions():
         "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
         "currency": current_version['cost_currency'],
         "change_description": current_version['change_description'],
-
-        # Totals
         "total_material_cost": float(current_version['total_material_cost'] or 0.0),
         "total_processing_cost": float(current_version['total_processing_cost'] or 0.0),
         "total_overhead_cost": float(current_version['total_overhead_cost'] or 0.0),
@@ -163,18 +160,7 @@ def get_all_cost_sheets_with_current_versions():
           float(current_version['total_processing_cost'] or 0.0) +
           float(current_version['total_overhead_cost'] or 0.0)
         ),
-
-        # Grouped data for detail form
-        "bom": list(current_version['bom'] or []),
-        "processing_costs": list(current_version['processing_costs'] or []),
-        "overhead_costs": list(current_version['overhead_costs'] or []),
-        "exchange_rate_record": list(current_version['exchange_rate_record'] or []),
         "version_history": version_history,
-        "scenarios": list(current_version['scenarios'] or []),
-
-        # Raw access if needed later
-        "current_version_raw": current_version,
-        "full_cost_sheet_raw": cost_sheet
       }
 
       cost_sheet_data.append(cost_sheet_item)
@@ -186,6 +172,142 @@ def get_all_cost_sheets_with_current_versions():
     raise
 
 
+
+
+
+
+# ============================================================================
+# DETAIL FUNCTION - Returns complete data for ONE cost sheet
+# ============================================================================
+
+@anvil.server.callable
+def get_cost_sheet_details(cost_sheet_id):
+  """Returns COMPLETE data for ONE cost sheet (called on-demand)"""
+  try:
+    cost_sheet = app_tables.cost_sheets.get(document_id=cost_sheet_id)
+    if not cost_sheet:
+      return None
+
+      # Get all versions for this cost sheet
+    versions = list(app_tables.cost_sheet_versions.search(cost_sheet=cost_sheet))
+
+    if not versions:
+      return None
+
+      # Sort by version number (highest first) - Python sorting
+    versions_sorted = sorted(versions, key=lambda v: v['version_number'] or 0, reverse=True)
+    current_version = versions_sorted[0]
+
+    # ---- Query all related tables ----
+
+    # 1. BOM Items
+    bom_items = []
+    bom_version = current_version.get('bom_version')
+    if bom_version:
+      bom_rows = app_tables.bom_line_items.search(bom_version=bom_version)
+      for item in bom_rows:
+        bom_items.append({
+          "material_name": item['material']['name'] if item.get('material') else "N/A",
+          "consumption": item.get('net_buying_consumption', 0),
+          "unit_cost": item.get('material_cost_in_usd', 0),
+          "total_cost": (item.get('net_buying_consumption', 0) *
+                         item.get('material_cost_in_usd', 0)),
+        })
+
+        # 2. Processing Costs
+    processing_costs = []
+    processing_rows = app_tables.processing_cost_items.search(
+      cost_sheet_version=current_version
+    )
+    for item in processing_rows:
+      processing_costs.append({
+        "process_type": item.get('process_type', 'N/A'),
+        "cost_amount": item.get('cost_amount', 0),
+        "cost_currency": item.get('cost_currency', 'USD'),
+        "supplier": item.get('supplier', 'N/A'),
+      })
+
+      # 3. Overhead Costs
+    overhead_costs = []
+    overhead_rows = app_tables.overhead_cost_items.search(
+      cost_sheet_version=current_version
+    )
+    for item in overhead_rows:
+      overhead_costs.append({
+        "cost_type": item.get('cost_type', 'N/A'),
+        "cost_amount": item.get('cost_amount', 0),
+        "cost_currency": item.get('cost_currency', 'USD'),
+      })
+
+      # 4. Exchange Rates
+    exchange_rates = []
+    exchange_rows = app_tables.exchange_rate_records.search(
+      cost_sheet_version=current_version
+    )
+    for item in exchange_rows:
+      exchange_rates.append({
+        "from_currency": item.get('from_currency', 'N/A'),
+        "to_currency": item.get('to_currency', 'N/A'),
+        "rate": item.get('exchange_rate', 0),
+        "date": item.get('rate_date'),
+      })
+
+      # 5. Quoted Price Scenarios
+    scenarios = []
+    scenario_rows = app_tables.quoted_price_scenarios.search(
+      cost_sheet_version=current_version
+    )
+    for item in scenario_rows:
+      scenarios.append({
+        "quoted_price": item.get('quoted_price', 0),
+        "quoted_currency": item.get('quoted_currency', 'USD'),
+        "gross_margin": item.get('expected_gross_margin', 0),
+      })
+
+      # 6. Version History
+    version_history = []
+    for v in versions_sorted:  # Already sorted
+      version_history.append({
+        "version": v['version_number'],
+        "updated_at": v['created_at'].strftime('%d/%m/%Y') if v['created_at'] else None,
+        "created_by": v['created_by']['name'] if v['created_by'] else None,
+        "change_description": v['change_description'],
+      })
+
+      # ---- Return complete data ----
+    return {
+      # Overview fields
+      "cost_sheet_id": cost_sheet['document_id'],
+      "version_number": str(current_version['version_number']),
+      "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
+      "created_by": current_version['created_by']['name'] if current_version['created_by'] else "Unknown",
+      "approval_status": current_version['status'],
+      "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
+      "currency": current_version['cost_currency'],
+      "change_description": current_version['change_description'],
+
+      # Totals
+      "total_material_cost": float(current_version['total_material_cost'] or 0.0),
+      "total_processing_cost": float(current_version['total_processing_cost'] or 0.0),
+      "total_overhead_cost": float(current_version['total_overhead_cost'] or 0.0),
+      "total_cost": (
+        float(current_version['total_material_cost'] or 0.0) +
+        float(current_version['total_processing_cost'] or 0.0) +
+        float(current_version['total_overhead_cost'] or 0.0)
+      ),
+
+      # Detail data (for repeating panels)
+      "bom": bom_items,
+      "processing_costs": processing_costs,
+      "overhead_costs": overhead_costs,
+      "exchange_rate_record": exchange_rates,
+      "scenarios": scenarios,
+      "version_history": version_history,
+    }
+
+  except Exception as e:
+    print(f"Server error loading cost sheet details: {str(e)}")
+    raise
 
 
 
