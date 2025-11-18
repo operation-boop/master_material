@@ -20,6 +20,7 @@ from PIL import Image
 import csv
 import zipfile
 from anvil import BlobMedia
+import json
 
 
 # -----------------------
@@ -241,21 +242,49 @@ def delete_sku(row_id):
 
 
 # -----------------------
-# QR / PDF helpers (kept/improved)
+# QR / PDF helpers (updated)
 # -----------------------
 @anvil.server.callable
-def get_qr_code(sku_id):
-  """Return a PNG BlobMedia containing a unique QR code for sku_id."""
+def get_qr_code(sku_id, ref_id, master_material, color, size, sku_cost_override):
+  """
+  Return a PNG BlobMedia containing a unique QR code based on:
+  sku_id, ref_id, master_material, color, size, sku_cost_override.
+  """
   if not sku_id:
     raise ValueError("sku_id required")
 
-  unique_code = f"{sku_id}-{uuid.uuid4().hex[:8]}"
-  qr = pyqrcode.create(unique_code)
+  # Normalize values
+  sku_id = (sku_id or "").strip()
+  ref_id = (ref_id or "").strip()
+  master_material = (master_material or "").strip()
+  color = (color or "").strip()
+  size = (size or "").strip()
+
+  # Convert override to string (may be number or blank)
+  sku_cost_override = "" if sku_cost_override is None else str(sku_cost_override)
+
+  # Create payload
+  # Format is human-readable and easy to parse later.
+  # You can change this to JSON if you prefer — just tell me.
+  payload = (
+    f"SKU:{sku_id}|"
+    f"REF:{ref_id}|"
+    f"MAT:{master_material}|"
+    f"COL:{color}|"
+    f"SIZE:{size}|"
+    f"COST:{sku_cost_override}|"
+    f"UNIQ:{uuid.uuid4().hex[:8]}"
+  )
+
+  # Generate QR code
+  qr = pyqrcode.create(payload)
 
   buf = BytesIO()
   qr.png(buf, scale=5)
   buf.seek(0)
+
   return BlobMedia("image/png", buf.read(), name=f"{sku_id}_qr.png")
+
 
 
 @anvil.server.callable
