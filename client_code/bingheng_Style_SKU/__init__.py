@@ -309,7 +309,7 @@ def get_qr_code(self, **event_args):
 
   try:
     # Call the new server function with all fields
-    qr_img = anvil.server.call('get_qr_code_payload', sku_id, ref_id, master_material, color, size, sku_cost_override)
+    qr_img = anvil.server.call('get_qr_code', sku_id, ref_id, master_material, color, size, sku_cost_override)
     self.image_qr_preview.source = qr_img
     alert("✅ QR code generated.")
   except Exception as e:
