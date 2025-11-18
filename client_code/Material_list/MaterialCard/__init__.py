@@ -11,8 +11,6 @@ class MaterialCard(MaterialCardTemplate):
     user = anvil.users.get_user()
     self.verify_status.visible = (user and user['role'] == 'Admin')
     
-    
-
   def view_details_btn_click(self, **event_args):
     """Open material detail view"""
     if not self.item:
@@ -76,3 +74,35 @@ class MaterialCard(MaterialCardTemplate):
       self.verification_status.background = "#ffffff"
       self.verification_status.text = status.capitalize() if status else "Unknown"
       self.verify_status.visible = False
+
+  def delete_btn_click(self, **event_args):
+    """Delete material (Admin only)"""
+    if not self.item:
+      alert("No item data!", title="Error")
+      return
+    doc_id = self.item['document_id']
+    material_name = self.item.get('material_name', 'this material')
+    if not doc_id:
+      alert("No document ID!", title="Error")
+      return
+    # Confirm deletion
+    if not confirm(
+      f"Are you sure you want to DELETE {doc_id} ({material_name})?\n\n"
+      "This will permanently delete the material and all its versions. "
+      "This action CANNOT be undone!",
+      title="⚠️ Confirm Deletion"
+    ):
+      return
+    self.delete_btn.enabled = False
+    try:
+      result = anvil.server.call('delete_material', doc_id)
+      if result and result.get('ok'):  
+        Notification(f"Deleted: {result.get('message')}", title="Success", style="success").show()
+        # Refresh the list to remove the deleted card
+        self.parent.raise_event('x-refresh-list')
+      else:
+        Notification(f"Delete call completed but returned: {result}", title="Notice", style="warning").show()
+    except Exception as e:
+      Notification(f"Delete failed: {e}", title="Error", style="danger").show()
+      self.delete_btn.enabled = True  # Re-enable if there's an error
+    pass

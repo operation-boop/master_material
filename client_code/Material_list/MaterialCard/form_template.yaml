@@ -158,6 +158,12 @@ components:
       name: verify_status
       properties: {align: right, background: '#689F38', bold: true, foreground: black, text: Verify, visible: true}
       type: Button
+    - data_bindings: []
+      event_bindings: {click: delete_btn_click}
+      layout_properties: {grid_position: 'ZPTSCO,TYMWWM'}
+      name: delete_btn
+      properties: {background: '#ff0b11', foreground: black, role: primary-color, text: Delete, visible: false}
+      type: Button
     layout_properties: {width: 467}
     name: card_1
     properties:
