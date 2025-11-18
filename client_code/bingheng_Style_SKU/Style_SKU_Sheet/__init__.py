@@ -188,8 +188,8 @@ class Style_SKU_Sheet(Style_SKU_SheetTemplate):
         try:
           ptxt = (self.text_box_price.text or "").strip()
           item["price"] = float(ptxt) if ptxt else None
-        except:
-          alert("Price must be a number"); return
+        except Exception as e:
+          alert(f"Could not prepare save: {e}")
       # push changed item back to repeating panel's list
       # (the repeating panel already contains references to the same item dict)
       self.raise_event('x-save')

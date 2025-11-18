@@ -161,7 +161,7 @@ TABLE = app_tables.material_sku__main_
 #     # Load rows into the repeating panel
 #     self.load_data()
 
-# ---------- corrected syntax only (indentation / try/except / method placement fixes) ----------
+
 
 ############################################
 # Load data from the database and map to repeating panel items
