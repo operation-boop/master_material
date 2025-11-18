@@ -283,7 +283,7 @@ db_schema:
     server: full
     title: material_sku
   material_sku__main_:
-    client: none
+    client: full
     columns:
     - admin_ui: {order: 0, width: 200}
       name: id
@@ -291,23 +291,20 @@ db_schema:
     - admin_ui: {order: 1, width: 200}
       name: ref_id
       type: string
-    - admin_ui: {order: 2, width: 200}
-      name: master_material
-      target: master_material
-      type: link_multiple
-    - admin_ui: {order: 3, width: 200}
-      name: color
-      target: optional__sku_
-      type: link_multiple
-    - admin_ui: {order: 4, width: 200}
-      name: size
-      target: optional__sku_
-      type: link_multiple
     - admin_ui: {order: 5, width: 200}
       name: qr_data
       type: string
     - admin_ui: {order: 6, width: 200}
       name: sku_cost_override
+      type: string
+    - admin_ui: {order: 1.5, width: 200}
+      name: master_material
+      type: string
+    - admin_ui: {order: 2.25, width: 200}
+      name: color
+      type: string
+    - admin_ui: {order: 3.5, width: 200}
+      name: size
       type: string
     server: full
     title: Material_SKU (Main)

@@ -138,61 +138,146 @@ from anvil.tables import app_tables
 class Style_SKU_Sheet(Style_SKU_SheetTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    # Called when a new item is assigned to the template by the RepeatingPanel.
     self._refresh_ui()
 
+  def _get_val(self, item, key):
+    """Safely get a value from either a dict or a LiveObjectProxy / row."""
+    if item is None:
+      return None
+    try:
+      if isinstance(item, dict):
+        return item.get(key)
+    except Exception:
+      pass
+    try:
+      return item[key]
+    except Exception:
+      pass
+    try:
+      return getattr(item, key)
+    except Exception:
+      pass
+    return None
+
+  def _set_val(self, item, key, value):
+    """Safely set a value into either a dict or a LiveObjectProxy / row-like object."""
+    if item is None:
+      return
+    try:
+      if isinstance(item, dict):
+        item[key] = value
+        return
+    except Exception:
+      pass
+    try:
+      item[key] = value
+      return
+    except Exception:
+      pass
+    try:
+      setattr(item, key, value)
+    except Exception:
+      pass
 
   def _refresh_ui(self):
     item = getattr(self, "item", None)
     if not item:
       return
-    # If designer bindings already show the values, you may not need to set them here,
-    # but setting them ensures textboxes are in sync for non-binding setups.
+
     try:
-      self.text_box_sku_id.text = item.get("sku_id") or item.get("id") or ""
+      # SKU id (try sku_id first, then fallback to id)
+      self.text_box_sku_id.text = (self._get_val(item, "sku_id")
+                                   or self._get_val(item, "id") or "")
+
+      # ref id
       if hasattr(self, "text_box_ref"):
-        self.text_box_ref_id.text = item.get("ref_id") or ""
+        self.text_box_ref_id.text = self._get_val(item, "ref_id") or ""
+
+      # master material (linked row or simple value)
       if hasattr(self, "text_box_master"):
-        # if master_material is a linked row, you might want to display a friendly string
-        mm = item.get("master_material")
-        self.text_box_master_material.text = getattr(mm, "get", lambda k, d=None: "")("name", str(mm)) if mm else str(mm or "")
+        mm = self._get_val(item, "master_material")
+        if mm:
+          name_val = None
+          try:
+            name_val = mm["name"]
+          except Exception:
+            try:
+              name_val = getattr(mm, "name")
+            except Exception:
+              try:
+                name_val = str(mm)
+              except Exception:
+                name_val = ""
+          self.text_box_master_material.text = name_val or ""
+        else:
+          self.text_box_master_material.text = ""
+
+      # color
       if hasattr(self, "text_box_color"):
-        self.text_box_color.text = item.get("color") or ""
+        self.text_box_color.text = self._get_val(item, "color") or ""
+
+      # size
       if hasattr(self, "text_box_size"):
-        self.text_box_size.text = item.get("size") or ""
+        self.text_box_size.text = self._get_val(item, "size") or ""
+
+      # qr_data
       if hasattr(self, "text_box_qr"):
-        self.text_box_qr.text = item.get("qr_data") or ""
+        self.text_box_qr.text = self._get_val(item, "qr_data") or ""
+
+      # sku_cost_override / override display
       if hasattr(self, "text_box_override"):
-        self.text_box_override.text = str(item.get("sku_cost_override") or "")
-    except Exception:
-      pass
+        ov = self._get_val(item, "sku_cost_override")
+        try:
+          self.text_box_override.text = str(ov) if ov is not None else ""
+        except Exception:
+          self.text_box_override.text = ""
+
+    except Exception as e:
+      # Keep UI safe: print for debugging but don't crash
+      print("Style_SKU_Sheet._refresh_ui error:", e)
 
   def btn_save(self, **event_args):
     """Raise event 'x-save' back to the parent form (main form will handle server update)."""
-    # Ensure item contains the latest edited values. If you used data-bind write-back, this is automatic.
-    # Otherwise copy values from textboxes into the item dict before raising event:
     try:
       item = self.item or {}
-      item["sku_id"] = (self.text_box_sku_id.text or "").strip()
+
+      def set_field(k, v):
+        try:
+          self._set_val(item, k, v)
+        except Exception:
+          pass
+
+      set_field("sku_id", (self.text_box_sku_id.text or "").strip())
+
       if hasattr(self, "text_box_ref"):
-        item["ref_id"] = (self.text_box_ref_id.text or "").strip()
+        set_field("ref_id", (self.text_box_ref_id.text or "").strip())
+
       if hasattr(self, "text_box_master"):
-        item["master_material"] = (self.text_box_master_material.text or "").strip()
+        set_field("master_material", (self.text_box_master_material.text or "").strip())
+
       if hasattr(self, "text_box_color"):
-        item["color"] = (self.text_box_color.text or "").strip()
+        set_field("color", (self.text_box_color.text or "").strip())
+
       if hasattr(self, "text_box_size"):
-        item["size"] = (self.text_box_size.text or "").strip()
+        set_field("size", (self.text_box_size.text or "").strip())
+
       if hasattr(self, "text_box_qr"):
-        item["qr_data"] = (self.text_box_qr.text or "").strip()
+        set_field("qr_data", (self.text_box_qr.text or "").strip())
+
       if hasattr(self, "text_box_override"):
         try:
-          ptxt = (self.text_box_override.text or "").strip()
-          item["override"] = float(ptxt) if ptxt else None
+          ptxt = (self.text_box_price.text or "").strip()
+          if ptxt:
+            set_field("price", float(ptxt))
+          else:
+            set_field("price", None)
         except Exception:
-          alert("override must be a number")
-      # push changed item back to repeating panel's list
-      # (the repeating panel already contains references to the same item dict)
+          alert("Price must be a number")
+          return
+
+      # push changed item back to repeating panel's list / notify parent
       self.raise_event('x-save')
+
     except Exception as e:
       alert(f"Could not prepare save: {e}")
 

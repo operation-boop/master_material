@@ -167,24 +167,26 @@ TABLE = app_tables.material_sku__main_
 # -----------------------
 @anvil.server.callable
 def get_skus():
-  """Return a list of SKU dicts for client display (lightweight)."""
-  rows = list(TABLE.search())  # server-side can search
+  """Return a list of plain dicts (no LiveObjectProxy) for client display."""
+  rows = list(app_tables.material_sku__main_.search())  # server-side may read table
   out = []
   for r in rows:
     out.append({
-      "row_id": r.get_id(),                 # opaque row id for updates/deletes
+      "row_id": r.get_id(),
       "sku_id": r.get("sku_id") or r.get("id") or "",
       "id": r.get("id", ""),
       "ref_id": r.get("ref_id", ""),
-      "master_material": r.get("master_material"),
-      "color": r.get("color"),
-      "size": r.get("size"),
+      "master_material": (r.get("master_material") or ""),
+      "color": r.get("color", ""),
+      "size": r.get("size", ""),
       "qr_data": r.get("qr_data", ""),
-      "override": r.get("override"),
+      "sku_cost_override": r.get("sku_cost_override"),
+      "price": r.get("price"),
       "attachment_name": getattr(r.get("attachment"), "name", "") if r.get("attachment") else "",
       "created": r.get("created")
     })
   return out
+
 
 
 @anvil.server.callable

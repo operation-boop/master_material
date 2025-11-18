@@ -177,7 +177,9 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
     except Exception:
       # ignore init-time load errors here
       pass
-
+#------------------------------------------------------------
+#                TEST load data
+#------------------------------------------------------------
   def load_data(self):
     """Load SKU data from your database table and bind to repeating_panel_1.
 
@@ -211,6 +213,9 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       alert(f"❌ Failed to load SKU data: {e}")
       self.repeating_panel_1.items = []
 
+  
+
+#------------------------------------------------------------------------------
   def refresh_data(self):
     """Convenience wrapper to reload the repeating panel."""
     self.load_data()
