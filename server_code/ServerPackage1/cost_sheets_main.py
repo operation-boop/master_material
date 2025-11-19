@@ -176,127 +176,183 @@ def get_all_cost_sheets_with_current_versions():
 
 
 
-# ============================================================================
-# DETAIL FUNCTION - Returns complete data for ONE cost sheet
-# ============================================================================
+"""
+WORKING VERSION - get_cost_sheet_details
+Copy this into your Anvil.works Server Module
+
+Fixed Issues:
+- Removed .get() calls on Data Table Rows (they don't support it!)
+- Safe linked row access (check if null before accessing nested properties)
+- Added error logging to help with debugging
+"""
 
 @anvil.server.callable
 def get_cost_sheet_details(cost_sheet_id):
   """Returns COMPLETE data for ONE cost sheet (called on-demand)"""
   try:
-    cost_sheet = app_tables.cost_sheets.get(document_id=cost_sheet_id)
-    if not cost_sheet:
+    # Find cost_sheet safely
+    css = list(app_tables.cost_sheets.search(document_id=cost_sheet_id))
+    if not css:
+      print(f"No cost sheet found with document_id: {cost_sheet_id}")
       return None
+    cost_sheet = css[0]
 
-      # Get all versions for this cost sheet
+    # Get all versions for this cost sheet
     versions = list(app_tables.cost_sheet_versions.search(cost_sheet=cost_sheet))
-
     if not versions:
+      print(f"No versions found for cost sheet: {cost_sheet_id}")
       return None
 
-      # Sort by version number (highest first) - Python sorting
-    versions_sorted = sorted(versions, key=lambda v: v['version_number'] or 0, reverse=True)
+      # Sort by version_number descending (latest first)
+    versions_sorted = sorted(
+      versions,
+      key=lambda v: v['version_number'] if v['version_number'] is not None else 0,
+      reverse=True
+    )
     current_version = versions_sorted[0]
 
-    # ---- Query all related tables ----
+    # ---- Query related tables OUTSIDE any loops ----
 
-    # 1. BOM Items
+    # 1) BOM Items
     bom_items = []
-    bom_version = current_version.get('bom_version')
-    if bom_version:
-      bom_rows = app_tables.bom_line_items.search(bom_version=bom_version)
-      for item in bom_rows:
-        bom_items.append({
-          "material_name": item['material']['name'] if item.get('material') else "N/A",
-          "consumption": item.get('net_buying_consumption', 0),
-          "unit_cost": item.get('material_cost_in_usd', 0),
-          "total_cost": (item.get('net_buying_consumption', 0) *
-                         item.get('material_cost_in_usd', 0)),
-        })
+    try:
+      bom_version = current_version['bom_version'] if current_version['bom_version'] else None
+      if bom_version:
+        bom_rows = list(app_tables.bom_line_items.search(bom_version=bom_version))
+        for r in bom_rows:
+          # Safe access to linked 'material' row
+          material_name = "N/A"
+          if r['material']:
+            material_name = r['material']['name']
 
-        # 2. Processing Costs
+          consumption = r['net_buying_consumption'] if r['net_buying_consumption'] is not None else 0
+          unit_cost = r['material_cost_in_usd'] if r['material_cost_in_usd'] is not None else 0
+
+          bom_items.append({
+            "material_name": material_name,
+            "consumption": consumption,
+            "unit_cost": unit_cost,
+            "total_cost": consumption * unit_cost,
+          })
+    except Exception as e:
+      print(f"Error loading BOM items: {str(e)}")
+      bom_items = []
+
+      # 2) Processing Costs
     processing_costs = []
-    processing_rows = app_tables.processing_cost_items.search(
-      cost_sheet_version=current_version
-    )
-    for item in processing_rows:
-      processing_costs.append({
-        "process_type": item.get('process_type', 'N/A'),
-        "cost_amount": item.get('cost_amount', 0),
-        "cost_currency": item.get('cost_currency', 'USD'),
-        "supplier": item.get('supplier', 'N/A'),
-      })
+    try:
+      proc_rows = list(app_tables.processing_cost_items.search(cost_sheet_version=current_version))
+      for r in proc_rows:
+        processing_costs.append({
+          "process_type": r['process_type'] if r['process_type'] else 'N/A',
+          "cost_amount": r['cost_amount'] if r['cost_amount'] is not None else 0,
+          "cost_currency": r['cost_currency'] if r['cost_currency'] else 'USD',
+          "supplier": r['supplier'] if r['supplier'] else 'N/A',
+        })
+    except Exception as e:
+      print(f"Error loading processing costs: {str(e)}")
+      processing_costs = []
 
-      # 3. Overhead Costs
+      # 3) Overhead Costs
     overhead_costs = []
-    overhead_rows = app_tables.overhead_cost_items.search(
-      cost_sheet_version=current_version
-    )
-    for item in overhead_rows:
-      overhead_costs.append({
-        "cost_type": item.get('cost_type', 'N/A'),
-        "cost_amount": item.get('cost_amount', 0),
-        "cost_currency": item.get('cost_currency', 'USD'),
-      })
+    try:
+      oh_rows = list(app_tables.overhead_cost_items.search(cost_sheet_version=current_version))
+      for r in oh_rows:
+        overhead_costs.append({
+          "cost_type": r['cost_type'] if r['cost_type'] else 'N/A',
+          "cost_amount": r['cost_amount'] if r['cost_amount'] is not None else 0,
+          "cost_currency": r['cost_currency'] if r['cost_currency'] else 'USD',
+        })
+    except Exception as e:
+      print(f"Error loading overhead costs: {str(e)}")
+      overhead_costs = []
 
-      # 4. Exchange Rates
+      # 4) Exchange Rates
     exchange_rates = []
-    exchange_rows = app_tables.exchange_rate_records.search(
-      cost_sheet_version=current_version
-    )
-    for item in exchange_rows:
-      exchange_rates.append({
-        "from_currency": item.get('from_currency', 'N/A'),
-        "to_currency": item.get('to_currency', 'N/A'),
-        "rate": item.get('exchange_rate', 0),
-        "date": item.get('rate_date'),
-      })
+    try:
+      ex_rows = list(app_tables.exchange_rate_records.search(cost_sheet_version=current_version))
+      for r in ex_rows:
+        exchange_rates.append({
+          "from_currency": r['from_currency'] if r['from_currency'] else 'N/A',
+          "to_currency": r['to_currency'] if r['to_currency'] else 'N/A',
+          "rate": r['exchange_rate'] if r['exchange_rate'] is not None else 0,
+          "date": r['rate_date'],
+        })
+    except Exception as e:
+      print(f"Error loading exchange rates: {str(e)}")
+      exchange_rates = []
 
-      # 5. Quoted Price Scenarios
+      # 5) Quoted Price Scenarios
     scenarios = []
-    scenario_rows = app_tables.quoted_price_scenarios.search(
-      cost_sheet_version=current_version
-    )
-    for item in scenario_rows:
-      scenarios.append({
-        "quoted_price": item.get('quoted_price', 0),
-        "quoted_currency": item.get('quoted_currency', 'USD'),
-        "gross_margin": item.get('expected_gross_margin', 0),
-      })
+    try:
+      sc_rows = list(app_tables.quoted_price_scenarios.search(cost_sheet_version=current_version))
+      for r in sc_rows:
+        scenarios.append({
+          "quoted_price": r['quoted_price'] if r['quoted_price'] is not None else 0,
+          "quoted_currency": r['quoted_currency'] if r['quoted_currency'] else 'USD',
+          "gross_margin": r['expected_gross_margin'] if r['expected_gross_margin'] is not None else 0,
+        })
+    except Exception as e:
+      print(f"Error loading price scenarios: {str(e)}")
+      scenarios = []
 
-      # 6. Version History
+      # 6) Version history (summaries)
     version_history = []
-    for v in versions_sorted:  # Already sorted
+    for v in versions_sorted:
+      # Safe access to version fields
+      version_num = v['version_number']
+      created_at_str = "N/A"
+      if v['created_at']:
+        created_at_str = v['created_at'].strftime('%d/%m/%Y')
+
+      created_by_name = "Unknown"
+      if v['created_by']:
+        created_by_name = v['created_by']['name']
+
       version_history.append({
-        "version": v['version_number'],
-        "updated_at": v['created_at'].strftime('%d/%m/%Y') if v['created_at'] else None,
-        "created_by": v['created_by']['name'] if v['created_by'] else None,
+        "version": version_num,
+        "updated_at": created_at_str,
+        "created_by": created_by_name,
         "change_description": v['change_description'],
       })
 
-      # ---- Return complete data ----
-    return {
-      # Overview fields
+      # ---- Safe access to current_version fields ----
+    master_style_name = "N/A"
+    if current_version['master_style']:
+      master_style_name = current_version['master_style']['name']
+
+    created_by_name = "Unknown"
+    if current_version['created_by']:
+      created_by_name = current_version['created_by']['name']
+
+    updated_at_str = "N/A"
+    if current_version['created_at']:
+      updated_at_str = current_version['created_at'].strftime('%d/%m/%Y')
+
+    version_num_str = str(current_version['version_number']) if current_version['version_number'] is not None else "N/A"
+
+    # Calculate totals safely
+    total_material = float(current_version['total_material_cost'] or 0.0)
+    total_processing = float(current_version['total_processing_cost'] or 0.0)
+    total_overhead = float(current_version['total_overhead_cost'] or 0.0)
+
+    # ---- Return a plain-dict payload for client ----
+    payload = {
       "cost_sheet_id": cost_sheet['document_id'],
-      "version_number": str(current_version['version_number']),
-      "updated_at": current_version['created_at'].strftime('%d/%m/%Y') if current_version['created_at'] else "N/A",
-      "created_by": current_version['created_by']['name'] if current_version['created_by'] else "Unknown",
+      "version_number": version_num_str,
+      "updated_at": updated_at_str,
+      "created_by": created_by_name,
       "approval_status": current_version['status'],
-      "master_style": current_version['master_style']['name'] if current_version['master_style'] else "N/A",
+      "master_style": master_style_name,
       "currency": current_version['cost_currency'],
       "change_description": current_version['change_description'],
 
-      # Totals
-      "total_material_cost": float(current_version['total_material_cost'] or 0.0),
-      "total_processing_cost": float(current_version['total_processing_cost'] or 0.0),
-      "total_overhead_cost": float(current_version['total_overhead_cost'] or 0.0),
-      "total_cost": (
-        float(current_version['total_material_cost'] or 0.0) +
-        float(current_version['total_processing_cost'] or 0.0) +
-        float(current_version['total_overhead_cost'] or 0.0)
-      ),
+      "total_material_cost": total_material,
+      "total_processing_cost": total_processing,
+      "total_overhead_cost": total_overhead,
+      "total_cost": total_material + total_processing + total_overhead,
 
-      # Detail data (for repeating panels)
+      # grouped lists for repeating panels
       "bom": bom_items,
       "processing_costs": processing_costs,
       "overhead_costs": overhead_costs,
@@ -305,9 +361,14 @@ def get_cost_sheet_details(cost_sheet_id):
       "version_history": version_history,
     }
 
+    return payload
+
   except Exception as e:
     print(f"Server error loading cost sheet details: {str(e)}")
+    import traceback
+    traceback.print_exc()
     raise
+
 
 
 
