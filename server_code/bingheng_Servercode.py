@@ -167,8 +167,8 @@ TABLE = app_tables.material_sku__main_
 # -----------------------
 @anvil.server.callable
 def get_skus():
-  """Return a list of plain dicts for the client repeating panel."""
-  rows = list(app_tables.material_sku__main_.search())
+  """Return a list of plain dicts (no LiveObjectProxy) for client display."""
+  rows = list(app_tables.material_sku__main_.search())  # server-side may read table
   out = []
   for r in rows:
     out.append({
