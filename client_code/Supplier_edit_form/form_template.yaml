@@ -36,7 +36,7 @@ components:
         type: TextBox
       layout_properties: {grid_position: 'SEELXY,XRQYQN'}
       name: rich_text_3
-      properties: {content: Contact Person}
+      properties: {content: 'Contact Person  <span style="color:red;">*</span>', format: restricted_html}
       type: RichText
     - components:
       - name: email
