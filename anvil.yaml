@@ -58,8 +58,8 @@ db_schema:
     - admin_ui: {order: 9, width: 200}
       name: native_currency
       type: string
-    - admin_ui: {width: 200}
-      name: bill_of_material_version
+    - admin_ui: {order: 0, width: 200}
+      name: bom_version
       target: bom_versions
       type: link_single
     - admin_ui: {width: 200}
@@ -261,12 +261,6 @@ db_schema:
     client: none
     columns:
     - admin_ui: {width: 200}
-      name: date
-      type: date
-    - admin_ui: {width: 200}
-      name: rate
-      type: string
-    - admin_ui: {width: 200}
       name: created_at
       type: datetime
     - admin_ui: {width: 200}
@@ -282,6 +276,12 @@ db_schema:
     - admin_ui: {order: 7, width: 200}
       name: admin_define
       type: simpleObject
+    - admin_ui: {order: -0.5, width: 200}
+      name: date
+      type: datetime
+    - admin_ui: {order: 1.375, width: 200}
+      name: rate
+      type: number
     server: full
     title: exchange_rates
   id_clients_masterstyle_:
@@ -603,6 +603,9 @@ db_schema:
       name: submitted_by
       target: users
       type: link_single
+    - admin_ui: {order: 5, width: 200}
+      name: name
+      type: string
     server: full
     title: master_materials
   master_style__main_:
@@ -644,6 +647,9 @@ db_schema:
       type: string
     - admin_ui: {order: 3, width: 200}
       name: description
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: name
       type: string
     server: full
     title: master_styles

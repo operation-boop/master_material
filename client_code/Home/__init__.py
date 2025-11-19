@@ -11,14 +11,14 @@ import anvil.users
 
 
 
-from ..Opportunity import Opportunity
-from ..Deal import Deal
+# from ..Opportunity import Opportunity
+# from ..Deal import Deal
 #from ..RFQ import RFQ
 #from ..RFS import RFS
 #from ..QMO import QMO
 #from ..SMO import SMO
-from ..Client_list import Client_list
-from ..Material_list import Material_list
+# from ..Client_list import Client_list
+# from ..Material_list import Material_list
 #from ..Costing_sheet_base import Costing_sheet_base
 from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overview
 
@@ -30,14 +30,18 @@ class Home(HomeTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     # self.content_panel.add_component(Costing_sheet_base())
-    self.content_panel.add_component(costing_sheet_base())
-
-
+    # self.content_panel.add_component(costing_sheet_base())
+    self.content_panel.add_component(wanyan_ver_costing_sheet_overview())
     
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
+    
 
   
+  
+  
+
+
   def link_nav_click(self, **event_args):
     """This method is called when the link is clicked"""
     clicked_link = event_args['sender']

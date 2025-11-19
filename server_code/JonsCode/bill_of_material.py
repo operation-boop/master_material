@@ -155,7 +155,7 @@ def update_bom_line_item(line_item_id, gross_consumption, selling_tolerance, buy
   # Update total using helper function
   helpers.update_material_cost_total(line_item['bom_version'].get_id())
 
-  print(f"[BOM] Updated BOM line item")
+  print("[BOM] Updated BOM line item")
   return line_item
 
 
