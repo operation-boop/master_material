@@ -1003,9 +1003,6 @@ services:
 - client_config: {enable_v2: true}
   server_config: {}
   source: /runtime/services/tables.yml
-- client_config: {allow_remember_me: false, allow_signup: true, confirm_email: true, enable_automatically: false, remember_me_days: 7, require_secure_passwords: true, share_login_status: true, use_email: true, use_google: true}
-  server_config: {user_table: users}
-  source: /runtime/services/anvil/users.yml
 - client_config: {}
   server_config: {}
   source: /runtime/services/google.yml
