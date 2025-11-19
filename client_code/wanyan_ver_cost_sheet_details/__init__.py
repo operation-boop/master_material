@@ -13,10 +13,49 @@ from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overvie
 class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
   def __init__(self, cost_sheet_data=None, **properties):
     self.init_components(**properties)
-    # cost_sheet_data should be a dict for ONE cost sheet (with keys like 'bom', 'processing_costs' ...)
-    self.item = cost_sheet_data
-    # don't set repeating panels here to cost_sheet_data (that's a dict)
-    # call form_show to populate repeating panels
+
+    print("=" * 50)
+    print("DETAILS INIT — type of cost_sheet_data:", type(cost_sheet_data))
+    print("Keys received:", list(cost_sheet_data.keys()) if cost_sheet_data else None)
+    print(f"Has BOM?                {'bom' in cost_sheet_data if cost_sheet_data else 'N/A'}")
+    print(
+      f"Has processing_costs?   {'processing_costs' in cost_sheet_data if cost_sheet_data  else 'N/A'}"
+    )
+    print(
+      f"Has version_history?    {'version_history' in cost_sheet_data if cost_sheet_data else 'N/A'}"
+    )
+
+    if not cost_sheet_data:
+      alert("No cost sheet data provided")
+      return
+
+      # ⭐ NEW CODE - Check if we need to load full details
+    if 'bom' not in cost_sheet_data:
+      print("⚠️ BOM NOT FOUND - Loading full details from server...")
+      cost_sheet_id = cost_sheet_data.get('cost_sheet_id')
+      print(f"Calling get_cost_sheet_details with ID: {cost_sheet_id}")
+
+      with Notification("Loading cost sheet details..."):
+        full_data = anvil.server.call('get_cost_sheet_details', cost_sheet_id)
+
+      print(f"Server returned: {type(full_data)}")
+      if full_data:
+        print(f"Keys in full_data: {list(full_data.keys())}")
+        print(f"Has BOM now? {'bom' in full_data}")
+        print(f"BOM length: {len(full_data.get('bom', []))}")
+        self.item = full_data
+      else:
+        print("ERROR: Server returned None!")
+        alert("Failed to load cost sheet details")
+        return
+    else:
+      print("✓ BOM FOUND - Using provided data directly")
+      self.item = cost_sheet_data
+
+    print(f"Final self.item keys: {list(self.item.keys()) if self.item else 'None'}")
+    print("=" * 50)
+
+    # Call form_show to populate repeating panels
     self.form_show()
 
   def back_btn_click(self, **event_args):
