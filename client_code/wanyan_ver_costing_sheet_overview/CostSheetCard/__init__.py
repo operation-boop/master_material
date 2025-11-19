@@ -22,13 +22,36 @@ class CostSheetCard(CostSheetCardTemplate):
     # Get the Home form
     home_form = get_open_form()
 
+    # Get just the ID from self.item
+    cost_sheet_id = self.item['cost_sheet_id']
+
+    print(f"Opening detail form for: {cost_sheet_id}")
+
     # Clear the content panel and add Material_details
     home_form.content_panel.clear()
     home_form.content_panel.add_component(
-      wanyan_ver_cost_sheet_details(cost_sheet_data=self.item),
+      wanyan_ver_cost_sheet_details(
+        cost_sheet_data={'cost_sheet_id': cost_sheet_id}  # ← Just pass the ID
+      ),
       full_width_row=True
     )
 
+
+
+    
+    # home_form = get_open_form()
+
+    # # Clear the content panel and add Material_details
+    # home_form.content_panel.clear()
+    # home_form.content_panel.add_component(
+    #   wanyan_ver_cost_sheet_details(cost_sheet_data=self.item),
+    #   full_width_row=True
+    # )
+
+
+
+
+  
   def form_show(self, **event_args):
     status = self.item["approval_status"]
 

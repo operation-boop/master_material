@@ -15,19 +15,6 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
     self.init_components(**properties)
     # cost_sheet_data should be a dict for ONE cost sheet (with keys like 'bom', 'processing_costs' ...)
     self.item = cost_sheet_data
-    
-    # 🔍 DEBUG: Print what data this form actually received
-    print("DETAILS INIT — type of cost_sheet_data:", type(cost_sheet_data))
-
-    if isinstance(cost_sheet_data, dict):
-      print("Keys received:", list(cost_sheet_data.keys()))
-      print("Has BOM?               ", "bom" in cost_sheet_data)
-      print("Has processing_costs?  ", "processing_costs" in cost_sheet_data)
-      print("Has version_history?   ", "version_history" in cost_sheet_data)
-    else:
-      # cost_sheet_data is a Row
-      print("Row columns:", [c for c in cost_sheet_data][:15])
-      
     # don't set repeating panels here to cost_sheet_data (that's a dict)
     # call form_show to populate repeating panels
     self.form_show()
