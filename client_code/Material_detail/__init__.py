@@ -212,5 +212,4 @@ class Material_detail(Material_detailTemplate):
         doc_id
       )
     except Exception as e:
-      Notification(f"Error loading data: {e}").show()
-  
+      Notification(f"Error loading data: {e}").show():
