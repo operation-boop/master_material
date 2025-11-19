@@ -62,9 +62,6 @@ db_schema:
     - admin_ui: {width: 200}
       name: created_at
       type: datetime
-    - admin_ui: {order: 1.78515625, width: 200}
-      name: created_by
-      type: string
     - admin_ui: {width: 200}
       name: ref_id
       type: string
@@ -177,6 +174,10 @@ db_schema:
     - admin_ui: {order: 2.77923583984375, width: 200}
       name: last_verified_by
       type: string
+    - admin_ui: {width: 200}
+      name: created_by
+      target: users
+      type: link_single
     server: full
     title: master_material_version
   material_sku:
