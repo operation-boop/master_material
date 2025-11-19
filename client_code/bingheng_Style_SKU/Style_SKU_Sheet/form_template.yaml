@@ -1,0 +1,44 @@
+components:
+- data_bindings: []
+  layout_properties: {column: XSBKVQ}
+  name: text_box_master
+  properties: {placeholder: Master Material}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings: []
+  layout_properties: {column: KRDNYM}
+  name: text_box_color
+  properties: {placeholder: Color, text: ''}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings: []
+  layout_properties: {column: TEWPKJ}
+  name: text_box_size
+  properties: {placeholder: Size}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings: []
+  layout_properties: {column: QSKYEV}
+  name: text_box_qr
+  properties: {placeholder: QR data}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings: []
+  layout_properties: {column: PQSAJS}
+  name: text_box_override
+  properties: {placeholder: SKU override}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings:
+  - {code: 'self.item[''id'']', property: attributes, writeback: false}
+  layout_properties: {column: TCILGR}
+  name: text_box_id
+  properties: {placeholder: ID, text: ''}
+  type: form:dep_xymmo08thrlyoc:TextArea
+- data_bindings: []
+  layout_properties: {column: FGNQUH}
+  name: text_box_ref
+  properties: {placeholder: reference id, text: ''}
+  type: form:dep_xymmo08thrlyoc:TextArea
+container:
+  data_bindings:
+  - {code: 'self.item[''Material_SKU.ref_id'']', property: auto_display_data, writeback: false}
+  event_bindings: {}
+  properties: {align: left}
+  type: DataRowPanel
+is_package: true

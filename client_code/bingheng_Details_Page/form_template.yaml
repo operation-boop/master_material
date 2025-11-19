@@ -1,0 +1,63 @@
+components:
+- components:
+  - components:
+    - layout_properties: {grid_position: 'EWLYAK,ICPDSZ'}
+      name: ClientName
+      properties: {background: '', bold: true, foreground: 'theme:White', text: 'Client Name:'}
+      type: Label
+    - event_bindings: {}
+      layout_properties: {grid_position: 'EWLYAK,IHVGTZ'}
+      name: TextBox_Name
+      properties: {}
+      type: TextBox
+    - layout_properties: {grid_position: 'QKRMNJ,EPWRAH'}
+      name: Ref_ID
+      properties: {bold: true, foreground: 'theme:White', text: 'Reference ID:'}
+      type: Label
+    - event_bindings: {}
+      layout_properties: {grid_position: 'QKRMNJ,ZEPGMB'}
+      name: TextBox_ID
+      properties: {}
+      type: TextBox
+    layout_properties: {grid_position: 'QXSXQQ,ZCHHXH'}
+    name: outlined_card_2
+    properties: {role: outlined-card}
+    type: ColumnPanel
+  - event_bindings: {click: submit_button2}
+    layout_properties: {grid_position: 'CGBHJH,AXZXZS'}
+    name: submit_button2
+    properties: {background: '#b32323', foreground: 'theme:White', text: Submit}
+    type: Button
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {background: '#61328f'}
+  type: ColumnPanel
+- layout_properties: {slot: nav-right}
+  name: navbar_links
+  properties: {}
+  type: FlowPanel
+- components:
+  - components: []
+    layout_properties: {grid_position: 'HQNSGW,LUELZF'}
+    name: outlined_card_3
+    properties: {role: outlined-card}
+    type: ColumnPanel
+  layout_properties: {slot: title}
+  name: content_panel_copy
+  properties: {col_widths: '{}'}
+  type: ColumnPanel
+- components:
+  - data_bindings: []
+    event_bindings: {click: create_button2}
+    layout_properties: {grid_position: 'NMPODD,VAUDPR'}
+    name: create_button2
+    properties: {background: '', text: Create Profile}
+    type: Button
+  layout_properties: {slot: left-nav}
+  name: outlined_card_1
+  properties: {role: outlined-card}
+  type: ColumnPanel
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true
