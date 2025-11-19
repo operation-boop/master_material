@@ -16,7 +16,7 @@ from ..Material_sku_input_form import Material_sku_input_form
 #     self.set_verification_status(self.item['verification_status'].lower())
 
 #   def form_show(self, **event_args):
-#     doc_id = self.item.get("document_id")  # if passed from previous form
+#     doc_id = self.item.get("document_id")  # if passed from previous form/
 #     if doc_id:
 #       self.load_material(doc_id)
   
