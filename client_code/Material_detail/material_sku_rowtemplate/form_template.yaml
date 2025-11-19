@@ -1,25 +1,37 @@
 components:
-- layout_properties: {column: JKSDUP}
+- data_bindings:
+  - {code: 'self.item[''id'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
   name: sku_id
   properties: {}
   type: Label
-- layout_properties: {column: VJQQOR}
+- data_bindings:
+  - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
   name: ref_id
   properties: {}
   type: Label
-- layout_properties: {column: OJLQEN}
+- data_bindings:
+  - {code: 'self.item[''color'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
   name: color
   properties: {}
   type: Label
-- layout_properties: {column: EOXPCU}
+- data_bindings:
+  - {code: 'self.item[''size'']', property: text, writeback: false}
+  layout_properties: {column: EOXPCU}
   name: size
   properties: {}
   type: Label
-- layout_properties: {column: QZSEWH}
+- data_bindings:
+  - {code: 'self.item[''sku_cost_override'']', property: text, writeback: false}
+  layout_properties: {column: QZSEWH}
   name: cost_override
   properties: {}
   type: Label
-- layout_properties: {column: TSQJXM}
+- data_bindings:
+  - {code: 'self.item[''qr_data'']', property: text, writeback: false}
+  layout_properties: {column: TSQJXM}
   name: qr_code
   properties: {}
   type: Label

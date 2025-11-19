@@ -1,37 +1,37 @@
 components:
 - components:
   - components:
-    - event_bindings: {}
+    - event_bindings: {click: back_btn_click}
       layout_properties: {grid_position: 'RZUCXB,PZBZLE'}
       name: back_btn
       properties: {align: left, background: 'theme:Primary 700', bold: false, font_size: null, foreground: 'theme:White', icon: 'fa:arrow-left', text: Back to List, visible: true}
       type: Button
     - data_bindings:
+      - {code: 'self.item[''verification_status'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'RZUCXB,QDFBCZ'}
+      name: verification_status
+      properties: {align: center}
+      type: Label
+    - event_bindings: {click: edit_btn_click}
+      layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
+      name: edit_btn
+      properties: {align: right, background: orange, icon: 'fa:edit', role: null, text: Edit}
+      type: Button
+    - data_bindings:
       - {code: 'self.item[''document_id'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,JUASDZ'}
+      layout_properties: {grid_position: 'XHRTWE,VCFWKS'}
       name: document_id
       properties: {bold: true, role: headline, text: ''}
       type: Label
     - data_bindings:
-      - {code: 'self.item[''verification_status'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'RZUCXB,CQLXAQ JLHSTA,ACPSAD'}
-      name: verification_status
-      properties: {}
-      type: Label
-    - data_bindings:
-      - {code: 'self.item[''ver_num'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'RZUCXB,CQLXAQ KCABBV,DNBBGM'}
+      - {code: '"Version " +str(self.item[''ver_num''])', property: text, writeback: false}
+      layout_properties: {grid_position: 'XHRTWE,XEQTDQ'}
       name: ver_num
       properties: {background: 'theme:Gray 200', text: ''}
       type: Label
-    - event_bindings: {}
-      layout_properties: {grid_position: 'RZUCXB,AVMCXZ'}
-      name: edit_btn
-      properties: {align: left, background: orange, icon: 'fa:edit', role: null, text: Edit}
-      type: Button
     layout_properties: {grid_position: 'XAUZQF,AQGACW'}
     name: column_panel_16
-    properties: {background: '#9ee2ff', col_widths: '{"PZBZLE":25,"CQLXAQ":40,"AVMCXZ":15}'}
+    properties: {background: '', col_widths: '{"PZBZLE":25,"AVMCXZ":10,"QDFBCZ":25,"VCFWKS":45,"XEQTDQ":15}'}
     type: ColumnPanel
   - layout_properties: {grid_position: 'HYPZZN,ZQJHEX'}
     name: spacer_3
@@ -40,7 +40,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'PIGYDS,JJPRHS'}
       name: label_27
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: BASIC INFORMATION}
+      properties: {bold: true, foreground: Red, text: BASIC INFORMATION}
       type: Label
     - components:
       - layout_properties: {grid_position: 'UTFKAM,UGBJUT HRFRHI,ELTVMC'}
@@ -143,7 +143,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'MGLFKW,EYOOLE'}
       name: label_5
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: QUICK SPECS}
+      properties: {bold: true, foreground: red, text: QUICK SPECS}
       type: Label
     - components:
       - layout_properties: {grid_position: 'SMMDAI,EFTBTI QVFJEH,KTBKCI'}
@@ -206,7 +206,7 @@ components:
   - components:
     - layout_properties: {grid_position: 'SVEEJW,UBQSVO'}
       name: label_6
-      properties: {bold: true, foreground: 'theme:Secondary 500', text: COST SUMMARY}
+      properties: {bold: true, foreground: red, text: COST SUMMARY}
       type: Label
     - components:
       - layout_properties: {grid_position: 'DTNQUV,EWXDOD JCRAES,CVOIYZ'}
@@ -251,22 +251,22 @@ components:
     properties: {height: 32}
     type: Spacer
   - components:
-    - event_bindings: {}
+    - event_bindings: {click: technical_specs_tab_btn_click}
       layout_properties: {}
       name: technical_specs_tab_btn
       properties: {foreground: 'theme:Black', text: technical specs}
       type: Button
-    - event_bindings: {}
+    - event_bindings: {click: cost_details_tab_btn_click}
       layout_properties: {}
       name: cost_details_tab_btn
       properties: {foreground: 'theme:Black', text: cost details}
       type: Button
-    - event_bindings: {}
+    - event_bindings: {click: version_history_tab_btn_click}
       layout_properties: {}
       name: version_history_tab_btn
       properties: {foreground: 'theme:Black', text: version history}
       type: Button
-    - event_bindings: {}
+    - event_bindings: {click: material_sku_tab_btn_click}
       layout_properties: {}
       name: material_sku_tab_btn
       properties: {foreground: 'theme:Black', text: material sku}
@@ -285,12 +285,14 @@ components:
       properties: {bold: true, font_size: 17, text: TECHNICAL SPECIFICATIONS}
       type: Label
     - components:
-      - layout_properties: {grid_position: 'SIDMAM,FRHJNZ'}
+      - layout_properties: {grid_position: 'IOSXBK,FFWTEV'}
         name: label_14
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: FABRIC COMPOSITION}
+        properties: {bold: true, foreground: red, text: FABRIC COMPOSITION}
         type: Label
-      - layout_properties: {grid_position: 'RYXMQX,SOQKVT'}
-        name: fabric_composition_label
+      - data_bindings:
+        - {code: 'self.item[''fabric_composition'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'RYXMQX,SOQKVT'}
+        name: fabric_composition
         properties: {}
         type: Label
       layout_properties: {grid_position: 'QJFBTZ,YMPQBQ'}
@@ -304,22 +306,26 @@ components:
     - components:
       - layout_properties: {grid_position: 'QNAIIU,CPVKVS'}
         name: label_15
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: FABRIC DIMENSIONS}
+        properties: {bold: true, foreground: red, text: FABRIC DIMENSIONS}
         type: Label
       - components:
         - layout_properties: {grid_position: 'ACSBNQ,ZZJWRO'}
           name: label_16
           properties: {bold: true, text: ROLL WIDTH}
           type: Label
-        - layout_properties: {grid_position: 'PWPKRP,GDBTWM'}
+        - data_bindings:
+          - {code: 'self.item[''fabric_roll_width'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PWPKRP,GDBTWM'}
           name: roll_width_label
-          properties: {}
+          properties: {text: ''}
           type: Label
         - layout_properties: {grid_position: 'XBBDRW,JZYWWA'}
           name: label_18
           properties: {bold: true, text: CUT WIDTH (NO SHRINK)}
           type: Label
-        - layout_properties: {grid_position: 'BLKOLJ,FWOMRL'}
+        - data_bindings:
+          - {code: 'self.item[''fabric_cut_width_no_shrinkage'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'BLKOLJ,FWOMRL'}
           name: cut_width_with_no_shrink_label
           properties: {}
           type: Label
@@ -332,16 +338,20 @@ components:
           name: label_20
           properties: {bold: true, text: CUT WIDTH}
           type: Label
-        - layout_properties: {grid_position: 'IHIDCS,VIWVUZ'}
+        - data_bindings:
+          - {code: 'self.item[''fabric_cut_width'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'IHIDCS,VIWVUZ'}
           name: cut_width_label
-          properties: {}
+          properties: {text: ''}
           type: Label
         - layout_properties: {grid_position: 'TUALFA,PAIVNB'}
           name: label_23
           properties: {bold: true, text: WEIGHT}
           type: Label
-        - layout_properties: {grid_position: 'SPQVJC,CFSEQZ'}
-          name: weight_label
+        - data_bindings:
+          - {code: 'self.item[''weight_per_unit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'SPQVJC,CFSEQZ'}
+          name: weight_per_unit
           properties: {}
           type: Label
         layout_properties: {grid_position: 'UYZKMY,IFNSKQ'}
@@ -359,15 +369,17 @@ components:
     - components:
       - layout_properties: {grid_position: 'BLYTQT,HJWWNZ'}
         name: label_17
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: SHRINKAGE}
+        properties: {bold: true, foreground: red, text: SHRINKAGE, visible: true}
         type: Label
       - components:
         - layout_properties: {grid_position: 'FCQAFU,MLRJNS'}
           name: label_19
           properties: {bold: true, text: WEFT SHRINKAGE}
           type: Label
-        - layout_properties: {grid_position: 'YKSLJZ,VACIQQ'}
-          name: weft_shrinkage_label
+        - data_bindings:
+          - {code: 'self.item[''weft_shrinkage'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'LUQUKP,LBXJNN'}
+          name: weft_shrinkage
           properties: {}
           type: Label
         layout_properties: {grid_position: 'QBPLUH,LYDLMI'}
@@ -377,10 +389,12 @@ components:
       - components:
         - layout_properties: {grid_position: 'UGHBTE,MFFGJC'}
           name: label_25
-          properties: {bold: true, text: WARP SHRINKAGE}
+          properties: {bold: true, text: WERP SHRINKAGE}
           type: Label
-        - layout_properties: {grid_position: 'WIDBXU,HYFOUH'}
-          name: warp_shrinkage_label
+        - data_bindings:
+          - {code: 'self.item[''werp_shrinkage'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'WIDBXU,HYFOUH'}
+          name: werp_shrinkage
           properties: {}
           type: Label
         layout_properties: {grid_position: 'QBPLUH,NIETRU'}
@@ -403,14 +417,16 @@ components:
     - components:
       - layout_properties: {grid_position: 'QOYAGZ,OQFPRL'}
         name: label_29
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: BASIC COST}
+        properties: {bold: true, foreground: red, text: BASIC COST}
         type: Label
       - components:
         - layout_properties: {grid_position: 'GFJNBR,UMSKKG'}
           name: label_30
           properties: {bold: true, text: ORIGINAL COST}
           type: Label
-        - layout_properties: {grid_position: 'RIQXRS,ARSYEK'}
+        - data_bindings:
+          - {code: 'self.item[''original_cost_per_unit'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RIQXRS,ARSYEK'}
           name: original_cost_label
           properties: {}
           type: Label
@@ -418,7 +434,9 @@ components:
           name: label_32
           properties: {bold: true, text: SUPPLIER TOLERANCE}
           type: Label
-        - layout_properties: {grid_position: 'PTIWYJ,NOHHXX'}
+        - data_bindings:
+          - {code: 'self.item[''supplier_tolerance'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'PTIWYJ,NOHHXX'}
           name: supplier_tolerance_label
           properties: {}
           type: Label
@@ -431,7 +449,9 @@ components:
           name: label_33
           properties: {bold: true, text: CURRENCY}
           type: Label
-        - layout_properties: {grid_position: 'NHGJDC,MEYFIB'}
+        - data_bindings:
+          - {code: 'self.item[''currency'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'NHGJDC,MEYFIB'}
           name: currency_label
           properties: {}
           type: Label
@@ -439,7 +459,9 @@ components:
           name: label_35
           properties: {bold: true, text: EFFECTIVE COST}
           type: Label
-        - layout_properties: {grid_position: 'XCUMRN,TXVAVO'}
+        - data_bindings:
+          - {code: 'self.item[''effective_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'XCUMRN,TXVAVO'}
           name: effective_cost_label
           properties: {}
           type: Label
@@ -458,14 +480,16 @@ components:
     - components:
       - layout_properties: {grid_position: 'EAJITU,WBSIIS'}
         name: label_31
-        properties: {bold: true, foreground: 'theme:Secondary 500', text: LANDED COST}
+        properties: {bold: true, foreground: red, text: LANDED COST}
         type: Label
       - components:
-        - layout_properties: {grid_position: 'XPCBHQ,WIEGPP'}
+        - layout_properties: {grid_position: 'DPTOHX,ATTZHM'}
           name: label_34
           properties: {bold: true, text: VAT RATE}
           type: Label
-        - layout_properties: {grid_position: 'OLXSMU,YPEVJZ'}
+        - data_bindings:
+          - {code: 'self.item[''vat'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'OLXSMU,YPEVJZ'}
           name: vat_rate_label
           properties: {}
           type: Label
@@ -473,7 +497,9 @@ components:
           name: label_39
           properties: {bold: true, text: LOGISTICS RATE}
           type: Label
-        - layout_properties: {grid_position: 'CPGVAI,UFUVHJ'}
+        - data_bindings:
+          - {code: 'self.item[''logistics_rate'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'CPGVAI,UFUVHJ'}
           name: logistics_rate_label
           properties: {}
           type: Label
@@ -484,9 +510,11 @@ components:
       - components:
         - layout_properties: {grid_position: 'PQKSWX,LTHIGE'}
           name: label_37
-          properties: {text: IMPORT DUTY}
+          properties: {bold: true, text: IMPORT DUTY}
           type: Label
-        - layout_properties: {grid_position: 'RCETRY,GUBYEV'}
+        - data_bindings:
+          - {code: 'self.item[''import_duty'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'RCETRY,GUBYEV'}
           name: import_duty_label
           properties: {}
           type: Label
@@ -494,7 +522,9 @@ components:
           name: label_41
           properties: {bold: true, text: LANDED COST}
           type: Label
-        - layout_properties: {grid_position: 'AGBTSM,XRCHYA'}
+        - data_bindings:
+          - {code: 'self.item[''landed_cost'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'AGBTSM,XRCHYA'}
           name: landed_cost_label
           properties: {}
           type: Label
@@ -516,7 +546,7 @@ components:
       properties: {bold: true, font_size: 17, text: VERSION HISTORY}
       type: Label
     - layout_properties: {grid_position: 'WPSFWM,HOBNJM'}
-      name: repeating_panel_1
+      name: repeating_panel_version_history
       properties: {item_template: Material_detail.version_history_itemtemplate}
       type: RepeatingPanel
     layout_properties: {grid_position: 'UATDRA,XCLPPA'}
@@ -532,7 +562,8 @@ components:
     name: label_38
     properties: {bold: true, font_size: 17, text: MATERIAL SKU}
     type: Label
-  - layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
+  - event_bindings: {click: add_sku_btn_click}
+    layout_properties: {grid_position: 'OXEKRP,QDCSJR'}
     name: add_sku_btn
     properties: {align: right, icon: 'fa:plus', text: add sku}
     type: Button
@@ -541,7 +572,7 @@ components:
     properties: {height: 32}
     type: Spacer
   - components:
-    - name: repeating_panel_2
+    - name: material_sku_repeating_panel
       properties: {item_template: Material_detail.material_sku_rowtemplate}
       type: RepeatingPanel
     layout_properties: {grid_position: 'XIDXJO,VZAVXN'}

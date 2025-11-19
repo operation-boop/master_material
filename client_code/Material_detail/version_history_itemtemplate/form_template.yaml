@@ -5,7 +5,7 @@ components:
     properties: {bold: true, text: Version}
     type: Label
   - data_bindings:
-    - {code: 'self.item[''version_number'']', property: text, writeback: false}
+    - {code: 'self.item[''ver_num'']', property: text, writeback: false}
     layout_properties: {grid_position: 'UFEWJH,NDDLOG'}
     name: version_number
     properties: {bold: true, text: ''}
