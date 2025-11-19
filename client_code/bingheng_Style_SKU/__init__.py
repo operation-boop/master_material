@@ -213,7 +213,14 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       alert(f"❌ Failed to load SKU data: {e}")
       self.repeating_panel_1.items = []
 
-  
+  # def load_data(self):
+  #   """Load SKU list from server and put into repeating panel as plain dicts."""
+  # try:
+  #   rows = anvil.server.call('get_skus')   # returns list of dicts (no LiveObjectProxy)
+  #   self.repeating_panel_1.items = rows
+  # except Exception as e:
+  #   alert(f"Failed to load SKU data: {e}")
+  #   self.repeating_panel_1.items = []
 
 #------------------------------------------------------------------------------
   def refresh_data(self):
