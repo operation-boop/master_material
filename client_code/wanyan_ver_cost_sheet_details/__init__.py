@@ -12,15 +12,12 @@ from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overvie
 
 class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
   def __init__(self, cost_sheet_data=None, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
-    # store the passed-in cost sheet (a dict/object representing ONE cost sheet)
+    # cost_sheet_data should be a dict for ONE cost sheet (with keys like 'bom', 'processing_costs' ...)
     self.item = cost_sheet_data
-
-    # run the usual show logic
+    # don't set repeating panels here to cost_sheet_data (that's a dict)
+    # call form_show to populate repeating panels
     self.form_show()
-    # Any code you write here will run before the form opens.
 
   def back_btn_click(self, **event_args):
     home = get_open_form()   # This is your Home form
@@ -44,9 +41,7 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
     self.exchange_rates_panel.visible = True
 
   def form_show(self, **event_args):
-    # Defensive: item might be None or missing keys; use .get with defaults
     if not self.item:
-      # clear repeating panels if no data
       self.repeating_panel_bom.items = []
       self.repeating_panel_processing_costs.items = []
       self.repeating_panel_version_history.items = []
@@ -54,12 +49,13 @@ class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
       self.repeating_panel_exchange_rates.items = []
       return
 
-    # Assign repeating panels from the grouped data the server now returns
+    # Defensive: use .get but remember self.item is a dict returned by server
     self.repeating_panel_bom.items = list(self.item.get("bom") or [])
     self.repeating_panel_processing_costs.items = list(self.item.get("processing_costs") or [])
     self.repeating_panel_version_history.items = list(self.item.get("version_history") or [])
     self.repeating_panel_overhead_costs.items = list(self.item.get("overhead_costs") or [])
     self.repeating_panel_exchange_rates.items = list(self.item.get("exchange_rate_record") or [])
+    
 
   def edit_btn_click(self, **event_args):
     from ..wanyan_ver_cost_sheet_edit_form import wanyan_ver_cost_sheet_edit_form
