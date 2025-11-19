@@ -24,7 +24,7 @@ import json
 
 
 # -----------------------
-# CLIENT MANAGEMENT
+# CLIENT MANAGEMENT (Saves input in create profile form to database)
 # -----------------------
 @anvil.server.callable
 def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
@@ -43,7 +43,7 @@ def save_client_info(Enter_Your_Name, Contact_Number, Email, Address):
   "message":f"Client {Enter_Your_Name} saved successfully.",
   "ref_id": ref_id
   }
-
+# Checks database if the client is registered, allows login, otherwise denied access
 @anvil.server.callable
 def verify_client_login(client_name, ref_id):
   """Verify client login with name and ref ID (returns True/False)."""
@@ -57,8 +57,6 @@ def verify_client_login(client_name, ref_id):
   # look up by Clients and the custom ref_id column
   row = app_tables.client__masterstyle_.get(Clients=client_name, ref_id=ref_id)
   return row is not None
-
-
 
 # -----------------------
 # ADMIN ACTION (single definition)
@@ -167,24 +165,79 @@ TABLE = app_tables.material_sku__main_
 # -----------------------
 @anvil.server.callable
 def get_skus():
-  """Return a list of plain dicts (no LiveObjectProxy) for client display."""
-  rows = list(app_tables.material_sku__main_.search())  # server-side may read table
+  """
+  Return a list of plain dicts for the client repeating panel.
+  Defensive: converts rows to dicts, strips out non-serializable fields,
+  and protects against unexpected exceptions per-row so one bad row won't break everything.
+  """
+  try:
+    rows = list(app_tables.material_sku__main_.search())
+  except Exception as e:
+    # Fail fast with a clear message if the table search itself errors.
+    raise RuntimeError(f"get_skus: could not query table: {e}")
+
   out = []
   for r in rows:
-    out.append({
-      "row_id": r.get_id(),
-      "sku_id": r.get("sku_id") or r.get("id") or "",
-      "id": r.get("id", ""),
-      "ref_id": r.get("ref_id", ""),
-      "master_material": (r.get("master_material") or ""),
-      "color": r.get("color", ""),
-      "size": r.get("size", ""),
-      "qr_data": r.get("qr_data", ""),
-      "sku_cost_override": r.get("sku_cost_override"),
-      "price": r.get("price"),
-      "attachment_name": getattr(r.get("attachment"), "name", "") if r.get("attachment") else "",
-      "created": r.get("created")
-    })
+    try:
+      # Try a straightforward conversion to dict. On server rows this usually works.
+      try:
+        row_dict = dict(r)
+      except Exception:
+        # Fallback: copy known keys safely (works even if dict(r) fails).
+        row_dict = {}
+        try:
+          keys = list(r.keys())
+        except Exception:
+          keys = []
+        for k in keys:
+          try:
+            row_dict[k] = r[k]
+          except Exception:
+            # swallow single-field errors
+            row_dict[k] = None
+
+      # Build a safe, serializable item dict for the client
+      item = {
+        "row_id": (r.get_id() if hasattr(r, "get_id") else None),
+        "sku_id": (row_dict.get("sku_id") or row_dict.get("id") or ""),
+        "id": row_dict.get("id", ""),
+        "ref_id": row_dict.get("ref_id", ""),
+        # If master_material is a linked row, convert to a readable string (or id)
+        "master_material": (
+          # prefer a human-friendly name if linked row present
+          (row_dict.get("master_material").get("name") if isinstance(row_dict.get("master_material"), dict) and "name" in row_dict.get("master_material") else None)
+          if row_dict.get("master_material") is not None else ""
+        ) or (str(row_dict.get("master_material") or "")),
+        "color": str(row_dict.get("color") or ""),
+        "size": str(row_dict.get("size") or ""),
+        "qr_data": str(row_dict.get("qr_data") or ""),
+        "sku_cost_override": row_dict.get("sku_cost_override"),
+        "price": row_dict.get("price"),
+        # Attachment -> just send filename (if any) to client, don't send media object
+        "attachment_name": (getattr(row_dict.get("attachment"), "name", None) or "") if row_dict.get("attachment") else "",
+        "created": (row_dict.get("created").isoformat() if hasattr(row_dict.get("created"), "isoformat") else row_dict.get("created"))
+      }
+
+      out.append(item)
+
+    except Exception as row_e:
+      # If a single row fails conversion, keep going but record a minimal fallback entry
+      out.append({
+        "row_id": (r.get_id() if hasattr(r, "get_id") else None),
+        "sku_id": getattr(r, "sku_id", "") or "",
+        "id": getattr(r, "id", "") or "",
+        "ref_id": getattr(r, "ref_id", "") or "",
+        "master_material": "",
+        "color": "",
+        "size": "",
+        "qr_data": "",
+        "sku_cost_override": None,
+        "price": None,
+        "attachment_name": "",
+        "created": None,
+        "_error": f"row conversion error: {row_e}"
+      })
+
   return out
 
 

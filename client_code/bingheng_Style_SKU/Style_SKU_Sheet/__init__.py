@@ -8,6 +8,8 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
+# Warning code does not function according to how its supposed to work
+
 class Style_SKU_Sheet(Style_SKU_SheetTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)

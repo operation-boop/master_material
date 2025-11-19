@@ -8,8 +8,9 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-TABLE = app_tables.material_sku__main_
+# Warning code does not function according to how its supposed to work
 
+TABLE = app_tables.material_sku__main_
 
 class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   def __init__(self, **properties):
@@ -46,17 +47,31 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   # -----------------------
   # Data loading
   # -----------------------
-  def load_data(self):
-    """Load SKU list from server and put into repeating panel as plain dicts."""
+def load_data(self):
+  """Load SKU list from server and put into repeating panel as plain dicts."""
+  try:
+    rows = anvil.server.call('get_skus')   # returns list of dicts (no LiveObjectProxy)
+    # Quick sanity check: ensure rows is a list of dict-like objects
+    if not isinstance(rows, (list, tuple)):
+      alert(f"Failed to load SKU data: unexpected response type: {type(rows)}")
+      self.repeating_panel_1.items = []
+      return
+
+    # Optionally log rows that contain conversion errors
+    problems = [r for r in rows if isinstance(r, dict) and r.get("_error")]
+    if problems:
+      print("get_skus returned rows with conversion issues:", problems)
+
+    self.repeating_panel_1.items = rows
+
+  except Exception as e:
+    # show full exception (repr) so we can see the real cause instead of the one-word 'get'
+    alert(f"Failed to load SKU data: {repr(e)}")
     try:
-      rows = anvil.server.call('get_skus')   # returns list of dicts (no LiveObjectProxy)
-      self.repeating_panel_1.items = rows
-    except Exception as e:
-      alert(f"Failed to load SKU data: {e}")
-      try:
-        self.repeating_panel_1.items = []
-      except Exception:
-        pass
+      self.repeating_panel_1.items = []
+    except Exception:
+      pass
+
 
   def refresh_data(self):
     self.load_data()

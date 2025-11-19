@@ -8,7 +8,8 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 
-######################################
+# This is the page where after logging in, for both user and admin
+
 class bingheng_logged_in(bingheng_logged_inTemplate):
   def __init__(self, username=None, **properties):
     """Initialize the form and set up user session"""
@@ -40,6 +41,8 @@ class bingheng_logged_in(bingheng_logged_inTemplate):
   # -----------------------------
   # Button event handlers
   # -----------------------------
+
+  # Only grants access to admin username for SKU and Control Panel
   def button_sku(self, **event_args):
     """Handle click for SKU button"""
     if self.username.lower() == "admin":
@@ -48,9 +51,6 @@ class bingheng_logged_in(bingheng_logged_inTemplate):
     else:
       alert("Access denied. Only admin can access SKU functions.")
 
-  # def edit_button3(self, **event_args):
-  #   """Handle click for Create Profile button"""
-  #   open_form('bingheng_CreateProfile')
 
   def control_panel(self, **event_args):
     """Handle click for Control Panel button"""
