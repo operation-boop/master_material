@@ -1,3 +1,4 @@
+import anvil.users
 import random
 
 DOMAINS = ["test.com", "mock.io", "demo.org", "example.dev"]

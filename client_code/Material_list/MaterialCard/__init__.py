@@ -1,5 +1,6 @@
 from ._anvil_designer import MaterialCardTemplate
 from anvil import *
+import anvil.users
 import anvil.server
 from ...Material_detail import Material_detail
 
