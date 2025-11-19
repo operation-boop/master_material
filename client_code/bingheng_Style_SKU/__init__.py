@@ -26,7 +26,7 @@ from anvil.tables import app_tables
 
 #   def btn_refresh(self, **event_args):
 #     app_tables.material_sku__main_ = bingheng_Style_SKUTemplate.add_row(
-#       id="", ref_id="", master_material="", color="", size="",qr_data="", sku_override=""
+#       id="", ref_id="", master_material="", color="", size="",qr_data="", sku_cost_override=""
 #     )
 #   self.load_items()
 
@@ -238,7 +238,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
         color="",
         size="",
         qr_data="",
-        sku_override=""
+        sku_cost_override=""
       )
       # reload the UI
       self.load_data()
