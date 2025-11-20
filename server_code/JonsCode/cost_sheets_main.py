@@ -251,6 +251,7 @@ def get_cost_sheet_details(cost_sheet_id):
       for r in proc_rows:
         processing_costs.append({
           "process_type": r['cost_type'] if r['cost_type'] else 'N/A',
+          "status": r['status'] if r['status'] else 'N/A',
           "cost_amount": r['cost_amount'] if r['cost_amount'] is not None else 0,
           "cost_currency": r['cost_currency'] if r['cost_currency'] else 'USD',
           "vendor_name": r['vendor_name'] if r['vendor_name'] else 'N/A',

@@ -1,12 +1,12 @@
 components:
 - data_bindings:
-  - {code: 'self.item[''vendor'']', property: text, writeback: false}
+  - {code: 'self.item[''vendor_name'']', property: text, writeback: false}
   layout_properties: {column: VJQQOR}
   name: vendor
   properties: {}
   type: Label
 - data_bindings:
-  - {code: 'self.item[''type'']', property: text, writeback: false}
+  - {code: 'self.item[''process_type'']', property: text, writeback: false}
   layout_properties: {column: JKSDUP}
   name: type
   properties: {}
