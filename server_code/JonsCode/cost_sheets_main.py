@@ -219,11 +219,13 @@ def get_cost_sheet_details(cost_sheet_id):
       bom_version = current_version['bom_version'] if current_version['bom_version'] else None
       if bom_version:
         bom_rows = list(app_tables.bom_line_items.search(bom_version=bom_version))
+        print(f"Found {len(bom_rows)} BOM items")
+        
         for r in bom_rows:
           # Safe access to linked 'material' row
           material_name = "N/A"
-          if r['material']:
-            material_name = r['material']['name']
+          if r['assigned_material']:
+            material_name = r['assigned_material']#['name']
 
           consumption = r['net_buying_consumption'] if r['net_buying_consumption'] is not None else 0
           unit_cost = r['material_cost_in_usd'] if r['material_cost_in_usd'] is not None else 0
@@ -234,37 +236,58 @@ def get_cost_sheet_details(cost_sheet_id):
             "unit_cost": unit_cost,
             "total_cost": consumption * unit_cost,
           })
+
+      print(f"Successfully built {len(bom_items)} BOM items")
     except Exception as e:
       print(f"Error loading BOM items: {str(e)}")
       bom_items = []
 
-      # 2) Processing Costs
+    # 2) Processing Costs
     processing_costs = []
     try:
       proc_rows = list(app_tables.processing_cost_items.search(cost_sheet_version=current_version))
+      print(f"Found {len(proc_rows)} processing cost items")
+      
       for r in proc_rows:
         processing_costs.append({
-          "process_type": r['process_type'] if r['process_type'] else 'N/A',
+          "process_type": r['cost_type'] if r['cost_type'] else 'N/A',
           "cost_amount": r['cost_amount'] if r['cost_amount'] is not None else 0,
           "cost_currency": r['cost_currency'] if r['cost_currency'] else 'USD',
-          "supplier": r['supplier'] if r['supplier'] else 'N/A',
+          "vendor_name": r['vendor_name'] if r['vendor_name'] else 'N/A',
+          "description": r['description'] if r['description'] else 'N/A',
         })
+
+        print(f"Successfully built {len(processing_costs)} processing cost items")
     except Exception as e:
       print(f"Error loading processing costs: {str(e)}")
+
+      # Using traceback for easier debugging
+      import traceback
+      traceback.print_exc()
+      
       processing_costs = []
 
       # 3) Overhead Costs
     overhead_costs = []
     try:
       oh_rows = list(app_tables.overhead_cost_items.search(cost_sheet_version=current_version))
+      print(f"Found {len(oh_rows)} overhead cost items")
+      
       for r in oh_rows:
         overhead_costs.append({
           "cost_type": r['cost_type'] if r['cost_type'] else 'N/A',
           "cost_amount": r['cost_amount'] if r['cost_amount'] is not None else 0,
           "cost_currency": r['cost_currency'] if r['cost_currency'] else 'USD',
         })
+        
+        print(f"Successfully built {len(overhead_costs)} overhead cost items")
     except Exception as e:
       print(f"Error loading overhead costs: {str(e)}")
+      
+      # Using traceback for easier debugging
+      import traceback
+      traceback.print_exc()
+      
       overhead_costs = []
 
       # 4) Exchange Rates
@@ -280,6 +303,11 @@ def get_cost_sheet_details(cost_sheet_id):
         })
     except Exception as e:
       print(f"Error loading exchange rates: {str(e)}")
+
+      # Using traceback for easier debugging
+      import traceback
+      traceback.print_exc()
+
       exchange_rates = []
 
       # 5) Quoted Price Scenarios
