@@ -3,37 +3,41 @@ components:
   name: label_1
   properties: {text: MATERIAL}
   type: Label
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item[''material'']', property: text, writeback: false}
   layout_properties: {grid_position: 'KIVQGQ,DPXWAJ IAZYLF,ZPLDGJ'}
   name: material
-  properties: {}
+  properties: {text: 'self.item[''material'']'}
   type: Label
 - layout_properties: {grid_position: 'KIVQGQ,CFUCUR CZQNEE,EZISLP'}
   name: label_2
   properties: {text: CONSUMPTION}
   type: Label
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item[''consumption'']', property: text, writeback: false}
   layout_properties: {grid_position: 'KIVQGQ,CFUCUR GPLHUD,ZOYMNX'}
   name: consumption
-  properties: {}
+  properties: {text: 'self.item[''consumption'']'}
   type: Label
 - layout_properties: {grid_position: 'KIVQGQ,XYLCOV VEFRCW,LTYGNW'}
   name: label_4
   properties: {text: UNIT COST}
   type: Label
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item[''unit_cost'']', property: text, writeback: false}
   layout_properties: {grid_position: 'KIVQGQ,XYLCOV UKIYIP,VKIDTP'}
   name: unit_cost
-  properties: {}
+  properties: {text: 'self.item[''unit_cost'']'}
   type: Label
 - layout_properties: {grid_position: 'KIVQGQ,MXMJAV BWTYXV,XKTSDF'}
   name: label_6
   properties: {text: TOTAL}
   type: Label
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item['''']', property: text, writeback: false}
   layout_properties: {grid_position: 'KIVQGQ,MXMJAV YGVAST,OQGWFH'}
   name: total
-  properties: {}
+  properties: {text: 'self.item[''material'']'}
   type: Label
 - layout_properties: {grid_position: 'KIVQGQ,JVDGJF KCYFCC,QCPFWS'}
   name: spacer_1
