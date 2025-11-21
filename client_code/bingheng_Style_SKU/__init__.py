@@ -95,7 +95,7 @@ def load_data(self):
     if not sku_id:
       alert("SKU ID is required")
       return
-
+# Specifying where each textbox is supposed to get their reference from
     ref_id = self._get_text("text_box_ref_id") or None
     master_material = self._get_text("text_box_master_material") or None
     color = self._get_text("text_box_color") or None
@@ -143,7 +143,7 @@ def load_data(self):
     self.file_loader_1_change(file, **event_args)
 
   # -----------------------
-  # QR generation
+  # QR generation where it takes information from optional fields and turn it into a QR code, this makes it unique
   # -----------------------
   def get_qr_code(self, **event_args):
     """Generate / fetch a QR code for the SKU using multiple fields."""
