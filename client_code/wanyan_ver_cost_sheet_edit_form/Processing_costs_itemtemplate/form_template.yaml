@@ -15,17 +15,20 @@ components:
   name: spacer_1
   properties: {height: 32}
   type: Spacer
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item[''processing_type'']', property: text, writeback: false}
   layout_properties: {grid_position: 'PNKJQH,EAMRLL'}
   name: type
   properties: {}
   type: Label
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item[''vendor_name'']', property: text, writeback: false}
   layout_properties: {grid_position: 'PNKJQH,MCGCPT'}
   name: vendor
   properties: {}
   type: Label
-- data_bindings: []
+- data_bindings:
+  - {code: 'self.item[''cost'']', property: text, writeback: false}
   layout_properties: {grid_position: 'PNKJQH,CTSCZR'}
   name: cost
   properties: {}
