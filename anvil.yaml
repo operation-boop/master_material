@@ -247,7 +247,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: last_login
       type: datetime
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 3, width: 233}
       name: password_hash
       type: string
     - admin_ui: {width: 200}
@@ -256,10 +256,10 @@ db_schema:
     - admin_ui: {width: 200}
       name: confirmed_email
       type: bool
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 6, width: 230}
       name: remembered_logins
       type: simpleObject
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 7, width: 212}
       name: signed_up
       type: datetime
     - admin_ui: {width: 200}

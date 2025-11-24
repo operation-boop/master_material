@@ -101,7 +101,7 @@ components:
       type: LinearPanel
     - data_bindings:
       - {code: 'self.item[''cost_per_unit'']', property: text, writeback: false}
-      layout_properties: {grid_position: 'NMRDNO,WZXMWB CXILVO,LUDFQL'}
+      layout_properties: {grid_position: 'NMRDNO,WZXMWB VMDEVC,LHKYPN'}
       name: cost_per_unit
       properties: {bold: true, foreground: red, text: ''}
       type: Label
@@ -143,8 +143,12 @@ components:
         spacing_below: none
         text: ''
       type: Label
-    - layout_properties: {grid_position: 'NMRDNO,KCPASA HQGYNE,LTKPSZ'}
+    - layout_properties: {grid_position: 'NMRDNO,KCPASA NBIGVX,SSERQX'}
       name: spacer_1
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'SAGUZJ,YUUMMV'}
+      name: spacer_2
       properties: {height: 32}
       type: Spacer
     - event_bindings: {click: view_details_btn_click}

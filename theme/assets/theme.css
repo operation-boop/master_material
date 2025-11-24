@@ -167,6 +167,17 @@ a:hover, a:active {
   padding-bottom: 0;
 }
 
+.anvil-role-fixed-card {
+  height: 450px;       /* FORCE a specific height (adjust number as needed) */
+  display: flex;       /* Required for the spacer to work */
+  flex-direction: column;
+
+  /* Standard card styling */
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 /* Page structure: App bar with optional left nav */
 .structure {
   display: flex;

@@ -38,14 +38,20 @@ class Material_list(Material_listTemplate):
 
 
   def load_material_cards(self, **event_args): ##
-    ## self.repeating_panel_materials.items = anvil.server.call('list_material_cards')
     self.flow_panel_materials.clear()      
     for c in self.material_card:
       card = MaterialCard(item=c)
-      card.height = 500
+    
+      # This applies the CSS height from Step 2
+      card.role = "fixed-card"  
       card.width = "100%"
+    
       self.flow_panel_materials.add_component(card)
 
   def refresh_data(self):
     self.material_card = anvil.server.call("list_material_cards")
     self.load_material_cards()
+
+  def logout_btn_click(self, **event_args):
+    anvil.users.logout()
+    open_form('Material_list')
