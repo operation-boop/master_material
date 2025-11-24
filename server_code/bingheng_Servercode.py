@@ -73,7 +73,7 @@ def admin_action(username):
 
 
 # -----------------------
-# QR / SKU
+# QR / SKU (DO NOT REMOVE/UNDO)
 # -----------------------
 ## @anvil.server.callable
 # def get_qr_code(sku_id):
@@ -158,6 +158,7 @@ def admin_action(username):
 # TEST 2
 # -----------------------
 # Table reference (your confirmed table name)
+#------------------------END----------------------
 TABLE = app_tables.material_sku__main_
 
 # -----------------------
@@ -488,3 +489,169 @@ def backup_fullstack():
   return BlobMedia("application/zip", zip_bytes, name=filename)
 
 
+#--------------------TEST ON MULTITUDE QR GEN -------------------
+# --- In-memory sample DB (demo only) ---
+# Use the uploaded file path as an example attachment url
+SAMPLE_ATTACHMENT_URL = "/mnt/data/7795bc78-226b-4877-87f7-8d6982339a86.png"
+
+_SAMPLE_DB = [
+  {
+    "row_id": uuid.uuid4().hex,
+    "sku_id": "TSHIRT001",
+    "id": "TSHIRT001",
+    "ref_id": "A93F2D19",
+    "master_material": "Cotton",
+    "color": "Blue",
+    "size": "L",
+    "qr_data": "",
+    "sku_cost_override": 12.5,
+    "price": 12.5,
+    "attachment_url": SAMPLE_ATTACHMENT_URL,
+    "created": datetime.now().isoformat()
+  },
+  {
+    "row_id": uuid.uuid4().hex,
+    "sku_id": "TSHIRT002",
+    "id": "TSHIRT002",
+    "ref_id": "B21K7Z33",
+    "master_material": "Polyester",
+    "color": "Black",
+    "size": "M",
+    "qr_data": "",
+    "sku_cost_override": 9.99,
+    "price": 9.99,
+    "attachment_url": SAMPLE_ATTACHMENT_URL,
+    "created": datetime.now().isoformat()
+  },
+  {
+    "row_id": uuid.uuid4().hex,
+    "sku_id": "HAT001",
+    "id": "HAT001",
+    "ref_id": "HAT-555",
+    "master_material": "Wool",
+    "color": "Gray",
+    "size": "OneSize",
+    "qr_data": "",
+    "sku_cost_override": 7.0,
+    "price": 7.0,
+    "attachment_url": SAMPLE_ATTACHMENT_URL,
+    "created": datetime.now().isoformat()
+  },
+]
+
+# -------------------------
+# Demo CRUD / list API
+# -------------------------
+@anvil.server.callable
+def get_skus():
+  """Return a copy of the sample DB as plain dicts."""
+  # Return a shallow copy so client may mutate items without touching server list.
+  return [dict(r) for r in _SAMPLE_DB]
+
+@anvil.server.callable
+def add_sku(sku_id, ref_id=None, master_material=None, color=None, size=None,
+            qr_data=None, price=None, attachment=None):
+  """Add to the demo in-memory DB (returns created row_id)."""
+  if not sku_id:
+    raise ValueError("sku_id required")
+
+  new = {
+    "row_id": uuid.uuid4().hex,
+    "sku_id": sku_id,
+    "id": sku_id,
+    "ref_id": ref_id or "",
+    "master_material": master_material or "",
+    "color": color or "",
+    "size": size or "",
+    "qr_data": qr_data or "",
+    "sku_cost_override": price,
+    "price": price,
+    "attachment_url": getattr(attachment, "name", "") if attachment else "",
+    "created": datetime.now().isoformat()
+  }
+  _SAMPLE_DB.append(new)
+  return {"ok": True, "row_id": new["row_id"]}
+
+@anvil.server.callable
+def update_sku(row_id, updates: dict):
+  """Update demo DB row by row_id."""
+  for r in _SAMPLE_DB:
+    if r["row_id"] == row_id:
+      for k, v in updates.items():
+        if k in r:
+          r[k] = v
+      return {"ok": True}
+  raise KeyError("row not found")
+
+@anvil.server.callable
+def delete_sku(row_id):
+  """Delete demo DB row by row_id."""
+  global _SAMPLE_DB
+  new_db = [r for r in _SAMPLE_DB if r["row_id"] != row_id]
+  if len(new_db) == len(_SAMPLE_DB):
+    raise KeyError("row not found")
+  _SAMPLE_DB[:] = new_db
+  return {"ok": True}
+
+# -------------------------
+# QR helpers
+# -------------------------
+@anvil.server.callable
+def get_qr_code(sku_id, ref_id="", master_material="", color="", size="", sku_cost_override=None):
+  """Return a PNG BlobMedia QR image whose payload encodes the provided fields."""
+  if not sku_id:
+    raise ValueError("sku_id required")
+
+  payload = (
+    f"SKU:{(sku_id or '').strip()}|"
+    f"REF:{(ref_id or '').strip()}|"
+    f"MAT:{(master_material or '').strip()}|"
+    f"COL:{(color or '').strip()}|"
+    f"SIZE:{(size or '').strip()}|"
+    f"COST:{'' if sku_cost_override is None else str(sku_cost_override)}|"
+    f"UNIQ:{uuid.uuid4().hex[:8]}"
+  )
+  qr = pyqrcode.create(payload)
+  buf = BytesIO()
+  qr.png(buf, scale=5)
+  buf.seek(0)
+  return BlobMedia("image/png", buf.read(), name=f"{sku_id}_qr.png")
+
+# -------------------------
+# Simple PDF generator for testing (embeds small QR images)
+# -------------------------
+@anvil.server.callable
+def generate_sku_pdf(data):
+  """Create a quick PDF from list of dicts (like get_skus returns)."""
+  if not isinstance(data, (list, tuple)):
+    raise ValueError("data must be a list of dicts")
+  out = BytesIO()
+  c = canvas.Canvas(out, pagesize=A4)
+  w, h = A4
+  y = h - 60
+  c.setFont("Helvetica-Bold", 14)
+  c.drawString(50, y, "Demo SKU Report")
+  y -= 30
+  c.setFont("Helvetica", 10)
+  for row in data:
+    sku_id = str(row.get("sku_id") or row.get("id") or "")
+    mat = str(row.get("master_material") or "")
+    price = str(row.get("price") or "")
+    c.drawString(50, y, f"{sku_id} | {mat} | {price}")
+    # Generate small QR and place beside text
+    try:
+      qr_payload = f"{sku_id}-{uuid.uuid4().hex[:6]}"
+      qr = pyqrcode.create(qr_payload)
+      qr_buf = BytesIO()
+      qr.png(qr_buf, scale=2)
+      qr_buf.seek(0)
+      c.drawInlineImage(qr_buf.getvalue(), 420, y-8, width=40, height=40)
+    except Exception:
+      pass
+    y -= 50
+    if y < 100:
+      c.showPage()
+      y = h - 60
+  c.save()
+  out.seek(0)
+  return BlobMedia("application/pdf", out.read(), name="demo_sku_report.pdf")
