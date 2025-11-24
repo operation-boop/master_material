@@ -162,7 +162,7 @@ components:
       event_bindings: {click: delete_btn_click}
       layout_properties: {grid_position: 'ZPTSCO,TYMWWM'}
       name: delete_btn
-      properties: {background: '#ff0b11', foreground: black, role: primary-color, text: Delete, visible: false}
+      properties: {background: '#ff0b11', foreground: black, role: primary-color, text: Delete, visible: true}
       type: Button
     layout_properties: {width: 467}
     name: card_1

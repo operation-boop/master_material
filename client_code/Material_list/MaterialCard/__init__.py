@@ -8,9 +8,13 @@ class MaterialCard(MaterialCardTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     self.set_verification_status(self.item['verification_status'].lower())
-    user = anvil.users.get_user()
-    self.verify_status.visible = (user and user['role'] == 'Admin')
     
+    user = anvil.users.get_user()
+    is_admin = (user and user['role'] == 'Admin')
+    
+    self.verify_status.visible = is_admin 
+    self.delete_btn.visible = is_admin
+
   def view_details_btn_click(self, **event_args):
     """Open material detail view"""
     if not self.item:
@@ -76,33 +80,23 @@ class MaterialCard(MaterialCardTemplate):
       self.verify_status.visible = False
 
   def delete_btn_click(self, **event_args):
-    """Delete material (Admin only)"""
-    if not self.item:
-      alert("No item data!", title="Error")
-      return
-    doc_id = self.item['document_id']
-    material_name = self.item.get('material_name', 'this material')
+    doc_id = self.item.get('document_id')
     if not doc_id:
-      alert("No document ID!", title="Error")
+      Notification("Error: No Document ID found on this card.", style="danger").show()
       return
-    # Confirm deletion
-    if not confirm(
-      f"Are you sure you want to DELETE {doc_id} ({material_name})?\n\n"
-      "This will permanently delete the material and all its versions. "
-      "This action CANNOT be undone!",
-      title="⚠️ Confirm Deletion"
-    ):
+
+    if not confirm(f"Are you SURE you want to permanently delete {doc_id}?\nThis will remove all history and SKUs."):
       return
-    self.delete_btn.enabled = False
+
+    self.delete_btn.enabled = False # Prevent double-clicks
+
     try:
-      result = anvil.server.call('delete_material', doc_id)
-      if result and result.get('ok'):  
-        Notification(f"Deleted: {result.get('message')}", title="Success", style="success").show()
-        # Refresh the list to remove the deleted card
-        self.parent.raise_event('x-refresh-list')
-      else:
-        Notification(f"Delete call completed but returned: {result}", title="Notice", style="warning").show()
+      result_msg = anvil.server.call('delete_material', doc_id)
+      self.remove_from_parent()
+      Notification(result_msg, style="success").show()
+
+      Notification(f"Material {doc_id} deleted.", style="success").show()
+
     except Exception as e:
-      Notification(f"Delete failed: {e}", title="Error", style="danger").show()
-      self.delete_btn.enabled = True  # Re-enable if there's an error
-    pass
+      alert(f"Deletion failed: {str(e)}")
+      self.delete_btn.enabled = True
