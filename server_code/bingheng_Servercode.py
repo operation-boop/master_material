@@ -217,7 +217,7 @@ def get_skus():
         "attachment_name": (getattr(row_dict.get("attachment"), "name", None) or "") if row_dict.get("attachment") else "",
         "created": (row_dict.get("created").isoformat() if hasattr(row_dict.get("created"), "isoformat") else row_dict.get("created"))
       }
-
+  
       out.append(item)
 
     except Exception as row_e:
