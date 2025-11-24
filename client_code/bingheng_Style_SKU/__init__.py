@@ -47,31 +47,38 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   # -----------------------
   # Data loading
   # -----------------------
-def load_data(self):
-  """Load SKU list from server and put into repeating panel as plain dicts."""
-  try:
-    rows = anvil.server.call('get_skus')   # returns list of dicts (no LiveObjectProxy)
-    # Quick sanity check: ensure rows is a list of dict-like objects
-    if not isinstance(rows, (list, tuple)):
-      alert(f"Failed to load SKU data: unexpected response type: {type(rows)}")
-      self.repeating_panel_1.items = []
-      return
-
-    # Optionally log rows that contain conversion errors
-    problems = [r for r in rows if isinstance(r, dict) and r.get("_error")]
-    if problems:
-      print("get_skus returned rows with conversion issues:", problems)
-
-    self.repeating_panel_1.items = rows
-
-  except Exception as e:
-    # show full exception (repr) so we can see the real cause instead of the one-word 'get'
-    alert(f"Failed to load SKU data: {repr(e)}")
+  def load_data(self):
+    """Load SKU list from server and put into repeating panel as plain dicts."""
     try:
-      self.repeating_panel_1.items = []
-    except Exception:
-      pass
+      rows = anvil.server.call('get_skus')   # returns list of dicts (no LiveObjectProxy)
+      # Quick sanity check: ensure rows is a list of dict-like objects
+      if not isinstance(rows, (list, tuple)):
+        alert(f"Failed to load SKU data: unexpected response type: {type(rows)}")
+        try:
+          self.repeating_panel_1.items = []
+        except Exception:
+          pass
+        return
 
+      # Optionally log rows that contain conversion errors
+      problems = [r for r in rows if isinstance(r, dict) and r.get("_error")]
+      if problems:
+        print("get_skus returned rows with conversion issues:", problems)
+
+      # assign to repeating panel
+      try:
+        self.repeating_panel_1.items = rows
+      except Exception:
+        # if repeating_panel missing, just print
+        print("No repeating_panel_1 found or could not assign items.")
+
+    except Exception as e:
+      # show full exception (repr) so we can see the real cause instead of the one-word 'get'
+      alert(f"Failed to load SKU data: {repr(e)}")
+      try:
+        self.repeating_panel_1.items = []
+      except Exception:
+        pass
 
   def refresh_data(self):
     self.load_data()
@@ -91,18 +98,20 @@ def load_data(self):
 
   def btn_add_alt(self, **event_args):
     """Collect inputs and call server add_sku (the form 'Add' functionality)."""
-    sku_id = self._get_text("text_box_sku_id")
+    # changed to use the actual textbox names you provided
+    sku_id = self._get_text("text_box_id")
     if not sku_id:
       alert("SKU ID is required")
       return
-# Specifying where each textbox is supposed to get their reference from
-    ref_id = self._get_text("text_box_ref_id") or None
-    master_material = self._get_text("text_box_master_material") or None
+
+    # Specifying where each textbox is supposed to get their reference from
+    ref_id = self._get_text("text_box_ref") or None
+    master_material = self._get_text("text_box_master") or None
     color = self._get_text("text_box_color") or None
     size = self._get_text("text_box_size") or None
 
     price = None
-    ptxt = self._get_text("text_box_price")
+    ptxt = self._get_text("text_box_override")
     if ptxt:
       try:
         price = float(ptxt)
@@ -116,13 +125,12 @@ def load_data(self):
       res = anvil.server.call('add_sku', sku_id, ref_id, master_material, color, size, None, price, attachment)
       if isinstance(res, dict) and res.get("ok"):
         Notification("Added SKU", style="success").show()
-        # clear inputs safely
-        self._set_text("text_box_sku_id", "")
-        self._set_text("text_box_ref_id", "")
-        self._set_text("text_box_master_material", "")
+        # clear inputs safely (use your actual control names)
+        self._set_text("text_box_id", "")
+        self._set_text("text_box_ref", "")
+        self._set_text("text_box_master", "")
         self._set_text("text_box_color", "")
         self._set_text("text_box_size", "")
-        self._set_text("text_box_price", "")
         self._set_text("text_box_override", "")
         self._pending_file = None
         self.load_data()
@@ -143,18 +151,18 @@ def load_data(self):
     self.file_loader_1_change(file, **event_args)
 
   # -----------------------
-  # QR generation where it takes information from optional fields and turn it into a QR code, this makes it unique
+  # QR generation (client) -> calls server get_qr_code
   # -----------------------
-  def get_qr_code(self, **event_args):
+  def get_qr_for_inputs(self, **event_args):
     """Generate / fetch a QR code for the SKU using multiple fields."""
-    sku_id = self._get_text("text_box_sku_id")
+    sku_id = self._get_text("text_box_id")
     if not sku_id:
       alert("Please enter a SKU ID first.")
       return
 
-    # collect optional fields
-    ref_id = self._get_text("text_box_ref_id")
-    master_material = self._get_text("text_box_master_material")
+    # collect optional fields (use actual textbox names)
+    ref_id = self._get_text("text_box_ref")
+    master_material = self._get_text("text_box_master")
     color = self._get_text("text_box_color")
     size = self._get_text("text_box_size")
 
