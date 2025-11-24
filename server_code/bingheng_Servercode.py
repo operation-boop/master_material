@@ -75,7 +75,7 @@ def admin_action(username):
 # -----------------------
 # QR / SKU
 # -----------------------
-# @anvil.server.callable
+## @anvil.server.callable
 # def get_qr_code(sku_id):
 #   """Return a PNG BlobMedia containing a unique QR code for sku_id."""
 #   if not sku_id:
