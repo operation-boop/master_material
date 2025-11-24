@@ -153,7 +153,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   # -----------------------
   # QR generation (client) -> calls server get_qr_code
   # -----------------------
-  def get_qr_for_inputs(self, **event_args):
+  def get_qr_code(self, **event_args):
     """Generate / fetch a QR code for the SKU using multiple fields."""
     sku_id = self._get_text("text_box_id")
     if not sku_id:
@@ -267,3 +267,5 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       self.load_data()
     except Exception as e:
       alert(f"Delete failed: {e}")
+
+
