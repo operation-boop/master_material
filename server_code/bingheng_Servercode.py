@@ -25,7 +25,7 @@ import json
 
 # Keep your existing table name
 TABLE = app_tables.material_sku__main_
-
+#
 # --- SAMPLE uploaded file path (from your workspace) ---
 SAMPLE_ATTACHMENT_URL = "/mnt/data/7795bc78-226b-4877-87f7-8d6982339a86.png"
 
