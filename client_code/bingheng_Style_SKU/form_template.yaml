@@ -46,11 +46,13 @@ components:
       properties: {item_template: bingheng_Style_SKU.Style_SKU_Sheet}
       type: RepeatingPanel
     - components:
-      - layout_properties: {grid_position: 'DETKLZ,SMDSCX'}
+      - event_bindings: {click: btn_save}
+        layout_properties: {grid_position: 'DETKLZ,SMDSCX'}
         name: btn_save
         properties: {background: '#a61717', foreground: 'theme:White', icon: 'fa:floppy-o', text: Save}
         type: Button
-      - layout_properties: {grid_position: 'DETKLZ,YEOPEH'}
+      - event_bindings: {click: btn_delete}
+        layout_properties: {grid_position: 'DETKLZ,YEOPEH'}
         name: btn_delete
         properties: {background: '#a61717', foreground: 'theme:White', icon: 'fa:trash', text: Delete}
         type: Button
