@@ -47,7 +47,9 @@ components:
       name: column_panel_11
       properties: {}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'LQRYRE,YTNZMW'}
+    - data_bindings:
+      - {code: 'self.item[''change_description'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'LQRYRE,YTNZMW'}
       name: change_description
       properties: {placeholder: 'e.g., Update material costs...'}
       type: TextArea
@@ -60,8 +62,7 @@ components:
       properties: {bold: true, foreground: Red, text: BILL OF MATERIALS}
       type: Label
     - components:
-      - data_bindings:
-        - {code: 'self.item['''']', property: items, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'XGDENA,YNKFKH'}
         name: material_dropdown
         properties: {include_placeholder: true, placeholder: Select Material}
@@ -102,8 +103,7 @@ components:
       properties: {bold: true, foreground: RED, text: PROCESSING COSTS}
       type: Label
     - components:
-      - data_bindings:
-        - {code: 'self.item[''type_dropdown'']', property: items, writeback: false}
+      - data_bindings: []
         layout_properties: {grid_position: 'GLMCCR,NQLIBV'}
         name: type_dropdown
         properties: {include_placeholder: true, placeholder: Select Type}
@@ -196,7 +196,9 @@ components:
           name: label_2
           properties: {text: QUOTED PRICE}
           type: Label
-        - layout_properties: {grid_position: 'SDIFMP,PKTMUG'}
+        - data_bindings:
+          - {code: 'self.item[''quoted_price'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'SDIFMP,PKTMUG'}
           name: quoted_price
           properties: {placeholder: Quoted Price}
           type: TextBox
@@ -208,8 +210,7 @@ components:
           name: label_4_copy
           properties: {text: EXPECTED GROSS MARGIN}
           type: Label
-        - data_bindings:
-          - {code: 'self.item[''expected_gross_margin'']', property: text, writeback: false}
+        - data_bindings: []
           layout_properties: {grid_position: 'VIBFIW,XUGLAR'}
           name: expected_gross_margin
           properties: {bold: true}
@@ -218,8 +219,7 @@ components:
           name: label_13
           properties: {text: EXPECTED NET MARGIN}
           type: Label
-        - data_bindings:
-          - {code: 'self.item[''expected_net_margin'']', property: text, writeback: false}
+        - data_bindings: []
           layout_properties: {grid_position: 'FNJWDB,VHGWVU'}
           name: expected_net_margin
           properties: {bold: true}
@@ -233,7 +233,9 @@ components:
           name: label_3_copy
           properties: {text: QUOTED CURRENCY}
           type: Label
-        - layout_properties: {grid_position: 'BFTPZS,QHSMIS'}
+        - data_bindings:
+          - {code: 'self.item[''currency'']', property: items, writeback: false}
+          layout_properties: {grid_position: 'BFTPZS,QHSMIS'}
           name: profit_scenario_dropdown
           properties: {include_placeholder: true, placeholder: Select Currency}
           type: DropDown
@@ -241,8 +243,7 @@ components:
           name: label_8_copy
           properties: {text: EXPECTED GROSS INCOME}
           type: Label
-        - data_bindings:
-          - {code: 'self.item[''expected_gross_income'']', property: text, writeback: false}
+        - data_bindings: []
           layout_properties: {grid_position: 'VPINKY,LSMGEK'}
           name: expected_gross_income
           properties: {bold: true}
@@ -251,8 +252,7 @@ components:
           name: label_11
           properties: {text: EXPECTED NET INCOME}
           type: Label
-        - data_bindings:
-          - {code: 'self.item[''expected_net_income'']', property: text, writeback: false}
+        - data_bindings: []
           layout_properties: {grid_position: 'LTHMMR,OALODA'}
           name: expected_net_income
           properties: {bold: true}
