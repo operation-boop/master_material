@@ -102,7 +102,9 @@ components:
       properties: {bold: true, foreground: RED, text: PROCESSING COSTS}
       type: Label
     - components:
-      - layout_properties: {grid_position: 'GLMCCR,NQLIBV'}
+      - data_bindings:
+        - {code: 'self.item[''type_dropdown'']', property: items, writeback: false}
+        layout_properties: {grid_position: 'GLMCCR,NQLIBV'}
         name: type_dropdown
         properties: {include_placeholder: true, placeholder: Select Type}
         type: DropDown
@@ -184,126 +186,82 @@ components:
         name: profit_scenarios_total_cost
         properties: {foreground: '#9c760d', icon: 'fa:info-circle', text: 'Total Cost:'}
         type: Label
-      layout_properties: {grid_position: 'EIRYCN,DBSBKC'}
+      layout_properties: {grid_position: 'HDFUAY,KNFQPC'}
       name: card_2
       properties: {background: '#fff0a3', role: card}
       type: ColumnPanel
     - components:
-      - layout_properties: {grid_position: 'QIIPXA,KMJNTJ'}
-        name: label_24
-        properties: {bold: true, text: Scenario 1 - Price}
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'KWXDQE,ZPDNVU'}
-        name: scenario_1_quoted_price
-        properties: {placeholder: Quoted Price}
-        type: TextBox
-      - layout_properties: {grid_position: 'KDZSRD,LMLFQF'}
-        name: label_2
-        properties:
-          spacing:
-            padding: [0, null, 0, null]
-          spacing_above: none
-          spacing_below: none
-          text: 'Margin: - '
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'KDZSRD,JWVHVL'}
-        name: scenario_1_margin
+      - components:
+        - layout_properties: {grid_position: 'GMORJC,XPAGLH'}
+          name: label_2
+          properties: {text: QUOTED PRICE}
+          type: Label
+        - layout_properties: {grid_position: 'SDIFMP,PKTMUG'}
+          name: quoted_price
+          properties: {placeholder: Description}
+          type: TextBox
+        - layout_properties: {grid_position: 'ASNUAO,XWECBG'}
+          name: label_4_copy
+          properties: {text: EXPECTED GROSS MARGIN}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_gross_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VIBFIW,XUGLAR'}
+          name: expected_gross_margin
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'XZIFFU,FXXXWV'}
+          name: label_13
+          properties: {text: EXPECTED NET MARGIN}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_net_margin'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'FNJWDB,VHGWVU'}
+          name: expected_net_margin
+          properties: {bold: true}
+          type: Label
+        layout_properties: {grid_position: 'YNDMXA,SQYHYD'}
+        name: column_panel_2
         properties: {}
-        type: Label
-      - layout_properties: {grid_position: 'GMGWAJ,XQCXRB'}
-        name: label_11
-        properties:
-          spacing:
-            padding: [0, null, 0, null]
-          spacing_above: none
-          spacing_below: none
-          text: 'Profit: - '
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'GMGWAJ,ENKILI'}
-        name: scenario_1_profit
+        type: ColumnPanel
+      - components:
+        - layout_properties: {grid_position: 'DRNRMB,XPZLUB'}
+          name: label_3_copy
+          properties: {text: QUOTED CURRENCY}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''quoted_currency'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'ARJOTR,SZNLTU'}
+          name: quoted_currency
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'CQGNGK,MWIHVS'}
+          name: label_8_copy
+          properties: {text: EXPECTED GROSS INCOME}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_gross_income'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'VPINKY,LSMGEK'}
+          name: expected_gross_income
+          properties: {bold: true}
+          type: Label
+        - layout_properties: {grid_position: 'WIRBMU,YMQOYE'}
+          name: label_11
+          properties: {text: EXPECTED NET INCOME}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''expected_net_income'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'LTHMMR,OALODA'}
+          name: expected_net_income
+          properties: {bold: true}
+          type: Label
+        layout_properties: {grid_position: 'YNDMXA,FSEQYU'}
+        name: column_panel_3
         properties: {}
-        type: Label
-      - layout_properties: {grid_position: 'RQWCKB,IDFEGF'}
-        name: label_25
-        properties: {bold: true, text: Scenario 2  - Price}
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
-        name: scenario_2_quoted_price
-        properties: {placeholder: Quoted Price, type: number}
-        type: TextBox
-      - layout_properties: {grid_position: 'UTJRMK,GQBXIM'}
-        name: label_2_copy
-        properties:
-          spacing:
-            padding: [0, null, 0, null]
-          spacing_above: none
-          spacing_below: none
-          text: 'Margin: - '
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'UTJRMK,JKMMNF'}
-        name: scenario_2_margin
-        properties: {}
-        type: Label
-      - layout_properties: {grid_position: 'DVCFXR,QNKDXI'}
-        name: label_11_copy
-        properties:
-          spacing:
-            padding: [0, null, 0, null]
-          spacing_above: none
-          spacing_below: none
-          text: 'Profit: - '
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'DVCFXR,JGMJDD'}
-        name: scenario_2_profit
-        properties: {}
-        type: Label
-      - layout_properties: {grid_position: 'BTNOSY,JZXTVA'}
-        name: label_29
-        properties: {bold: true, text: Scenario 3 - Price}
-        type: Label
-      - data_bindings: []
-        event_bindings: {}
-        layout_properties: {grid_position: 'QDKMAH,TALLOF'}
-        name: scenario_3_quoted_price
-        properties: {placeholder: Quoted Price, type: number}
-        type: TextBox
-      - layout_properties: {grid_position: 'LKBICQ,PZBHNK'}
-        name: label_2_copy_2
-        properties:
-          spacing:
-            padding: [0, null, 0, null]
-          spacing_above: none
-          spacing_below: none
-          text: 'Margin: - '
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'LKBICQ,TJRNJL'}
-        name: scenario_3_margin
-        properties: {}
-        type: Label
-      - layout_properties: {grid_position: 'NOVKTX,PTWQVG'}
-        name: label_11_copy_2
-        properties:
-          spacing:
-            padding: [0, null, 0, null]
-          spacing_above: none
-          spacing_below: none
-          text: 'Profit: - '
-        type: Label
-      - data_bindings: []
-        layout_properties: {grid_position: 'NOVKTX,GZHOKN'}
-        name: scenario_3_profit
-        properties: {}
-        type: Label
-      layout_properties: {grid_position: 'FDJVGR,VXUSVI'}
-      name: details_section
-      properties: {col_widths: '{"LMLFQF":10,"JWVHVL":50,"XQCXRB":10,"ENKILI":50,"GQBXIM":10,"JKMMNF":50,"QNKDXI":10,"JGMJDD":50,"PZBHNK":10,"TJRNJL":50,"PTWQVG":10,"GZHOKN":50}', visible: true}
+        type: ColumnPanel
+      layout_properties: {grid_position: 'VCQLRN,TSGCAU'}
+      name: conservative_card
+      properties: {role: card}
       type: ColumnPanel
     - layout_properties: {grid_position: 'AWARGL,HHFTCH'}
       name: spacer_4

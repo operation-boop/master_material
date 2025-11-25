@@ -11,17 +11,22 @@ from anvil.tables import app_tables
 
 class wanyan_ver_cost_sheet_edit_form(wanyan_ver_cost_sheet_edit_formTemplate):
   def __init__(self, cost_sheet=None, **properties):
+    # Handle None or empty cost_sheet FIRST
     if cost_sheet is None:
       cost_sheet = {}
 
-    # Store a copy
     self.cost_sheet = dict(cost_sheet)
-    # Set Form properties and Data Bindings.
+
+    # Initialize data sources BEFORE init_components
+    # This prevents the binding error
+    self.bom_list = []
+    self.processing_list = []
+    self.overhead_list = []
+
+    # NOW initialize components (this sets up data bindings)
     self.init_components(**properties)
 
-    # Store a copy so modifications don't affect original until Save
-    self.cost_sheet = dict(cost_sheet)
-
+    # Dropdowns
     self.master_style_dropdown.items = ["MS-001 - White Blazer", "MS-002 - Denim Jeans", "MS-003 - Wool Coat"]
     self.currency_dropdown.items = ["USD", "VND", "RMB"]
     self.material_dropdown.items = ["MAT-001 - Cotton Twill", "MAT-002 - Polyester Lining", "MAT-003 - Button 20L"]
@@ -34,16 +39,17 @@ class wanyan_ver_cost_sheet_edit_form(wanyan_ver_cost_sheet_edit_formTemplate):
     self.currency_dropdown.selected_value = self.cost_sheet.get("currency", "")
     self.change_description.text = self.cost_sheet.get("change_description", "")
 
-    # BOM list
-    self.bom_list = list(self.cost_sheet.get("bom", []))
+    # NOW populate the lists with actual data
+    bom_data = self.cost_sheet.get("bom", [])
+    self.bom_list = list(bom_data) if bom_data is not None else []
     self.bom_repeating_panel.items = self.bom_list
 
-    # Processing Costs list
-    self.processing_list = list(self.cost_sheet.get("processing_costs", []))
+    processing_data = self.cost_sheet.get("processing_costs", [])
+    self.processing_list = list(processing_data) if processing_data is not None else []
     self.repeating_panel_processing_costs.items = self.processing_list
 
-    # Overhead Costs list
-    self.overhead_list = list(self.cost_sheet.get("overhead_costs", []))
+    overhead_data = self.cost_sheet.get("overhead_costs", [])
+    self.overhead_list = list(overhead_data) if overhead_data is not None else []
     self.repeating_panel_overhead_costs.items = self.overhead_list
   
 
