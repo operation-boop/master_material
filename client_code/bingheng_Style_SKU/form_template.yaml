@@ -75,7 +75,7 @@ components:
   properties: {}
   type: ColumnPanel
 - components:
-  - event_bindings: {click: btn_refresh_click}
+  - event_bindings: {click: btn_refresh}
     layout_properties: {grid_position: 'NIUIVC,LGZZYW'}
     name: btn_refresh
     properties: {text: Refresh}

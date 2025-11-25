@@ -10,7 +10,31 @@ from anvil.tables import app_tables
 
 # keep your table reference
 TABLE = app_tables.material_sku__main_
+#--------------------------------------------------
+# put this at top of __init__ (after init_components)
+print("DEBUG: checking repeating_panel_1 presence:", hasattr(self, "repeating_panel_1"))
 
+# fetch server rows (or use test list)
+try:
+  rows = anvil.server.call('get_skus')
+  print("DEBUG: server returned rows (len):", len(rows) if isinstance(rows, (list,tuple)) else type(rows))
+  if isinstance(rows, (list,tuple)) and rows:
+    print("DEBUG: sample row keys:", list(rows[0].keys()))
+except Exception as e:
+  print("DEBUG: get_skus failed:", repr(e))
+
+# Try assigning a safe minimal list of dicts that should always work:
+try:
+  test_items = [
+    {"row_id":"T1","sku_id":"TEST001","id":"TEST001","ref_id":"R1","master_material":"Cotton","color":"Blue","size":"M","price":10},
+    {"row_id":"T2","sku_id":"TEST002","id":"TEST002","ref_id":"R2","master_material":"Wool","color":"Gray","size":"L","price":8}
+  ]
+  self.repeating_panel_1.items = test_items
+  print("DEBUG: test assign succeeded")
+except Exception as e:
+  print("DEBUG: test assign failed:", repr(e))
+
+#-------------------------------------------------
 class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   def __init__(self, **properties):
     # initialize designer components first (very important)
@@ -280,3 +304,5 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       self.load_data()
     except Exception as e:
       alert(f"Delete failed: {e}")
+
+
