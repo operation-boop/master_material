@@ -2,17 +2,17 @@ components:
 - data_bindings: []
   layout_properties: {column: XSBKVQ}
   name: text_box_master
-  properties: {placeholder: Master Material}
+  properties: {placeholder: Master Material, text: Cotton}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: KRDNYM}
   name: text_box_color
-  properties: {placeholder: Color, text: ''}
+  properties: {placeholder: Color, text: White}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: TEWPKJ}
   name: text_box_size
-  properties: {placeholder: Size}
+  properties: {placeholder: Size, text: S}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: QSKYEV}
@@ -28,12 +28,12 @@ components:
   - {code: 'self.item[''id'']', property: attributes, writeback: false}
   layout_properties: {column: TCILGR}
   name: text_box_id
-  properties: {placeholder: ID, text: ''}
+  properties: {placeholder: ID, text: '1001'}
   type: form:dep_xymmo08thrlyoc:TextArea
 - data_bindings: []
   layout_properties: {column: FGNQUH}
   name: text_box_ref
-  properties: {placeholder: reference id, text: ''}
+  properties: {placeholder: reference id, text: SKU1050}
   type: form:dep_xymmo08thrlyoc:TextArea
 container:
   data_bindings:
