@@ -13,6 +13,8 @@ from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overvie
 class wanyan_ver_cost_sheet_details(wanyan_ver_cost_sheet_detailsTemplate):
   def __init__(self, cost_sheet_data=None, **properties):
     self.init_components(**properties)
+    print("DEBUG - self.item:", self.item)
+    print("DEBUG - type:", type(self.item))
 
     print("=" * 50)
     print("DETAILS INIT — type of cost_sheet_data:", type(cost_sheet_data))

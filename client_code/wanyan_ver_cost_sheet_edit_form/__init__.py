@@ -11,6 +11,11 @@ from anvil.tables import app_tables
 
 class wanyan_ver_cost_sheet_edit_form(wanyan_ver_cost_sheet_edit_formTemplate):
   def __init__(self, cost_sheet=None, **properties):
+    if cost_sheet is None:
+      cost_sheet = {}
+
+    # Store a copy
+    self.cost_sheet = dict(cost_sheet)
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
