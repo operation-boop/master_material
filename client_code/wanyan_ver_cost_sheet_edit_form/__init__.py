@@ -20,38 +20,29 @@ class wanyan_ver_cost_sheet_edit_form(wanyan_ver_cost_sheet_edit_formTemplate):
     processing_raw = cost_sheet.get('processing_costs') or []
     overhead_raw = cost_sheet.get('overhead_costs') or []
 
-    # DEBUG
     print("=" * 50)
     print("EDIT FORM DEBUG:")
     print(f"BOM items count: {len(bom_raw)}")
+
+  # Check what's inside the material LiveObject
     if bom_raw:
-     first_material = bom_raw[0].get('material_name')
-     print(f"Material LiveObject type: {type(first_material)}")
-     print(f"Material LiveObject: {first_material}")
+     first_bom_item = bom_raw[0]
+     print(f"First BOM item: {first_bom_item}")
 
-    # Try to access common column names
-    if first_material:
-      try:
-        print(f"  Trying 'name': {first_material['name']}")
-      except (KeyError, TypeError):
-        print("  No 'name' column")
+     first_material = first_bom_item.get('material_name')
+     print(f"Material object type: {type(first_material)}")
+     print(f"Material object value: {first_material}")
 
-      try:
-        print(f"  Trying 'material_name': {first_material['material_name']}")
-      except (KeyError, TypeError):
-        print("  No 'material_name' column")
+    # Try accessing with 'name' which is common for lookup columns
+     if first_material:
+       try:
+         print(f"  Material['name']: {first_material['name']}")
+       except (KeyError, TypeError) as e:
+         print(f"  Error accessing 'name': {e}")
 
-      try:
-        print(f"  Trying 'description': {first_material['description']}")
-      except (KeyError, TypeError):
-        print("  No 'description' column")
+     print("=" * 50)
 
-      try:
-        print(f"  Trying 'material_id': {first_material['material_id']}")
-      except (KeyError, TypeError):
-        print("  No 'material_id' column")
 
-    print("=" * 50)
 
 
     # Transform BOM data to match Designer bindings
