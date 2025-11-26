@@ -504,14 +504,14 @@ components:
       name: label_36
       properties: {bold: true, font_size: 17, text: VERSION HISTORY}
       type: Label
-    - layout_properties: {grid_position: 'WPSFWM,HOBNJM'}
-      name: repeating_panel_1
-      properties: {item_template: Material_detail.version_history_itemtemplate}
-      type: RepeatingPanel
     layout_properties: {grid_position: 'UATDRA,XCLPPA'}
     name: version_history_panel
     properties: {visible: false}
     type: ColumnPanel
+  - layout_properties: {grid_position: 'BVXAMH,DGEVSD'}
+    name: repeating_panel_version_history
+    properties: {item_template: Material_detail.version_history_itemtemplate}
+    type: RepeatingPanel
   - components:
     - layout_properties: {grid_position: 'OXEKRP,GAPIHM'}
       name: label_38
