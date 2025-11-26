@@ -393,4 +393,3 @@ def validate_required_fields(document_id):
 
   is_valid, missing_fields = _validate_required_fields(current_version)
   return {"is_valid": is_valid, "missing_fields": missing_fields}
-
