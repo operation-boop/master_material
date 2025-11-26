@@ -146,6 +146,61 @@ components:
       properties: {bold: true, foreground: RED, text: OVERHEAD COSTS}
       type: Label
     - components:
+      - layout_properties: {grid_position: 'QJKUSA,XDZRIY'}
+        name: label_10_copy
+        properties: {bold: true, text: TIER 2}
+        type: Label
+      - components:
+        - layout_properties: {grid_position: 'THBUNR,MIIWNL'}
+          name: label_15
+          properties: {text: Import Logistics}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''import_logistics'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'THBUNR,NONDYB'}
+          name: import_logistics
+          properties: {}
+          type: Label
+        - layout_properties: {grid_position: 'THBUNR,UFJYGB'}
+          name: overhead_cost_import_details_btn
+          properties: {role: primary-color, text: details}
+          type: Button
+        - layout_properties: {grid_position: 'GJFZOX,NLHHYX'}
+          name: label_16
+          properties: {text: Export Logistics}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''export_logistics'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'GJFZOX,EXCWHJ'}
+          name: export_logistics
+          properties: {}
+          type: Label
+        - layout_properties: {grid_position: 'GJFZOX,TTANMG'}
+          name: primary_color_1
+          properties: {role: primary-color, text: details}
+          type: Button
+        - layout_properties: {grid_position: 'EWLHMS,LEGNBB'}
+          name: label_17
+          properties: {text: VAT}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''vat'']', property: text, writeback: false}
+          layout_properties: {grid_position: 'EWLHMS,HELRCC'}
+          name: vat
+          properties: {}
+          type: Label
+        - layout_properties: {grid_position: 'EWLHMS,VLMBNY'}
+          name: primary_color_2
+          properties: {role: primary-color, text: details}
+          type: Button
+        layout_properties: {grid_position: ',undefined'}
+        name: card_2_copy
+        properties: {role: card}
+        type: ColumnPanel
+      - layout_properties: {grid_position: 'VXOIZF,ENGNHU'}
+        name: label_10_copy_copy
+        properties: {bold: true, text: TIER 3}
+        type: Label
       - layout_properties: {grid_position: 'ASASHW,DBLURV'}
         name: overhead_costs_type_dropdown
         properties: {include_placeholder: true, placeholder: Select Type}
@@ -173,7 +228,7 @@ components:
         name: repeating_panel_overhead_costs
         properties: {item_template: wanyan_ver_cost_sheet_edit_form.Overhead_costs_itemtemplate}
         type: RepeatingPanel
-      layout_properties: {grid_position: 'SVMXZO,ZNWSDY'}
+      layout_properties: {grid_position: 'CLKIOL,PJYVCI'}
       name: card_5
       properties: {col_widths: '{"DBLURV":15,"FMHBJF":15,"USOFHA":15,"VARHDR":12,"JFHXOM":15}', role: card}
       type: ColumnPanel

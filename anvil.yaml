@@ -34,10 +34,6 @@ db_schema:
       target: bom_versions
       type: link_single
     - admin_ui: {width: 200}
-      name: assigned_material
-      target: master_materials
-      type: link_single
-    - admin_ui: {width: 200}
       name: assigned_sku
       target: material_sku
       type: link_single
@@ -65,6 +61,10 @@ db_schema:
     - admin_ui: {width: 200}
       name: material_cost_in_usd
       type: number
+    - admin_ui: {order: 0.375, width: 200}
+      name: assigned_material
+      target: master_material_versions
+      type: link_single
     server: full
     title: bom_line_items
   bom_versions:
@@ -303,201 +303,6 @@ db_schema:
       type: number
     server: full
     title: ID_counter (masterstyle)
-  master_material:
-    client: none
-    columns:
-    - admin_ui: {width: 200}
-      name: document_id
-      type: string
-    - admin_ui: {width: 200}
-      name: created_at
-      type: datetime
-    - admin_ui: {width: 200}
-      name: created_by
-      type: string
-    - admin_ui: {width: 200}
-      name: submitted_at
-      type: datetime
-    - admin_ui: {width: 200}
-      name: submitted_by
-      type: string
-    - admin_ui: {width: 200}
-      name: current_version_number
-      type: number
-    - admin_ui: {width: 200}
-      name: current_version_uid
-      type: string
-    - admin_ui: {width: 200}
-      name: version_history
-      target: master_material_version
-      type: link_multiple
-    - admin_ui: {width: 200}
-      name: version_history_uid
-      type: string
-    - admin_ui: {width: 200}
-      name: current_version
-      target: master_material_version
-      type: link_single
-    - admin_ui: {width: 200}
-      name: last_verified_by
-      type: string
-    - admin_ui: {width: 200}
-      name: last_verified_date
-      type: datetime
-    server: full
-    title: master_material
-  master_material_version:
-    client: none
-    columns:
-    - admin_ui: {width: 200}
-      name: change_description
-      type: string
-    - admin_ui: {width: 200}
-      name: created_at
-      type: datetime
-    - admin_ui: {width: 200}
-      name: created_by
-      target: users
-      type: link_single
-    - admin_ui: {width: 200}
-      name: submitted_at
-      type: datetime
-    - admin_ui: {width: 200}
-      name: submitted_by
-      target: users
-      type: link_single
-    - admin_ui: {width: 200}
-      name: ref_id
-      target: supplier
-      type: link_single
-    - admin_ui: {width: 200}
-      name: master_material_id
-      type: string
-    - admin_ui: {width: 200}
-      name: status
-      type: string
-    - admin_ui: {width: 200}
-      name: supplier
-      type: string
-    - admin_ui: {width: 200}
-      name: supplier_name
-      type: string
-    - admin_ui: {width: 200}
-      name: country_of_origin
-      type: string
-    - admin_ui: {width: 200}
-      name: name
-      type: string
-    - admin_ui: {width: 200}
-      name: material_type
-      target: material_type
-      type: link_single
-    - admin_ui: {width: 200}
-      name: last_verified_date
-      type: datetime
-    - admin_ui: {width: 200}
-      name: last_verified_by
-      target: users
-      type: link_single
-    - admin_ui: {width: 200}
-      name: qr_id
-      target: qr_code
-      type: link_single
-    - admin_ui: {width: 200}
-      name: picture_id
-      target: qr_code
-      type: link_single
-    - admin_ui: {width: 200}
-      name: unit_of_measurement
-      type: string
-    - admin_ui: {width: 200}
-      name: fabric_composition
-      type: string
-    - admin_ui: {width: 200}
-      name: generic_material_composition
-      type: string
-    - admin_ui: {width: 200}
-      name: fabric_roll_width
-      type: number
-    - admin_ui: {width: 200}
-      name: fabric_cut_width
-      type: number
-    - admin_ui: {width: 200}
-      name: fabric_cut_width_no_shrinkage
-      type: number
-    - admin_ui: {width: 200}
-      name: weight_per_unit
-      type: number
-    - admin_ui: {width: 200}
-      name: weight_uom
-      target: material_weight_uom
-      type: link_single
-    - admin_ui: {width: 200}
-      name: generic_material_size
-      type: string
-    - admin_ui: {width: 200}
-      name: weft_shrinkage
-      type: number
-    - admin_ui: {width: 200}
-      name: werp_shrinkage
-      type: number
-    - admin_ui: {width: 200}
-      name: original_cost_per_unit
-      type: number
-    - admin_ui: {width: 200}
-      name: native_cost_currency
-      type: string
-    - admin_ui: {width: 200}
-      name: supplier_selling_tolerance
-      type: number
-    - admin_ui: {width: 200}
-      name: 'refundable_tolerance:'
-      type: bool
-    - admin_ui: {width: 200}
-      name: effective_cost_per_unit
-      type: number
-    - admin_ui: {width: 200}
-      name: vietnam_vat_rate
-      type: number
-    - admin_ui: {width: 200}
-      name: refundable_vat
-      type: bool
-    - admin_ui: {width: 200}
-      name: import_duty
-      type: number
-    - admin_ui: {width: 200}
-      name: refundable_import_duty
-      type: bool
-    - admin_ui: {width: 200}
-      name: shipping_term
-      type: string
-    - admin_ui: {width: 200}
-      name: logistics_rate
-      type: number
-    - admin_ui: {width: 200}
-      name: logistics_fee_per_unit
-      type: number
-    - admin_ui: {width: 200}
-      name: landed_cost_per_unit
-      type: number
-    - admin_ui: {width: 200}
-      name: document_id
-      type: string
-    - admin_ui: {width: 200}
-      name: document_uid
-      type: string
-    - admin_ui: {width: 200}
-      name: ver_num
-      type: number
-    - admin_ui: {width: 200}
-      name: document
-      target: master_material
-      type: link_single
-    - admin_ui: {width: 200}
-      name: hanger_pdf_id
-      type: string
-    server: full
-    title: master_material_version
   master_material_versions:
     client: none
     columns:
@@ -547,10 +352,10 @@ db_schema:
     - admin_ui: {width: 200}
       name: country_of_origin
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0.5, width: 200}
       name: name
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0.75, width: 200}
       name: material_type
       type: string
     - admin_ui: {width: 200}
@@ -744,7 +549,7 @@ db_schema:
   overhead_cost_items:
     client: none
     columns:
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0, width: 200}
       name: cost_sheet_version
       target: cost_sheet_versions
       type: link_single
@@ -778,6 +583,9 @@ db_schema:
       name: updated_by
       target: users
       type: link_single
+    - admin_ui: {order: 5.5, width: 200}
+      name: description
+      type: string
     server: full
     title: overhead_cost_items
   picture_masterstyle_:

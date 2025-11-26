@@ -24,7 +24,7 @@ components:
   properties: {}
   type: Label
 - data_bindings:
-  - {code: 'self.item[''cost'']', property: text, writeback: false}
+  - {code: 'self.item[''cost_amount'']', property: text, writeback: false}
   layout_properties: {column: BHMGBN}
   name: cost
   properties: {}

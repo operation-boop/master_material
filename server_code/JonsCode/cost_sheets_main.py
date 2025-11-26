@@ -95,7 +95,7 @@ def get_cost_sheet(cost_sheet_id):
 #   """
 #     Get all cost sheets in the system.
 #     Returns them sorted by creation date (newest first).
-    
+
 #     Returns:
 #         List of all cost sheets
 #     """
@@ -220,18 +220,23 @@ def get_cost_sheet_details(cost_sheet_id):
       if bom_version:
         bom_rows = list(app_tables.bom_line_items.search(bom_version=bom_version))
         print(f"Found {len(bom_rows)} BOM items")
-        
+
         for r in bom_rows:
           # Safe access to linked 'material' row
           material_name = "N/A"
           if r['assigned_material']:
-            material_name = r['assigned_material']#['name']
+            material_name = r['assigned_material']['name']
+
+            material_type = "N/A"
+          if r['assigned_material']:
+            material_type = r['assigned_material']['material_type']
 
           consumption = r['net_buying_consumption'] if r['net_buying_consumption'] is not None else 0
           unit_cost = r['material_cost_in_usd'] if r['material_cost_in_usd'] is not None else 0
 
           bom_items.append({
             "material_name": material_name,
+            "material_type": material_type,
             "consumption": consumption,
             "unit_cost": unit_cost,
             "total_cost": consumption * unit_cost,
@@ -247,7 +252,7 @@ def get_cost_sheet_details(cost_sheet_id):
     try:
       proc_rows = list(app_tables.processing_cost_items.search(cost_sheet_version=current_version))
       print(f"Found {len(proc_rows)} processing cost items")
-      
+
       for r in proc_rows:
         processing_costs.append({
           "process_type": r['cost_type'] if r['cost_type'] else 'N/A',
@@ -262,34 +267,43 @@ def get_cost_sheet_details(cost_sheet_id):
     except Exception as e:
       print(f"Error loading processing costs: {str(e)}")
 
-      # Using traceback for easier debugging
-      import traceback
-      traceback.print_exc()
-      
       processing_costs = []
 
+
+
+
+
+  #   print(f"Successfully built {len(overhead_costs)} overhead cost items")
+  # except Exception as e:
+  #   print(f"Error loading overhead costs: {str(e)}")
+  #   import traceback
+  #   traceback.print_exc()
+  #   overhead_costs = []
+
+
+    
       # 3) Overhead Costs
     overhead_costs = []
     try:
       oh_rows = list(app_tables.overhead_cost_items.search(cost_sheet_version=current_version))
       print(f"Found {len(oh_rows)} overhead cost items")
-      
+
+      # TIER 3 COST
       for r in oh_rows:
         overhead_costs.append({
           "cost_type": r['cost_type'] if r['cost_type'] else 'N/A',
+          "description": r['description'] if r['description'] else 'N/A',
           "cost_amount": r['cost_amount'] if r['cost_amount'] is not None else 0,
           "cost_currency": r['cost_currency'] if r['cost_currency'] else 'USD',
         })
-        
+
         print(f"Successfully built {len(overhead_costs)} overhead cost items")
     except Exception as e:
       print(f"Error loading overhead costs: {str(e)}")
-      
-      # Using traceback for easier debugging
       import traceback
       traceback.print_exc()
-      
       overhead_costs = []
+
 
       # 4) Exchange Rates
     exchange_rates = []
@@ -478,9 +492,9 @@ def create_new_version(cost_sheet_id, change_description, user_id):
   return new_version
 
 
-@anvil.server.callable
-def get_cost_sheet_summary(cost_sheet_version_id):
-  """
+  @anvil.server.callable
+  def get_cost_sheet_summary(cost_sheet_version_id):
+    """
     Get a complete summary of a cost sheet version.
     This is a wrapper around the helper function for frontend use.
     

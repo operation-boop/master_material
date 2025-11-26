@@ -1,8 +1,8 @@
 components:
 - data_bindings:
-  - {code: 'self.item[''material'']', property: text, writeback: false}
+  - {code: 'self.item[''material_name'']', property: text, writeback: false}
   layout_properties: {column: JKSDUP}
-  name: material
+  name: material_name
   properties: {}
   type: Label
 - data_bindings:
