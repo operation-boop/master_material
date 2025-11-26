@@ -297,10 +297,6 @@ class Material_input_form(Material_input_formTemplate):
     """Close the form"""
     self.raise_event("x-close-alert")
 
-  def cancel_btn_click(self, **event_args):
-    """Cancel and close the form"""
-    self.close_btn_click()
-
   def _current_user_name(self):
     """Get current user's name/email"""
     user = anvil.users.get_user() or anvil.users.login_with_form()
