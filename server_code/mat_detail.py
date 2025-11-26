@@ -50,7 +50,7 @@ def get_material_detail(document_id):
     "original_cost_per_unit": ocpu,
     "cost_display": cost_display,
     "unit_of_measurement": _get(v, "unit_of_measurement", " "),
-    "verification_status": _get(v, "status", "Draft", " "),
+    "verification_status": _get(v, "status", "Draft"),
     "updated_at": _get(v, "updated_at"),
     "submitted_at": _get(v, "submitted_at"),
     "last_verified_date": _get(v, "last_verified_date"),

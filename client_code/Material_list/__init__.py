@@ -36,7 +36,6 @@ class Material_list(Material_listTemplate):
     except Exception as e:
       alert(f"Error opening form: {str(e)}")
 
-
   def load_material_cards(self, **event_args): ##
     self.flow_panel_materials.clear()      
     for c in self.material_card:
