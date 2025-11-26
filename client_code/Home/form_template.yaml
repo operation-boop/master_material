@@ -137,7 +137,7 @@ components:
       type: Link
     - data_bindings:
       - {code: '"material"', property: tag, writeback: false}
-      event_bindings: {click: link_nav_click}
+      event_bindings: {click: link_material_click}
       layout_properties: {grid_position: 'FYLCCJ,UNXWCI'}
       name: link_material
       properties: {text: '|       Material List'}

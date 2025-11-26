@@ -136,3 +136,7 @@ class Home(HomeTemplate):
     from ..Material_list import Material_list
     self.content_panel.clear()
     self.content_panel.add_component(Material_list(), full_width_row=True)
+
+  def link_material_click(self, **event_args):
+    """This method is called when the link is clicked"""
+    pass
