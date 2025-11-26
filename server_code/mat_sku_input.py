@@ -48,4 +48,4 @@ def create_material_sku(document_id, ref_id, qr_data, sku_cost_override, color=N
     size=size
   )
 
-  
+
