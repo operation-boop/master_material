@@ -103,10 +103,10 @@ components:
       name: column_panel_11
       properties: {}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'ZMNWBX,FWJYSL'}
-      name: label_4
+    - layout_properties: {grid_position: 'ZMNWBX,FWJYSL DGGAKJ,XQAHZI'}
+      name: column_panel_9
       properties: {}
-      type: Label
+      type: ColumnPanel
     - layout_properties: {grid_position: 'HURLWC,QFVXDB'}
       name: spacer_1
       properties: {height: 32}
@@ -504,7 +504,7 @@ components:
       name: spacer_5
       properties: {height: 32}
       type: Spacer
-    - event_bindings: {click: cancel_btn_click}
+    - event_bindings: {click: close_btn_click}
       layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
       name: cancel_btn
       properties: {align: left, background: 'theme:Gray 600', foreground: 'theme:White', role: null, text: Cancel}
@@ -521,7 +521,7 @@ components:
       type: Button
     layout_properties: {grid_position: 'UCHAOH,WTQRTI'}
     name: card_1
-    properties: {col_widths: '{"IGPTNC":10,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
+    properties: {col_widths: '{"IGPTNC":32,"ZFEYDI":7,"SOFHHP":20,"RUABPK":40,"JXABZO":13}', role: card}
     type: ColumnPanel
   layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
   name: column_panel_1
