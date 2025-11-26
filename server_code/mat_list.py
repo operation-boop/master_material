@@ -29,17 +29,17 @@ def list_material_cards(statuses=None):
     cost = f"{ocpu} {nccy}" if (ocpu and nccy) else ""
 
     cards.append({
-      "document_id": master['document_id'],
-      "master_material_id": version['master_material_id'],
-      "ref_id": version['ref_id'] or "",
-      "material_name": version['name'] or "",
-      "material_type": version['material_type'] or "",
-      "fabric_composition": version['fabric_composition'],
-      "weight": weight,
-      "supplier": version['supplier_name'] or "",
-      "cost_per_unit": cost,
+      "document_id": master['document_id'] or " ",
+      "master_material_id": version['master_material_id'] or " ",
+      "ref_id": version['ref_id'] or " ",
+      "material_name": version['name'] or " ",
+      "material_type": version['material_type'] or " ",
+      "fabric_composition": version['fabric_composition'] or " ",
+      "weight": weight or " ",
+      "supplier": version['supplier_name'] or " ",
+      "cost_per_unit": cost or " ",
       "verification_status": version['status'] or "Draft",
-      "ver_num": version['ver_num'],
+      "ver_num": version['ver_num'] or " ",
     })
 
   return cards

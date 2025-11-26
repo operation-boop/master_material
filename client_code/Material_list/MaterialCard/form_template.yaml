@@ -168,7 +168,7 @@ components:
       name: delete_btn
       properties: {background: '#ff0b11', foreground: black, role: primary-color, text: Delete, visible: true}
       type: Button
-    layout_properties: {width: 451.8670122070312}
+    layout_properties: {width: 484.4669755859375}
     name: card_1
     properties:
       col_widths: '{"WZXMWB":30,"KCPASA":30}'
@@ -176,7 +176,7 @@ components:
       spacing:
         padding: [null, 12, null, null]
     type: ColumnPanel
-  layout_properties: {full_width_row: false, grid_position: 'UTDESI,LXWIPH'}
+  layout_properties: {full_width_row: true, grid_position: 'UTDESI,KUNLGG'}
   name: flow_panel_material_card
   properties: {vertical_align: full}
   type: FlowPanel

@@ -9,7 +9,7 @@ class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     anvil.users.login_with_form()
-    self.repeating_panel_materials.add_event_handler('x-refresh-list', self.load_material_cards)
+    self.flow_panel_materials.add_event_handler('x-refresh-list', self.load_material_cards)
     self.material_card = anvil.server.call("list_material_cards")
     self.load_material_cards()
 
@@ -41,12 +41,9 @@ class Material_list(Material_listTemplate):
     self.flow_panel_materials.clear()      
     for c in self.material_card:
       card = MaterialCard(item=c)
-    
+      card.role = "fixed-card"
       # This applies the CSS height from Step 2
-      card.role = "fixed-card"  
-      card.width = "100%"
-    
-      self.flow_panel_materials.add_component(card)
+      self.flow_panel_materials.add_component(card, width="48%")
 
   def refresh_data(self):
     self.material_card = anvil.server.call("list_material_cards")
