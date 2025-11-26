@@ -429,7 +429,7 @@ components:
     name: card_1
     properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
     type: ColumnPanel
-  layout_properties: {grid_position: 'AXBFHU,OZZZWS'}
+  layout_properties: {grid_position: 'QYLZFX,HHQAQE'}
   name: column_panel_1
   properties: {col_widths: '{"XXGYGL":55,"ZITWFF":5}'}
   type: ColumnPanel
