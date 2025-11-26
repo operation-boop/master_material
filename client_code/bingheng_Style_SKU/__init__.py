@@ -10,47 +10,20 @@ from anvil.tables import app_tables
 
 # keep your table reference
 TABLE = app_tables.material_sku__main_
-# #--------------------------------------------------
-# # put this at top of __init__ (after init_components)
-# print("DEBUG: checking repeating_panel_1 presence:", hasattr(self, "repeating_panel_1"))
 
-# # fetch server rows (or use test list)
-# try:
-#   rows = anvil.server.call('get_skus')
-#   print("DEBUG: server returned rows (len):", len(rows) if isinstance(rows, (list,tuple)) else type(rows))
-#   if isinstance(rows, (list,tuple)) and rows:
-#     print("DEBUG: sample row keys:", list(rows[0].keys()))
-# except Exception as e:
-#   print("DEBUG: get_skus failed:", repr(e))
-
-# # Try assigning a safe minimal list of dicts that should always work:
-# try:
-#   test_items = [
-#     {"row_id":"T1","sku_id":"TEST001","id":"TEST001","ref_id":"R1","master_material":"Cotton","color":"Blue","size":"M","price":10},
-#     {"row_id":"T2","sku_id":"TEST002","id":"TEST002","ref_id":"R2","master_material":"Wool","color":"Gray","size":"L","price":8}
-#   ]
-#   self.repeating_panel_1.items = test_items
-#   print("DEBUG: test assign succeeded")
-# except Exception as e:
-#   print("DEBUG: test assign failed:", repr(e))
-
-# #-------------------------------------------------
 class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   def __init__(self, **properties):
-    # initialize designer components first (very important)
+    # initialize designer components first
     self.init_components(**properties)
 
     # debug: list available components so we can confirm control names
     try:
       print("DEBUG: components on bingheng_Style_SKU:")
       for c in self.get_components():
-        # `c.name` is the designer name; print type too for clarity
         print(" -", getattr(c, "name", "<no-name>"), "(", type(c).__name__, ")")
-      # quick hasattr check for common controls
       print("Has repeating_panel_1:", hasattr(self, "repeating_panel_1"))
       print("Has image_qr_preview:", hasattr(self, "image_qr_preview"))
     except Exception as e:
-      # don't crash the form if debug listing fails
       print("DEBUG listing failed:", e)
 
     # state
@@ -60,14 +33,12 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
     try:
       self.load_data()
     except Exception as e:
-      # show the error non-fatally
       print("Initial load_data() failed:", repr(e))
 
   # -----------------------
   # Helpers to safely access Designer controls by name
   # -----------------------
   def _get_text(self, ctrl_name):
-    """Return trimmed .text of control if it exists, else empty string."""
     ctrl = getattr(self, ctrl_name, None)
     if ctrl is None:
       return ""
@@ -77,7 +48,6 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       return ""
 
   def _set_text(self, ctrl_name, value):
-    """Set .text on a control if present; no-op if missing."""
     ctrl = getattr(self, ctrl_name, None)
     if ctrl is None:
       return
@@ -90,47 +60,57 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   # Data loading
   # -----------------------
   def load_data(self):
-    """Load SKU list from server and put into repeating panel as plain dicts."""
+    """Load SKU list from server and put into repeating panel as plain dicts.
+       If the panel expects (key, value) pairs, try that as a fallback.
+    """
     try:
-      rows = anvil.server.call('get_skus')   # server returns list of plain dicts
-      if not isinstance(rows, (list, tuple)):
-        alert(f"Failed to load SKU data: unexpected response type: {type(rows)}")
-        try:
-          if hasattr(self, "repeating_panel_1"):
-            self.repeating_panel_1.items = []
-        except Exception:
-          pass
-        return
-
-      problems = [r for r in rows if isinstance(r, dict) and r.get("_error")]
-      if problems:
-        print("get_skus returned rows with conversion issues:", problems)
-
-      # safe assignment: check whether the repeating panel exists as an attribute
-      if hasattr(self, "repeating_panel_1"):
-        try:
-          self.repeating_panel_1.items = rows
-        except Exception as e:
-          # if assignment fails, print the available attributes to help debug
-          print("Could not assign repeating_panel_1.items:", repr(e))
-          print("Available attributes on self:", [a for a in dir(self) if not a.startswith("_")][:200])
-      else:
-        print("No repeating_panel_1 found on the form (check Designer name).")
-
+      rows = anvil.server.call('get_skus')
     except Exception as e:
-      # show full exception for debugging
-      alert(f"Failed to load SKU data: {repr(e)}")
+      print("DEBUG get_skus failed:", repr(e))
+      rows = None
+
+    # Try normal assignment first
+    if isinstance(rows, (list, tuple)):
       try:
-        if hasattr(self, "repeating_panel_1"):
-          self.repeating_panel_1.items = []
+        self.repeating_panel_1.items = rows
+        print("DEBUG: assigned server rows (plain list) to repeating_panel_1")
+        return
+      except Exception as e:
+        print("DEBUG: assign server rows failed (plain list):", repr(e))
+
+      # Try pairing each row with an index/key -> this satisfies templates expecting 2-tuple items
+      try:
+        paired = list(enumerate(rows))
+        self.repeating_panel_1.items = paired
+        print("DEBUG: assigned server rows as enumerate(rows) to repeating_panel_1")
+        return
+      except Exception as e:
+        print("DEBUG: assign server rows failed (paired):", repr(e))
+
+    # final fallback: small hard-coded sample so UI can at least render
+    try:
+      fallback = [
+        (0, {"row_id":"F1","sku_id":"TEST01","id":"TEST01","ref_id":"REF1","master_material":"Cotton","color":"Blue","size":"M","price":10}),
+        (1, {"row_id":"F2","sku_id":"TEST02","id":"TEST02","ref_id":"REF2","master_material":"Wool","color":"Black","size":"L","price":8}),
+      ]
+      # try paired fallback (likely matches template expectation)
+      try:
+        self.repeating_panel_1.items = fallback
+        print("DEBUG: assigned paired fallback items")
+        return
       except Exception:
-        pass
+        # try assigning without pairing (last resort)
+        self.repeating_panel_1.items = [x[1] for x in fallback]
+        print("DEBUG: assigned unpaired fallback items")
+    except Exception as e:
+      print("DEBUG: fallback assign failed:", repr(e))
+      alert("Could not assign items to repeating panel; inspect item-template bindings and control names.")
 
   def refresh_data(self):
     self.load_data()
 
   # -----------------------
-  # Add/create
+  # Add/create (wired to btn_add click)
   # -----------------------
   def btn_add(self, **event_args):
     """Create a new blank row in the DB (quick create)."""
@@ -195,7 +175,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
   # -----------------------
   # QR generation (client) -> calls server get_qr_code
   # -----------------------
-  def get_qr_for_inputs(self, **event_args):
+  def get_qr_code(self, **event_args):
     """Generate / fetch a QR code for the SKU using multiple fields."""
     sku_id = self._get_text("text_box_id")
     if not sku_id:
@@ -278,7 +258,7 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       updates = {
         "sku_id": item.get("sku_id") or item.get("id"),
         "id": item.get("id"),
-        "ref_id": item.get("ref_id"),
+      "ref_id": item.get("ref_id"),
         "master_material": item.get("master_material"),
         "color": item.get("color"),
         "size": item.get("size"),
@@ -304,5 +284,3 @@ class bingheng_Style_SKU(bingheng_Style_SKUTemplate):
       self.load_data()
     except Exception as e:
       alert(f"Delete failed: {e}")
-
-
