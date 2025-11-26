@@ -8,9 +8,10 @@ unique_ids:
     Material_detail.material_sku_rowtemplate: XQPRO2LKNQ2NX6ZM2QATA7LPORVUTDMB
     Material_detail.version_history_itemtemplate: '1764148267325154172073797.02036'
     Material_input_form: '1762246514081760660811976.6614'
-    Material_input_form.material_input_itemtemplate: CABDMQSLAU5FJZ4W52SWTFVIEWGI7Z7V
+    Material_input_form.Input_forms: '1764149286506192788483579.79382'
     Material_list: '176223201599762412789806.216'
     Material_list.MaterialCard: '1762336056821483042217454.3132'
+    Material_sku_input_form: '1764149541024548151116321.81134'
     bingheng_Control_Panel: 35FZTUOY5IKXQL4QW3WHRUQ2KN6SG4I7
     bingheng_CreateProfile: TSUWXMPTI7FTEDLZGUYFAJCHYGOET2XP
     bingheng_Details_Page: Z4SKUI5VZYJEAY2JGLK7NBPZ6736KDFM

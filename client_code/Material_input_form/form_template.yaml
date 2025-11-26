@@ -13,22 +13,38 @@ components:
     - data_bindings: []
       layout_properties: {grid_position: 'PWGNXB,QYVPUT'}
       name: label_1
-      properties: {bold: true, border: '', foreground: Red, text: BASIC INFORMATION, underline: false}
+      properties: {bold: true, border: '', foreground: red, text: BASIC INFORMATION, underline: false}
       type: Label
     - components:
+      - layout_properties: {grid_position: 'XTYBLW,JBDGYR'}
+        name: rich_text_11
+        properties: {content: 'Master Material ID <span style="color:red;">*</span>', format: restricted_html}
+        type: RichText
+      - data_bindings:
+        - {code: 'self.item[''master_material_id'']', property: text, writeback: false}
+        event_bindings: {}
+        layout_properties: {grid_position: 'LBLPEJ,MZNTJE'}
+        name: mat_material_id
+        properties: {}
+        type: TextBox
       - layout_properties: {grid_position: 'KLGAFQ,SBSJAL'}
         name: rich_text_1
         properties: {content: 'Material Name <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'UYHKGF,LMUWOY'}
+      - data_bindings:
+        - {code: 'self.item[''name'']', property: text, writeback: false}
+        event_bindings: {}
+        layout_properties: {grid_position: 'JAIMIJ,PNSGLT'}
         name: material_name
-        properties: {}
+        properties: {text: ''}
         type: TextBox
       - layout_properties: {grid_position: 'JXCFFM,NSAIFW'}
         name: rich_text_2
         properties: {content: 'Material Type <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'UGFASQ,DEDWNP'}
+      - data_bindings:
+        - {code: 'self.item[''material_type'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'UGFASQ,DEDWNP'}
         name: material_type_dropdown
         properties: {include_placeholder: true, placeholder: Select Type}
         type: DropDown
@@ -42,15 +58,20 @@ components:
           spacing_above: small
           spacing_below: small
         type: RichText
-      - layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
-        name: supplier_dropdown
+      - data_bindings:
+        - {code: 'self.item[''supplier_name'']', property: selected_value, writeback: false}
+        event_bindings: {}
+        layout_properties: {grid_position: 'IYWLQB,KVJUJH'}
+        name: dropdown_supplier
         properties: {include_placeholder: true, placeholder: Select Supplier}
         type: DropDown
       - layout_properties: {grid_position: 'OCMARJ,YPSQAW'}
         name: rich_text_4
         properties: {content: 'Supplier Reference ID <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'QMQFNM,ZWNAMZ'}
+      - data_bindings:
+        - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'QMQFNM,ZWNAMZ'}
         name: supplier_reference_id
         properties: {placeholder: ''}
         type: TextBox
@@ -58,7 +79,9 @@ components:
         name: rich_text_5
         properties: {content: 'Country of Origin <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'SDVRQA,LKGYZL'}
+      - data_bindings:
+        - {code: 'self.item[''country_of_origin'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'SDVRQA,LKGYZL'}
         name: country_of_origin_dropdown
         properties: {include_placeholder: true, placeholder: Select Country}
         type: DropDown
@@ -66,7 +89,9 @@ components:
         name: rich_text_6
         properties: {content: 'Unit of Measurement <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'IDIDFS,IFDAVV'}
+      - data_bindings:
+        - {code: 'self.item[''unit_of_measurement'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'IDIDFS,IFDAVV'}
         name: UOM_dropdown
         properties: {include_placeholder: true, placeholder: Select UOM}
         type: DropDown
@@ -78,39 +103,44 @@ components:
       name: column_panel_11
       properties: {}
       type: ColumnPanel
+    - layout_properties: {grid_position: 'ZMNWBX,FWJYSL DGGAKJ,XQAHZI'}
+      name: column_panel_9
+      properties: {}
+      type: ColumnPanel
     - layout_properties: {grid_position: 'HURLWC,QFVXDB'}
       name: spacer_1
       properties: {height: 32}
       type: Spacer
     - layout_properties: {grid_position: 'FVRAXU,ZDFLLL'}
       name: label_8
-      properties: {bold: true, foreground: Red, text: TECHNICAL SPECIFICATIONS}
+      properties: {bold: true, foreground: red, text: TECHNICAL SPECIFICATIONS}
       type: Label
     - layout_properties: {grid_position: 'JKUZWC,UKHVID'}
       name: label_9
       properties: {bold: false, text: Fabric Composition}
       type: Label
     - components:
-      - layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,PZJFQT HMXMMC,TUKLBS'}
+      - layout_properties: {grid_position: 'XGDENA,PZJFQT HMXMMC,TUKLBS'}
         name: percentage
         properties: {align: left, placeholder: '%'}
         type: TextBox
-      - layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,PZJFQT YZDFEM,AZBZAU'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'XGDENA,PZJFQT YZDFEM,AZBZAU'}
         name: total_percentage
-        properties: {}
+        properties: {text: ''}
         type: Label
-      - layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,YNKFKH'}
+      - layout_properties: {grid_position: 'XGDENA,YNKFKH'}
         name: material_dropdown
         properties: {include_placeholder: true, placeholder: Select Material}
         type: DropDown
       - event_bindings: {click: add_btn_click}
-        layout_properties: {grid_position: 'RQEWPY,FDOMQP XGDENA,ZNBLDM'}
+        layout_properties: {grid_position: 'XGDENA,ZNBLDM'}
         name: add_btn
-        properties: {align: center, icon: 'fa:plus', role: primary-color, text: add}
+        properties: {align: center, background: orange, foreground: white, icon: 'fa:plus', role: primary-color, text: add}
         type: Button
-      - layout_properties: {grid_position: 'RQEWPY,FDOMQP NOBPQQ,OUKDSZ'}
+      - layout_properties: {grid_position: 'RQEWPY,FDOMQP OWAFJO,KTCWOF'}
         name: fabric_composition_repeating_panel
-        properties: {item_template: Material_input_form.material_input_itemtemplate}
+        properties: {item_template: Material_input_form.Input_forms}
         type: RepeatingPanel
       layout_properties: {grid_position: 'TJKGYG,EMNOCW'}
       name: card_3
@@ -121,32 +151,41 @@ components:
         name: label_10
         properties: {bold: false, text: Roll Width (m)}
         type: Label
-      - layout_properties: {grid_position: 'OGMBXT,RBEGKL'}
-        name: roll_width
+      - data_bindings:
+        - {code: 'self.item[''fabric_roll_width'']', property: text, writeback: false}
+        event_bindings: {}
+        layout_properties: {grid_position: 'OGMBXT,RBEGKL'}
+        name: fabric_roll_width
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'AXXSOA,GCEEES'}
         name: label_11
         properties: {bold: false, text: Cut Width (m)}
         type: Label
-      - layout_properties: {grid_position: 'RVOPJP,QOSPGW'}
-        name: cut_width
+      - data_bindings:
+        - {code: 'self.item[''fabric_cut_width'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'RVOPJP,QOSPGW'}
+        name: fabric_cut_width
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'WHFQON,MPISVU'}
         name: label_12
         properties: {bold: false, text: Cut Width (no shrink)}
         type: Label
-      - layout_properties: {grid_position: 'ACOTSK,MSVSNC'}
-        name: cut_width_with_no_shrink
+      - data_bindings:
+        - {code: 'self.item[''fabric_cut_width_no_shrinkage'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'KEDJQF,TRIFGU'}
+        name: fabric_cut_width_no_shrinkage
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'YUXMJL,THRAJY'}
         name: label_17
         properties: {bold: false, text: Material Size/Spec}
         type: Label
-      - layout_properties: {grid_position: 'YMRRUJ,CDTUWJ'}
-        name: material_size
+      - data_bindings:
+        - {code: 'self.item[''generic_material_size'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'JZOTKD,WOFEFL'}
+        name: generic_material_size
         properties: {placeholder: e.g. 20L for buttons}
         type: TextBox
       - layout_properties: {grid_position: 'TGNPID,ERAVCM'}
@@ -170,23 +209,29 @@ components:
         name: label_13
         properties: {bold: false, text: Weft Shrinkage, visible: true}
         type: Label
-      - layout_properties: {grid_position: 'UBXPKS,QOLKJJ'}
+      - data_bindings:
+        - {code: 'self.item[''weft_shrinkage'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'OPUCNX,XSUZPZ'}
         name: weft_shrinkage
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'WZWIUY,EALIRB'}
         name: label_14
-        properties: {bold: false, text: Warp Shrinkage, visible: true}
+        properties: {bold: false, text: Werp Shrinkage, visible: true}
         type: Label
-      - layout_properties: {grid_position: 'MBVMAN,BQVPSR'}
-        name: warp_shrinkage
+      - data_bindings:
+        - {code: 'self.item[''werp_shrinkage'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MBVMAN,BQVPSR'}
+        name: werp_shrinkage
         properties: {type: number}
         type: TextBox
       - layout_properties: {grid_position: 'UMVIDV,OWOOLJ'}
         name: rich_text_9
         properties: {content: 'Weight per Unit <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'OVMYYK,CJBUMO'}
+      - data_bindings:
+        - {code: 'self.item[''weight_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'OVMYYK,CJBUMO'}
         name: weight_per_unit
         properties: {type: number}
         type: TextBox
@@ -194,7 +239,9 @@ components:
         name: rich_text_10
         properties: {content: 'Weight UOM <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - layout_properties: {grid_position: 'ENXRFO,IIDQND'}
+      - data_bindings:
+        - {code: 'self.item[''weight_uom'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'ENXRFO,IIDQND'}
         name: weight_uom_dropdown
         properties: {include_placeholder: true, placeholder: Select UOM}
         type: DropDown
@@ -212,14 +259,16 @@ components:
       type: Spacer
     - layout_properties: {grid_position: 'SGNYGT,GOICEG'}
       name: label_19
-      properties: {bold: true, foreground: Red, text: COST INFORMATION}
+      properties: {background: '', bold: true, foreground: red, text: COST INFORMATION}
       type: Label
     - components:
       - layout_properties: {grid_position: 'XXWJHW,MJRWRY'}
         name: rich_text_7
         properties: {content: 'Original Cost per Unit <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - event_bindings: {change: original_cost_per_unit_change}
+      - data_bindings:
+        - {code: 'self.item[''original_cost_per_unit'']', property: text, writeback: false}
+        event_bindings: {change: original_cost_per_unit_change}
         layout_properties: {grid_position: 'NRESRT,MJAZHJ'}
         name: original_cost_per_unit
         properties: {type: number}
@@ -228,7 +277,9 @@ components:
         name: rich_text_8
         properties: {content: 'Currency <span style="color:red;">*</span>', format: restricted_html}
         type: RichText
-      - event_bindings: {change: currency_dropdown_change}
+      - data_bindings:
+        - {code: 'self.item[''native_cost_currency'']', property: selected_value, writeback: false}
+        event_bindings: {change: currency_dropdown_change}
         layout_properties: {grid_position: 'KBTROF,QGULDU'}
         name: currency_dropdown
         properties: {include_placeholder: true, placeholder: Select Currency}
@@ -237,14 +288,18 @@ components:
         name: label_22
         properties: {bold: false, text: Supplier Tolerance (%)}
         type: Label
-      - event_bindings: {change: supplier_tolerance_change}
-        layout_properties: {grid_position: 'MLBHNI,NZNRUH'}
+      - data_bindings:
+        - {code: 'self.item[''supplier_selling_tolerance'']', property: text, writeback: false}
+        event_bindings: {change: supplier_tolerance_change}
+        layout_properties: {grid_position: 'UFXJHR,XXWLYK'}
         name: supplier_tolerance
         properties: {type: number}
         type: TextBox
-      - layout_properties: {grid_position: 'IIOGXX,LYDSEP'}
+      - data_bindings:
+        - {code: 'self.item[''refundable_tolerance'']', property: checked, writeback: false}
+        layout_properties: {grid_position: 'IIOGXX,LYDSEP'}
         name: refundable_tolerance
-        properties: {align: center, text: ''}
+        properties: {align: center, checked: false, text: ''}
         type: CheckBox
       - layout_properties: {grid_position: 'IIOGXX,EXTOND'}
         name: label_23
@@ -280,13 +335,17 @@ components:
     - components:
       - layout_properties: {grid_position: 'QIIPXA,KMJNTJ'}
         name: label_24
-        properties: {bold: false, text: Vietnam VAT Rate}
+        properties: {bold: false, text: Vietnam VAT Rate (%)}
         type: Label
-      - layout_properties: {grid_position: 'CCXAWH,ERAIES'}
+      - data_bindings:
+        - {code: 'self.item[''vietnam_vat_rate'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'CCXAWH,ERAIES'}
         name: vietnam_vat_rate_dropdown
-        properties: {include_placeholder: false}
+        properties: {include_placeholder: false, placeholder: 'Select Vat '}
         type: DropDown
-      - layout_properties: {grid_position: 'EUDKVY,NNAAOV'}
+      - data_bindings:
+        - {code: 'self.item[''refundable_vat'']', property: checked, writeback: false}
+        layout_properties: {grid_position: 'EUDKVY,NNAAOV'}
         name: refundable_vat
         properties: {align: center, text: ''}
         type: CheckBox
@@ -298,11 +357,15 @@ components:
         name: label_27
         properties: {bold: false, text: Import Duty (%)}
         type: Label
-      - layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
+      - data_bindings:
+        - {code: 'self.item[''import_duty'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'UYVZRO,GXHIVN'}
         name: import_duty
         properties: {type: number}
         type: TextBox
-      - layout_properties: {grid_position: 'AGZOIO,JUNYKV'}
+      - data_bindings:
+        - {code: 'self.item[''refundable_import_duty'']', property: checked, writeback: false}
+        layout_properties: {grid_position: 'AGZOIO,JUNYKV'}
         name: refundable_import_duty
         properties: {text: ''}
         type: CheckBox
@@ -314,16 +377,20 @@ components:
         name: label_29
         properties: {bold: false, text: Shipping Term}
         type: Label
-      - layout_properties: {grid_position: 'OVJPAQ,GZGKHF'}
+      - data_bindings:
+        - {code: 'self.item[''shipping_term'']', property: selected_value, writeback: false}
+        layout_properties: {grid_position: 'OVJPAQ,GZGKHF'}
         name: shipping_term_dropdown
-        properties: {}
+        properties: {include_placeholder: true, placeholder: Select Shipping Terms}
         type: DropDown
       - layout_properties: {grid_position: 'WQAJMH,UTEUUS'}
         name: label_30
         properties: {bold: false, text: Logistics Rate (%)}
         type: Label
-      - event_bindings: {change: logistics_rate_change}
-        layout_properties: {grid_position: 'QDKMAH,TALLOF'}
+      - data_bindings:
+        - {code: 'self.item[''logistics_rate'']', property: text, writeback: false}
+        event_bindings: {change: logistics_rate_change}
+        layout_properties: {grid_position: 'TDOAQE,NVGDOK'}
         name: logistics_rate
         properties: {type: number}
         type: TextBox
@@ -335,6 +402,20 @@ components:
       name: column_panel_8
       properties: {}
       type: ColumnPanel
+    - layout_properties: {grid_position: 'UKCBAV,OCXQPM'}
+      name: spacer_4
+      properties: {height: 32}
+      type: Spacer
+    - layout_properties: {grid_position: 'KQVUND,ZIAQSP'}
+      name: label_2
+      properties: {text: Description}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''description_box'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'HIBZCS,LRBCBO'}
+      name: description_box
+      properties: {}
+      type: TextBox
     - components:
       - layout_properties: {grid_position: 'FKAZNY,UDIZFN'}
         name: label_25
@@ -348,19 +429,28 @@ components:
         name: original_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'CZGYTK,OYBTXT'}
+      - data_bindings:
+        - {code: 'self.item[''original_cost_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'CZGYTK,OYBTXT'}
         name: original_cost
         properties: {}
         type: Label
-      - layout_properties: {grid_position: 'BUZNWO,BCWJOU'}
-        name: label_32
-        properties: {bold: false, icon: 'fa:plus', text: 'Supplier Tolerance (0.0%):'}
+      - data_bindings:
+        - {code: '"Supplier Tolerance (" +str(self.item[''supplier_selling_tolerance''])+"%):"', property: text, writeback: false}
+        layout_properties: {grid_position: 'BUZNWO,BCWJOU'}
+        name: supplier_tolerance_show
+        properties:
+          bold: false
+          icon: fa:plus
+          text: |
+            Supplier Tolerance (0.0%):
         type: Label
       - layout_properties: {grid_position: 'BUZNWO,FLTSFX'}
         name: supplier_tolerance_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'BUZNWO,GGDBDN'}
+      - data_bindings: []
+        layout_properties: {grid_position: 'BUZNWO,GGDBDN'}
         name: supplier_tolerance_cost
         properties: {}
         type: Label
@@ -372,64 +462,68 @@ components:
         name: effective_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'IZUJAA,KLECKD'}
+      - data_bindings:
+        - {code: 'self.item[''effective_cost_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'IZUJAA,KLECKD'}
         name: effective_cost_per_unit
         properties: {}
         type: Label
-      - layout_properties: {grid_position: 'HOVJYO,IISZIC DBPOQG,RLQSSD'}
+      - layout_properties: {grid_position: 'MCDZIZ,QKBYWP'}
+        name: label_3
+        properties: {text: 'Logistics Fee Per Unit:'}
+        type: Label
+      - layout_properties: {grid_position: 'MCDZIZ,OGJVCX'}
+        name: logistics_unit_cost
+        properties: {align: right}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''logistics_fee_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MCDZIZ,CQTDQO'}
+        name: logistics_fee_per_unit
+        properties: {text: ''}
+        type: Label
+      - layout_properties: {grid_position: 'HOVJYO,IISZIC'}
         name: label_34
         properties: {text: 'Landed Cost (with logistics):'}
-        type: Label
-      - layout_properties: {grid_position: 'HOVJYO,IISZIC PDRDFG,KJHTIL'}
-        name: label_2
-        properties: {text: 'Logistics Fee per Unit:'}
         type: Label
       - layout_properties: {grid_position: 'HOVJYO,QIWLFI'}
         name: landed_cost_unit
         properties: {align: right}
         type: Label
-      - layout_properties: {grid_position: 'HOVJYO,QIWLFI PXVCFM,BBQHUI'}
-        name: logistics_unit_cost
-        properties: {align: right}
-        type: Label
-      - layout_properties: {grid_position: 'HOVJYO,FBGZIE LGAVEH,PGRSFR'}
+      - data_bindings:
+        - {code: 'self.item[''landed_cost_per_unit'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'HOVJYO,FBGZIE'}
         name: landed_cost
         properties: {}
         type: Label
-      - layout_properties: {grid_position: 'HOVJYO,FBGZIE LVVEPU,EFBNUA'}
-        name: logistics_fee_per_unit
-        properties: {}
-        type: Label
-      layout_properties: {grid_position: 'YJNOHF,BNWBQK'}
+      layout_properties: {grid_position: 'BOFVYI,GKRPDM'}
       name: card_2
-      properties: {background: '#ffe9c2', border: '', col_widths: '{}', role: card}
+      properties: {background: '#ffe9c2', border: '', col_widths: '{"AAEDXP":20,"CFKFQU":20,"KLECKD":20,"FISNLK":20,"CESKJM":20,"OYBTXT":20}', role: card}
       type: ColumnPanel
-    - layout_properties: {grid_position: 'AWARGL,HHFTCH'}
-      name: spacer_4
+    - layout_properties: {grid_position: 'BMHWQD,FXIFDF'}
+      name: spacer_5
       properties: {height: 32}
       type: Spacer
-    - event_bindings: {click: cancel_btn_click}
+    - event_bindings: {click: close_btn_click}
       layout_properties: {grid_position: 'FRMLPJ,IGPTNC'}
       name: cancel_btn
       properties: {align: left, background: 'theme:Gray 600', foreground: 'theme:White', role: null, text: Cancel}
       type: Button
-    - layout_properties: {grid_position: 'FRMLPJ,RIMMNM'}
-      name: column_panel_9
-      properties: {}
-      type: ColumnPanel
-    - layout_properties: {grid_position: 'FRMLPJ,VCSADV'}
+    - event_bindings: {click: save_as_draft_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,JXABZO'}
       name: save_as_draft_btn
       properties: {align: right, background: orange, foreground: 'theme:White', role: null, text: SAve as draft}
       type: Button
-    - layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
+    - event_bindings: {click: submit_btn_click}
+      layout_properties: {grid_position: 'FRMLPJ,ZFEYDI'}
       name: submit_btn
       properties: {align: right, background: '#09ae59', foreground: 'theme:White', text: submit}
       type: Button
     layout_properties: {grid_position: 'UCHAOH,WTQRTI'}
     name: card_1
-    properties: {col_widths: '{"IGPTNC":10,"RIMMNM":20,"VCSADV":20,"ZFEYDI":10,"SOFHHP":20,"RUABPK":40}', role: card}
+    properties: {col_widths: '{"IGPTNC":32,"ZFEYDI":7,"SOFHHP":20,"RUABPK":40,"JXABZO":13}', role: card}
     type: ColumnPanel
-  layout_properties: {grid_position: 'QYLZFX,HHQAQE'}
+  layout_properties: {grid_position: 'IDNPSB,AUWFXU'}
   name: column_panel_1
   properties: {col_widths: '{"XXGYGL":55,"ZITWFF":5}'}
   type: ColumnPanel

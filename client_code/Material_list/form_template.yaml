@@ -8,14 +8,17 @@ components:
   name: add_btn
   properties: {align: right, background: green, foreground: 'theme:White', icon: 'fa:plus', role: null, text: new material}
   type: Button
-- components:
-  - layout_properties: {width: 748}
-    name: repeating_panel_materials
-    properties: {item_template: Material_list.MaterialCard}
-    type: RepeatingPanel
+- event_bindings: {click: logout_btn_click}
+  layout_properties: {grid_position: 'QMUIBQ,AOSAXK'}
+  name: logout_btn
+  properties: {align: center, background: '#ad010e', bold: true, foreground: Black, text: Logout}
+  type: Button
+- components: []
   layout_properties: {grid_position: 'AWSUFX,RRXCZX'}
   name: flow_panel_materials
   properties: {}
   type: FlowPanel
-container: {type: ColumnPanel}
+container:
+  properties: {col_widths: '{"AQRIFR":20,"NNELXZ":30,"AOSAXK":10}'}
+  type: ColumnPanel
 is_package: true
