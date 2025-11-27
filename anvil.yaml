@@ -92,6 +92,32 @@ db_schema:
       type: string
     server: full
     title: bom_versions
+  client:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: client_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: client_name
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: price_category
+      type: string
+    - admin_ui: {order: 3, width: 200}
+      name: max_account_value
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: country
+      type: string
+    - admin_ui: {order: 5, width: 200}
+      name: currency
+      type: string
+    - admin_ui: {order: 6, width: 200}
+      name: contact_list
+      type: simpleObject
+    server: full
+    title: client
   client__masterstyle_:
     client: none
     columns:
@@ -795,6 +821,36 @@ db_schema:
       type: string
     server: full
     title: Supplier
+  supplier_2:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: supplier_id
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: supplier_name
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: country
+      type: string
+    - admin_ui: {order: 3, width: 200}
+      name: status
+      type: bool
+    - admin_ui: {order: 4, width: 200}
+      name: contact_person
+      type: string
+    - admin_ui: {order: 5, width: 200}
+      name: email
+      type: string
+    - admin_ui: {order: 6, width: 200}
+      name: approved_date
+      type: datetime
+    - admin_ui: {order: 7, width: 200}
+      name: approved_by
+      target: users
+      type: link_single
+    server: full
+    title: supplier
   suppliers:
     client: none
     columns:
