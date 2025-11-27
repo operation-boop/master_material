@@ -174,51 +174,135 @@ components:
       name: created_by
       properties: {bold: true}
       type: Label
-    layout_properties: {grid_position: 'BGRNRX,NFXJPQ'}
+    layout_properties: {grid_position: 'PRKDII,GPQRZL'}
     name: supplier_information_panel
     properties: {role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'AAGGPP,UDLZFJ'}
+    name: spacer_2
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'CVSJZT,RFIAGO'}
+      name: label_15
+      properties: {bold: true, foreground: RED, text: APPROVAL INFORMATION}
+      type: Label
+    - layout_properties: {grid_position: 'WAJJLR,PYLNCD'}
+      name: label_17
+      properties: {text: APPROVED DATE}
+      type: Label
+    - layout_properties: {grid_position: 'WAJJLR,YXTTWL'}
+      name: label_19
+      properties: {text: APPROVED BY}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''approved_date'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'NZNVLK,QGTHBD'}
+      name: approved_date
+      properties: {bold: true}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''approved_by'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'NZNVLK,OQWEIJ'}
+      name: approved_by
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'ZSLNPJ,BWFJYS'}
+      name: label_21
+      properties: {text: MATERIALS SUPPLIED}
+      type: Label
+    - data_bindings: []
+      layout_properties: {grid_position: 'SLZHUZ,LSGVZX'}
+      name: materials_supplied_info
+      properties: {bold: true}
+      type: Label
+    layout_properties: {grid_position: 'SCNQAV,TTQXGL'}
+    name: approval_information_panel
+    properties: {col_spacing: medium}
     type: ColumnPanel
   layout_properties: {grid_position: 'QDMPCD,SNQNSH'}
   name: column_panel_3
   properties: {}
   type: ColumnPanel
 - components:
-  - layout_properties: {grid_position: 'CVSJZT,RFIAGO'}
-    name: label_15
-    properties: {bold: true, foreground: RED, text: APPROVAL INFORMATION}
+  - event_bindings: {click: materials_btn_click}
+    layout_properties: {}
+    name: materials_btn
+    properties: {foreground: 'theme:Black', text: materials}
+    type: Button
+  - event_bindings: {click: orders_btn_click}
+    layout_properties: {}
+    name: orders_btn
+    properties: {foreground: 'theme:Black', text: orders}
+    type: Button
+  - event_bindings: {click: activity_btn_click}
+    layout_properties: {}
+    name: activity_btn
+    properties: {foreground: 'theme:Black', text: activity}
+    type: Button
+  layout_properties: {grid_position: 'EGWDOJ,KRHNWW'}
+  name: flow_panel_1
+  properties: {align: left, background: 'theme:Gray 100'}
+  type: FlowPanel
+- components:
+  - layout_properties: {grid_position: 'BECTNB,USHYQY'}
+    name: label_18
+    properties: {bold: true, font_size: 19, role: null, spacing_above: large, spacing_below: large, text: MATERIALS FROM THIS SUPPLIER}
     type: Label
-  - layout_properties: {grid_position: 'WAJJLR,PYLNCD'}
-    name: label_17
-    properties: {text: APPROVED DATE}
+  - components:
+    - name: repeating_panel_1
+      properties: {item_template: Supplier_details.supplier_material_rowtemplate}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'XVIGCR,HQMOXR'}
+    name: data_grid_2
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: MATERIAL ID}
+      - {data_key: column_2, id: VJQQOR, title: MATERIAL NAME}
+      - {data_key: column_3, id: OJLQEN, title: TYPE}
+      - {data_key: column_4, id: MBRVYS, title: COST}
+      - {data_key: column_5, id: HUQBZT, title: STATUS}
+    type: DataGrid
+  layout_properties: {grid_position: 'NMVPIV,LALUGB'}
+  name: materials_panel
+  properties: {visible: false}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'BKOIET,JSMGXC'}
+    name: label_18_copy
+    properties: {bold: true, font_size: 19, role: null, spacing_above: large, spacing_below: large, text: PURCHASE ORDERS}
     type: Label
-  - layout_properties: {grid_position: 'WAJJLR,YXTTWL'}
-    name: label_19
-    properties: {text: APPROVED BY}
+  - components:
+    - name: repeating_panel_2
+      properties: {item_template: Supplier_details.supplier_po_rowtemplate}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'HWUDUM,QSDCSW'}
+    name: data_grid_3
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: ORDER ID}
+      - {data_key: column_2, id: VJQQOR, title: MATERIAL}
+      - {data_key: column_3, id: OJLQEN, title: QUANTITY}
+      - {data_key: column_4, id: TLFEYV, title: VALUE}
+      - {data_key: column_5, id: HEQVDJ, title: STATUS}
+      - {data_key: column_6, id: VESYXY, title: DATE}
+    type: DataGrid
+  layout_properties: {grid_position: 'TUYJMF,XCQUBW'}
+  name: orders_panel
+  properties: {visible: false}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'EKSJNX,GQBPAP'}
+    name: label_18_copy_copy
+    properties: {bold: true, font_size: 19, role: null, spacing_above: large, spacing_below: large, text: ACTIVITY TIMELINE}
     type: Label
-  - data_bindings:
-    - {code: 'self.item[''approved_date'']', property: text, writeback: false}
-    layout_properties: {grid_position: 'NZNVLK,QGTHBD'}
-    name: approved_date
-    properties: {bold: true}
-    type: Label
-  - data_bindings:
-    - {code: 'self.item[''approved_by'']', property: text, writeback: false}
-    layout_properties: {grid_position: 'NZNVLK,OQWEIJ'}
-    name: approved_by
-    properties: {bold: true}
-    type: Label
-  - layout_properties: {grid_position: 'ZSLNPJ,BWFJYS'}
-    name: label_21
-    properties: {text: MATERIALS SUPPLIED}
-    type: Label
-  - data_bindings: []
-    layout_properties: {grid_position: 'SLZHUZ,LSGVZX'}
-    name: materials_supplied_info
-    properties: {bold: true}
-    type: Label
-  layout_properties: {grid_position: 'QDMPCD,ZASNRR'}
-  name: approval_information_panel
-  properties: {col_spacing: medium}
+  - layout_properties: {grid_position: 'DRTLJB,KVNZXD'}
+    name: repeating_panel_activity
+    properties: {item_template: Supplier_details.supplier_activity_timeline}
+    type: RepeatingPanel
+  layout_properties: {grid_position: 'RBDBBZ,UOURHO'}
+  name: activity_panel
+  properties: {visible: false}
   type: ColumnPanel
 container: {type: ColumnPanel}
 is_package: true

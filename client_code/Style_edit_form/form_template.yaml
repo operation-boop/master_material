@@ -1,0 +1,165 @@
+components:
+- layout_properties: {grid_position: 'WWRTVO,NVPBKX'}
+  name: headline_1
+  properties: {bold: true, role: headline, text: Edit Style}
+  type: Label
+- event_bindings: {click: close_btn_click}
+  layout_properties: {grid_position: 'WWRTVO,VQFNTR'}
+  name: close_btn
+  properties: {align: right, icon: 'fa:close', text: ''}
+  type: Button
+- components:
+  - layout_properties: {grid_position: 'VKWMZL,JKBPXE'}
+    name: label_1
+    properties: {bold: true, foreground: 'theme:Primary 500', text: BASIC INFORMATION}
+    type: Label
+  - components:
+    - name: client_dropdown
+      properties: {include_placeholder: true, placeholder: Select Client}
+      type: DropDown
+    layout_properties: {grid_position: 'FAKFMY,OWMOGV'}
+    name: rich_text_1
+    properties: {content: 'Client <span style="color:red;">*</span>', format: restricted_html}
+    type: RichText
+  - components:
+    - name: ref_id
+      properties: {}
+      type: TextBox
+    layout_properties: {grid_position: 'SSVEEE,IJSYSY'}
+    name: rich_text_2
+    properties: {align: left, content: 'Client Reference ID <span style="color:red;">*</span>', format: restricted_html}
+    type: RichText
+  - components:
+    - event_bindings: {change: file_loader_change}
+      name: file_loader
+      properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White'}
+      type: FileLoader
+    - layout_properties: {}
+      name: label_2
+      properties:
+        font_size: 11
+        foreground: '#b0b0b0'
+        spacing:
+          padding: [0, null, null, null]
+        spacing_above: none
+        text: 'Max size: 5MB. Formats: PNG, JPG, JPEG'
+      type: Label
+    - layout_properties: {width: 420}
+      name: img_preview
+      properties: {}
+      type: Image
+    layout_properties: {grid_position: 'FXSZEF,XBYOVS'}
+    name: rich_text_3
+    properties: {content: 'Style Picture <span style="color:red;">*</span>', format: restricted_html}
+    type: RichText
+  - components:
+    - layout_properties: {}
+      name: description
+      properties: {placeholder: White cotton blazer with gold buttons...}
+      type: TextArea
+    - layout_properties: {}
+      name: label_3
+      properties:
+        font_size: 11
+        foreground: theme:Gray 600
+        spacing:
+          padding: [0, null, null, null]
+        spacing_above: none
+        text: 'Characters: 0 / 1000'
+      type: Label
+    layout_properties: {grid_position: 'UXBHSC,DNSHPD'}
+    name: rich_text_4
+    properties: {content: 'Description  <span style="color:red;">*</span>', format: restricted_html}
+    type: RichText
+  - layout_properties: {grid_position: 'DNZFKX,YNVHRW'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'KVYDHR,ZSAQPW'}
+      name: label_4
+      properties: {bold: true, foreground: 'theme:Primary 500', text: QUICK SKU GENERATOR (OPTIONAL)}
+      type: Label
+    - layout_properties: {grid_position: 'YAHJAL,DLWEIK'}
+      name: sku_generate_automatically_checkbox
+      properties: {text: 'Generate SKUs automatically?'}
+      type: CheckBox
+    - layout_properties: {grid_position: 'XLJLTM,CFGMMQ'}
+      name: label_5
+      properties: {bold: true, text: 'Colors:'}
+      type: Label
+    - layout_properties: {grid_position: 'MXHJBS,LFEWBH'}
+      name: color
+      properties: {placeholder: 'Enter color (e.g., White, Black)'}
+      type: TextBox
+    - event_bindings: {click: add_color_btn_click}
+      layout_properties: {grid_position: 'MXHJBS,DTULBN'}
+      name: add_color_btn
+      properties: {align: left, background: green, foreground: 'theme:White', icon: 'fa:plus', role: null, text: add}
+      type: Button
+    - layout_properties: {grid_position: 'ABGKEP,TLVAJA'}
+      name: flow_panel_colors
+      properties: {}
+      type: FlowPanel
+    - layout_properties: {grid_position: 'YKYSBA,JJDDGY'}
+      name: label_6
+      properties: {bold: true, text: 'Sizes:'}
+      type: Label
+    - layout_properties: {grid_position: 'SNZXCR,AOSVQB'}
+      name: size
+      properties: {placeholder: 'Enter size (e.g., S, M, L)'}
+      type: TextBox
+    - event_bindings: {click: add_size_btn_click}
+      layout_properties: {grid_position: 'SNZXCR,HVJMOA'}
+      name: add_size_btn
+      properties: {align: left, background: green, foreground: 'theme:White', icon: 'fa:plus', role: null, text: add}
+      type: Button
+    - layout_properties: {grid_position: 'ULCMIX,TUQORM'}
+      name: flow_panel_sizes
+      properties: {}
+      type: FlowPanel
+    - layout_properties: {grid_position: 'JWLRCS,AGIEEQ'}
+      name: variation_count
+      properties:
+        bold: true
+        foreground: theme:Primary 500
+        spacing:
+          padding: [null, null, 0, null]
+        text: ''
+      type: Label
+    - layout_properties: {grid_position: 'TMWYPS,IFRJBU'}
+      name: label_8
+      properties:
+        font_size: 11
+        foreground: theme:Gray 600
+        spacing:
+          padding: [0, null, null, null]
+        spacing_above: none
+        text: You can edit SKUs after creation.
+      type: Label
+    layout_properties: {grid_position: 'UOJYFH,LDMIYC'}
+    name: card_2
+    properties: {background: 'theme:Gray 100', role: card}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'GYGRRB,YKCGVH'}
+    name: spacer_4
+    properties: {height: 32}
+    type: Spacer
+  layout_properties: {grid_position: 'QPHSTC,AUKZBA'}
+  name: card_1
+  properties: {role: card}
+  type: ColumnPanel
+- event_bindings: {click: cancel_btn_click}
+  layout_properties: {grid_position: 'SMFYDP,SYITSP'}
+  name: cancel_btn
+  properties: {align: left, background: 'theme:Gray 300', foreground: 'theme:Black', role: null, text: cancel}
+  type: Button
+- event_bindings: {click: submit_btn_click}
+  layout_properties: {grid_position: 'SMFYDP,ULKHAL'}
+  name: submit_btn
+  properties: {align: right, background: 'theme:Primary 500', foreground: 'theme:White', text: submit}
+  type: Button
+container:
+  properties: {col_widths: '{"NVPBKX":50,"VQFNTR":10}'}
+  type: ColumnPanel
+is_package: true

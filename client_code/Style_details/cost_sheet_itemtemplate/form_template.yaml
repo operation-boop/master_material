@@ -1,0 +1,31 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: cost_sheet_id
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: version
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: currency
+  properties: {}
+  type: Label
+- layout_properties: {column: WPKZXF}
+  name: material_cost
+  properties: {}
+  type: Label
+- layout_properties: {column: ECULMY}
+  name: processing_cost
+  properties: {}
+  type: Label
+- layout_properties: {column: UOSZOR}
+  name: total_cost
+  properties: {}
+  type: Label
+- layout_properties: {column: DVJEOM}
+  name: status
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true

@@ -1,0 +1,378 @@
+components:
+- components:
+  - event_bindings: {click: back_btn_click}
+    layout_properties: {grid_position: 'LPJUBK,TQGARM'}
+    name: back_btn
+    properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:arrow-left', role: null, text: Back to list}
+    type: Button
+  - data_bindings:
+    - {code: '"Master Style: " + self.item[''id'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'LPJUBK,WFMNSF'}
+    name: style_id
+    properties: {bold: true, font_size: 20}
+    type: Label
+  - event_bindings: {click: edit_btn_click}
+    layout_properties: {grid_position: 'LPJUBK,THDGHM'}
+    name: edit_btn
+    properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', text: edit}
+    type: Button
+  layout_properties: {grid_position: 'KXYPMJ,XEVAHY'}
+  name: column_panel_1
+  properties: {col_widths: '{"TQGARM":20,"WFMNSF":50,"THDGHM":10}'}
+  type: ColumnPanel
+- components:
+  - data_bindings:
+    - {code: 'self.item[''picture'']', property: source, writeback: false}
+    layout_properties: {grid_position: 'UWSTFX,JMPUUB'}
+    name: style_image
+    properties: {background: 'theme:White', border: solid lightgrey, border_radius: '20', height: 343.5}
+    type: Image
+  - layout_properties: {grid_position: 'VWVVSE,IQFZGX'}
+    name: new_image_file_loader
+    properties: {align: left, foreground: '', role: raised, spacing_above: small, text: upload new image}
+    type: FileLoader
+  layout_properties: {grid_position: 'WIBVWC,FZRLAZ'}
+  name: column_panel_2
+  properties: {col_widths: '{"IQFZGX":25}'}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'GADLBX,HARBHS'}
+    name: label_1
+    properties:
+      bold: true
+      foreground: theme:Primary 500
+      spacing:
+        padding: [null, null, 0, null]
+      text: CLIENT INFORMATION
+    type: Label
+  - layout_properties: {grid_position: 'MJXZNK,SVTEUS'}
+    name: label_2
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+      text: 'Client:'
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''client'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'MJXZNK,GZYAWO'}
+    name: client
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+    type: Label
+  - layout_properties: {grid_position: 'FIVHUH,BBKMGW'}
+    name: label_3
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+      text: 'Price Category:'
+    type: Label
+  - layout_properties: {grid_position: 'FIVHUH,IMAFUP'}
+    name: price_category
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+    type: Label
+  - layout_properties: {grid_position: 'HDGDTO,AGJMGR'}
+    name: label_4
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+      text: 'Country:'
+    type: Label
+  - layout_properties: {grid_position: 'HDGDTO,VUVYTB'}
+    name: country
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+    type: Label
+  - layout_properties: {grid_position: 'FQJDAP,WZHSSN'}
+    name: label_5
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+      text: 'Client Ref ID:'
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''ref_id'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'FQJDAP,WFGKUH'}
+    name: ref_id
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+      spacing_above: small
+      spacing_below: small
+    type: Label
+  - layout_properties: {grid_position: 'HJVXOE,ODOPEF'}
+    name: label_6
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      text: 'Max Account Value:'
+    type: Label
+  - layout_properties: {grid_position: 'HJVXOE,DLBQBE'}
+    name: max_account_value
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+    type: Label
+  - layout_properties: {grid_position: 'ZAPGKX,SOMLUV'}
+    name: label_7
+    properties:
+      bold: true
+      foreground: theme:Primary 500
+      spacing:
+        padding: [20, null, 0, null]
+      text: STYLE INFORMATION
+    type: Label
+  - layout_properties: {grid_position: 'JIMSDY,KAPUYJ'}
+    name: label_8
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      text: 'Internal ID:'
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''id'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'JIMSDY,UNUPSJ'}
+    name: internal_id
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+    type: Label
+  - layout_properties: {grid_position: 'DACXIK,NSYAWE'}
+    name: label_9
+    properties:
+      bold: true
+      spacing:
+        padding: [0, null, 0, null]
+      text: 'Created:'
+    type: Label
+  - layout_properties: {grid_position: 'DACXIK,UPOFJZ'}
+    name: created
+    properties:
+      spacing:
+        padding: [0, null, 0, null]
+    type: Label
+  - layout_properties: {grid_position: 'WGPMRB,HLIZBK'}
+    name: label_10
+    properties:
+      bold: true
+      foreground: theme:Primary 500
+      spacing:
+        padding: [20, null, 0, null]
+      text: DESCRIPTION
+    type: Label
+  - components:
+    - data_bindings:
+      - {code: 'self.item[''description'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'SXJEVZ,EJRFKC'}
+      name: description
+      properties: {}
+      type: Label
+    layout_properties: {grid_position: 'DVBAQJ,UZKODU'}
+    name: card_1
+    properties: {role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'WIBVWC,SRXMSM'}
+  name: column_panel_3
+  properties: {col_widths: '{"SVTEUS":20,"GZYAWO":40,"BBKMGW":20,"IMAFUP":40,"AGJMGR":20,"VUVYTB":40,"WZHSSN":20,"WFGKUH":40,"ODOPEF":20,"DLBQBE":40,"KAPUYJ":20,"UNUPSJ":40,"NSYAWE":20,"UPOFJZ":40}'}
+  type: ColumnPanel
+- layout_properties: {grid_position: 'EREVKF,VLVULJ'}
+  name: spacer_1
+  properties: {height: 32}
+  type: Spacer
+- components:
+  - event_bindings: {click: sku_btn_click}
+    layout_properties: {}
+    name: sku_btn
+    properties: {foreground: 'theme:Black', text: sku}
+    type: Button
+  - event_bindings: {click: rfq_btn_click}
+    layout_properties: {}
+    name: rfq_btn
+    properties: {foreground: 'theme:Black', text: rfq}
+    type: Button
+  - event_bindings: {click: cost_sheet_btn_click}
+    layout_properties: {}
+    name: cost_sheet_btn
+    properties: {foreground: 'theme:Black', text: cost sheet}
+    type: Button
+  - event_bindings: {click: bom_btn_click}
+    layout_properties: {}
+    name: bom_btn
+    properties: {foreground: 'theme:Black', text: bom}
+    type: Button
+  - event_bindings: {click: documents_btn_click}
+    layout_properties: {}
+    name: documents_btn
+    properties: {foreground: 'theme:Black', text: documents}
+    type: Button
+  layout_properties: {grid_position: 'MOKDAV,IVMRGW'}
+  name: flow_panel_1
+  properties: {background: 'theme:Gray 100'}
+  type: FlowPanel
+- components:
+  - layout_properties: {grid_position: 'BQRTXQ,NIKDGW'}
+    name: label_11
+    properties: {bold: true, font_size: 16, foreground: 'theme:Primary 700', text: SKU VARIANTS}
+    type: Label
+  - layout_properties: {grid_position: 'BQRTXQ,LKMVWA'}
+    name: add_sku_btn
+    properties: {align: right, icon: 'fa:plus', text: add sku}
+    type: Button
+  - components:
+    - name: repeating_panel_sku
+      properties: {item_template: Style_details.SKU_variants_itemtemplate}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'TLHFNX,DSDEQC'}
+    name: data_grid_5
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: SKU ID}
+      - {data_key: column_2, id: VJQQOR, title: REFERENCE}
+      - {data_key: column_3, id: OJLQEN, title: COLOR}
+      - {data_key: column_4, id: TPXZCY, title: SIZE}
+      - {data_key: column_5, id: OJZAIK, title: QR CODE}
+      - {data_key: column_6, id: ROBQIM, title: STATUS}
+    type: DataGrid
+  layout_properties: {grid_position: 'SHPPDC,HPSHUN'}
+  name: sku_panel
+  properties: {visible: false}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'AGQIAU,NZZMXJ'}
+    name: label_12
+    properties: {bold: true, font_size: 16, foreground: 'theme:Primary 700', text: REQUEST FOR QUOTATIONS}
+    type: Label
+  - layout_properties: {grid_position: 'AGQIAU,TVGNXI'}
+    name: add_rfq_btn
+    properties: {align: right, icon: 'fa:plus', text: NEW RFQ}
+    type: Button
+  - components:
+    - name: repeating_panel_1
+      properties: {item_template: Style_details.BOM_itemtemplate}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'VDBPAZ,JFFNYM'}
+    name: data_grid_1
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: RFQ ID}
+      - {data_key: column_2, id: VJQQOR, title: CLIENT}
+      - {data_key: column_3, id: OJLQEN, title: REQUEST DATE}
+      - {data_key: column_4, id: XXOZNU, title: RESPONSE DATE}
+      - {data_key: column_5, id: LLDEBR, title: STATUS}
+      - {data_key: column_6, id: IBOIXF, title: QUOTED PRICE}
+      - {data_key: column_7, id: VSFWNI, title: ACTION}
+    type: DataGrid
+  layout_properties: {grid_position: 'FBKQNX,HOFIJO'}
+  name: rfq_panel
+  properties: {col_widths: '{"NZZMXJ":45,"TVGNXI":15}', visible: false}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'JSUFWB,FHVZOB'}
+    name: label_13
+    properties: {bold: true, font_size: 16, foreground: 'theme:Primary 700', text: COST SHEETS}
+    type: Label
+  - layout_properties: {grid_position: 'JSUFWB,PLHJFP'}
+    name: add_cost_sheet_btn
+    properties: {align: right, icon: 'fa:plus', text: new cost sheet}
+    type: Button
+  - components:
+    - name: repeating_panel_2
+      properties: {item_template: Style_details.cost_sheet_itemtemplate}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'XJCMIZ,WMTSDD'}
+    name: data_grid_2
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: COST SHEET ID}
+      - {data_key: column_2, id: VJQQOR, title: VERSION}
+      - {data_key: column_3, id: OJLQEN, title: CURRENCY}
+      - {data_key: column_4, id: WPKZXF, title: MATERIAL COST}
+      - {data_key: column_5, id: ECULMY, title: PROCESSING COST}
+      - {data_key: column_6, id: UOSZOR, title: TOTAL COST}
+      - {data_key: column_7, id: DVJEOM, title: STATUS}
+    type: DataGrid
+  layout_properties: {grid_position: 'FFXQMU,MGAIWO'}
+  name: cost_sheet_panel
+  properties: {col_widths: '{"FHVZOB":40,"PLHJFP":20}', visible: false}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'VIORMP,BEBNRH'}
+    name: label_14
+    properties: {bold: true, font_size: 17, foreground: 'theme:Primary 700', text: BILLS OF MATERIAL}
+    type: Label
+  - layout_properties: {grid_position: 'VIORMP,PVEAMA'}
+    name: add_bom_btn
+    properties: {align: right, icon: 'fa:plus', text: new bom}
+    type: Button
+  - components:
+    - name: repeating_panel_3
+      properties: {item_template: Style_details.RowTemplate4}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'TQYTGG,CZIPUB'}
+    name: data_grid_3
+    properties:
+      columns:
+      - {data_key: column_1, id: JKSDUP, title: BOM ID}
+      - {data_key: column_2, id: VJQQOR, title: VERSION}
+      - {data_key: column_3, id: OJLQEN, title: MATERIAL NAME}
+      - {data_key: column_4, id: RLVSBU, title: TYPE}
+      - {data_key: column_5, id: SWPBBU, title: CONSUMPTION}
+      - {data_key: column_6, id: NPEGWX, title: UNIT COST}
+      - {data_key: column_7, id: URVPTB, title: TOTAL COST}
+    type: DataGrid
+  layout_properties: {grid_position: 'MNUWSC,AJFQCA'}
+  name: bom_panel
+  properties: {col_widths: '{"BEBNRH":45,"PVEAMA":15}', visible: false}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'QTSRVE,GJHIEK'}
+    name: label_15
+    properties: {bold: true, font_size: 16, foreground: 'theme:Primary 700', text: DOCUMENTS}
+    type: Label
+  - layout_properties: {grid_position: 'QTSRVE,IYYVOW'}
+    name: document_file_uploader
+    properties: {align: right, text: upload document}
+    type: FileLoader
+  - layout_properties: {grid_position: 'HFGPUJ,RSGTPH'}
+    name: flow_panel_documents
+    properties: {}
+    type: FlowPanel
+  - layout_properties: {grid_position: 'LCZQJG,DQBWMZ'}
+    name: col_left
+    properties: {}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'LCZQJG,NPHKKX'}
+    name: col_right
+    properties: {}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'BTXRPB,ZDEGWV'}
+  name: documents_panel
+  properties: {col_widths: '{"GJHIEK":40,"IYYVOW":20}', visible: false}
+  type: ColumnPanel
+container:
+  properties: {col_widths: '{"FZRLAZ":15,"SRXMSM":45}'}
+  type: ColumnPanel
+is_package: true

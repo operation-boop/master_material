@@ -19,7 +19,20 @@ unique_ids:
     Material_list: '176223201599762412789806.216'
     Material_list.MaterialCard: '1762336056821483042217454.3132'
     Material_sku_input_form: '1764149541024548151116321.81134'
+    Style_details: '1764231853803362503574698.39056'
+    Style_details.BOM_itemtemplate: '1764232716213381761500393.7499'
+    Style_details.RowTemplate4: '17642329396975818650413.336401'
+    Style_details.SKU_variants_itemtemplate: '1764232596421664668916588.072'
+    Style_details.cost_sheet_itemtemplate: '1764232828885713963145155.7333'
+    Style_details.documents_itemtemplate: '1764233085121507899578731.6224'
+    Style_edit_form: '1764231872682282383816580.47485'
+    Style_input_form: '1764231861305212306030573.69812'
+    Style_list: '1764231716003785822523661.7166'
+    Style_list.ItemTemplate4: '1764231755072280533543046.7628'
     Supplier_details: '1764230744121393155576022.3747'
+    Supplier_details.supplier_activity_timeline: '176423119615264074529715.77321'
+    Supplier_details.supplier_material_rowtemplate: '1764231291824122023729247.17697'
+    Supplier_details.supplier_po_rowtemplate: '1764231386381420205276956.4666'
     Supplier_edit_form: '1764230773388348809574238.69617'
     Supplier_input_form: '1764230753743985986541242.7688'
     Supplier_list: '176423073300963445721246.36983'
@@ -66,6 +79,7 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
+    Client_Supplier_Code: '1764231664963360173340252.0344'
     GlenCode: '1764148030760886408646489.1259'
     GlenCode.mat_detail: '1764148043355777166247424.2715'
     GlenCode.mat_input: '1764148726109865324868528.2965'
