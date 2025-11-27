@@ -12,7 +12,7 @@ class Material_list(Material_listTemplate):
     self.flow_panel_materials.add_event_handler('x-refresh-list', self.load_material_cards)
     self.material_card = anvil.server.call("list_material_cards")
     self.load_material_cards()
-
+    
 
   def form_show(self, **event_args):
     self.load_material_cards()

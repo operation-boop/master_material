@@ -378,6 +378,7 @@ def delete_material(document_id):
 
   master.delete()
   return f"Material {document_id} and all versions/SKUs deleted."
+  
 # ============================================================================
 # PUBLIC API - VALIDATION (Used internally and by forms)
 # ============================================================================
