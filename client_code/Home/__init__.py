@@ -17,8 +17,10 @@ import anvil.users
 #from ..RFS import RFS
 #from ..QMO import QMO
 #from ..SMO import SMO
-# from ..Client_list import Client_list
-# from ..Material_list import Material_list
+from ..Client_list import Client_list
+from ..Supplier_list import Supplier_list
+from ..Style_list import Style_list
+from ..Material_list import Material_list
 #from ..Costing_sheet_base import Costing_sheet_base
 from ..wanyan_ver_costing_sheet_overview import wanyan_ver_costing_sheet_overview
 
@@ -31,7 +33,7 @@ class Home(HomeTemplate):
     self.init_components(**properties)
     # self.content_panel.add_component(Costing_sheet_base())
     # self.content_panel.add_component(costing_sheet_base())
-    self.content_panel.add_component(wanyan_ver_costing_sheet_overview())
+    # self.content_panel.add_component(wanyan_ver_costing_sheet_overview())
     
     # Any code you write here will run before the form opens.
     # thai 25/10: refactor to set the default link to group
@@ -58,6 +60,8 @@ class Home(HomeTemplate):
       #"qmo": QMO(),
       #"smo": SMO(),
       "client": Client_list(),
+      "supplier": Supplier_list(),
+      "style": Style_list(),
       "material": Material_list(),
       #Added in my costing sheet
       #"Costing_sheet_group": Costing_sheet_base()
@@ -81,6 +85,8 @@ class Home(HomeTemplate):
     #self.link_qmo.role = "<default>"
     #self.link_smo.role = "<default>"
     self.link_client.role = "<default>"
+    self.link_supplier.role = "<default>"
+    self.link_style.role = "<default>"
     self.link_material.role = "<default>"
     #added my own Costing Sheet
     self.link_costing_sheet_base.role = "<default>"

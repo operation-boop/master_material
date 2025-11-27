@@ -128,7 +128,23 @@ components:
     properties: {bold: true, font_size: 15, icon: '', text: Master data}
     type: Link
   - components:
-    - data_bindings:
+    - components:
+      - components:
+        - data_bindings:
+          - {code: '"style"', property: tag, writeback: false}
+          event_bindings: {click: link_nav_click}
+          layout_properties: {grid_position: 'GBFAFM,HBPPNM'}
+          name: link_style
+          properties: {text: '|       Style List'}
+          type: Link
+        data_bindings:
+        - {code: '"supplier"', property: tag, writeback: false}
+        event_bindings: {click: link_nav_click}
+        layout_properties: {grid_position: 'SCGUYB,FHBBBY'}
+        name: link_supplier
+        properties: {text: '|       Supplier List'}
+        type: Link
+      data_bindings:
       - {code: '"client"', property: tag, writeback: false}
       event_bindings: {click: link_nav_click}
       layout_properties: {full_width_row: false, grid_position: 'QRONQY,TZXFXT'}
