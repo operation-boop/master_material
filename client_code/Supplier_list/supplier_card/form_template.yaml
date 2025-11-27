@@ -1,0 +1,90 @@
+components:
+- components:
+  - components:
+    - data_bindings:
+      - {code: 'self.item[''supplier_name'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'UUWNBZ,DSKOHL'}
+      name: supplier_name
+      properties: {bold: true, font_size: 21, text: ''}
+      type: Label
+    - components:
+      - components:
+        - data_bindings:
+          - {code: 'self.item[''supplier_id'']', property: text, writeback: false}
+          layout_properties: {col_xs: 0, row: NWPQRI, width_xs: 4}
+          name: supplier_id
+          properties: {font_size: 14, role: subheading, text: ''}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''status'']', property: text, writeback: false}
+          layout_properties: {col_xs: 5, row: NWPQRI, width_xs: 7}
+          name: status
+          properties: {align: center, background: '', bold: true, foreground: 'theme:White', icon: '', text: ''}
+          type: Label
+        layout_properties: {grid_position: 'DSQGXE,TCYEFJ'}
+        name: grid_panel_1
+        properties: {}
+        type: GridPanel
+      - layout_properties: {grid_position: 'MBUHWV,QYOYYD'}
+        name: label_1
+        properties: {text: 'Country:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''country'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MBUHWV,HFGZAI'}
+        name: country
+        properties: {align: right, bold: true, text: ''}
+        type: Label
+      - layout_properties: {grid_position: 'ECZWSR,ILDGAC'}
+        name: label_2
+        properties: {text: 'Contact Person:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''contact_person'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'ECZWSR,GFYTYW'}
+        name: contact_person
+        properties: {align: right, bold: true, text: ''}
+        type: Label
+      - layout_properties: {grid_position: 'IIPNBU,OUPQLY'}
+        name: label_3
+        properties: {text: 'Email:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''email'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'IIPNBU,SKAZZI'}
+        name: email
+        properties: {align: right, bold: true, text: ''}
+        type: Label
+      - layout_properties: {grid_position: 'TPIDOB,ARAIVP'}
+        name: label_4
+        properties: {text: 'Active Orders:'}
+        type: Label
+      - data_bindings: []
+        layout_properties: {grid_position: 'TPIDOB,ZWFHPU'}
+        name: active_orders
+        properties: {align: right, bold: true, text: ''}
+        type: Label
+      layout_properties: {grid_position: 'AIHNHJ,ZVCYQG'}
+      name: column_panel_1
+      properties: {col_widths: '{}'}
+      type: ColumnPanel
+    - components:
+      - event_bindings: {click: view_details_btn_click}
+        layout_properties: {}
+        name: view_details_btn
+        properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White', text: view details}
+        type: Button
+      layout_properties: {grid_position: 'VTLXUX,ZXIYSF'}
+      name: flow_panel_2
+      properties: {align: left}
+      type: FlowPanel
+    layout_properties: {width: 300}
+    name: card_1
+    properties: {col_spacing: medium, role: card, spacing_above: small, spacing_below: small}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'YCLVVA,VIEKKI'}
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
+container: {type: ColumnPanel}
+is_package: true

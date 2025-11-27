@@ -1,0 +1,224 @@
+components:
+- components:
+  - event_bindings: {click: return_btn_click}
+    layout_properties: {grid_position: 'EIANVH,PVXDMB'}
+    name: return_btn
+    properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:arrow-left', text: return}
+    type: Button
+  - event_bindings: {click: verify_btn_click}
+    layout_properties: {grid_position: 'EIANVH,ADBMXJ SWXOPJ,GQXJQZ'}
+    name: verify_btn
+    properties: {align: right, background: '#FFF3CD', foreground: '#856404', icon: 'fa:check', text: verify}
+    type: Button
+  - event_bindings: {click: edit_btn_click}
+    layout_properties: {grid_position: 'EIANVH,ADBMXJ SWXOPJ,ISKCUS'}
+    name: edit_btn
+    properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: edit}
+    type: Button
+  - data_bindings:
+    - {code: 'self.item[''supplier_name'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'WLQMNC,OPMLSJ'}
+    name: supplier_name_label
+    properties: {bold: true, role: headline}
+    type: Label
+  - data_bindings:
+    - {code: 'f"{self.item[''supplier_id'']} • {self.item[''country'']}"', property: text, writeback: false}
+    layout_properties: {grid_position: 'WLQMNC,TCXIVE'}
+    name: supplier_id_and_country
+    properties: {background: 'theme:Gray 100'}
+    type: Label
+  layout_properties: {grid_position: 'WZHWHT,MEBQIE'}
+  name: column_panel_1
+  properties: {col_widths: '{"PVXDMB":40,"ADBMXJ":20,"OPMLSJ":45,"TCXIVE":15,"ISKCUS":22,"GQXJQZ":35}'}
+  type: ColumnPanel
+- components:
+  - components:
+    - components:
+      - layout_properties: {grid_position: 'ZBDPVN,CSSDOW'}
+        name: label_2
+        properties: {align: center, bold: true, text: MATERIALS SUPPLIED}
+        type: Label
+      - layout_properties: {grid_position: 'GRNTSM,IQARBB'}
+        name: materials_supplied
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'GBACCN,MIWDRV KZCYCB,DTSTHU'}
+      name: card_4
+      properties: {role: card}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'GADPZY,BGQHPW'}
+        name: label_4
+        properties: {align: center, bold: true, text: TOTAL VALUE}
+        type: Label
+      - layout_properties: {grid_position: 'GQNESM,MKXWTL'}
+        name: total_value
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'GBACCN,MIWDRV JFZQWM,TXKRDU'}
+      name: card_6
+      properties: {role: card}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'SUHHIB,LJWMDI'}
+        name: label_3
+        properties: {align: center, bold: true, text: ACTIVE ORDERS}
+        type: Label
+      - layout_properties: {grid_position: 'BOOZZD,TSUQGN'}
+        name: active_orders
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'GBACCN,UZKSPW XQJWSO,UWINED'}
+      name: card_3
+      properties: {role: card}
+      type: ColumnPanel
+    - components:
+      - layout_properties: {grid_position: 'EJUGYM,MMXDFJ'}
+        name: label_5
+        properties: {align: center, bold: true, text: APPROVAL STATUS}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''status'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'TOVRSK,JZHXHA'}
+        name: status
+        properties: {align: center, bold: true}
+        type: Label
+      layout_properties: {grid_position: 'GBACCN,UZKSPW WPXUIS,KUGJPE'}
+      name: card_5
+      properties: {role: card}
+      type: ColumnPanel
+    layout_properties: {grid_position: 'VTAAHN,TYUPUG'}
+    name: card_2
+    properties: {role: card, visible: true}
+    type: ColumnPanel
+  - layout_properties: {grid_position: 'WDOZRS,XWPDXZ'}
+    name: spacer_1
+    properties: {height: 32}
+    type: Spacer
+  - components:
+    - layout_properties: {grid_position: 'RPNCPY,XGJVLX'}
+      name: label_6
+      properties: {bold: true, foreground: RED, italic: false, text: SUPPLIER INFORMATION, underline: false}
+      type: Label
+    - layout_properties: {grid_position: 'YSPEUA,RBJRPF'}
+      name: label_7
+      properties: {bold: false, text: 'SUPPLIER ID:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''supplier_id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'YSPEUA,DEOXFD'}
+      name: supplier_id
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'LNFSNJ,AEJFHB'}
+      name: label_8
+      properties: {text: 'SUPPLIER NAME:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''supplier_name'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'LNFSNJ,LHWFIS'}
+      name: supplier_name
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'KNJGCM,UJWFGI'}
+      name: label_9
+      properties: {text: 'COUNTRY:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''country'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'KNJGCM,XJLEIL'}
+      name: country
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'GYHHZF,LLMSZB'}
+      name: label_10
+      properties: {text: 'CONTACT PERSON:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''contact_person'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'GYHHZF,WQUFAU'}
+      name: contact_person
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'CONQPB,XIFTRF'}
+      name: label_11
+      properties: {text: 'EMAIL:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''email'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'CONQPB,QZRRVC'}
+      name: email
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'IXDPXQ,JBLUNQ'}
+      name: label_12
+      properties: {text: 'PHONE:'}
+      type: Label
+    - layout_properties: {grid_position: 'IXDPXQ,ICZQRQ'}
+      name: phone
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'FPKEPF,VMNXCX'}
+      name: label_13
+      properties: {text: 'CREATED:'}
+      type: Label
+    - layout_properties: {grid_position: 'FPKEPF,QBBVQK'}
+      name: created
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'KEYIBD,UTXSGY'}
+      name: label_14
+      properties: {text: 'CREATED BY:'}
+      type: Label
+    - layout_properties: {grid_position: 'KEYIBD,SPXVZF'}
+      name: created_by
+      properties: {bold: true}
+      type: Label
+    layout_properties: {grid_position: 'BGRNRX,NFXJPQ'}
+    name: supplier_information_panel
+    properties: {role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'QDMPCD,SNQNSH'}
+  name: column_panel_3
+  properties: {}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'CVSJZT,RFIAGO'}
+    name: label_15
+    properties: {bold: true, foreground: RED, text: APPROVAL INFORMATION}
+    type: Label
+  - layout_properties: {grid_position: 'WAJJLR,PYLNCD'}
+    name: label_17
+    properties: {text: APPROVED DATE}
+    type: Label
+  - layout_properties: {grid_position: 'WAJJLR,YXTTWL'}
+    name: label_19
+    properties: {text: APPROVED BY}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''approved_date'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'NZNVLK,QGTHBD'}
+    name: approved_date
+    properties: {bold: true}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''approved_by'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'NZNVLK,OQWEIJ'}
+    name: approved_by
+    properties: {bold: true}
+    type: Label
+  - layout_properties: {grid_position: 'ZSLNPJ,BWFJYS'}
+    name: label_21
+    properties: {text: MATERIALS SUPPLIED}
+    type: Label
+  - data_bindings: []
+    layout_properties: {grid_position: 'SLZHUZ,LSGVZX'}
+    name: materials_supplied_info
+    properties: {bold: true}
+    type: Label
+  layout_properties: {grid_position: 'QDMPCD,ZASNRR'}
+  name: approval_information_panel
+  properties: {col_spacing: medium}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true
