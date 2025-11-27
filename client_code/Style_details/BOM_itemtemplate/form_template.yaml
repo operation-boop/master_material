@@ -1,0 +1,31 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: rfq_id
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: client
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: requested_date
+  properties: {}
+  type: Label
+- layout_properties: {column: XXOZNU}
+  name: response_due
+  properties: {}
+  type: Label
+- layout_properties: {column: LLDEBR}
+  name: status
+  properties: {}
+  type: Label
+- layout_properties: {column: IBOIXF}
+  name: quoted_price
+  properties: {}
+  type: Label
+- layout_properties: {column: VSFWNI}
+  name: view_actions_btn
+  properties: {role: raised, text: view}
+  type: Button
+container: {type: DataRowPanel}
+is_package: true

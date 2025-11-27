@@ -1,0 +1,150 @@
+components:
+- components:
+  - event_bindings: {click: return_btn_click}
+    layout_properties: {grid_position: 'EIANVH,PVXDMB GUYYQQ,PCNXYS'}
+    name: return_btn
+    properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White', icon: 'fa:arrow-left', text: return}
+    type: Button
+  - data_bindings:
+    - {code: 'self.item[''client_name'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'EIANVH,PVXDMB JSVJFJ,CHNFFA'}
+    name: label_1
+    properties: {bold: true, role: headline}
+    type: Label
+  - event_bindings: {click: edit_btn_click}
+    layout_properties: {grid_position: 'EIANVH,ADBMXJ SWXOPJ,ISKCUS'}
+    name: edit_btn
+    properties: {align: right, background: orange, foreground: 'theme:White', icon: 'fa:edit', role: null, text: edit}
+    type: Button
+  - data_bindings:
+    - {code: 'f"{self.item[''client_id'']} • {self.item[''country'']}"', property: text, writeback: false}
+    layout_properties: {grid_position: 'EIANVH,ADBMXJ JWZBPX,EPQWRH'}
+    name: client_id_and_country
+    properties: {}
+    type: Label
+  layout_properties: {grid_position: 'NNKRFX,AVEDMS'}
+  name: column_panel_1
+  properties: {}
+  type: ColumnPanel
+- components:
+  - components:
+    - layout_properties: {grid_position: 'GADPZY,BGQHPW'}
+      name: label_4
+      properties: {align: center, bold: true, text: CONTACTS}
+      type: Label
+    - layout_properties: {grid_position: 'GQNESM,MKXWTL'}
+      name: total_value
+      properties: {align: center}
+      type: Label
+    layout_properties: {grid_position: 'GBACCN,MIWDRV'}
+    name: card_6
+    properties: {role: card}
+    type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'EJUGYM,MMXDFJ'}
+      name: label_5
+      properties: {align: center, bold: true, text: ACCOUNT VALUE}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''max_account_value'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'TOVRSK,JZHXHA'}
+      name: account_value
+      properties: {align: center, bold: true, font_size: 26}
+      type: Label
+    layout_properties: {grid_position: 'GBACCN,UZKSPW WPXUIS,KUGJPE'}
+    name: card_5
+    properties: {role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'KJQTQB,MJNTUX'}
+  name: card_2
+  properties: {role: card, visible: true}
+  type: ColumnPanel
+- components:
+  - layout_properties: {grid_position: 'RPNCPY,XGJVLX'}
+    name: label_6
+    properties: {bold: true, font_size: 18, foreground: RED, text: CLIENT INFORMATION}
+    type: Label
+  - components:
+    - layout_properties: {grid_position: 'XTKDUV,AXUIRB UMHUNX,GNSCEH'}
+      name: label_7
+      properties: {bold: false, text: 'CLIENT ID:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''client_id'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XTKDUV,AXUIRB KFSWWY,ZCZPUO'}
+      name: client_id
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'XTKDUV,AXUIRB HUTFXL,YPSSMY'}
+      name: label_9
+      properties: {text: 'COUNTRY:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''country'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XTKDUV,AXUIRB DSCMJQ,REDBUY'}
+      name: country
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'XTKDUV,AXUIRB IFQLNZ,OHDOQU'}
+      name: label_11
+      properties: {text: 'ACCOUNT VALUE:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''max_account_value'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XTKDUV,AXUIRB UVOGGN,DGVTSE'}
+      name: max_account_value
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'XTKDUV,LHYXXL ITIJZZ,LYXYTO'}
+      name: label_8
+      properties: {text: 'CLIENT NAME:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''client_name'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XTKDUV,LHYXXL OHTCWT,DDHDND'}
+      name: client_name
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'XTKDUV,LHYXXL ERHBDT,IIXAXH'}
+      name: label_10
+      properties: {text: 'PRICE CATEGORY:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''price_category'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XTKDUV,LHYXXL BECQFT,JHZJYP'}
+      name: price_category
+      properties: {bold: true}
+      type: Label
+    - layout_properties: {grid_position: 'XTKDUV,LHYXXL WDNXYJ,IMNVUO'}
+      name: label_12
+      properties: {text: 'CURRENCY:'}
+      type: Label
+    - data_bindings:
+      - {code: 'self.item[''currency'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'XTKDUV,LHYXXL JRGZOX,COEPCL'}
+      name: currency
+      properties: {bold: true}
+      type: Label
+    layout_properties: {grid_position: 'WZXYCO,XVBCXU'}
+    name: card_1
+    properties: {role: card}
+    type: ColumnPanel
+  - components:
+    - layout_properties: {grid_position: 'RPNCPY,XGJVLX'}
+      name: label_6_copy
+      properties: {bold: true, font_size: 18, foreground: RED, text: CONTACT}
+      type: Label
+    - layout_properties: {grid_position: 'GZDYDE,AWFTRO'}
+      name: repeating_panel_contact
+      properties: {item_template: Client_details.ItemTemplate2}
+      type: RepeatingPanel
+    layout_properties: {grid_position: 'XSMIFU,GURKUX'}
+    name: client_information_panel_2
+    properties: {role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'UIDZXE,RKYRUE'}
+  name: supplier_information_panel
+  properties: {role: card}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true

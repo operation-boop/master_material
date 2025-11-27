@@ -1,0 +1,31 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: bom_id
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: version
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: material_name
+  properties: {}
+  type: Label
+- layout_properties: {column: RLVSBU}
+  name: type
+  properties: {}
+  type: Label
+- layout_properties: {column: SWPBBU}
+  name: consumption
+  properties: {}
+  type: Label
+- layout_properties: {column: NPEGWX}
+  name: unit_cost
+  properties: {}
+  type: Label
+- layout_properties: {column: URVPTB}
+  name: total_cost
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true

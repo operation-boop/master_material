@@ -1,0 +1,37 @@
+components:
+- data_bindings:
+  - {code: 'self.item[''client_name'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
+  name: client_name
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''country'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
+  name: country
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''price_category'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
+  name: price_category
+  properties: {align: center}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''max_account_value'']', property: text, writeback: false}
+  layout_properties: {column: CAUIYZ}
+  name: max_account_value
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''currency'']', property: text, writeback: false}
+  layout_properties: {column: JQRGGC}
+  name: currency
+  properties: {}
+  type: Label
+- layout_properties: {column: UVLMSP}
+  name: view_btn
+  properties: {text: VIEW}
+  type: Button
+container: {type: DataRowPanel}
+is_package: true

@@ -1,0 +1,20 @@
+components:
+- components:
+  - data_bindings:
+    - {code: 'self.item[''contact_name'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'XMPFPZ,IMCJWD'}
+    name: contact_name
+    properties: {}
+    type: Label
+  - data_bindings:
+    - {code: 'self.item[''email'']', property: text, writeback: false}
+    layout_properties: {grid_position: 'OBGPFB,OQZQMS'}
+    name: email
+    properties: {}
+    type: Label
+  layout_properties: {grid_position: 'FJGENE,XMSRSY'}
+  name: card_1
+  properties: {background: 'theme:Gray 300', role: card}
+  type: ColumnPanel
+container: {type: ColumnPanel}
+is_package: true

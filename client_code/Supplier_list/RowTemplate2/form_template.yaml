@@ -1,0 +1,31 @@
+components:
+- data_bindings:
+  - {code: 'self.item[''supplier_id'']', property: text, writeback: false}
+  layout_properties: {column: JKSDUP}
+  name: supplier_id
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''supplier_name'']', property: text, writeback: false}
+  layout_properties: {column: VJQQOR}
+  name: supplier_name
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''country'']', property: text, writeback: false}
+  layout_properties: {column: OJLQEN}
+  name: country
+  properties: {}
+  type: Label
+- data_bindings:
+  - {code: 'self.item[''status'']', property: text, writeback: false}
+  layout_properties: {column: UZPCKO}
+  name: status
+  properties: {}
+  type: Label
+- layout_properties: {column: LOJYOP}
+  name: view_btn
+  properties: {text: view}
+  type: Button
+container: {type: DataRowPanel}
+is_package: true

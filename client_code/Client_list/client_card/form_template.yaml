@@ -1,0 +1,76 @@
+components:
+- components:
+  - components:
+    - data_bindings:
+      - {code: 'self.item[''client_name'']', property: text, writeback: false}
+      layout_properties: {grid_position: 'QLHIBT,HTWZQM'}
+      name: client_name
+      properties: {align: left, bold: true, font_size: 24}
+      type: Label
+    - components:
+      - components:
+        - data_bindings:
+          - {code: 'self.item[''client_id'']', property: text, writeback: false}
+          layout_properties: {col_xs: 0, row: IJNBRE, width_xs: 8}
+          name: client_id
+          properties: {align: left, font_size: 14}
+          type: Label
+        - data_bindings:
+          - {code: 'self.item[''price_category'']', property: text, writeback: false}
+          layout_properties: {col_xs: 8, row: IJNBRE, width_xs: 4}
+          name: price_category
+          properties: {align: center, bold: true}
+          type: Label
+        layout_properties: {grid_position: 'MHIBKL,WYIQYJ'}
+        name: grid_panel_1
+        properties: {}
+        type: GridPanel
+      - layout_properties: {grid_position: 'MVMOCA,EQSPSU NJRQDR,LOTOOV'}
+        name: label_2_copy_2
+        properties: {text: 'Country:'}
+        type: Label
+      - layout_properties: {grid_position: 'MVMOCA,EQSPSU XTDFTB,KKNKHF'}
+        name: label_2_copy
+        properties: {text: 'Currency:'}
+        type: Label
+      - layout_properties: {grid_position: 'MVMOCA,EQSPSU WNQCLJ,KRBRRZ'}
+        name: label_1
+        properties: {font_size: 14, text: 'Max Value:'}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''country'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MVMOCA,IAAMEV TXXJAQ,ZBNFYK'}
+        name: country
+        properties: {align: right, bold: true}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''currency'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MVMOCA,IAAMEV NLWJUT,IDXFBI'}
+        name: currency
+        properties: {align: right, bold: true}
+        type: Label
+      - data_bindings:
+        - {code: 'self.item[''max_account_value'']', property: text, writeback: false}
+        layout_properties: {grid_position: 'MVMOCA,IAAMEV LJJBJO,OCSGGT'}
+        name: max_account_value
+        properties: {align: right, bold: true, font_size: 14}
+        type: Label
+      layout_properties: {grid_position: 'EDULSI,QFHXYW'}
+      name: column_panel_1
+      properties: {}
+      type: ColumnPanel
+    - event_bindings: {click: view_detail_btn_click}
+      layout_properties: {grid_position: 'LGJGUE,VREKLP'}
+      name: view_detail_btn
+      properties: {align: left, background: 'theme:Primary 500', foreground: 'theme:White', text: view detail}
+      type: Button
+    layout_properties: {width: 304.9326743164063}
+    name: card_1
+    properties: {role: card}
+    type: ColumnPanel
+  layout_properties: {grid_position: 'ILFUWR,XZKUTW'}
+  name: flow_panel_1
+  properties: {}
+  type: FlowPanel
+container: {type: ColumnPanel}
+is_package: true

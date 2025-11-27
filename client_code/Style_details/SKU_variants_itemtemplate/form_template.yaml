@@ -1,0 +1,27 @@
+components:
+- layout_properties: {column: JKSDUP}
+  name: sku_id
+  properties: {}
+  type: Label
+- layout_properties: {column: VJQQOR}
+  name: ref_id
+  properties: {}
+  type: Label
+- layout_properties: {column: OJLQEN}
+  name: color
+  properties: {}
+  type: Label
+- layout_properties: {column: TPXZCY}
+  name: size
+  properties: {}
+  type: Label
+- layout_properties: {column: OJZAIK}
+  name: qr_data
+  properties: {}
+  type: Label
+- layout_properties: {column: ROBQIM}
+  name: status
+  properties: {}
+  type: Label
+container: {type: DataRowPanel}
+is_package: true
