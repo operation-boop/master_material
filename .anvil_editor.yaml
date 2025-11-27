@@ -11,8 +11,6 @@ unique_ids:
     Material_list: '176223201599762412789806.216'
     Material_list.MaterialCard: '1762400047405995510792459.7573'
     Material_sku_input_form: '1763095383048651596420106.4791'
-    Opportunity: '1761391942918616178806726.4047'
-    QMO: '17613920531692144854397.7878876'
   modules: {}
   scripts: {}
   server_modules:
