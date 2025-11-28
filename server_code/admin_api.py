@@ -59,6 +59,7 @@ def _fetch_material_for_admin(document_id):
   description="Marks the current version as verified. Requires Admin role.",
   tags=["Admin", "Workflow"]
 )
+
 def verify_material_version(request: AdminRequest):
   # 1. Auth Check
   user = anvil.users.get_user()
