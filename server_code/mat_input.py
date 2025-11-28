@@ -320,64 +320,7 @@ def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=
     "new_version_number": new_ver_num
   }
 
-# ============================================================================
-# PUBLIC API - VERIFICATION (ADMIN ONLY)
-# ============================================================================
 
-@anvil.server.callable
-def verify_material_version(document_id):
-  """Admin function: Mark current version as verified"""
-  user = anvil.users.get_user()
-  if not user:
-    raise Exception("You must be logged in to verify materials.")
-  if user['role'] != "Admin":
-    raise Exception("Permission denied: only admins can verify.")
-
-  master = _get_master_material(document_id)
-  version = master['current_version']
-
-  if version['status'] != "Submitted - Unverified":
-    raise Exception("Only a 'Submitted - Unverified' version can be verified.")
-
-  now = datetime.now()
-  verified_by = user['email'] or user['full_name'] or "Unknown"
-
-  # Update to verified status
-  version['status'] = "Submitted - Verified"
-  version['last_verified_date'] = now
-  version['last_verified_by'] = verified_by
-
-  master['last_verified_date'] = now
-  master['last_verified_by'] = verified_by
-
-  return {
-    "ok": True, 
-    "message": f"{document_id} verified by {verified_by}."
-  }
-
-@anvil.server.callable
-def delete_material(document_id):
-  user = anvil.users.get_user()
-  if not user or user['role'] != 'Admin':
-    raise Exception("Permission Denied: Only Admins can delete materials.")
-    
-  if not document_id:
-    raise ValueError("No document_id provided")
-    
-  master = app_tables.master_material.get(document_id=document_id)
-  if not master:
-    return "Material not found (already deleted?)"
-
-  versions = app_tables.master_material_version.search(document_id=document_id)
-  for v in versions:
-    v.delete()
-
-  skus = app_tables.material_sku.search(master_material=master)
-  for s in skus:
-    s.delete()
-
-  master.delete()
-  return f"Material {document_id} and all versions/SKUs deleted."
 # ============================================================================
 # PUBLIC API - VALIDATION (Used internally and by forms)
 # ============================================================================

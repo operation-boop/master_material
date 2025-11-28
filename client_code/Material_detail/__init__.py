@@ -156,7 +156,6 @@ class Material_detail(Material_detailTemplate):
     else:
       self.verification_status.background = "#ffffff"
       self.verification_status.text = status.capitalize() if status else "Unknown"
-
       
   def refresh_data(self):
     """Reload SKU data from server"""

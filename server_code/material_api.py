@@ -1,8 +1,15 @@
 from typing import Optional, List, Any, Dict
 from pydantic import BaseModel, Field
 from datetime import datetime
-import anvil.server
+import anvil.users
+import anvil.email
+import anvil.secrets
+import anvil.google.auth, anvil.google.drive, anvil.google.mail
+from anvil.google.drive import app_files
+import anvil.tables as tables
+import anvil.tables.query as q
 from anvil.tables import app_tables
+import anvil.server
 from api_framework import APIEndpoint
 
 # ============================================================================
@@ -16,7 +23,6 @@ class MaterialIDRequest(BaseModel):
 
 # --- Response Models ---
 class MaterialDetailResponse(BaseModel):
-  """Main dashboard details for a material"""
   document_id: str
   ver_num: str
   master_material_id: str
@@ -38,9 +44,8 @@ class MaterialDetailResponse(BaseModel):
   updated_at: Optional[Any] = None
   submitted_at: Optional[Any] = None
   last_verified_date: Optional[Any] = None
-
+  
 class TechnicalDetailResponse(BaseModel):
-  """Technical specs"""
   fabric_composition: Optional[str] = None
   fabric_roll_width: Optional[float] = None
   fabric_cut_width: Optional[float] = None
@@ -50,7 +55,6 @@ class TechnicalDetailResponse(BaseModel):
   werp_shrinkage: Optional[float] = None
 
 class CostDetailResponse(BaseModel):
-  """Financial details"""
   original_cost_per_unit: Optional[float] = None
   currency: Optional[str] = None
   supplier_tolerance: Optional[float] = None
@@ -97,7 +101,6 @@ def _fetch_material_version(document_id):
 # ============================================================================
 # 3. API ENDPOINTS
 # ============================================================================
-
 @APIEndpoint(
   name="get_material_detail",
   request_model=MaterialIDRequest,
@@ -136,7 +139,8 @@ def get_material_detail(request: MaterialIDRequest):
     "submitted_at": _get(v, "submitted_at"),
     "last_verified_date": _get(v, "last_verified_date"),
   }
-
+  ##-------------------------------------------------------------------------------------------------------------------------
+  
 @APIEndpoint(
   name="get_technical_detail",
   request_model=MaterialIDRequest,
@@ -156,7 +160,8 @@ def get_technical_detail(request: MaterialIDRequest):
     "weft_shrinkage": _get(v, "weft_shrinkage"),
     "werp_shrinkage": _get(v, "werp_shrinkage"),
   }
-
+  ##-------------------------------------------------------------------------------------------------------------------------
+  
 @APIEndpoint(
   name="get_cost_detail",
   request_model=MaterialIDRequest,
@@ -177,7 +182,7 @@ def get_cost_detail(request: MaterialIDRequest):
     "logistics_rate": _get(v, "logistics_rate"),
     "landed_cost": _get(v, "landed_cost_per_unit"),
   }
-
+  ##------------------------------------------------------------------------------------------------------------------------- 
 @APIEndpoint(
   name="get_version_history",
   request_model=MaterialIDRequest,
@@ -202,6 +207,7 @@ def get_version_history(request: MaterialIDRequest):
     }
     for v in versions
   ]
+  ##-------------------------------------------------------------------------------------------------------------------------
 
 @APIEndpoint(
   name="get_material_full_row",
@@ -226,3 +232,4 @@ def get_material_full_row(request: MaterialIDRequest):
   result['verification_status'] = version['status']
 
   return result
+  ##-------------------------------------------------------------------------------------------------------------------------

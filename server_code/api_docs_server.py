@@ -1,14 +1,15 @@
 import anvil.server
 from api_framework import APIRegistry
+from pydantic import TypeAdapter
 import json
 import material_api
-import mat_list_testing
+import materialcard_api
+import admin_api
 
 @anvil.server.callable
 def get_api_documentation():
   """
     Returns API documentation in a format suitable for the front-end viewer
-    
     Returns:
         dict: Complete API documentation
     """
@@ -19,7 +20,7 @@ def get_api_documentation():
     # Build request schema
     request_schema = {}
     if endpoint.request_model:
-      schema = endpoint.request_model.model_json_schema()
+      schema = TypeAdapter(endpoint.request_model).json_schema()
       properties = schema.get('properties', {})
       required = schema.get('required', [])
 
@@ -34,7 +35,7 @@ def get_api_documentation():
         # Build response schema
     response_schema = {}
     if endpoint.response_model:
-      schema = endpoint.response_model.model_json_schema()
+      schema = TypeAdapter(endpoint.response_model).json_schema()
       properties = schema.get('properties', {})
       required = schema.get('required', [])
 
@@ -76,9 +77,6 @@ def get_api_documentation_markdown():
 def get_api_documentation_openapi():
   """
     Returns API documentation in OpenAPI 3.0 format
-    
-    Returns:
-        dict: OpenAPI specification
     """
   return APIRegistry.generate_documentation()
 
