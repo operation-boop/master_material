@@ -51,3 +51,8 @@ class Material_list(Material_listTemplate):
   def logout_btn_click(self, **event_args):
     anvil.users.logout()
     open_form('Material_list')
+
+  def doc_read_click(self, **event_args):
+    open_form("Api_docs_form")
+    pass
+  

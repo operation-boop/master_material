@@ -33,6 +33,18 @@ class APIRegistry:
     }
 
     for name, endpoint in cls._endpoints.items():
+      # Handle Request Schema
+      req_schema = {}
+      if endpoint.request_model:
+        # Use TypeAdapter to handle both Models and Lists safeley
+        req_schema = TypeAdapter(endpoint.request_model).json_schema()
+
+        # Handle Response Schema
+      res_schema = {}
+      if endpoint.response_model:
+        # Use TypeAdapter (FIX for 'list' object error)
+        res_schema = TypeAdapter(endpoint.response_model).json_schema()
+        
       docs["paths"][f"/{name}"] = {
         "post": {
           "summary": endpoint.summary,
@@ -42,7 +54,7 @@ class APIRegistry:
             "required": True,
             "content": {
               "application/json": {
-                "schema": endpoint.request_model.model_json_schema() if endpoint.request_model else {}
+                "schema": req_schema
               }
             }
           },
@@ -51,7 +63,7 @@ class APIRegistry:
               "description": "Successful response",
               "content": {
                 "application/json": {
-                  "schema": endpoint.response_model.model_json_schema()
+                  "schema": res_schema
                 }
               }
             },
@@ -105,7 +117,7 @@ class APIRegistry:
 
       if endpoint.request_model:
         md += "### Request Body\n\n"
-        schema = endpoint.request_model.model_json_schema()
+        schema = TypeAdapter(endpoint.request_model).json_schema()
         md += "```json\n"
         md += json.dumps(schema, indent=2)
         md += "\n```\n\n"
@@ -123,8 +135,9 @@ class APIRegistry:
               md += f"  - Example: `{field_info['example']}`\n"
           md += "\n"
 
+    if endpoint.response_model:
       md += "### Response\n\n"
-      response_schema = endpoint.response_model.model_json_schema()
+      response_schema = TypeAdapter(endpoint.response_model).json_schema()
       md += "```json\n"
       md += json.dumps(response_schema, indent=2)
       md += "\n```\n\n"
@@ -181,43 +194,55 @@ class APIEndpoint:
       try:
         # Handle both positional and keyword arguments
         if args:
-          # If called with positional args, convert to dict if we have a request model
+          # If called with positional args...
           if self.request_model:
-            # Assume single dict argument
-            data = args[0] if args else {}
+            raw_arg = args[0]
+            # --- INTELLIGENT MAPPING FIX ---
+            # If the argument is NOT a dict (e.g., it's just "MAT-123")
+            if not isinstance(raw_arg, dict):
+              # Get the list of fields defined in the Pydantic model
+              # (e.g., ['document_id'])
+              field_names = list(self.request_model.model_fields.keys())
+
+              # If the model expects exactly 1 field, map the value to it automatically
+              if len(field_names) == 1:
+                data = {field_names[0]: raw_arg}
+              else:
+                # If model has 2+ fields, we can't guess which one this string belongs to
+                data = raw_arg 
+            else:
+              # It is already a dict, use it as is
+              data = raw_arg
+            # -------------------------------
+
           else:
-            # No request model, pass through
+            # No request model, pass through original args
             return func(*args, **kwargs)
         else:
           data = kwargs
 
-          # Validate request if model is provided
+        # Validate request if model is provided
         if self.request_model:
+          # Now 'data' is guaranteed to be a dict (or will fail with a clear error)
           validated_request = self.request_model(**data)
-          # Call function with validated model
           result = func(validated_request)
         else:
-          # No request validation
           result = func(*args, **kwargs)
 
+        # Validate response
         if self.response_model:
-          # Use TypeAdapter to automatically handle List[Model], Dict, or single Model
           adapter = TypeAdapter(self.response_model)
-          # validate_python converts dicts/lists into Pydantic models
           validated_obj = adapter.validate_python(result)
-          # dump_python converts them back to JSON-safe dicts/lists
           return adapter.dump_python(validated_obj)
         else:
           return result
 
       except ValidationError as e:
-        # Return structured validation errors
         error_details = {
           "error": "Validation Error",
           "details": e.errors()
         }
         raise Exception(json.dumps(error_details))
-
 
     wrapper._api_endpoint = self
 

@@ -1,8 +1,8 @@
-
 import anvil.server
 from api_framework import APIRegistry
 import json
-
+import material_api
+import mat_list_testing
 
 @anvil.server.callable
 def get_api_documentation():
@@ -81,31 +81,4 @@ def get_api_documentation_openapi():
         dict: OpenAPI specification
     """
   return APIRegistry.generate_documentation()
-
-
-# Example: How to use in your Anvil client code
-"""
-# In your Anvil client-side form:
-
-from anvil import *
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
-import anvil.server
-
-class ApiDocsForm(ApiDocsFormTemplate):
-    def __init__(self, **properties):
-        self.init_components(**properties)
-        
-        # Load API documentation
-        self.api_docs = anvil.server.call('get_api_documentation')
-        
-        # Display in your UI
-        self.display_documentation()
-    
-    def display_documentation(self):
-        # You can now use self.api_docs to build your UI
-        # Or embed the HTML viewer we created
-        pass
-"""
 
