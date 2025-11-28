@@ -34,9 +34,9 @@ class MaterialDetailResponse(BaseModel):
   created_by: str
   created_at: Optional[Any] # Accepts datetime or string
   fabric_composition: str
-  weight_per_unit: Optional[Any] # Accepts float or string " "
-  fabric_roll_width: Optional[Any]
-  fabric_cut_width: Optional[Any]
+  weight_per_unit: Optional[float] # Accepts float or string " "
+  fabric_roll_width: Optional[float]
+  fabric_cut_width: Optional[float]
   original_cost_per_unit: Optional[float]
   cost_display: str
   unit_of_measurement: str
@@ -104,7 +104,7 @@ def _fetch_material_version(document_id):
 @APIEndpoint(
   name="get_material_detail",
   request_model=MaterialIDRequest,
-  response_model=List[MaterialDetailResponse],
+  response_model=MaterialDetailResponse,
   summary="Get Material Dashboard Details",
   description="Get the material details based on the materialcard api.",
   tags=["Materials", "Dashboard"]

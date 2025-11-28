@@ -36,7 +36,13 @@ def get_api_documentation():
     response_schema = {}
     if endpoint.response_model:
       schema = TypeAdapter(endpoint.response_model).json_schema()
-      properties = schema.get('properties', {})
+      
+      if schema.get('type') == 'array':
+        items = schema.get('items', {})
+        properties = items.get('properties', {})
+      else:
+        properties = schema.get('properties', {})
+        
       required = schema.get('required', [])
 
       for field_name, field_info in properties.items():

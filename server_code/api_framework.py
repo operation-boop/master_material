@@ -224,7 +224,7 @@ class APIEndpoint:
         if self.request_model:
           # Now 'data' is guaranteed to be a dict (or will fail with a clear error)
           validated_request = self.request_model(**data)
-          result = func(validated_request)
+          result = func(validated_request) 
         else:
           result = func(*args, **kwargs)
 
@@ -240,7 +240,7 @@ class APIEndpoint:
           "error": "Validation Error",
           "details": e.errors()
         }
-        raise Exception(json.dumps(error_details))
+        raise Exception(json.dumps(error_details, default=str))
 
     wrapper._api_endpoint = self
 
