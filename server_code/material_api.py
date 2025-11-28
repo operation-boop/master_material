@@ -19,7 +19,7 @@ from api_framework import APIEndpoint
 # --- Shared Request Model ---
 class MaterialIDRequest(BaseModel):
   """Standard request for any endpoint requiring a document_id"""
-  document_id: str = Field(..., description="The unique document ID of the material")
+  document_id: str = Field(None, description="The unique document ID of the material")
 
 # --- Response Models ---
 class MaterialDetailResponse(BaseModel):
@@ -104,18 +104,17 @@ def _fetch_material_version(document_id):
 @APIEndpoint(
   name="get_material_detail",
   request_model=MaterialIDRequest,
-  response_model=MaterialDetailResponse,
+  response_model=List[MaterialDetailResponse],
   summary="Get Material Dashboard Details",
+  description="Get the material details based on the materialcard api.",
   tags=["Materials", "Dashboard"]
 )
 def get_material_detail(request: MaterialIDRequest):
   _, v = _fetch_material_version(request.document_id)
-
   # Cost logic
   ocpu = _get(v, "original_cost_per_unit")
   nccy = _get(v, "native_cost_currency")
   cost_display = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else ""
-
   return {
     "document_id": _get(v, "document_id", " "),
     "ver_num": str(_get(v, "ver_num", " ")), # Cast to str to be safe

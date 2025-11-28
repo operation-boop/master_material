@@ -198,7 +198,6 @@ class APIEndpoint:
           if self.request_model:
             raw_arg = args[0]
             # --- INTELLIGENT MAPPING FIX ---
-            # If the argument is NOT a dict (e.g., it's just "MAT-123")
             if not isinstance(raw_arg, dict):
               # Get the list of fields defined in the Pydantic model
               # (e.g., ['document_id'])
@@ -229,11 +228,10 @@ class APIEndpoint:
         else:
           result = func(*args, **kwargs)
 
-        # Validate response
         if self.response_model:
           adapter = TypeAdapter(self.response_model)
           validated_obj = adapter.validate_python(result)
-          return adapter.dump_python(validated_obj)
+          return adapter.dump_python(validated_obj, mode='json')
         else:
           return result
 

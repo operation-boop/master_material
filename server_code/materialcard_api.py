@@ -66,8 +66,6 @@ def list_material_cards(request: ListMaterialCardsRequest):
     nccy = version['native_cost_currency']
     cost = f"{ocpu} {nccy}" if (ocpu and nccy) else ""
 
-    # Append to list (Original Logic)
-    # Pydantic will validate this dict against the MaterialCard model automatically
     cards.append({
       "document_id": master['document_id'] or " ",
       "master_material_id": version['master_material_id'] or " ",

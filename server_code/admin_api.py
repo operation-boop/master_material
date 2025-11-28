@@ -18,7 +18,7 @@ from typing import List, Optional
 
 class AdminRequest(BaseModel):
   """Standard request for admin actions on a specific document"""
-  document_id: str = Field(..., description="The unique document ID to act upon")
+  document_id: Optional[List[str]] = Field(..., description="The unique document ID to act upon")
 
 class VerificationResponse(BaseModel):
   ok: bool
