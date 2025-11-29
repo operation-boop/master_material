@@ -914,6 +914,9 @@ dependencies:
 - dep_id: dep_d4z0b6qmw7203c
   resolution_hints: {app_id: C6ZZPAPN4YYF5NVJ, name: Anvil Extras, package_name: anvil_extras}
   version: {version_tag: v3.6.0}
+- dep_id: dep_drodnlm3ss20lb
+  resolution_hints: {app_id: J7MBBJOYXNYVGBLO, name: api_implementation, package_name: api_implementation}
+  version: {branch: master}
 metadata: {description: Structured Data for Growth, title: VINMAKE - Growth}
 name: master material (temp clone)
 native_deps:
