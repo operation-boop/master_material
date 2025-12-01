@@ -5,6 +5,9 @@ import json
 import material_api
 import materialcard_api
 import admin_api
+import http_endpoint
+
+http_endpoint.register_http_endpoints()
 
 @anvil.server.callable
 def get_api_documentation():
