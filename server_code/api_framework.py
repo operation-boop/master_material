@@ -186,10 +186,9 @@ class APIEndpoint:
     # Register this endpoint
     APIRegistry.register(self)
 
-  def __call__(self, func: Callable):
+  def __call__(self,func: Callable):
     """Wrap the function with validation and error handling"""
     @functools.wraps(func)
-    @anvil.server.callable(self.name)
     def wrapper(*args, **kwargs):
       try:
         # Handle both positional and keyword arguments
@@ -242,6 +241,8 @@ class APIEndpoint:
         }
         raise Exception(json.dumps(error_details, default=str))
 
+    anvil.server.callable(self.name)(wrapper)
+    
     wrapper._api_endpoint = self
 
     return wrapper
