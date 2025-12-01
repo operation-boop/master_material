@@ -77,7 +77,6 @@ def list_material_cards(request: ListMaterialCardsRequest):
       "supplier": version['supplier_name'] or " ",
       "cost_per_unit": cost or " ",
       "verification_status": version['status'] or "Draft",
-      # Ensure ver_num is string to match the " " fallback
       "ver_num": str(version['ver_num']) if version['ver_num'] else " ",
     })
 

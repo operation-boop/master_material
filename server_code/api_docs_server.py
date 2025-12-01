@@ -44,7 +44,7 @@ def create_http_handler(endpoint_name, endpoint_obj):
         return {
           "error": "API Execution Error",
           "message": str(e)
-        }, 500
+        }
 
     return http_wrapper
     
