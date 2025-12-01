@@ -1,8 +1,6 @@
 import anvil.server
 import anvil.users
 from anvil import BlobMedia
-# --- FIXED IMPORT BELOW ---
-from anvil.server import HttpResponse
 import json
 from pydantic import TypeAdapter
 from api_framework import APIRegistry
@@ -16,57 +14,57 @@ import admin_api
 API_PREFIX = "/api/v1"
 
 # ========================================================
-# PART 1: THE DISPATCHER (The Fix)
+# PART 1: HTTP HANDLER LOGIC
 # ========================================================
+# Store handlers to prevent garbage collection
+_registered_handlers = []
 
-# We define ONE static endpoint that captures the function name from the URL.
-# The ":endpoint_name" part acts as a variable.
-@anvil.server.http_endpoint(f"{API_PREFIX}/:endpoint_name", methods=["POST", "OPTIONS"])
-def api_dispatcher(endpoint_name, **kwargs):
+def create_http_handler(endpoint_name, endpoint_obj):
+  """
+    Dynamically creates an HTTP endpoint for a given API function.
+    """
+  def make_handler(name,obj):
+    @anvil.server.http_endpoint(f"{API_PREFIX}/{endpoint_name}", methods=["POST"])
+    def http_wrapper(**kwargs):
+      try:
+        # A. Get the Input
+        req_body = None
+        req_body = anvil.server.request.body_json
+        
+        data = req_body if req_body else kwargs
 
-  # 1. Handle CORS (Optional, but good for web apps)
-  if anvil.server.request.method == 'OPTIONS':
-    r = HttpResponse()
-    r.headers['Access-Control-Allow-Origin'] = '*'
-    r.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
-    r.headers['Access-Control-Allow-Headers'] = 'Content-Type'
-    return r
+        # B. Run your existing Logic
+        result = obj(data)
 
-    # 2. Look up the endpoint in our Registry
+        # C. Return the Result
+        return result
+
+      except Exception as e:
+        # D. Handle Errors
+        return {
+          "error": "API Execution Error",
+          "message": str(e)
+        }, 500
+
+    return http_wrapper
+    
+    handler = make_handler(endpoint_name, endpoint_obj)
+    _registered_handlers.append(handler)
+    return handler
+    
+def register_http_endpoints():
+  """
+    Finds all registered API endpoints and creates HTTP routes for them.
+    """
   endpoints = APIRegistry.get_all_endpoints()
-  endpoint_obj = endpoints.get(endpoint_name)
+  print(f"--- Setting up HTTP Interface for {len(endpoints)} endpoints ---")
 
-  # 3. If not found, return 404
-  if not endpoint_obj:
-    return HttpResponse(status=404, body=json.dumps({"error": f"Endpoint '{endpoint_name}' not found"}))
-
-    # 4. Execute the Logic
-  try:
-    # Get JSON body or Fallback to kwargs
-    req_body = anvil.server.request.body_json
-    data = req_body if req_body else kwargs
-
-    # Run the internal function (validation happens inside here)
-    result = endpoint_obj(data)
-
-    # Return success
-    return HttpResponse(
-      status=200,
-      body=json.dumps(result, default=str),
-      headers={"Content-Type": "application/json"}
-    )
-
-  except Exception as e:
-    # Handle internal errors
-    print(f"Error in {endpoint_name}: {e}")
-    return HttpResponse(
-      status=400, # or 500 depending on error type
-      body=json.dumps({"error": "API Execution Error", "message": str(e)}),
-      headers={"Content-Type": "application/json"}
-    )
+  for name, endpoint in endpoints.items():
+    create_http_handler(name, endpoint)
+    print(f"  > Online: {anvil.server.get_app_origin()}{API_PREFIX}/{name}")
 
 # ========================================================
-# PART 2: DOCUMENTATION ENDPOINTS
+# PART 2: DOCUMENTATION ENDPOINTS (Swagger UI)
 # ========================================================
 
 @anvil.server.http_endpoint(f"{API_PREFIX}/docs", methods=["GET"])
@@ -95,26 +93,22 @@ def get_docs_page():
 @anvil.server.http_endpoint(f"{API_PREFIX}/docs/openapi.json", methods=["GET"])
 def get_openapi_spec_http():
   """Returns the JSON spec for the HTTP Swagger UI"""
-  return HttpResponse(
-    status=200,
-    body=json.dumps(APIRegistry.generate_documentation(), default=str),
-    headers={"Content-Type": "application/json"}
-  )
+  return APIRegistry.generate_documentation()
 
 # ========================================================
-# PART 3: INTERNAL ANVIL FUNCTIONS
+# PART 3: INTERNAL ANVIL FUNCTIONS (For your UI)
 # ========================================================
 
-@anvil.server.callable("get_api_documentation")
-def internal_get_api_docs():
+@anvil.server.callable
+def get_api_documentation():
   """
     Returns API documentation in a format suitable for the front-end viewer
     """
   docs = APIRegistry.get_all_endpoints()
 
-  # (Helper function for schemas)
+  # (Your existing helper function for schemas)
   def get_properties_from_schema(schema_root):
-    if not schema_root: 
+    if not schema_root:
       return {}
     if '$ref' in schema_root:
       ref_name = schema_root['$ref'].split('/')[-1]
@@ -131,6 +125,7 @@ def internal_get_api_docs():
 
   result = {}
   for name, endpoint in docs.items():
+    # --- 1. BUILD REQUEST SCHEMA ---
     request_schema = {}
     if endpoint.request_model:
       schema = TypeAdapter(endpoint.request_model).json_schema()
@@ -144,6 +139,7 @@ def internal_get_api_docs():
           'example': field_info.get('example')
         }
 
+        # --- 2. BUILD RESPONSE SCHEMA ---
     response_schema = {}
     if endpoint.response_model:
       schema = TypeAdapter(endpoint.response_model).json_schema()
@@ -168,3 +164,10 @@ def internal_get_api_docs():
       'exampleResponse': endpoint.example_response or {}
     }
   return result
+
+# ========================================================
+# PART 4: INITIALIZATION
+# ========================================================
+
+# Run the registration immediately when this module loads
+register_http_endpoints()
