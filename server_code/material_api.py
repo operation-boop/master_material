@@ -31,12 +31,12 @@ class MaterialDetailResponse(BaseModel):
   supplier: str
   country_of_origin: str
   created_by: str
-  created_at: Optional[Any] # Accepts datetime or string
+  created_at: datetime 
   fabric_composition: str
-  weight_per_unit: Optional[float] # Accepts float or string " "
-  fabric_roll_width: Optional[float]
-  fabric_cut_width: Optional[float]
-  original_cost_per_unit: Optional[float]
+  weight_per_unit: int 
+  fabric_roll_width: int
+  fabric_cut_width: int
+  original_cost_per_unit: int
   cost_display: str
   unit_of_measurement: str
   verification_status: str

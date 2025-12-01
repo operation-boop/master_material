@@ -206,7 +206,6 @@ class APIEndpoint:
               if len(field_names) == 1:
                 data = {field_names[0]: raw_arg}
               else:
-                # If model has 2+ fields, we can't guess which one this string belongs to
                 data = raw_arg 
             else:
               # It is already a dict, use it as is
@@ -233,18 +232,14 @@ class APIEndpoint:
           return adapter.dump_python(validated_obj, mode='json')
         else:
           return result
-
       except ValidationError as e:
         error_details = {
           "error": "Validation Error",
           "details": e.errors()
         }
         raise Exception(json.dumps(error_details, default=str))
-
     anvil.server.callable(self.name)(wrapper)
-    
     wrapper._api_endpoint = self
-
     return wrapper
 
 

@@ -5,6 +5,7 @@ import anvil.server
 from ..Material_input_form import Material_input_form
 from .MaterialCard import MaterialCard
 
+
 class Material_list(Material_listTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
@@ -12,7 +13,6 @@ class Material_list(Material_listTemplate):
     self.flow_panel_materials.add_event_handler('x-refresh-list', self.load_material_cards)
     self.material_card = anvil.server.call("list_material_cards")
     self.load_material_cards()
-    print(anvil.server.call('server_status_check'))
 
 
   def form_show(self, **event_args):
