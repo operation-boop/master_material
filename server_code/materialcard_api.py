@@ -11,7 +11,6 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 from api_framework import APIEndpoint
 
-
 class MaterialCard(BaseModel):
   """Represents a single material card for UI display"""
   document_id: str

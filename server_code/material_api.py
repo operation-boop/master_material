@@ -11,7 +11,6 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from api_framework import APIEndpoint
-
 # ============================================================================
 # 1. MODELS (The Inputs and Outputs)
 # ============================================================================
