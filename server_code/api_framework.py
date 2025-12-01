@@ -162,7 +162,6 @@ class APIRegistry:
 
 class APIEndpoint:
   """Decorator for creating documented and validated API endpoints"""
-
   def __init__(
     self,
     name: str,
@@ -211,7 +210,6 @@ class APIEndpoint:
               # It is already a dict, use it as is
               data = raw_arg
             # -------------------------------
-
           else:
             # No request model, pass through original args
             return func(*args, **kwargs)

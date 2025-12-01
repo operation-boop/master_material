@@ -100,6 +100,7 @@ def _fetch_material_version(document_id):
 # ============================================================================
 # 3. API ENDPOINTS
 # ============================================================================
+@anvil.server.route("/get_material_detail")
 @APIEndpoint(
   name="get_material_detail",
   request_model=MaterialIDRequest,
@@ -116,7 +117,7 @@ def get_material_detail(request: MaterialIDRequest):
   cost_display = f"{ocpu} {nccy}" if (ocpu is not None and nccy) else ""
   return {
     "document_id": _get(v, "document_id", " "),
-    "ver_num": str(_get(v, "ver_num", " ")), # Cast to str to be safe
+    "ver_num": str(_get(v, "ver_num", " ")), 
     "master_material_id": _get(v, "master_material_id", " "),
     "name": _get(v, "name", " "),
     "ref_id": _get(v, "ref_id", " "),
@@ -138,7 +139,7 @@ def get_material_detail(request: MaterialIDRequest):
     "last_verified_date": _get(v, "last_verified_date"),
   }
   ##-------------------------------------------------------------------------------------------------------------------------
-  
+@anvil.server.route("/get_technical_detail")
 @APIEndpoint(
   name="get_technical_detail",
   request_model=MaterialIDRequest,
@@ -159,7 +160,7 @@ def get_technical_detail(request: MaterialIDRequest):
     "werp_shrinkage": _get(v, "werp_shrinkage"),
   }
   ##-------------------------------------------------------------------------------------------------------------------------
-  
+@anvil.server.route("/get_cost_detail")
 @APIEndpoint(
   name="get_cost_detail",
   request_model=MaterialIDRequest,
@@ -181,6 +182,7 @@ def get_cost_detail(request: MaterialIDRequest):
     "landed_cost": _get(v, "landed_cost_per_unit"),
   }
   ##------------------------------------------------------------------------------------------------------------------------- 
+@anvil.server.route("/get_version_history")
 @APIEndpoint(
   name="get_version_history",
   request_model=MaterialIDRequest,
@@ -206,7 +208,7 @@ def get_version_history(request: MaterialIDRequest):
     for v in versions
   ]
   ##-------------------------------------------------------------------------------------------------------------------------
-
+@anvil.server.route("/get_material_full_row")
 @APIEndpoint(
   name="get_material_full_row",
   request_model=MaterialIDRequest,

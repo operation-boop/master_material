@@ -35,6 +35,7 @@ class ListMaterialCardsRequest(BaseModel):
   )
 
 # --- STEP 3: The Integration ---
+@anvil.server.route("/list_material_cards")
 @APIEndpoint(
   name="list_material_cards",
   request_model=ListMaterialCardsRequest,
