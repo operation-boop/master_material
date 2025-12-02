@@ -148,7 +148,19 @@ def get_material_detail(request: MaterialIDRequest):
   tags=["Materials", "Technical"]
 )
 def get_technical_detail(request: MaterialIDRequest):
-  _, v = _fetch_material_version(request.document_id)
+  if isinstance(request, dict):
+    request = MaterialIDRequest(**request)
+
+  document_id = request.document_id
+
+  # Your original logic
+  master = app_tables.master_material.get(document_id=document_id)
+  if not master:
+    raise Exception(f"No material found for ID: {document_id}")
+  
+    v = master['current_version']
+  if not v:
+    raise Exception(f"No current version found for ID: {document_id}")
 
   return {
     "fabric_composition": _get(v, "fabric_composition"),

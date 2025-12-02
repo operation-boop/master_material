@@ -31,20 +31,8 @@ class APIRegistry:
       },
       "paths": {}
     }
-
+  
     for name, endpoint in cls._endpoints.items():
-      # Handle Request Schema
-      req_schema = {}
-      if endpoint.request_model:
-        # Use TypeAdapter to handle both Models and Lists safeley
-        req_schema = TypeAdapter(endpoint.request_model).json_schema()
-
-        # Handle Response Schema
-      res_schema = {}
-      if endpoint.response_model:
-        # Use TypeAdapter (FIX for 'list' object error)
-        res_schema = TypeAdapter(endpoint.response_model).json_schema()
-        
       docs["paths"][f"/{name}"] = {
         "post": {
           "summary": endpoint.summary,
@@ -54,7 +42,7 @@ class APIRegistry:
             "required": True,
             "content": {
               "application/json": {
-                "schema": req_schema
+                "schema": endpoint.request_model.model_json_schema() if endpoint.request_model else {}
               }
             }
           },
@@ -63,7 +51,7 @@ class APIRegistry:
               "description": "Successful response",
               "content": {
                 "application/json": {
-                  "schema": res_schema
+                  "schema": endpoint.response_model.model_json_schema()
                 }
               }
             },
@@ -97,7 +85,7 @@ class APIRegistry:
           }
         }
       }
-
+  
     return docs
 
   @classmethod
@@ -227,7 +215,8 @@ class APIEndpoint:
         if self.response_model:
           adapter = TypeAdapter(self.response_model)
           validated_obj = adapter.validate_python(result)
-          return adapter.dump_python(validated_obj, mode='json')
+          final_json = adapter.dump_python(validated_obj, mode='json')
+          return final_json
         else:
           return result
       except ValidationError as e:

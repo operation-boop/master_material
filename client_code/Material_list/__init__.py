@@ -54,6 +54,7 @@ class Material_list(Material_listTemplate):
     open_form('Material_list')
 
   def doc_read_click(self, **event_args):
-    open_form("Api_docs_form")
+    html = anvil.server.call('get_redoc_html')
+    self.html = html
     pass
   
