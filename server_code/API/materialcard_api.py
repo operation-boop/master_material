@@ -9,7 +9,7 @@ from anvil.tables import app_tables
 import anvil.server
 from typing import List, Optional
 from pydantic import BaseModel, Field
-from api_framework import APIEndpoint
+from .api_framework import APIEndpoint
 
 class MaterialCard(BaseModel):
   """Represents a single material card for UI display"""
@@ -44,6 +44,7 @@ class ListMaterialCardsRequest(BaseModel):
   description="Get a list of material cards formatted for UI display, filtered by status.",
   tags=["Materials", "UI"]
 )
+@anvil.server.callable
 def list_material_cards(request: ListMaterialCardsRequest):
   statuses = request.statuses or ["Draft", "Submitted - Unverified", "Submitted - Verified"]
   masters = app_tables.master_material.search()

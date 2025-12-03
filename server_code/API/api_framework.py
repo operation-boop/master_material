@@ -31,7 +31,7 @@ class APIRegistry:
       },
       "paths": {}
     }
-  
+
     for name, endpoint in cls._endpoints.items():
       docs["paths"][f"/{name}"] = {
         "post": {
@@ -85,7 +85,7 @@ class APIRegistry:
           }
         }
       }
-  
+
     return docs
 
   @classmethod
@@ -105,7 +105,7 @@ class APIRegistry:
 
       if endpoint.request_model:
         md += "### Request Body\n\n"
-        schema = TypeAdapter(endpoint.request_model).json_schema()
+        schema = endpoint.request_model.model_json_schema()
         md += "```json\n"
         md += json.dumps(schema, indent=2)
         md += "\n```\n\n"
@@ -123,9 +123,8 @@ class APIRegistry:
               md += f"  - Example: `{field_info['example']}`\n"
           md += "\n"
 
-    if endpoint.response_model:
       md += "### Response\n\n"
-      response_schema = TypeAdapter(endpoint.response_model).json_schema()
+      response_schema = endpoint.response_model.model_json_schema()
       md += "```json\n"
       md += json.dumps(response_schema, indent=2)
       md += "\n```\n\n"
@@ -150,6 +149,7 @@ class APIRegistry:
 
 class APIEndpoint:
   """Decorator for creating documented and validated API endpoints"""
+
   def __init__(
     self,
     name: str,
@@ -173,60 +173,54 @@ class APIEndpoint:
     # Register this endpoint
     APIRegistry.register(self)
 
-  def __call__(self,func: Callable):
+  def __call__(self, func: Callable):
     """Wrap the function with validation and error handling"""
     @functools.wraps(func)
+    @anvil.server.callable
     def wrapper(*args, **kwargs):
       try:
         # Handle both positional and keyword arguments
         if args:
-          # If called with positional args...
+          # If called with positional args, convert to dict if we have a request model
           if self.request_model:
-            raw_arg = args[0]
-            # --- INTELLIGENT MAPPING FIX ---
-            if not isinstance(raw_arg, dict):
-              # Get the list of fields defined in the Pydantic model
-              # (e.g., ['document_id'])
-              field_names = list(self.request_model.model_fields.keys())
-
-              # If the model expects exactly 1 field, map the value to it automatically
-              if len(field_names) == 1:
-                data = {field_names[0]: raw_arg}
-              else:
-                data = raw_arg 
-            else:
-              # It is already a dict, use it as is
-              data = raw_arg
-            # -------------------------------
+            # Assume single dict argument
+            data = args[0] if args else {}
           else:
-            # No request model, pass through original args
+            # No request model, pass through
             return func(*args, **kwargs)
         else:
           data = kwargs
 
-        # Validate request if model is provided
+          # Validate request if model is provided
         if self.request_model:
-          # Now 'data' is guaranteed to be a dict (or will fail with a clear error)
           validated_request = self.request_model(**data)
-          result = func(validated_request) 
+          # Call function with validated model
+          result = func(validated_request)
         else:
+          # No request validation
           result = func(*args, **kwargs)
 
+          # Validate response
         if self.response_model:
-          adapter = TypeAdapter(self.response_model)
-          validated_obj = adapter.validate_python(result)
-          final_json = adapter.dump_python(validated_obj, mode='json')
-          return final_json
+          if isinstance(result, dict):
+            validated_response = self.response_model(**result)
+          else:
+            validated_response = result
+          return validated_response.model_dump()
         else:
           return result
+
       except ValidationError as e:
+        # Return structured validation errors
         error_details = {
           "error": "Validation Error",
           "details": e.errors()
         }
-        raise Exception(json.dumps(error_details, default=str))
-    anvil.server.callable(self.name)(wrapper)
+        raise Exception(json.dumps(error_details))
+
+
     wrapper._api_endpoint = self
+
     return wrapper
 
 

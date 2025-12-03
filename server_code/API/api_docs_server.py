@@ -8,7 +8,7 @@ import json
 
 
 @anvil.server.callable
-def get_api_documentations():
+def get_api_documentation():
   """
     Returns API documentation in a format suitable for the front-end viewer
     

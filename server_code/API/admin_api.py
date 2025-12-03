@@ -9,7 +9,7 @@ from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime
 from pydantic import BaseModel, Field
-from api_framework import APIEndpoint
+from .api_framework import APIEndpoint
 from typing import List, Optional
 
 # ============================================================================
