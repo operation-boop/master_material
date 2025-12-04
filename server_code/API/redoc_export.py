@@ -3,7 +3,7 @@ OpenAPI YAML Export for Redoc
 Add this to your Anvil server modules
 """
 import anvil.server
-from .api_framework import APIRegistry
+
 import yaml
 import json
 from datetime import datetime
