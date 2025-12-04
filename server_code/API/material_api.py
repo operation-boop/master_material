@@ -109,7 +109,6 @@ def _fetch_material_version(document_id):
   description="Get the material details based on the materialcard api.",
   tags=["Materials", "Dashboard"]
 )
-@anvil.server.callable
 def get_material_detail(request: MaterialIDRequest):
   _, v = _fetch_material_version(request.document_id)
   # Cost logic
@@ -148,7 +147,6 @@ def get_material_detail(request: MaterialIDRequest):
   summary="Get Technical Specifications",
   tags=["Materials", "Technical"]
 )
-@anvil.server.callable
 def get_technical_detail(request: MaterialIDRequest):
   if isinstance(request, dict):
     request = MaterialIDRequest(**request)
@@ -182,7 +180,6 @@ def get_technical_detail(request: MaterialIDRequest):
   summary="Get Cost Breakdown",
   tags=["Materials", "Financial"]
 )
-@anvil.server.callable
 def get_cost_detail(request: MaterialIDRequest):
   _, v = _fetch_material_version(request.document_id)
 
@@ -205,7 +202,6 @@ def get_cost_detail(request: MaterialIDRequest):
   summary="Get Version History",
   tags=["Materials", "History"]
 )
-@anvil.server.callable
 def get_version_history(request: MaterialIDRequest):
   master = app_tables.master_material.get(document_id=request.document_id)
   if not master:
@@ -233,7 +229,6 @@ def get_version_history(request: MaterialIDRequest):
   description="Returns the raw database row for editing purposes",
   tags=["Materials", "Internal"]
 )
-@anvil.server.callable
 def get_material_full_row(request: MaterialIDRequest):
   master = app_tables.master_material.get(document_id=request.document_id)
   if not master:

@@ -130,3 +130,5 @@ def delete_material(request: AdminRequest):
     "success": True, 
     "message": f"Material {document_id} and all related data deleted."
   }
+
+  

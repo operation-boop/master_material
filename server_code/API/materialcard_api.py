@@ -44,7 +44,6 @@ class ListMaterialCardsRequest(BaseModel):
   description="Get a list of material cards formatted for UI display, filtered by status.",
   tags=["Materials", "UI"]
 )
-@anvil.server.callable
 def list_material_cards(request: ListMaterialCardsRequest):
   statuses = request.statuses or ["Draft", "Submitted - Unverified", "Submitted - Verified"]
   masters = app_tables.master_material.search()
