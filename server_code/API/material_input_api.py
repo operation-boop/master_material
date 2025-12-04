@@ -38,12 +38,47 @@ def _get_next_document_id():
 
 class MaterialBase(BaseModel):
   """Common fields for creating/updating materials"""
+  # --- Identification ---
   material_name: Optional[str] = None
-  material_type: Optional[str] = None
-  supplier_name: Optional[str] = None
+  master_material_id: Optional[str] = None
   ref_id: Optional[str] = None
+  supplier_name: Optional[str] = None
+
+  # --- Basic Specs ---
+  material_type: Optional[str] = None
+  country_of_origin: Optional[str] = None
   unit_of_measurement: Optional[str] = None
-  # Add other fields as optional to allow partial updates...
+  generic_material_size: Optional[str] = None
+
+  # --- Fabric Details ---
+  fabric_composition: Optional[str] = None  # Stores "Cotton:50%|Polyester:50%"
+  fabric_roll_width: Optional[float] = None
+  fabric_cut_width: Optional[float] = None
+  fabric_cut_width_no_shrinkage: Optional[float] = None
+  weight_per_unit: Optional[float] = None
+  weight_uom: Optional[str] = None
+  weft_shrinkage: Optional[float] = None
+  werp_shrinkage: Optional[float] = None
+
+  # --- Costs ---
+  original_cost_per_unit: Optional[float] = None
+  native_cost_currency: Optional[str] = None
+  supplier_selling_tolerance: Optional[float] = None
+  refundable_tolerance: Optional[bool] = False
+  effective_cost_per_unit: Optional[float] = None
+
+  # --- Taxes & Logistics ---
+  vietnam_vat_rate: Optional[float] = None
+  refundable_vat: Optional[bool] = False
+  import_duty: Optional[float] = None
+  refundable_import_duty: Optional[bool] = False
+  shipping_term: Optional[str] = None
+  logistics_rate: Optional[float] = None
+  logistics_fee_per_unit: Optional[float] = None
+  landed_cost_per_unit: Optional[float] = None
+
+  # --- Notes ---
+  change_description: Optional[str] = None
 
 class CreateMaterialRequest(MaterialBase):
   """Request to create a new material"""

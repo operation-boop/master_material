@@ -25,23 +25,29 @@ class Material_sku_input_form(Material_sku_input_formTemplate):
     sku_cost_override = self.sku_cost_override.text
     color = self.color.text if self.color.text else None
     size = self.size.text if self.size.text else None
-
+  
     # --- Validate required fields ---
     if not ref_id or not qr_data or not sku_cost_override:
       alert("Please fill in all required fields (Ref ID, QR Data, SKU Cost Override).")
       return
+  
     try:
-      new_row = anvil.server.call('create_material_sku',
-        self.document_id,
-        ref_id,
-        qr_data,
-        float(sku_cost_override),
-        color,
-        size
-        )
+      # FIX: Wrap arguments into a single dictionary payload
+      sku_payload = {
+        "document_id": self.document_id,
+        "ref_id": ref_id,
+        "qr_data": qr_data,
+        "sku_cost_override": float(sku_cost_override),
+        "color": color,
+        "size": size
+      }
+  
+      # Call server with ONE argument (the dictionary)
+      new_row = anvil.server.call('create_material_sku', sku_payload)
+  
       self.saved = True
       self.raise_event("x-close-alert")
       alert(f"SKU {new_row['id']} created successfully!")
-
+  
     except Exception as e:
       alert(f"Error creating SKU: {e}")

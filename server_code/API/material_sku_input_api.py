@@ -38,15 +38,15 @@ class SkuResponse(BaseModel):
 
 # --- SKU ENDPOINTS ---
 
-@anvil.server.route("/get_material_skus")
+@anvil.server.route("/get_material_sku")
 @APIEndpoint(
-  name="get_material_skus",
+  name="get_material_sku",
   request_model=SkuRequest,
   response_model=List[SkuResponse],  # Returns a LIST of SKUs
   summary="Get SKUs for Material",
   tags=["Inventory"]
 )
-def get_material_skus(request: SkuRequest):
+def get_material_sku(request: SkuRequest):
   master_row = app_tables.master_material.get(document_id=request.document_id)
 
   if not master_row:

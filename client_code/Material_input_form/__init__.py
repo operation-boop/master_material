@@ -335,7 +335,6 @@ class Material_input_form(Material_input_formTemplate):
     self.submit_btn.text = "Submitting..."
 
     try:
-      user_name = self._current_user_name()
 
       if self.mode == "edit_verified":
         # Create new version for verified material
