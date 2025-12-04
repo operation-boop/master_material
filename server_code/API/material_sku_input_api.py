@@ -44,7 +44,7 @@ class SkuResponse(BaseModel):
   request_model=SkuRequest,
   response_model=List[SkuResponse],  # Returns a LIST of SKUs
   summary="Get SKUs for Material",
-  tags=["Inventory"]
+  tags=["SKU Inventory"]
 )
 def get_material_sku(request: SkuRequest):
   master_row = app_tables.master_material.get(document_id=request.document_id)
@@ -76,7 +76,7 @@ def get_material_sku(request: SkuRequest):
   request_model=CreateSkuRequest,
   response_model=SkuResponse, # Returns the created SKU
   summary="Create New SKU",
-  tags=["Inventory"]
+  tags=["SKU Inventory"]
 )
 def create_material_sku(request: CreateSkuRequest):
   # 1. Fetch Master Material

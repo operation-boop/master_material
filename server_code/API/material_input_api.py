@@ -115,7 +115,7 @@ class MaterialResponse(BaseModel):
   request_model=CreateMaterialRequest,
   response_model=MaterialResponse,
   summary="Create & Submit Immediately",
-  tags=["Material_Input"]
+  tags=["Material Input"]
 )
 def create_and_submit_material(request: CreateMaterialRequest):
   user = anvil.users.get_user()
@@ -180,7 +180,7 @@ def create_and_submit_material(request: CreateMaterialRequest):
   request_model=CreateMaterialRequest,
   response_model=MaterialResponse,
   summary="Create New Draft",
-  tags=["Material_Input"]
+  tags=["Material Input"]
 )
 def create_material_draft(request: CreateMaterialRequest):
   user = anvil.users.get_user()
@@ -228,7 +228,7 @@ def create_material_draft(request: CreateMaterialRequest):
   request_model=UpdateDraftRequest,
   response_model=MaterialResponse,
   summary="Update Existing Draft",
-  tags=["Material_Input"]
+  tags=["Material Input"]
 )
 def update_draft(request: UpdateDraftRequest):
   # 1. Fetch Master & Version
@@ -259,7 +259,7 @@ def update_draft(request: UpdateDraftRequest):
   request_model=SubmitVersionRequest,
   response_model=MaterialResponse,
   summary="Submit Draft to Unverified",
-  tags=["Material_Input"]
+  tags=["Material Input"]
 )
 def submit_version(request: SubmitVersionRequest):
   user = anvil.users.get_user()
@@ -313,7 +313,7 @@ def submit_version(request: SubmitVersionRequest):
   request_model=EditVerifiedRequest,
   response_model=MaterialResponse,
   summary="Revise Verified Document",
-  tags=["Material_Input"]
+  tags=["Material Input"]
 )
 def edit_verified(request: EditVerifiedRequest):
   user = anvil.users.get_user()
@@ -332,8 +332,7 @@ def edit_verified(request: EditVerifiedRequest):
   now = datetime.now()
 
   # 2. Create New Version Row
-  # (We clone manually to avoid copying system fields)
-  exclude = {"document_uid", "ver_num", "status", "created_at", "submitted_at", "submitted_by"}
+  exclude = {"document_id","document_uid", "ver_num", "status", "created_at", "submitted_at", "submitted_by","last_verified_date", "last_verified_by"}
   prev_data = dict(old_v)
   cloned_data = {k: v for k, v in prev_data.items() if k not in exclude and not k.startswith("_")}
 
@@ -349,7 +348,6 @@ def edit_verified(request: EditVerifiedRequest):
     created_at=now,
     submitted_at=now,
     submitted_by=user_name,
-    verification_notes=request.notes,
     **cloned_data
   )
 

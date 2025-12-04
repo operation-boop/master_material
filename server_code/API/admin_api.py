@@ -57,7 +57,7 @@ def _fetch_material_for_admin(document_id):
   response_model=VerificationResponse,
   summary="Admin: Verify Material",
   description="Marks the current version as verified. Requires Admin role.",
-  tags=["Admin", "Workflow"]
+  tags=["Admin Permissions"]
 )
 
 def verify_material_version(request: AdminRequest):
@@ -97,7 +97,7 @@ def verify_material_version(request: AdminRequest):
   response_model=DeleteResponse,
   summary="Admin: Delete Material",
   description="Permanently deletes material, history, and SKUs. Cannot be undone.",
-  tags=["Admin", "Danger Zone"]
+  tags=["Admin Permissions"]
 )
 def delete_material(request: AdminRequest):
   # 1. Auth Check

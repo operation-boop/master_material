@@ -107,7 +107,7 @@ def _fetch_material_version(document_id):
   response_model=MaterialDetailResponse,
   summary="Get Material Dashboard Details",
   description="Get the material details based on the materialcard api.",
-  tags=["Materials", "Dashboard"]
+  tags=["Dashboard Details"]
 )
 def get_material_detail(request: MaterialIDRequest):
   _, v = _fetch_material_version(request.document_id)
@@ -144,8 +144,8 @@ def get_material_detail(request: MaterialIDRequest):
   name="get_technical_detail",
   request_model=MaterialIDRequest,
   response_model=TechnicalDetailResponse,
-  summary="Get Technical Specifications",
-  tags=["Materials", "Technical"]
+  summary="Get Technical Specifications Details",
+  tags=["Dashboard Details"]
 )
 def get_technical_detail(request: MaterialIDRequest):
   document_id = request.document_id
@@ -173,8 +173,8 @@ def get_technical_detail(request: MaterialIDRequest):
   name="get_cost_detail",
   request_model=MaterialIDRequest,
   response_model=CostDetailResponse,
-  summary="Get Cost Breakdown",
-  tags=["Materials", "Financial"]
+  summary="Get Cost Details",
+  tags=["Dashboard Details"]
 )
 def get_cost_detail(request: MaterialIDRequest):
   _, v = _fetch_material_version(request.document_id)
@@ -195,8 +195,8 @@ def get_cost_detail(request: MaterialIDRequest):
   name="get_version_history",
   request_model=MaterialIDRequest,
   response_model=List[VersionHistoryItem], # Returns a LIST
-  summary="Get Version History",
-  tags=["Materials", "History"]
+  summary="Get Version History Details",
+  tags=["Dashboard Details"]
 )
 def get_version_history(request: MaterialIDRequest):
   master = app_tables.master_material.get(document_id=request.document_id)
@@ -223,7 +223,7 @@ def get_version_history(request: MaterialIDRequest):
   response_model=Dict[str, Any], # Returns a generic Dictionary
   summary="Get Full Material Row",
   description="Returns the raw database row for editing purposes",
-  tags=["Materials", "Internal"]
+  tags=["Internal"]
 )
 def get_material_full_row(request: MaterialIDRequest):
   master = app_tables.master_material.get(document_id=request.document_id)

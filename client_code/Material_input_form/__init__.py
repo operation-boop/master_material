@@ -347,7 +347,8 @@ class Material_input_form(Material_input_formTemplate):
           }
         )
         self.current_document_id = resp.get('document_id') or self.current_document_id
-        success_msg = f"New version {resp.get('new_version_number')} created and submitted."
+        v_num = resp.get('ver_num')
+        success_msg = f"New version {v_num} created and submitted."
 
 
       elif self.mode == "edit_draft":

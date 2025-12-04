@@ -42,7 +42,7 @@ class ListMaterialCardsRequest(BaseModel):
   response_model=List[MaterialCard],  # Returns a LIST of cards
   summary="List Material Cards",
   description="Get a list of material cards formatted for UI display, filtered by status.",
-  tags=["Materials", "UI"]
+  tags=["Materials UI"]
 )
 def list_material_cards(request: ListMaterialCardsRequest):
   statuses = request.statuses or ["Draft", "Submitted - Unverified", "Submitted - Verified"]
