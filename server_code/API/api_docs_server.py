@@ -5,48 +5,45 @@ Add this to your Anvil server modules
 import anvil.server
 from .api_framework import APIRegistry
 import json
-
+from pydantic import TypeAdapter # <--- ADD THIS IMPORT
 
 @anvil.server.callable
 def get_api_documentation():
-  """
-    Returns API documentation in a format suitable for the front-end viewer
-    
-    Returns:
-        dict: Complete API documentation
-    """
   docs = APIRegistry.get_all_endpoints()
-
   result = {}
+
   for name, endpoint in docs.items():
-    # Build request schema
+    # 1. Safe Request Schema
     request_schema = {}
     if endpoint.request_model:
-      schema = endpoint.request_model.model_json_schema()
+      # Use TypeAdapter to safely handle Lists or Models
+      schema = TypeAdapter(endpoint.request_model).json_schema()
+
+      # Extract properties if it's a standard object
       properties = schema.get('properties', {})
       required = schema.get('required', [])
 
       for field_name, field_info in properties.items():
         request_schema[field_name] = {
           'type': field_info.get('type', 'any'),
-          'required': field_name in required,
           'description': field_info.get('description', ''),
-          'example': field_info.get('example')
+          'required': field_name in required
         }
 
-        # Build response schema
+    # 2. Safe Response Schema
     response_schema = {}
     if endpoint.response_model:
-      schema = endpoint.response_model.model_json_schema()
+      # Use TypeAdapter here too!
+      schema = TypeAdapter(endpoint.response_model).json_schema()
+
       properties = schema.get('properties', {})
       required = schema.get('required', [])
 
       for field_name, field_info in properties.items():
         response_schema[field_name] = {
           'type': field_info.get('type', 'any'),
-          'required': field_name in required,
           'description': field_info.get('description', ''),
-          'example': field_info.get('example')
+          'required': field_name in required
         }
 
     result[name] = {
@@ -55,9 +52,7 @@ def get_api_documentation():
       'description': endpoint.description,
       'tags': endpoint.tags,
       'request': request_schema,
-      'response': response_schema,
-      'exampleRequest': endpoint.example_request or {},
-      'exampleResponse': endpoint.example_response or {}
+      'response': response_schema
     }
 
   return result

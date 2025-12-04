@@ -6,7 +6,7 @@ components:
 - event_bindings: {click: doc_read_click}
   layout_properties: {grid_position: 'QMUIBQ,SOKRUR'}
   name: doc_read
-  properties: {text: doc}
+  properties: {text: doc view}
   type: Button
 - event_bindings: {click: add_btn_click}
   layout_properties: {grid_position: 'QMUIBQ,NNELXZ'}
@@ -28,6 +28,10 @@ components:
   name: column_panel_1
   properties: {}
   type: ColumnPanel
+- layout_properties: {grid_position: 'TDBQGX,LMVSOY'}
+  name: test
+  properties: {}
+  type: Link
 container:
   properties: {col_widths: '{"AQRIFR":35,"NNELXZ":15,"EIKRLC":10}'}
   type: ColumnPanel

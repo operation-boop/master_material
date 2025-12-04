@@ -4,7 +4,8 @@ import anvil.users
 import anvil.server
 from ..Material_input_form import Material_input_form
 from .MaterialCard import MaterialCard
-
+import anvil.js
+from anvil import BlobMedia
 
 class Material_list(Material_listTemplate):
   def __init__(self, **properties):
@@ -54,7 +55,10 @@ class Material_list(Material_listTemplate):
     open_form('Material_list')
 
   def doc_read_click(self, **event_args):
-    html = anvil.server.call('get_redoc_html')
-    self.html = html
-    pass
-  
+    html_string = anvil.server.call('get_redoc_html')
+
+    # Create a Blob URL
+    media = BlobMedia("text/html", html_string.encode(), name="docs.html")
+
+    # Open in new tab using Javascript
+    anvil.js.window.open(media.url, '_blank')

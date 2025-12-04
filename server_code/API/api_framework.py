@@ -31,20 +31,18 @@ class APIRegistry:
       },
       "paths": {}
     }
-
+  
     for name, endpoint in cls._endpoints.items():
-      # Handle Request Schema
       req_schema = {}
       if endpoint.request_model:
-        # Use TypeAdapter to handle both Models and Lists safeley
         req_schema = TypeAdapter(endpoint.request_model).json_schema()
+      # --- FIX END ---
 
-        # Handle Response Schema
+      # --- FIX START: Prepare Response Schema safely ---
       res_schema = {}
       if endpoint.response_model:
-        # Use TypeAdapter (FIX for 'list' object error)
         res_schema = TypeAdapter(endpoint.response_model).json_schema()
-
+      # --- FIX END ---
       docs["paths"][f"/{name}"] = {
         "post": {
           "summary": endpoint.summary,
@@ -97,7 +95,7 @@ class APIRegistry:
           }
         }
       }
-
+  
     return docs
 
   @classmethod
@@ -162,7 +160,6 @@ class APIRegistry:
 
 class APIEndpoint:
   """Decorator for creating documented and validated API endpoints"""
-
   def __init__(
     self,
     name: str,
@@ -186,10 +183,9 @@ class APIEndpoint:
     # Register this endpoint
     APIRegistry.register(self)
 
-  def __call__(self, func: Callable):
+  def __call__(self,func: Callable):
     """Wrap the function with validation and error handling"""
     @functools.wraps(func)
-    @anvil.server.callable(self.name)
     def wrapper(*args, **kwargs):
       try:
         # Handle both positional and keyword arguments
@@ -207,13 +203,11 @@ class APIEndpoint:
               if len(field_names) == 1:
                 data = {field_names[0]: raw_arg}
               else:
-                # If model has 2+ fields, we can't guess which one this string belongs to
                 data = raw_arg 
             else:
               # It is already a dict, use it as is
               data = raw_arg
             # -------------------------------
-
           else:
             # No request model, pass through original args
             return func(*args, **kwargs)
@@ -231,19 +225,18 @@ class APIEndpoint:
         if self.response_model:
           adapter = TypeAdapter(self.response_model)
           validated_obj = adapter.validate_python(result)
-          return adapter.dump_python(validated_obj, mode='json')
+          final_json = adapter.dump_python(validated_obj, mode='json')
+          return final_json
         else:
           return result
-
       except ValidationError as e:
         error_details = {
           "error": "Validation Error",
           "details": e.errors()
         }
         raise Exception(json.dumps(error_details, default=str))
-
+    anvil.server.callable(self.name)(wrapper)
     wrapper._api_endpoint = self
-
     return wrapper
 
 
