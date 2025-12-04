@@ -235,7 +235,8 @@ class APIEndpoint:
           "details": e.errors()
         }
         raise Exception(json.dumps(error_details, default=str))
-    anvil.server.callable(self.name)(wrapper)
+    wrapper.__name__ = self.name
+    anvil.server.callable(wrapper)
     wrapper._api_endpoint = self
     return wrapper
 

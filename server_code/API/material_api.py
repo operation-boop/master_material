@@ -148,9 +148,6 @@ def get_material_detail(request: MaterialIDRequest):
   tags=["Materials", "Technical"]
 )
 def get_technical_detail(request: MaterialIDRequest):
-  if isinstance(request, dict):
-    request = MaterialIDRequest(**request)
-
   document_id = request.document_id
 
   # Your original logic
