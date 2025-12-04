@@ -58,7 +58,7 @@ components:
         properties: {bold: true, text: MATERIAL NAME}
         type: Label
       - data_bindings:
-        - {code: 'self.item[''name'']', property: text, writeback: false}
+        - {code: 'self.item[''material_name'']', property: text, writeback: false}
         layout_properties: {grid_position: 'UTFKAM,UGBJUT LEKGFC,OBXKFL'}
         name: material_name
         properties: {}

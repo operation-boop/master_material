@@ -25,7 +25,7 @@ class MaterialDetailResponse(BaseModel):
   document_id: str
   ver_num: str
   master_material_id: str
-  name: str
+  material_name: str
   ref_id: str
   material_type: str
   supplier: str
@@ -119,7 +119,7 @@ def get_material_detail(request: MaterialIDRequest):
     "document_id": _get(v, "document_id", " "),
     "ver_num": str(_get(v, "ver_num", " ")), 
     "master_material_id": _get(v, "master_material_id", " "),
-    "name": _get(v, "name", " "),
+    "material_name": _get(v, "material_name", " "),
     "ref_id": _get(v, "ref_id", " "),
     "material_type": _get(v, "material_type", " "),
     "supplier": _get(v, "supplier_name", " "),

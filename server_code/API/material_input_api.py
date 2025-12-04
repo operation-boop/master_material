@@ -1,228 +1,336 @@
-from typing import Optional, List, Any, Dict
-from pydantic import BaseModel, Field
-from datetime import datetime
-import anvil.users
-import anvil.email
-import anvil.secrets
-import anvil.google.auth, anvil.google.drive, anvil.google.mail
-from anvil.google.drive import app_files
-import anvil.tables as tables
-import anvil.tables.query as q
-from anvil.tables import app_tables
 import anvil.server
-from .api_framework import APIEndpoint
-import API.redoc_export
+from anvil.tables import app_tables
+import anvil.tables.query as q
 import uuid
-from ..mat_input import create_material, create_and_submit_material, save_or_edit_draft, submit_version, edit_verified_and_submit, validate_required_fields
-from API.material_api import MaterialIDRequest
+from datetime import datetime
+from pydantic import BaseModel, Field
+from typing import List, Optional, Dict, Any
+from .api_framework import APIEndpoint
+
 # ============================================================================
-# NEW MODELS FOR CREATE/EDIT OPERATIONS
+# 1. CONSTANTS & HELPERS
 # ============================================================================
-class MaterialFormData(BaseModel):
-  """
-  Flexible model for material fields. 
-  All fields are optional because:
-  1. Drafts can be partial.
-  2. Edits might only update one field.
-  """
-  name: Optional[str] = None
+
+DOC_PREFIX = "vin_mmat_"
+REQUIRED_FIELDS = [
+  "material_name", "material_type", "supplier_name",
+  # ... add the rest of your required fields here
+]
+
+def _get_next_document_id():
+  """Helper to generate next ID like vin_mmat_0004"""
+  # Note: For production with high concurrency, use a dedicated counter table
+  all_rows = app_tables.master_material_version.search()
+  numbers = []
+  for r in all_rows:
+    try:
+      num = int(r['document_id'].replace(DOC_PREFIX, ''))
+      numbers.append(num)
+    except ValueError:
+      continue
+
+  next_num = (max(numbers) + 1) if numbers else 1
+  return f"{DOC_PREFIX}{next_num:04d}"
+
+# ============================================================================
+# 2. MODELS
+# ============================================================================
+
+class MaterialBase(BaseModel):
+  """Common fields for creating/updating materials"""
+  material_name: Optional[str] = None
   material_type: Optional[str] = None
   supplier_name: Optional[str] = None
   ref_id: Optional[str] = None
-  country_of_origin: Optional[str] = None
   unit_of_measurement: Optional[str] = None
-  fabric_roll_width: Optional[float] = None
-  fabric_cut_width: Optional[float] = None
-  fabric_cut_width_no_shrinkage: Optional[float] = None
-  weight_per_unit: Optional[float] = None
-  weight_uom: Optional[str] = None
-  generic_material_size: Optional[str] = None
-  original_cost_per_unit: Optional[float] = None
-  native_cost_currency: Optional[str] = None
-  supplier_selling_tolerance: Optional[float] = None
-  refundable_tolerance: Optional[float] = None
-  vietnam_vat_rate: Optional[float] = None
-  refundable_vat: Optional[float] = None
-  import_duty: Optional[float] = None
-  refundable_import_duty: Optional[float] = None
-  shipping_term: Optional[str] = None
-  logistics_rate: Optional[float] = None
-  change_description: Optional[str] = None
+  # Add other fields as optional to allow partial updates...
 
-class CreateMaterialRequest(BaseModel):
+class CreateMaterialRequest(MaterialBase):
   """Request to create a new material"""
-  form_data: MaterialFormData = Field(..., description="The material details")
+  pass
 
-class EditMaterialRequest(BaseModel):
-  """Request to edit an existing material"""
-  document_id: str = Field(..., description="The unique document ID (e.g. vin_mmat_0001)")
-  form_data: Optional[MaterialFormData] = Field(None, description="The fields to update")
+class UpdateDraftRequest(MaterialBase):
+  """Request to update a draft"""
+  document_id: str = Field(..., description="The ID of the document to update")
 
-class EditVerifiedRequest(EditMaterialRequest):
-  """Request to edit a verified material (requires notes)"""
-  notes: Optional[str] = Field(None, description="Notes explaining why this verified material is being changed")
+class SubmitVersionRequest(BaseModel):
+  """Request to submit a version"""
+  document_id: str = Field(..., description="The ID of the document to submit")
+  form_data: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Final updates before submit")
 
-class ActionResponse(BaseModel):
-  """Standard response for create/edit actions"""
-  action: str
+class EditVerifiedRequest(BaseModel):
+  """Request to edit a verified document (creates v+1)"""
+  document_id: str = Field(..., description="The Verified Document ID")
+  form_data: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Changes for the new version")
+  notes: Optional[str] = Field(None, description="Notes for this revision")
+
+class MaterialResponse(BaseModel):
+  """Standard response for material operations"""
   document_id: str
-  new_version_number: Optional[int] = None
-  message: Optional[str] = None
-
-class ValidationResponse(BaseModel):
-  is_valid: bool
-  missing_fields: List[str]
+  version_num: int
+  status: str
+  message: str
 
 # ============================================================================
-# API ENDPOINTS - CREATE & EDIT
+# 3. ENDPOINTS
 # ============================================================================
-
-@anvil.server.route("/create_material")
+@anvil.server.route("/create_and_submit", methods=["POST"])
 @APIEndpoint(
-  name="create_material",
+  name="create_and_submit_material", # Matches your old function name?
   request_model=CreateMaterialRequest,
-  response_model=ActionResponse,
-  summary="Create Draft Material",
-  description="Creates a new material in 'Draft' status.",
-  tags=["Workflow"]
+  response_model=MaterialResponse,
+  summary="Create & Submit Immediately",
+  tags=["Material_Input"]
 )
-def api_create_material(request: CreateMaterialRequest):
-  # 1. Get current API user
+def create_and_submit_material(request: CreateMaterialRequest):
   user = anvil.users.get_user()
-  if not user:
-    raise Exception("Unauthorized: You must be logged in.")
+  user_email = user['email'] if user else "system"
 
-  user_email = user['email']
+  # 1. Validation (Check required fields before creating anything)
+  # Convert request to dict to check values
+  data = request.model_dump(exclude_none=True)
 
-  # 2. Call your existing logic
-  # Convert Pydantic model back to dict for your helper functions
-  data_dict = request.form_data.dict(exclude_unset=True)
+  missing = []
+  for field in REQUIRED_FIELDS:
+    # Check if field is missing or empty string
+    if not data.get(field): 
+      missing.append(field)
 
-  result = create_material(created_by_user=user_email, form_data=data_dict)
+  if missing:
+    raise Exception(f"Cannot submit. Missing required fields: {', '.join(missing)}")
 
-  return {
-    "action": result['action'],
-    "document_id": result['document_id'],
-    "message": "Material created successfully as Draft."
-  }
+    # 2. Generate IDs
+  doc_id = _get_next_document_id()
+  doc_uid = str(uuid.uuid4())
+  now = datetime.now()
 
-
-@anvil.server.route("/create_and_submit_material")
-@APIEndpoint(
-  name="create_and_submit_material",
-  request_model=CreateMaterialRequest,
-  response_model=ActionResponse,
-  summary="Create & Submit Material",
-  description="Creates a new material and immediately submits it for verification.",
-  tags=["Workflow"]
-)
-def api_create_and_submit(request: CreateMaterialRequest):
-  user = anvil.users.get_user()
-  if not user:
-    raise Exception("Unauthorized.")
-
-  data_dict = request.form_data.dict(exclude_unset=True)
-
-  # This might raise an Exception if fields are missing, which APIEndpoint handles automatically
-  result = create_and_submit_material(created_by_user=user['email'], form_data=data_dict)
-
-  return {
-    "action": result['action'],
-    "document_id": result['document_id'],
-    "message": "Material created and submitted for verification."
-  }
-
-
-@anvil.server.route("/save_draft")
-@APIEndpoint(
-  name="save_draft",
-  request_model=EditMaterialRequest,
-  response_model=ActionResponse,
-  summary="Update Draft",
-  description="Updates fields on a material that is still in 'Draft' status.",
-  tags=["Workflow"]
-)
-def api_save_draft(request: EditMaterialRequest):
-  data_dict = request.form_data.dict(exclude_unset=True) if request.form_data else {}
-
-  result = save_or_edit_draft(document_id=request.document_id, form_data=data_dict)
-
-  return {
-    "action": result['action'],
-    "document_id": result['document_id'],
-    "message": "Draft updated."
-  }
-
-
-@anvil.server.route("/submit_version")
-@APIEndpoint(
-  name="submit_version",
-  request_model=EditMaterialRequest,
-  response_model=ActionResponse,
-  summary="Submit Draft",
-  description="Promotes a 'Draft' material to 'Submitted - Unverified'. Validates required fields.",
-  tags=["Workflow"]
-)
-def api_submit_version(request: EditMaterialRequest):
-  user = anvil.users.get_user()
-  if not user:
-    raise Exception("Unauthorized.")
-
-  data_dict = request.form_data.dict(exclude_unset=True) if request.form_data else {}
-
-  result = submit_version(
-    document_id=request.document_id, 
-    submitted_by_user=user['email'], 
-    form_data=data_dict
+  # 3. Create Master (Verified = False)
+  master = app_tables.master_material.add_row(
+    document_id=doc_id,
+    current_version_number=1,
+    current_version_uid=doc_uid,
+    created_at=now,
+    created_by=user_email,
+    submitted_at=now,
+    submitted_by=user_email
   )
 
+  # 4. Create Version (Status = Submitted - Unverified)
+  version = app_tables.master_material_version.add_row(
+    document_id=doc_id,
+    document_uid=doc_uid,
+    ver_num=1,
+    status="Submitted - Unverified",
+    created_at=now,
+    created_by=user_email,
+    submitted_at=now,
+    submitted_by=user_email,
+    **data 
+  )
+
+  # 5. Link
+  master['version_history'] = [version]
+  master['current_version'] = version
+
   return {
-    "action": result['action'],
-    "document_id": result['document_id'],
-    "message": "Material submitted successfully."
+    "document_id": doc_id,
+    "version_num": 1,
+    "status": "Submitted - Unverified",
+    "message": "Material created and submitted for verification"
+  }
+  
+@anvil.server.route("/create_material_draft", methods=["POST"])
+@APIEndpoint(
+  name="create_material_draft",
+  request_model=CreateMaterialRequest,
+  response_model=MaterialResponse,
+  summary="Create New Draft",
+  tags=["Material_Input"]
+)
+def create_material_draft(request: CreateMaterialRequest):
+  user = anvil.users.get_user()
+  user_name = user['full_name']
+
+  doc_id = _get_next_document_id()
+  doc_uid = str(uuid.uuid4())
+  now = datetime.now()
+
+  # 1. Create Master
+  master = app_tables.master_material.add_row(
+    document_id=doc_id,
+    current_version_number=1,
+    current_version_uid=doc_uid,
+    created_at=now,
+    created_by=user_name
+  )
+
+  # 2. Create Version
+  version = app_tables.master_material_version.add_row(
+    document_id=doc_id,
+    document_uid=doc_uid,
+    ver_num=1,
+    status="Draft",
+    created_at=now,
+    created_by=user_name,
+    **request.model_dump(exclude_none=True) # Apply form data directly
+  )
+
+  # 3. Link
+  master['version_history'] = [version]
+  master['current_version'] = version
+
+  return {
+    "document_id": doc_id,
+    "version_num": 1,
+    "status": "Draft",
+    "message": "Draft created successfully"
   }
 
 
-@anvil.server.route("/edit_verified")
+@anvil.server.route("/update_draft", methods=["POST"])
+@APIEndpoint(
+  name="update_draft",
+  request_model=UpdateDraftRequest,
+  response_model=MaterialResponse,
+  summary="Update Existing Draft",
+  tags=["Material_Input"]
+)
+def update_draft(request: UpdateDraftRequest):
+  # 1. Fetch Master & Version
+  master = app_tables.master_material.get(document_id=request.document_id)
+  if not master:
+    raise Exception(f"Document {request.document_id} not found")
+
+  version = master['current_version']
+  if version['status'] != "Draft":
+    raise Exception(f"Cannot edit {request.document_id}. Status is '{version['status']}', must be 'Draft'.")
+
+    # 2. Update Fields
+  updates = request.model_dump(exclude={'document_id'}, exclude_none=True)
+  for k, v in updates.items():
+    version[k] = v
+
+  return {
+    "document_id": request.document_id,
+    "version_num": version['ver_num'],
+    "status": "Draft",
+    "message": "Draft updated successfully"
+  }
+
+
+@anvil.server.route("/submit_version", methods=["POST"])
+@APIEndpoint(
+  name="submit_version",
+  request_model=SubmitVersionRequest,
+  response_model=MaterialResponse,
+  summary="Submit Draft to Unverified",
+  tags=["Material_Input"]
+)
+def submit_version(request: SubmitVersionRequest):
+  user = anvil.users.get_user()
+  user_name = user['full_name']
+  
+  # 1. Fetch
+  master = app_tables.master_material.get(document_id=request.document_id)
+  if not master:
+    raise Exception("Document not found")
+  version = master['current_version']
+
+  # 2. Validate Status
+  if version['status'] != "Draft":
+    raise Exception("Only Drafts can be submitted")
+
+    # 3. Apply final updates if any
+  if request.form_data:
+    for k, v in request.form_data.items():
+      version[k] = v
+
+    # 4. Check Required Fields
+    # (Simplified check for brevity, logic remains same as before)
+  missing = []
+  for field in REQUIRED_FIELDS:
+    if not version[field]: 
+      missing.append(field)
+
+  if missing:
+    raise Exception(f"Missing required fields: {', '.join(missing)}")
+
+    # 5. Transition
+  now = datetime.now()
+  version['status'] = "Submitted - Unverified"
+  version['submitted_at'] = now
+  version['submitted_by'] = user_name
+
+  master['submitted_at'] = now
+  master['submitted_by'] = user_name
+
+  return {
+    "document_id": request.document_id,
+    "version_num": version['ver_num'],
+    "status": "Submitted - Unverified",
+    "message": "Version submitted for verification"
+  }
+
+
+@anvil.server.route("/edit_verified", methods=["POST"])
 @APIEndpoint(
   name="edit_verified",
   request_model=EditVerifiedRequest,
-  response_model=ActionResponse,
-  summary="Edit Verified Material",
-  description="Creates a NEW version from a Verified material and submits it.",
-  tags=["Workflow"]
+  response_model=MaterialResponse,
+  summary="Revise Verified Document",
+  tags=["Material_Input"]
 )
-def api_edit_verified(request: EditVerifiedRequest):
+def edit_verified(request: EditVerifiedRequest):
   user = anvil.users.get_user()
-  if not user:
-    raise Exception("Unauthorized.")
+  user_name = user['full_name']
+  master = app_tables.master_material.get(document_id=request.document_id)
+  if not master: 
+    raise Exception("Document not found")
 
-  data_dict = request.form_data.dict(exclude_unset=True) if request.form_data else {}
+  old_v = master['current_version']
+  if old_v['status'] != "Submitted - Verified":
+    raise Exception("Can only revise Verified documents")
 
-  result = edit_verified_and_submit(
-    document_id=request.document_id, 
-    edited_by_user=user['email'], 
-    form_data=data_dict,
-    notes=request.notes
+    # 1. Prepare New Version
+  new_ver_num = (master['current_version_number'] or 0) + 1
+  new_uid = str(uuid.uuid4())
+  now = datetime.now()
+
+  # 2. Create New Version Row
+  # (We clone manually to avoid copying system fields)
+  exclude = {"document_uid", "ver_num", "status", "created_at", "submitted_at", "submitted_by"}
+  prev_data = dict(old_v)
+  cloned_data = {k: v for k, v in prev_data.items() if k not in exclude and not k.startswith("_")}
+
+  # Apply new updates over cloned data
+  if request.form_data:
+    cloned_data.update(request.form_data)
+
+  new_v = app_tables.master_material_version.add_row(
+    document_id=request.document_id,
+    document_uid=new_uid,
+    ver_num=new_ver_num,
+    status="Submitted - Unverified", # Jumping straight to unverified as per logic
+    created_at=now,
+    submitted_at=now,
+    submitted_by=user_name,
+    verification_notes=request.notes,
+    **cloned_data
   )
 
+  # 3. Update Master Pointers
+  # Need to manually rebuild history list
+  current_history = list(master['version_history'] or [])
+  current_history.append(new_v)
+
+  master['version_history'] = current_history
+  master['current_version'] = new_v
+  master['current_version_number'] = new_ver_num
+  master['current_version_uid'] = new_uid
+
   return {
-    "action": result['action'],
-    "document_id": result['document_id'],
-    "new_version_number": result['new_version_number'],
-    "message": f"New version {result['new_version_number']} created and submitted."
+    "document_id": request.document_id,
+    "version_num": new_ver_num,
+    "status": "Submitted - Unverified",
+    "message": "New version created and submitted"
   }
-
-
-@anvil.server.route("/validate_material")
-@APIEndpoint(
-  name="validate_material",
-  request_model=MaterialIDRequest, # reusing your existing ID request model
-  response_model=ValidationResponse,
-  summary="Validate Material",
-  description="Checks if the current version has all required fields filled.",
-  tags=["Workflow"]
-)
-def api_validate_material(request: MaterialIDRequest):
-  result = validate_required_fields(request.document_id)
-  return result

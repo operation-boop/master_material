@@ -68,7 +68,7 @@ class Material_input_form(Material_input_formTemplate):
 
     # Ensure all expected fields exist with defaults
     defaults = {
-      "material_name": self.item.get("name", ""),
+      "material_name": self.item.get("material_name", ""),
       "master_material_id": "",
       "ref_id": "",
       "fabric_composition": [],
@@ -306,16 +306,16 @@ class Material_input_form(Material_input_formTemplate):
     """Save material as draft"""
     form_data = self.collect_form_data()
     try:
-      user_name = self._current_user_name()
-
       if not self.current_document_id:
-        # New material
-        resp = anvil.server.call('create_material', user_name, form_data)
+        resp = anvil.server.call('create_material_draft', form_data)
+        new_id = resp['document_id']
       else:
-        # Edit existing draft
-        resp = anvil.server.call('save_or_edit_draft', self.current_document_id, form_data)
+        payload = form_data.copy()
+        payload['document_id'] = self.current_document_id
+        resp = anvil.server.call('update_draft', payload)
+        new_id = resp['document_id']
 
-      self.current_document_id = resp.get('document_id') or self.current_document_id
+      self.current_document_id = new_id
       Notification("Draft saved!", style="success", timeout=3).show()
       self.raise_event("x-refresh-list", document_id=self.current_document_id)
       self.raise_event("x-close-alert", value="saved")
@@ -340,11 +340,12 @@ class Material_input_form(Material_input_formTemplate):
       if self.mode == "edit_verified":
         # Create new version for verified material
         resp = anvil.server.call(
-          'edit_verified_and_submit',
-          document_id=self.current_document_id,
-          edited_by_user=user_name,
-          form_data=form_data,
-          notes=form_data.get('change_description', 'Edited via UI')
+          'edit_verified',
+        {
+          "document_id": self.current_document_id,
+          "form_data": form_data,
+          "notes": form_data.get('change_description', 'Edited via UI')
+          }
         )
         self.current_document_id = resp.get('document_id') or self.current_document_id
         success_msg = f"New version {resp.get('new_version_number')} created and submitted."
@@ -352,14 +353,16 @@ class Material_input_form(Material_input_formTemplate):
 
       elif self.mode == "edit_draft":
         # Submit existing draft
-        resp = anvil.server.call('submit_version', self.current_document_id, user_name, form_data)
+        payload = form_data.copy()
+        payload['document_id'] = self.current_document_id
+        resp = anvil.server.call('submit_version', payload)
         self.current_document_id = resp.get('document_id') or self.current_document_id
         success_msg = "Submitted successfully!"
 
 
-      else:  # new
+      else:  
         # Create and submit new material
-        resp = anvil.server.call('create_and_submit_material', user_name, form_data)
+        resp = anvil.server.call('create_and_submit_material', form_data)
         self.current_document_id = resp.get('document_id') or self.current_document_id
         success_msg = "Material created and submitted!"
 
@@ -380,7 +383,7 @@ class Material_input_form(Material_input_formTemplate):
   def validate_form_data(self, form_data):
     """Validate required fields"""
     required_fields = [
-      'name', 'material_type', 'country_of_origin', 'supplier_name',
+      'material_name', 'material_type', 'country_of_origin', 'supplier_name',
       'unit_of_measurement', 'weight_per_unit', 'weight_uom',
       'original_cost_per_unit', 'native_cost_currency'
     ]
@@ -408,7 +411,7 @@ class Material_input_form(Material_input_formTemplate):
     return {
       # Basic Info
       "master_material_id": self.mat_material_id.text,
-      "name": self.material_name.text,
+      "material_name": self.material_name.text,
       "material_type": self.material_type_dropdown.selected_value,
       "country_of_origin": self.country_of_origin_dropdown.selected_value,
       "supplier_name": self.dropdown_supplier.selected_value,

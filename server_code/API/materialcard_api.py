@@ -70,7 +70,7 @@ def list_material_cards(request: ListMaterialCardsRequest):
       "document_id": master['document_id'] or " ",
       "master_material_id": version['master_material_id'] or " ",
       "ref_id": version['ref_id'] or " ",
-      "material_name": version['name'] or " ",
+      "material_name": version['material_name'] or " ",
       "material_type": version['material_type'] or " ",
       "fabric_composition": version['fabric_composition'] or " ",
       "weight": weight or " ",
