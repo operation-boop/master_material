@@ -11,14 +11,14 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from .api_framework import APIEndpoint
+import API.redoc_export
 # ============================================================================
 # 1. MODELS (The Inputs and Outputs)
 # ============================================================================
 
 # --- Shared Request Model ---
 class MaterialIDRequest(BaseModel):
-  """Standard request for any endpoint requiring a document_id"""
-  document_id: str = Field(None, description="The unique document ID of the material")
+  document_id: str = Field(..., description="The unique document ID of the material")
 
 # --- Response Models ---
 class MaterialDetailResponse(BaseModel):
@@ -149,13 +149,12 @@ def get_material_detail(request: MaterialIDRequest):
 )
 def get_technical_detail(request: MaterialIDRequest):
   document_id = request.document_id
-
-  # Your original logic
   master = app_tables.master_material.get(document_id=document_id)
   if not master:
+    # 1. Stop if master is missing
     raise Exception(f"No material found for ID: {document_id}")
-  
-    v = master['current_version']
+  # 2. Un-indent this line so it runs when master IS found
+  v = master['current_version']
   if not v:
     raise Exception(f"No current version found for ID: {document_id}")
 

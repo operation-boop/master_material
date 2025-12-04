@@ -10,7 +10,9 @@ import anvil.server
 from .api_framework import export_api_docs
 from . import materialcard_api
 from . import material_api
-
+from . import admin_api
+from . import material_sku_input_api
+from . import material_input_api
 
 def generate_all_docs_for_anvil():
   """

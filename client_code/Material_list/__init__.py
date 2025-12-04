@@ -55,10 +55,8 @@ class Material_list(Material_listTemplate):
     open_form('Material_list')
 
   def doc_read_click(self, **event_args):
-    html_string = anvil.server.call('get_redoc_html')
+    base_url = anvil.server.get_app_origin()
+    docs_url = base_url + "/_/api/docs"
 
-    # Create a Blob URL
-    media = BlobMedia("text/html", html_string.encode(), name="docs.html")
-
-    # Open in new tab using Javascript
-    anvil.js.window.open(media.url, '_blank')
+    # 3. Open it in a new tab
+    anvil.js.window.open(docs_url, '_blank')

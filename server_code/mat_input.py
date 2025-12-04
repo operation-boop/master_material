@@ -127,7 +127,7 @@ def get_next_document_number():
 
   return max(numbers) + 1 if numbers else 1
 
-@anvil.server.callable
+
 def create_material(created_by_user, form_data):
   """Create a new material with version 1 as Draft"""
   doc_num = get_next_document_number()
@@ -161,7 +161,7 @@ def create_material(created_by_user, form_data):
 
   return {"action": "created", "document_id": document_id}
 
-@anvil.server.callable
+
 def create_and_submit_material(created_by_user, form_data):
   """Create a new material and submit it immediately as Submitted - Unverified"""
   # Validate required fields
@@ -212,7 +212,7 @@ def create_and_submit_material(created_by_user, form_data):
 # PUBLIC API - EDIT OPERATIONS
 # ============================================================================
 
-@anvil.server.callable
+
 def save_or_edit_draft(document_id, form_data=None):
   """Update draft material - only works on Draft status"""
   master = _get_master_material(document_id)
@@ -226,7 +226,7 @@ def save_or_edit_draft(document_id, form_data=None):
 
   return {"action": "draft_saved", "version": version, "document_id": document_id}
 
-@anvil.server.callable
+
 def submit_version(document_id, submitted_by_user, form_data=None):
   """Submit draft material as 'Submitted - Unverified'"""
   master = _get_master_material(document_id)
@@ -262,7 +262,7 @@ def submit_version(document_id, submitted_by_user, form_data=None):
 
   return {"action": "submitted_unverified", "version": version, "document_id": document_id}
 
-@anvil.server.callable
+
 def edit_verified_and_submit(document_id, edited_by_user, form_data=None, notes=None):
   """Edit a verified material by creating a new version as Submitted - Unverified"""
   master = _get_master_material(document_id)
