@@ -1,5 +1,5 @@
 from typing import Optional, List, Any, Dict
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field , field_validator
 from datetime import datetime
 import anvil.users
 import anvil.email
@@ -33,10 +33,10 @@ class MaterialDetailResponse(BaseModel):
   created_by: str
   created_at: datetime 
   fabric_composition: str
-  weight_per_unit: int 
-  fabric_roll_width: int
-  fabric_cut_width: int
-  original_cost_per_unit: int
+  weight_per_unit: Optional[float] = None
+  fabric_roll_width: Optional[float] = None
+  fabric_cut_width: Optional[float] = None
+  original_cost_per_unit: Optional[float] = None
   cost_display: str
   unit_of_measurement: str
   verification_status: str
@@ -44,6 +44,13 @@ class MaterialDetailResponse(BaseModel):
   submitted_at: Optional[Any] = None
   last_verified_date: Optional[Any] = None
   
+  @field_validator('*', mode='before')
+  @classmethod
+  def clean_empty_strings(cls, v):
+    if isinstance(v, str) and not v.strip():
+      return None
+    return v
+    
 class TechnicalDetailResponse(BaseModel):
   fabric_composition: Optional[str] = None
   fabric_roll_width: Optional[float] = None
@@ -127,7 +134,7 @@ def get_material_detail(request: MaterialIDRequest):
     "created_by": _get(v, "created_by", " "),
     "created_at": _get(v, "created_at", " "),
     "fabric_composition": _get(v, "fabric_composition", " "),
-    "weight_per_unit": _get(v, "weight_per_unit", " "),
+    "weight_per_unit": _get(v, "weight_per_unit", None),
     "fabric_roll_width": _get(v, "fabric_roll_width", " "),
     "fabric_cut_width": _get(v, "fabric_cut_width", " "),
     "original_cost_per_unit": ocpu,
