@@ -79,10 +79,10 @@ class MaterialBase(BaseModel):
 
   # --- Notes ---
   change_description: Optional[str] = None
-  
   @field_validator('*', mode='before')
   @classmethod
-  def empty_str_to_none(cls, v):
+  def clean_data(cls, v):
+    # If the DB or Form has an empty string, convert to None
     if isinstance(v, str) and not v.strip():
       return None
     return v
