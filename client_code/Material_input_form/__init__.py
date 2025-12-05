@@ -450,8 +450,17 @@ class Material_input_form(Material_input_formTemplate):
     }
 
   def parse_float(self, value):
-    """Safely parse float values"""
+    """Safely parse float values. Returns None if empty or invalid."""
+    if value is None:
+      return None
+
+    # If it's a string, strip whitespace
+    if isinstance(value, str):
+      value = value.strip()
+      if value == "":
+        return None
+
     try:
-      return float(value) if value else None
+      return float(value)
     except (ValueError, TypeError):
       return None
