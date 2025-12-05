@@ -3,7 +3,7 @@ from anvil.tables import app_tables
 import anvil.tables.query as q
 import uuid
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional, Dict, Any
 from .api_framework import APIEndpoint
 
@@ -79,6 +79,13 @@ class MaterialBase(BaseModel):
 
   # --- Notes ---
   change_description: Optional[str] = None
+  
+  @field_validator('*', mode='before')
+  @classmethod
+  def empty_str_to_none(cls, v):
+    if isinstance(v, str) and not v.strip():
+      return None
+    return v
 
 class CreateMaterialRequest(MaterialBase):
   """Request to create a new material"""
