@@ -1,5 +1,5 @@
 from typing import Optional, List, Any, Dict
-from pydantic import BaseModel, Field , field_validator
+from pydantic import BaseModel, Field , field_validator, field_serializer
 from datetime import datetime
 import anvil.users
 import anvil.email
@@ -24,22 +24,22 @@ class MaterialIDRequest(BaseModel):
 class MaterialDetailResponse(BaseModel):
   document_id: str
   ver_num: str
-  master_material_id: str
-  material_name: str
-  ref_id: str
-  material_type: str
-  supplier: str
-  country_of_origin: str
-  created_by: str
+  master_material_id: Optional[str] = None
+  material_name: Optional[str] = None
+  ref_id: Optional[str] = None
+  material_type: Optional[str] = None
+  supplier: Optional[str] = None
+  country_of_origin: Optional[str] = None
+  created_by: Optional[str] = None
   created_at: datetime 
-  fabric_composition: str
+  fabric_composition: Optional[str] = None
   weight_per_unit: Optional[float] = None
   fabric_roll_width: Optional[float] = None
   fabric_cut_width: Optional[float] = None
   original_cost_per_unit: Optional[float] = None
-  cost_display: str
-  unit_of_measurement: str
-  verification_status: str
+  cost_display: Optional[str] = None
+  unit_of_measurement: Optional[str] = None
+  verification_status: Optional[str] = None
   updated_at: Optional[Any] = None
   submitted_at: Optional[Any] = None
   last_verified_date: Optional[Any] = None
@@ -50,6 +50,14 @@ class MaterialDetailResponse(BaseModel):
     if isinstance(v, str) and not v.strip():
       return None
     return v
+
+  @field_serializer('created_at', 'updated_at', 'submitted_at', 'last_verified_date')
+  def serialize_dates(self, value, _info):
+    # If the value is a valid datetime object, format it
+    if isinstance(value, datetime):
+      # Example Format: "04-12-2025" (Day-Month-Year)
+      return value.strftime('%d-%m-%Y') 
+    return value
     
 class TechnicalDetailResponse(BaseModel):
   fabric_composition: Optional[str] = None
