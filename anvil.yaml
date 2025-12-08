@@ -8,9 +8,6 @@ db_schema:
       name: document_id
       type: string
     - admin_ui: {width: 200}
-      name: current_version_number
-      type: number
-    - admin_ui: {width: 200}
       name: current_version
       target: master_material_version
       type: link_single
@@ -47,7 +44,7 @@ db_schema:
   master_material_version:
     client: none
     columns:
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 0, width: 200}
       name: ver_num
       type: number
     - admin_ui: {width: 200}
@@ -86,7 +83,7 @@ db_schema:
     - admin_ui: {width: 200}
       name: material_type
       type: string
-    - admin_ui: {width: 200}
+    - admin_ui: {order: 11.5, width: 200}
       name: master_material_id
       type: string
     - admin_ui: {width: 200}

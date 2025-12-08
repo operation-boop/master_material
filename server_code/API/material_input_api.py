@@ -149,7 +149,6 @@ def create_and_submit_material(request: CreateMaterialRequest):
   # 3. Create Master (Verified = False)
   master = app_tables.master_material.add_row(
     document_id=doc_id,
-    current_version_number=1,
     current_version_uid=doc_uid,
     created_at=now,
     created_by=user_email,
@@ -200,7 +199,6 @@ def create_material_draft(request: CreateMaterialRequest):
   # 1. Create Master
   master = app_tables.master_material.add_row(
     document_id=doc_id,
-    current_version_number=1,
     current_version_uid=doc_uid,
     created_at=now,
     created_by=user_name
@@ -333,8 +331,8 @@ def edit_verified(request: EditVerifiedRequest):
   if old_v['status'] != "Submitted - Verified":
     raise Exception("Can only revise Verified documents")
 
-    # 1. Prepare New Version
-  new_ver_num = (master['current_version_number'] or 0) + 1
+  # 1. Prepare New Version
+  new_ver_num = old_v['ver_num'] + 1
   new_uid = str(uuid.uuid4())
   now = datetime.now()
 
@@ -365,7 +363,6 @@ def edit_verified(request: EditVerifiedRequest):
 
   master['version_history'] = current_history
   master['current_version'] = new_v
-  master['current_version_number'] = new_ver_num
   master['current_version_uid'] = new_uid
 
   return {
