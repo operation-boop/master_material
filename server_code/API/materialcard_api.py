@@ -31,7 +31,7 @@ class ListMaterialCardsRequest(BaseModel):
   statuses: Optional[List[str]] = Field(
     None, 
     description="List of statuses to include. Defaults to active statuses if empty.",
-    example=["Draft", "Submitted - Verified"]
+    example=["Draft", "Verified" , "Unverified"]
   )
 
 # --- STEP 3: The Integration ---
