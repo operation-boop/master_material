@@ -45,7 +45,7 @@ class MaterialBase(BaseModel):
   supplier_name: Optional[str] = None
 
   # --- Basic Specs ---
-  material_type: Optional[str] = None
+  material_type:  Optional[str] = None
   country_of_origin: Optional[str] = None
   unit_of_measurement: Optional[str] = None
   generic_material_size: Optional[str] = None
